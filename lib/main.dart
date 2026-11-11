@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream:lib/main.dart
 
 void main() {
   runApp(const MyApp());
@@ -117,6 +118,25 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
+=======
+import 'core/theme/app_theme.dart';
+import 'features/onboarding/screens/splash_screen.dart';
+
+void main() {
+  runApp(const AfetNetApp());
+}
+
+class AfetNetApp extends StatelessWidget {
+  const AfetNetApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'AfetNet',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.darkTheme,
+      home: const SplashScreen(),
+>>>>>>> Stashed changes:afetnet/lib/main.dart
     );
   }
 }

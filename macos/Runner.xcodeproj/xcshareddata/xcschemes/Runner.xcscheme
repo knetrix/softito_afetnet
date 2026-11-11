@@ -15,7 +15,11 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< Updated upstream:macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
                      BuildableName = "softito_group_project.app"
+=======
+                     BuildableName = "afetnet.app"
+>>>>>>> Stashed changes:afetnet/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
                      BlueprintName = "Runner"
                      ReferencedContainer = "container:Runner.xcodeproj">
                   </BuildableReference>
@@ -33,7 +37,11 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< Updated upstream:macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
                BuildableName = "softito_group_project.app"
+=======
+               BuildableName = "afetnet.app"
+>>>>>>> Stashed changes:afetnet/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
                BlueprintName = "Runner"
                ReferencedContainer = "container:Runner.xcodeproj">
             </BuildableReference>
@@ -49,7 +57,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< Updated upstream:macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
             BuildableName = "softito_group_project.app"
+=======
+            BuildableName = "afetnet.app"
+>>>>>>> Stashed changes:afetnet/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -84,7 +96,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< Updated upstream:macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
             BuildableName = "softito_group_project.app"
+=======
+            BuildableName = "afetnet.app"
+>>>>>>> Stashed changes:afetnet/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -101,7 +117,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< Updated upstream:macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
             BuildableName = "softito_group_project.app"
+=======
+            BuildableName = "afetnet.app"
+>>>>>>> Stashed changes:afetnet/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>

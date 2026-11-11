@@ -1,6 +1,11 @@
 {
+<<<<<<< Updated upstream:web/manifest.json
     "name": "softito_group_project",
     "short_name": "softito_group_project",
+=======
+    "name": "afetnet",
+    "short_name": "afetnet",
+>>>>>>> Stashed changes:afetnet/web/manifest.json
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
