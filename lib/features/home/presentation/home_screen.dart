@@ -1,0 +1,11 @@
+import 'package:flutter/material.dart';
+
+import '../../../core/widgets/placeholder_view.dart';
+
+/// A1 — Ana Sayfa. Şimdilik boş sekme; ekranı G3 yazar.
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) => const PlaceholderView(title: 'Ana Sayfa');
+}

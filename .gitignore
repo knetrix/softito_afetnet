@@ -8,8 +8,7 @@
 .dart_tool/
 .packages
 build/
-# If you're building an application, you may want to check-in your pubspec.lock
-pubspec.lock
+# pubspec.lock repoya eklenir: herkes aynı paket sürümleriyle çalışır.
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
@@ -31,3 +30,13 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Android imzalama anahtarları repoya eklenmez (PROJECT_NEW.md §7)
+*.jks
+*.keystore
+key.properties
+
+# Flutter
+**/ios/Flutter/.last_build_id
+/coverage/
+.widget_preview/
