@@ -173,5 +173,7 @@
   "whistlePlayingSubtitle": "Siren aktif",
   "whistleTapToStart": "BAŞLATMAK İÇİN DOKUNUN",
   "whistleTapToStop": "DURDURMAK İÇİN TEKRAR DOKUNUN",
-  "whistleOfflineNote": "İnternet bağlantısı olmadan çalışır."
+  "whistleOfflineNote": "İnternet bağlantısı olmadan çalışır.",
+  "notificationChannelName": "Kritik uyarılar",
+  "notificationChannelDescription": "Acil durum, tahliye ve kritik stok bildirimleri"
 }

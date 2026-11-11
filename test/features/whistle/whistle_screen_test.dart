@@ -1,4 +1,5 @@
 import 'package:afetnet/core/theme/app_theme.dart';
+import 'package:afetnet/core/widgets/glow_circle_button.dart';
 import 'package:afetnet/features/whistle/presentation/whistle_controller.dart';
 import 'package:afetnet/features/whistle/presentation/whistle_screen.dart';
 import 'package:afetnet/l10n/app_localizations.dart';
@@ -52,5 +53,25 @@ void main() {
     expect(find.text('DURDURMAK İÇİN TEKRAR DOKUNUN'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
-}
 
+  testWidgets('WhistleScreen normal yazıda butonu yatayda ortalar', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(411, 891));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final controller = WhistleController(backend: _WidgetFakeWhistleBackend());
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light(),
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: WhistleScreen(controller: controller),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.getCenter(find.byType(GlowCircleButton)).dx, closeTo(411 / 2, 1));
+  });
+}

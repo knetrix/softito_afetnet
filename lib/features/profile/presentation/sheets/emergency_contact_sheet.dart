@@ -49,7 +49,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
   late final TextEditingController _name;
   late final TextEditingController _relation;
   late final TextEditingController _phone;
-  late final _phoneFormatter = Validators.phoneFormatter(initialText: _phone.text);
+  final _phoneFormatter = Validators.phoneFormatter();
   bool _isSaving = false;
 
   @override

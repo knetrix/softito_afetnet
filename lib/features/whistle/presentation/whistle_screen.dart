@@ -48,7 +48,9 @@ class _WhistleScreenState extends State<WhistleScreen> {
             return SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               child: ConstrainedBox(
+                // Genişlik de verilir; yoksa Column içeriği kadar daralıp sola yaslanır.
                 constraints: BoxConstraints(
+                  minWidth: (constraints.maxWidth - 48).clamp(0, double.infinity),
                   minHeight: (constraints.maxHeight - 40).clamp(0, double.infinity),
                 ),
                 child: ValueListenableBuilder<bool>(

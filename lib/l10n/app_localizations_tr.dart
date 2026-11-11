@@ -566,4 +566,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get whistleOfflineNote => 'İnternet bağlantısı olmadan çalışır.';
+
+  @override
+  String get notificationChannelName => 'Kritik uyarılar';
+
+  @override
+  String get notificationChannelDescription =>
+      'Acil durum, tahliye ve kritik stok bildirimleri';
 }

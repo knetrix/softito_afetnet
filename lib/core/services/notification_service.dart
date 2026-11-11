@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../../l10n/app_localizations.dart';
+import '../utils/permission_queue.dart';
 
 /// Yerel bildirimler ve FCM `all_users` topic aboneliği servisi
 /// (PROJECT_NEW.md §6, Kural 10, R2).
@@ -13,6 +16,7 @@ abstract interface class NotificationService {
   Future<void> initialize();
 
   /// Kullanıcı tercihine göre `all_users` topic aboneliğini günceller.
+  /// `optIn == true` ise bildirim izni ilk kez burada istenir (açılışta değil).
   /// `optIn == false` ise önceki abonelik varsa bile topic'ten çıkar.
   Future<void> syncTopicSubscription({required bool optIn});
 
@@ -37,9 +41,17 @@ class DeviceNotificationService implements NotificationService {
   final FirebaseMessaging? _messaging;
   StreamSubscription<RemoteMessage>? _foregroundSub;
   bool _initialized = false;
+  bool _permissionRequested = false;
   bool? _lastOptIn;
+  late final AppLocalizations _l10n = _deviceLocalizations();
 
   FirebaseMessaging get _fcm => _messaging ?? FirebaseMessaging.instance;
+
+  /// Kanal adı sistem ayarlarında görünür; uygulamayla aynı dil kuralı (tr, değilse en).
+  static AppLocalizations _deviceLocalizations() {
+    final code = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+    return lookupAppLocalizations(Locale(code == 'tr' ? 'tr' : 'en'));
+  }
 
   @override
   Future<void> initialize() async {
@@ -64,28 +76,38 @@ class DeviceNotificationService implements NotificationService {
           _local.resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
       await androidPlugin?.createNotificationChannel(
-        const AndroidNotificationChannel(
+        AndroidNotificationChannel(
           NotificationService.criticalChannelId,
-          'Kritik Uyarılar',
-          description: 'Acil durum, tahliye ve kritik stok bildirimleri',
+          _l10n.notificationChannelName,
+          description: _l10n.notificationChannelDescription,
           importance: Importance.max,
           playSound: true,
         ),
       );
-      await androidPlugin?.requestNotificationsPermission();
     } catch (_) {
       // Test veya desteklenmeyen ortamlarda sessizce geçer.
     }
 
     try {
-      await _fcm.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
       _foregroundSub = FirebaseMessaging.onMessage.listen(_onForegroundMessage);
     } catch (_) {
       // iOS simülatör veya APNs olmadan FCM hata verirse uygulama çökmez.
+    }
+  }
+
+  Future<void> _requestPermissionOnce() async {
+    if (_permissionRequested) return;
+    _permissionRequested = true;
+    try {
+      await PermissionQueue.run(() async {
+        await _local
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.requestNotificationsPermission();
+        await _fcm.requestPermission(alert: true, badge: true, sound: true);
+      });
+    } catch (_) {
+      // İzin istenemese de abonelik denenir.
     }
   }
 
@@ -108,6 +130,7 @@ class DeviceNotificationService implements NotificationService {
     if (_lastOptIn == optIn) return;
     try {
       if (optIn) {
+        await _requestPermissionOnce();
         await _fcm.subscribeToTopic(NotificationService.allUsersTopic);
       } else {
         await _fcm.unsubscribeFromTopic(NotificationService.allUsersTopic);
@@ -131,11 +154,11 @@ class DeviceNotificationService implements NotificationService {
         title: title,
         body: body,
         payload: payload,
-        notificationDetails: const NotificationDetails(
+        notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             NotificationService.criticalChannelId,
-            'Kritik Uyarılar',
-            channelDescription: 'Acil durum, tahliye ve kritik stok bildirimleri',
+            _l10n.notificationChannelName,
+            channelDescription: _l10n.notificationChannelDescription,
             importance: Importance.max,
             priority: Priority.high,
           ),
