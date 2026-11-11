@@ -32,5 +32,6 @@ String failureMessage(AuthFailure failure) => switch (failure) {
       AuthFailure.profileMissing => 'Hesap profili bulunamadı',
       AuthFailure.network => 'İnternet bağlantısı yok, tekrar deneyin',
       AuthFailure.tooManyRequests => 'Çok fazla deneme yapıldı, biraz sonra tekrar deneyin',
+      AuthFailure.providerDisabled => 'E-posta ile giriş şu an kullanılamıyor',
       AuthFailure.unknown => 'Bir hata oluştu, tekrar deneyin',
     };

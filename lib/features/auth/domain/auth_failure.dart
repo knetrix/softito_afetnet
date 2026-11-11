@@ -8,6 +8,8 @@ enum AuthFailure {
   profileMissing,
   network,
   tooManyRequests,
+  /// Firebase Console'da E-posta/Şifre girişi etkin değil.
+  providerDisabled,
   unknown,
 }
 

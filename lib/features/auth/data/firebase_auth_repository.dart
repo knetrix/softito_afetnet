@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/constants/user_role.dart';
@@ -132,9 +133,15 @@ class FirebaseAuthRepository implements AuthRepository {
         'weak-password' => AuthFailure.weakPassword,
         'network-request-failed' => AuthFailure.network,
         'too-many-requests' => AuthFailure.tooManyRequests,
-        _ => AuthFailure.unknown,
+        'operation-not-allowed' => AuthFailure.providerDisabled,
+        _ => _unknown(e),
       };
 
+  AuthFailure _unknown(FirebaseException e) {
+    debugPrint('Auth hatası: ${e.code} ${e.message}');
+    return AuthFailure.unknown;
+  }
+
   AuthFailure _mapFirestore(FirebaseException e) =>
-      e.code == 'unavailable' ? AuthFailure.network : AuthFailure.unknown;
+      e.code == 'unavailable' ? AuthFailure.network : _unknown(e);
 }
