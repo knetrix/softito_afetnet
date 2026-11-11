@@ -41,10 +41,9 @@ class SafetySignal {
   bool get isDanger => state == SafetySignalState.danger;
   bool get isConfirmed => !hasPendingWrites;
 
-  /// Sahibi `handledBy` alanını silemediği için yeniden panikte eski
-  /// "Ulaşıldı" kaydı kalır; `handledAt < updatedAt` ise sinyal tekrar aktiftir.
-  bool get isHandledAfterLastSignal =>
-      handledAt != null && !handledAt!.isBefore(updatedAt);
+  /// Yetkili "Ulaşıldı" işaretlediyse `true`. Yeni panik bu alanları
+  /// sildiği için kayıt her zaman son sinyale aittir.
+  bool get isHandled => handledBy != null;
 
   @override
   bool operator ==(Object other) =>
