@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_status_colors.dart';
 
 enum _AppButtonVariant { primary, secondary, danger, text }
 
@@ -52,7 +52,7 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colors = theme.colorScheme;
 
     Widget content = Row(
       mainAxisSize: isFullWidth ? MainAxisSize.max : MainAxisSize.min,
@@ -65,9 +65,11 @@ class AppButton extends StatelessWidget {
             child: CircularProgressIndicator(
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(
-                _variant == _AppButtonVariant.primary
-                    ? (isDark ? const Color(0xFF090D14) : Colors.white)
-                    : theme.colorScheme.primary,
+                switch (_variant) {
+                  _AppButtonVariant.primary => colors.onPrimary,
+                  _AppButtonVariant.danger => colors.onError,
+                  _ => colors.primary,
+                },
               ),
             ),
           ),
@@ -109,7 +111,7 @@ class AppButton extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: theme.colorScheme.onSurface,
             side: BorderSide(
-              color: isDark ? AppColors.border : AppColors.lightBorder,
+              color: colors.outline,
               width: 1.2,
             ),
             minimumSize: Size(isFullWidth ? double.infinity : 48, 48),
@@ -126,8 +128,8 @@ class AppButton extends StatelessWidget {
         button = ElevatedButton(
           onPressed: isLoading ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.danger,
-            foregroundColor: Colors.white,
+            backgroundColor: theme.extension<AppStatusColors>()!.critical,
+            foregroundColor: colors.onError,
             elevation: 0,
             minimumSize: Size(isFullWidth ? double.infinity : 48, 50),
             shape: RoundedRectangleBorder(

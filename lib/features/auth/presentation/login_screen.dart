@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants/user_role.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_status_colors.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/not_official_notice.dart';
@@ -49,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _forgotPassword() async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
+    final theme = Theme.of(context);
 
     if (Validators.email(_email.text) != null) {
       messenger.showSnackBar(
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             l10n?.loginForgotPasswordPrompt ??
                 'Şifre sıfırlama için e-posta adresinizi girin',
           ),
-          backgroundColor: AppColors.surfaceHigh,
+          backgroundColor: theme.colorScheme.inverseSurface,
         ),
       );
       return;
@@ -71,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
           l10n?.loginForgotPasswordSent ??
               'Şifre sıfırlama bağlantısı e-postanıza gönderildi',
         ),
-        backgroundColor: AppColors.success,
+        backgroundColor: theme.extension<AppStatusColors>()!.normal,
       ),
     );
   }
@@ -81,6 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = context.watch<AuthController>();
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
+    final colors = theme.colorScheme;
+    final danger = theme.extension<AppStatusColors>()!.critical;
 
     return Scaffold(
       body: SafeArea(
@@ -100,17 +103,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 64,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.primary.withValues(alpha: 0.12),
+                        color: colors.primary.withValues(alpha: 0.12),
                         border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.35),
+                          color: colors.primary.withValues(alpha: 0.35),
                           width: 1.5,
                         ),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Icon(
                           Icons.radar_rounded,
                           size: 34,
-                          color: AppColors.primary,
+                          color: colors.primary,
                         ),
                       ),
                     ),
@@ -218,22 +221,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
-                        color: AppColors.danger.withValues(alpha: 0.12),
+                        color: danger.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: AppColors.danger.withValues(alpha: 0.3),
+                          color: danger.withValues(alpha: 0.3),
                         ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.error_outline_rounded,
-                              color: AppColors.danger, size: 18),
+                          Icon(Icons.error_outline_rounded, color: danger, size: 18),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               failureMessage(auth.failure!, l10n),
-                              style: const TextStyle(
-                                color: AppColors.danger,
+                              style: TextStyle(
+                                color: danger,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                               ),

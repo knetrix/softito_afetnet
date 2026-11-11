@@ -7,7 +7,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | Aşama | Sahip | Durum | PR |
 |---|---|---|---|
 | G1 — Temel ve Giriş | Mustafa | 🟡 Tamam, ekip erişimi bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
-| G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı | — |
+| G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#11](https://github.com/knetrix/softito_afetnet/pull/11), `fix/mustafa-g2-review` |
 | G3 — Panik, Ana Sayfa ve Düdük | Furkan | ⏳ Sıradaki | — |
 | G4 — Yardım Çağrısı ve Toplanma | Tuba | ⏳ | — |
 | G5 — Canlı Akış ve Ekipler | Esra | ⏳ | — |
@@ -31,7 +31,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | 6 | Giriş (O3) ve Kayıt (O4): `users` + `private/contact`, rol kontrolü, onaysız yetkili uyarısı, rolüne göre yönlendirme | ✅ | T3, T4, T5, T15 uygulandı |
 | — | Akışı simülatörde uçtan uca dene | ✅ | iOS simülatörü: afetzede kaydı → Ana Sayfa, çıkış, yanlış giriş türü reddi, afetzede girişi, yetkili kaydı → onay bekliyor. Yazılan `users` ve `private/contact` belgeleri kontrol edildi, test hesapları silindi |
 
-**Kontroller:** `flutter analyze` temiz · 23 test geçiyor · `flutter build apk --debug` ve `flutter build ios --debug --no-codesign` başarılı · iOS simülatöründe akış denendi.
+**Kontroller:** `flutter analyze` temiz · 23 test geçiyor (G1 sonunda) · `flutter build apk --debug` ve `flutter build ios --debug --no-codesign` başarılı · iOS simülatöründe akış denendi.
 
 **Not:** `firebase.json` içindeki `flutter` bölümü `flutterfire configure` tarafından yazılır ve iOS derlemesindeki Crashlytics betiği bu bölümü okur. Bu bölüm silinmemeli.
 
@@ -48,21 +48,24 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 ## G2 — Sümeyye · Görünüm ve Profil
 
-| # | Adım | Durum |
-|---|---|---|
-| 1 | Tema (3.4): renk token'ları, yazı tipleri, koyu + açık tema | ✅ |
-| 2 | Ortak widget'lar: `AppButton`, `StateView`, `GlowCircleButton`, `StatusBadge`, `AppBottomSheet`, `AppDialog` | ✅ |
-| 3 | Dil kurulumu (ARB, cihaz dili), G1 metinlerini ARB'ye taşıma | ✅ |
-| 4 | Splash (O1) + Onboarding (O2), Giriş ve Kayıt'a tasarım | ✅ |
-| 5 | Profil (A4, Y4) ve düzenleme sheet'leri, Çıkış Yap | ✅ |
+| # | Adım | Durum | Not |
+|---|---|---|---|
+| 1 | Tema (3.4): renk token'ları, yazı tipleri, koyu + açık tema | ✅ | Yazı tipleri G1 incelemesinde gömüldü (Space Grotesk, Inter, JetBrains Mono; `assets/fonts/`, OFL lisanslı). Ekranlardaki sabit renkler temaya bağlandı. Splash ve Onboarding radar çizimleri koyu zemin için olduğundan her zaman koyu temada açılır |
+| 2 | Ortak widget'lar: `AppButton`, `StateView`, `GlowCircleButton`, `StatusBadge`, `AppBottomSheet`, `AppDialog` | ✅ | `StatusBadge` metni ARB'den, rengi `AppStatusColors`'tan gelir. `AppBottomSheet` zemini `Material` ile çizilir (sheet'teki onay kutusu Flutter uyarısı veriyordu) |
+| 3 | Dil kurulumu (ARB, cihaz dili), G1 metinlerini ARB'ye taşıma | ✅ | İngilizcede Türkçe kalan metinler (rozetler, "Belirtilmedi", sheet etiketleri, ipuçları, kayıt yardım metinleri) ARB'ye taşındı; 140 anahtar TR/EN eşit |
+| 4 | Splash (O1) + Onboarding (O2), Giriş ve Kayıt'a tasarım | ✅ | |
+| 5 | Profil (A4, Y4) ve düzenleme sheet'leri, Çıkış Yap | ✅ | Uydurma veriler kaldırıldı (konum "Antakya, Hatay", yetkili için "Merkez Koordinasyon" vb.). Acil durum yakınının telefonu `+905XXXXXXXXX` saklanır, maskeli gösterilir. Y4 "Bağlı Ekip" `teams/{teamId}.name`'den okunur (kayıt yoksa id). Doğum yılı / kilo aralık kontrolü, kayıt hatasında uyarı |
+| + | Hesabı Sil (§7, aslında G6.4) | ✅ | G2 başlatmıştı; G1 incelemesinde tamamlandı: onay → şifre ile yeniden doğrulama → çağrıların `private/contact` belgeleri, `safety_signals/{uid}`, `users/{uid}/private/contact`, `users/{uid}` tek batch'te → Auth hesabı. Yanlış şifrede hiçbir şey silinmez |
 
 **Çıktı:** Uygulama tasarımdaki gibi görünüyor, TR/EN çalışıyor, profil dolduruluyor. ✅
 
-**G3'e devir:** Kodda `TODO(G3)` Furkan'ın başlayacağı alanlar hazırdır.
-- `LocationService`, bağlantı tespiti (`connectivity_plus`), yerel bildirim + FCM `all_users` aboneliği
-- Panik sinyali (`safety_signals/{uid}`), SMS köprüsü, GÜVENDEYİM
-- Ana Sayfa (A1) düzeni ve panik butonu entegrasyonu
-- Düdük (A3) ekranı ve ses çalma
+**Kontroller (G1 incelemesi):** `flutter analyze` temiz · 34 test geçiyor · Android ve iOS debug derlemeleri başarılı · iOS simülatöründe uçtan uca akış: onboarding (2 sayfa, 112 uyarısı), afetzede kaydı, profilin dört bölümünün doldurulması, çıkış, rol kontrolü, Hesabı Sil (yanlış ve doğru şifre; Firestore belgelerinin silindiği doğrulandı), yetkili onay bekliyor. TR-koyu, TR-açık ve EN-koyu ekran görüntüleri incelendi.
+
+**G3'e devir (Furkan):** Kodda `TODO(G3)` işareti yalnızca A4'teki konum rozetindedir; aşağıdakiler G3'ün kendi işidir, hazır altyapı değildir.
+- Hazır kullanılacaklar: `AppStatusColors` (`critical`, `urgent`, `normal`, `whistle`, `panic`), `GlowCircleButton` (panik/düdük), `AppDialog.confirm/info`, `AppBottomSheet.show`, `StateView`, `StatusBadge`, ARB (`lib/l10n/`).
+- `LocationService` + konum etiketi (Kural 9): A1 başlığı ve A4 konum rozeti (`citizen_profile_screen.dart`, `TODO(G3)`).
+- Acil durum yakını telefonu `users/{uid}/private/contact.emergencyContact.phone` alanında `+905XXXXXXXXX` biçimindedir; SMS köprüsünde (`sms:`) doğrudan kullanılabilir.
+- Ekranlarda renk `Theme.of(context).colorScheme` / `extension<AppStatusColors>()!`, metin ARB'den; `AppColors` yalnızca `core/theme/` içinde (Onboarding hariç) kullanılır.
 
 ## G3 — Furkan · Panik, Ana Sayfa ve Düdük
 
@@ -104,9 +107,9 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 |---|---|---|
 | 1 | Lojistik (Y3): envanter, stok etiketi, giriş/çıkış Transaction, kritik uyarı | ⏳ |
 | 2 | Tahliye Anonsu sheet'i ve yarıçap bildirimi | ⏳ |
-| 3 | Demo verisi, "Demo Verisini Sıfırla", demo hesapları | ⏳ |
-| 4 | Hesabı Sil akışı + yasal metinler (Firebase Hosting) | ⏳ |
-| 5 | `firestore.rules` + index'ler; test modunu kapat, demo akışını dene | ⏳ |
+| 3 | Demo verisi, "Demo Verisini Sıfırla" (Y4'te debug butonu hazır, servisi bağlanacak), demo hesapları | ⏳ |
+| 4 | Yasal metinler TR/EN (Firebase Hosting). Hesabı Sil akışı hazır (G2 + G1 incelemesi) | ⏳ |
+| 5 | `firestore.rules` + index'ler (Hesabı Sil için sahibine silme izni: `users`, `private/contact`, `safety_signals`, çağrı `private/contact`); test modunu kapat, demo akışını dene | ⏳ |
 
 **Çıktı:** Demo akışının (8) tamamı TR ve EN çalışıyor. ⏳
 

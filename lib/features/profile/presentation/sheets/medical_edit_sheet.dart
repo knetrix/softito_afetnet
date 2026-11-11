@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_status_colors.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -102,18 +102,20 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     );
     if (!mounted) return;
     setState(() => _isSaving = false);
-    if (ok) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.profileUpdated ??
-                'Profil başarıyla güncellendi.',
-          ),
-          backgroundColor: AppColors.success,
+    final status = Theme.of(context).extension<AppStatusColors>()!;
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (ok) Navigator.of(context).pop();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          ok
+              ? (l10n?.profileUpdated ?? 'Profil başarıyla güncellendi.')
+              : (l10n?.genericError ?? 'Bir hata oluştu, lütfen tekrar deneyin.'),
         ),
-      );
-    }
+        backgroundColor: ok ? status.normal : status.critical,
+      ),
+    );
   }
 
   @override
@@ -143,7 +145,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
             controller: _medications,
             decoration: InputDecoration(
               labelText: l10n?.profileMedications ?? 'Kullandığı İlaçlar',
-              hintText: 'Örn. İnsülin, Tansiyon ilacı',
+              hintText: l10n?.profileMedicationsHint ?? 'Örn. İnsülin, Tansiyon ilacı',
               prefixIcon: const Icon(Icons.medication_outlined, size: 20),
             ),
           ),
@@ -153,7 +155,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
             decoration: InputDecoration(
               labelText:
                   l10n?.profileConditions ?? 'Kronik Hastalık / Alerji',
-              hintText: 'Örn. Astım, Penisilin alerjisi',
+              hintText: l10n?.profileConditionsHint ?? 'Örn. Astım, Penisilin alerjisi',
               prefixIcon: const Icon(Icons.healing_outlined, size: 20),
             ),
           ),
@@ -176,8 +178,10 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
                 ? Text(
                     l10n?.profileMedicalConsentRequired ??
                         'Tıbbi bilgi kaydetmek için açık rıza gereklidir.',
-                    style: const TextStyle(
-                      color: AppColors.danger,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<AppStatusColors>()!
+                          .critical,
                       fontSize: 11,
                     ),
                   )

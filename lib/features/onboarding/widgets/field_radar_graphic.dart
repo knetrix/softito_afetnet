@@ -1,6 +1,7 @@
 import 'dart:math' as math; // Pi sayısı ve trigonometrik açı hesapları kütüphanesidir
 import 'package:flutter/material.dart'; // Flutter temel çizim ve arayüz kütüphanesidir
 import '../../../core/theme/app_colors.dart'; // Projenin renk paleti sabitleridir
+import '../../../l10n/app_localizations.dart';
 
 // StatelessWidget: 2. sayfa saha yönetimi radar taramasını ve tim rozetlerini çizen bileşendir
 class FieldRadarGraphic extends StatelessWidget {
@@ -8,6 +9,7 @@ class FieldRadarGraphic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     const size = 250.0; // Radar alanının 250x250 piksel sabit boyutudur
     return SizedBox( // Boyut sınırlayıcı kutudur
       width: size, // Genişliği 250px yapar
@@ -31,8 +33,8 @@ class FieldRadarGraphic extends StatelessWidget {
               child: Icon(Icons.sensors_rounded, size: 28, color: AppColors.primaryCyan), // Sinyal ve sensör simgesidir
             ),
           ),
-          const Positioned(top: 24, left: 8, child: _RadarTag(dotColor: AppColors.danger, text: 'TİM #04 1.2km')), // Sol üstteki kırmızı tim rozetidir
-          const Positioned(bottom: 24, right: 8, child: _RadarTag(dotColor: AppColors.success, text: 'DEPO %94 L-4')), // Sağ alttaki yeşil depo rozetidir
+          Positioned(top: 24, left: 8, child: _RadarTag(dotColor: AppColors.danger, text: l10n?.onboardingRadarTeam ?? 'TİM #04 1.2km')), // Sol üstteki kırmızı tim rozetidir
+          Positioned(bottom: 24, right: 8, child: _RadarTag(dotColor: AppColors.success, text: l10n?.onboardingRadarDepot ?? 'DEPO %94 L-4')), // Sağ alttaki yeşil depo rozetidir
           const Positioned(top: 48, right: 48, child: _RadarDot(color: AppColors.primaryCyan, size: 7)), // Radardaki serbest cyan sinyal noktasıdır
           const Positioned(top: 66, right: 82, child: _RadarDot(color: AppColors.danger, size: 9)), // Radardaki serbest kırmızı sinyal noktasıdır
           const Positioned(bottom: 50, left: 54, child: _RadarDot(color: AppColors.success, size: 7)), // Radardaki serbest yeşil sinyal noktasıdır

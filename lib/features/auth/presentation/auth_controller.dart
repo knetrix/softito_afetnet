@@ -86,7 +86,12 @@ class AuthController extends ChangeNotifier {
 
     if (_disposed || seq != _eventSeq || gen != _generation || _actionInProgress) return;
     _user = user;
-    if (failure != null) _failure = failure;
+    // Profili olmayan geri yüklenmiş oturum (ör. silinmiş hesap; iOS oturumu
+    // uygulama silinse de saklar) sessizce kapatılır, yeni kullanıcıya hata
+    // gösterilmez.
+    if (failure != null && failure != AuthFailure.profileMissing) {
+      _failure = failure;
+    }
     _authResolved = true;
     _notify();
     if (mustSignOut) await _repo.signOut();

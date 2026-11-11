@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/app_config.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_status_colors.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
-import '../data/firestore_profile_repository.dart';
 import '../domain/profile_repository.dart';
+import 'delete_account_flow.dart';
 import 'profile_controller.dart';
 
 /// Y4 — Profil (Yetkili / Saha Koordinatörü) (§3.1, 20.28.08, T2, T11, T12, T13)
@@ -33,7 +33,7 @@ class OfficialProfileScreen extends StatelessWidget {
 
     return ChangeNotifierProvider<ProfileController>(
       create: (_) => ProfileController(
-        repository: repository ?? FirestoreProfileRepository(),
+        repository: repository ?? context.read<ProfileRepository>(),
         uid: user.uid,
       ),
       child: const _OfficialProfileView(),
@@ -66,33 +66,16 @@ class _OfficialProfileView extends StatelessWidget {
     }
   }
 
-  Future<void> _deleteAccount(BuildContext context) async {
-    final l10n = AppLocalizations.of(context);
-    final confirmed = await AppDialog.confirm(
-      context,
-      title: l10n?.deleteAccountConfirmTitle ??
-          'Hesabınızı Silmek İstiyor Musunuz?',
-      message: l10n?.deleteAccountConfirmMessage ??
-          'Bu işlem geri alınamaz. Koordinatör hesabı kalıcı olarak silinecektir.',
-      confirmLabel: l10n?.deleteAccount ?? 'Hesabı Sil',
-      cancelLabel: l10n?.cancel ?? 'İptal',
-      destructive: true,
-    );
-    if (confirmed == true && context.mounted) {
-      final ok = await context.read<ProfileController>().deleteAccount();
-      if (ok && context.mounted) {
-        context.read<AuthController>().signOut();
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
     final user = auth.currentUser;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colors = theme.colorScheme;
+    final accent = theme.extension<AppStatusColors>()!.urgent;
     final l10n = AppLocalizations.of(context);
+    final notAssigned = l10n?.profileNotAssigned ?? 'Atanmadı';
+    final teamId = user?.teamId;
 
     return Scaffold(
       appBar: AppBar(
@@ -112,19 +95,19 @@ class _OfficialProfileView extends StatelessWidget {
                     height: 80,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColors.warning.withValues(alpha: 0.15),
+                      color: accent.withValues(alpha: 0.15),
                       border: Border.all(
-                        color: AppColors.warning.withValues(alpha: 0.4),
+                        color: accent.withValues(alpha: 0.4),
                         width: 2,
                       ),
                     ),
                     child: Center(
                       child: Text(
                         _getInitials(user?.fullName ?? 'Yetkili'),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.warning,
+                          color: accent,
                         ),
                       ),
                     ),
@@ -148,22 +131,19 @@ class _OfficialProfileView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDark ? AppColors.surface : AppColors.lightSurface,
+                color: colors.surface,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: isDark ? AppColors.border : AppColors.lightBorder,
-                ),
+                border: Border.all(color: colors.outline),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.shield_outlined,
-                          size: 20, color: AppColors.warning),
+                      Icon(Icons.shield_outlined, size: 20, color: accent),
                       const SizedBox(width: 8),
                       Text(
-                        'Koordinasyon Bilgileri',
+                        l10n?.profileCoordinationInfo ?? 'Koordinasyon Bilgileri',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -174,20 +154,26 @@ class _OfficialProfileView extends StatelessWidget {
                   const SizedBox(height: 16),
                   _OfficialInfoTile(
                     label: l10n?.profileUnit ?? 'Birim Adı',
-                    value: user?.unitName ?? 'Merkez Koordinasyon',
+                    value: user?.unitName ?? notAssigned,
                     icon: Icons.business_outlined,
                   ),
                   const Divider(),
                   _OfficialInfoTile(
                     label: l10n?.profileRegion ?? 'Sorumlu Bölge',
-                    value: user?.region ?? 'Hatay / Antakya',
+                    value: user?.region ?? notAssigned,
                     icon: Icons.map_outlined,
                   ),
                   const Divider(),
-                  _OfficialInfoTile(
-                    label: l10n?.profileTeam ?? 'Bağlı Ekip',
-                    value: user?.teamId ?? 'Arama Kurtarma Tim 4',
-                    icon: Icons.groups_outlined,
+                  // Ekip adı teams/{teamId}'den okunur; kayıt yoksa id gösterilir.
+                  FutureBuilder<String?>(
+                    future: teamId == null
+                        ? null
+                        : context.read<ProfileController>().teamName(teamId),
+                    builder: (context, snap) => _OfficialInfoTile(
+                      label: l10n?.profileTeam ?? 'Bağlı Ekip',
+                      value: teamId == null ? notAssigned : (snap.data ?? teamId),
+                      icon: Icons.groups_outlined,
+                    ),
                   ),
                 ],
               ),
@@ -199,41 +185,41 @@ class _OfficialProfileView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withValues(alpha: 0.1),
+                  color: accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.warning.withValues(alpha: 0.3),
+                    color: accent.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Icon(Icons.developer_mode,
-                            size: 16, color: AppColors.warning),
-                        SizedBox(width: 6),
+                        Icon(Icons.developer_mode, size: 16, color: accent),
+                        const SizedBox(width: 6),
                         Text(
-                          'Demo & Test Araçları (Debug)',
+                          l10n?.debugToolsTitle ?? 'Demo & Test Araçları (Debug)',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.warning,
+                            color: accent,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     AppButton.secondary(
-                      label: 'Demo Verisini Sıfırla',
+                      label: l10n?.demoReset ?? 'Demo Verisini Sıfırla',
                       icon: Icons.restart_alt_rounded,
                       isFullWidth: true,
                       onPressed: () {
+                        // TODO(G6): Demo verisi yükleme/sıfırlama servisi (§8).
                         AppDialog.info(
                           context,
-                          title: 'Demo Verisi',
-                          message:
-                              'Demo tohumlama servisi G6 aşamasında tam veri tablosu ile bağlanacaktır.',
+                          title: l10n?.demoResetTitle ?? 'Demo Verisi',
+                          message: l10n?.demoResetPending ??
+                              'Demo verisi yükleme G6 aşamasında bağlanacaktır.',
                         );
                       },
                     ),
@@ -263,21 +249,21 @@ class _OfficialProfileView extends StatelessWidget {
                   ),
                   child: Text(
                     l10n?.privacyPolicy ?? 'Gizlilik Politikası',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textSecondary,
+                      color: colors.onSurfaceVariant,
                     ),
                   ),
                 ),
-                const Text('·',
-                    style: TextStyle(color: AppColors.textSecondary)),
+                Text('·', style: TextStyle(color: colors.onSurfaceVariant)),
                 TextButton(
-                  onPressed: () => _deleteAccount(context),
+                  onPressed: () =>
+                      runDeleteAccountFlow(context, isOfficial: true),
                   child: Text(
                     l10n?.deleteAccount ?? 'Hesabı Sil',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.danger,
+                      color: theme.extension<AppStatusColors>()!.critical,
                     ),
                   ),
                 ),
@@ -304,11 +290,12 @@ class _OfficialInfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final muted = Theme.of(context).colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Icon(icon, size: 18, color: AppColors.textSecondary),
+          Icon(icon, size: 18, color: muted),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -316,9 +303,9 @@ class _OfficialInfoTile extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.textSecondary,
+                    color: muted,
                   ),
                 ),
                 const SizedBox(height: 2),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_status_colors.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -57,18 +57,20 @@ class _AddressEditFormState extends State<_AddressEditForm> {
     final ok = await widget.onSave(addressText: _address.text);
     if (!mounted) return;
     setState(() => _isSaving = false);
-    if (ok) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.profileUpdated ??
-                'Profil başarıyla güncellendi.',
-          ),
-          backgroundColor: AppColors.success,
+    final status = Theme.of(context).extension<AppStatusColors>()!;
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (ok) Navigator.of(context).pop();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          ok
+              ? (l10n?.profileUpdated ?? 'Profil başarıyla güncellendi.')
+              : (l10n?.genericError ?? 'Bir hata oluştu, lütfen tekrar deneyin.'),
         ),
-      );
-    }
+        backgroundColor: ok ? status.normal : status.critical,
+      ),
+    );
   }
 
   @override
@@ -84,7 +86,8 @@ class _AddressEditFormState extends State<_AddressEditForm> {
           maxLength: 300,
           decoration: InputDecoration(
             labelText: l10n?.profileAddress ?? 'Adres Tarifi',
-            hintText: 'İl, ilçe, mahalle, sokak, bina ve kat bilgisi...',
+            hintText: l10n?.profileAddressHint ??
+                'İl, ilçe, mahalle, sokak, bina ve kat bilgisi...',
             prefixIcon: const Icon(Icons.home_work_outlined, size: 20),
           ),
         ),

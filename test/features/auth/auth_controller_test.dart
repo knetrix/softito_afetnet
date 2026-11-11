@@ -135,6 +135,15 @@ void main() {
     expect(repo.signOutCount, 1);
   });
 
+  test('profili olmayan geri yüklenmiş oturum sessizce kapatılır', () async {
+    repo.emit('silinmis');
+    await settle();
+    await settle();
+    expect(auth.currentUser, isNull);
+    expect(auth.failure, isNull);
+    expect(repo.signOutCount, 1);
+  });
+
   test('geç gelen uid olayı sonraki çıkışı ezmez', () async {
     repo.emit('c1');
     repo.emit(null);
