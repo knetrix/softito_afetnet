@@ -180,5 +180,10 @@
   "whistlePlayingSubtitle": "Siren active",
   "whistleTapToStart": "TAP TO START",
   "whistleTapToStop": "TAP AGAIN TO STOP",
-  "whistleOfflineNote": "Works completely offline."
+  "whistleOfflineNote": "Works completely offline.",
+  "notificationChannelName": "Critical alerts",
+  "notificationChannelDescription": "Emergency, evacuation and critical stock notifications",
+  "@notificationChannelName": {
+    "description": "Android notification channel name shown in system settings"
+  }
 }

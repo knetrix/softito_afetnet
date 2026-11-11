@@ -121,6 +121,54 @@ void main() {
       expect(service.currentLabel, 'Antakya, Hatay');
     });
 
+    test('resolveCoordinates adres çözmez, taze konumu beklemeden verir', () async {
+      var gpsCalls = 0;
+      var geocodeCalls = 0;
+      var now = DateTime(2026, 11, 12, 12);
+      final gateway = _FakeLocationGateway()
+        ..onGetCurrent = () async {
+          gpsCalls++;
+          return const LatLng(36.2, 36.16);
+        }
+        ..onResolveLabel = (_, _) {
+          geocodeCalls++;
+          return 'Antakya, Hatay';
+        };
+      final service = DeviceLocationService(gateway: gateway, clock: () => now);
+      addTearDown(service.dispose);
+
+      expect(await service.resolveCoordinates(), const LatLng(36.2, 36.16));
+      expect(gpsCalls, 1);
+      expect(geocodeCalls, 0);
+
+      now = now.add(const Duration(minutes: 1));
+      expect(await service.resolveCoordinates(), const LatLng(36.2, 36.16));
+      expect(gpsCalls, 1, reason: '2 dk içindeki konum yeniden istenmez');
+
+      now = now.add(const Duration(minutes: 2));
+      await service.resolveCoordinates();
+      expect(gpsCalls, 2);
+      expect(geocodeCalls, 0);
+    });
+
+    test('resolveCoordinates GPS yoksa önbellekteki konuma düşer', () async {
+      SharedPreferences.setMockInitialValues({
+        DeviceLocationService.cacheLatKey: 36.21,
+        DeviceLocationService.cacheLngKey: 36.15,
+      });
+      final gateway = _FakeLocationGateway()
+        ..onGetCurrent = () => Completer<LatLng>().future;
+      final service = DeviceLocationService(
+        gateway: gateway,
+        positionTimeout: const Duration(milliseconds: 20),
+      );
+      addTearDown(service.dispose);
+      await service.loadCached();
+
+      expect(await service.resolveCoordinates(), const LatLng(36.21, 36.15));
+      expect(service.status, LocationStatus.unavailable);
+    });
+
     test('izin reddedilirse sahte etiket üretmeden null döner', () async {
       final gateway = _FakeLocationGateway()
         ..permission = LocationPermission.denied
