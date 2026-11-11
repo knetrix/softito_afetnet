@@ -1,0 +1,11 @@
+rules_version = '2';
+
+// TEST MODU (G1): 11 Aralık 2026'ya kadar herkese açık.
+// Gerçek kuralları G6 yazar (PROJECT_NEW.md §5.5) ve bu dosyanın tamamını değiştirir.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2026, 12, 11);
+    }
+  }
+}
