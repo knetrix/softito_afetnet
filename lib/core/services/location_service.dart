@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/permission_queue.dart';
+
 /// Konum servisinin mevcut durumu (PROJECT_NEW.md §4 Kural 9).
 enum LocationStatus {
   initial,
@@ -44,7 +46,8 @@ abstract class LocationService extends ChangeNotifier {
   /// son bilinen önbellek etiketi korunur).
   Future<LocationSnapshot?> refresh();
 
-  /// Panik sinyali / yardım çağrısı için en güncel koordinatı döndürür.
+  /// Panik sinyali / yardım çağrısı için koordinat döndürür. Yakın zamanda
+  /// alınmış konum varsa beklemeden onu verir; adres (geocoding) çözmez.
   Future<LatLng?> resolveCoordinates();
 }
 
@@ -55,8 +58,11 @@ class DeviceLocationService extends LocationService {
     Future<SharedPreferences> Function()? prefsLoader,
     LocationGateway? gateway,
     this._positionTimeout = const Duration(seconds: 6),
+    this._freshFor = const Duration(minutes: 2),
+    DateTime Function()? clock,
   })  : _prefsLoader = prefsLoader ?? SharedPreferences.getInstance,
-        _gateway = gateway ?? const GeolocatorLocationGateway();
+        _gateway = gateway ?? const GeolocatorLocationGateway(),
+        _clock = clock ?? DateTime.now;
 
   static const cacheLabelKey = 'lastKnownLocationLabel';
   static const cacheLatKey = 'lastKnownLat';
@@ -66,8 +72,12 @@ class DeviceLocationService extends LocationService {
   final Future<SharedPreferences> Function() _prefsLoader;
   final LocationGateway _gateway;
   final Duration _positionTimeout;
+  final Duration _freshFor;
+  final DateTime Function() _clock;
 
   LatLng? _currentPosition;
+  // Bu oturumda GPS'ten alınan son konumun zamanı (önbellekten gelen konumda `null`).
+  DateTime? _positionAt;
   String? _currentLabel;
   LocationStatus _status = LocationStatus.initial;
   bool _isFetching = false;
@@ -151,51 +161,19 @@ class DeviceLocationService extends LocationService {
     try {
       await loadCached();
 
-      final serviceEnabled = await _gateway.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        _status = LocationStatus.serviceDisabled;
-        _isFetching = false;
-        _notify();
-        return _currentPosition == null
-            ? null
-            : LocationSnapshot(
-                coordinates: _currentPosition!,
-                label: _currentLabel,
-              );
-      }
-
-      var permission = await _gateway.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await _gateway.requestPermission();
-      }
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        _status = LocationStatus.permissionDenied;
-        _isFetching = false;
-        _notify();
-        return null;
-      }
-
-      LatLng? coords;
-      try {
-        coords = await _gateway.getCurrentPosition().timeout(_positionTimeout);
-      } catch (_) {
-        coords = await _gateway.getLastKnownPosition();
-      }
-
+      final coords = await _fetchCoordinates();
       if (coords == null) {
-        _status = LocationStatus.unavailable;
         _isFetching = false;
         _notify();
-        return _currentPosition == null
-            ? null
-            : LocationSnapshot(
-                coordinates: _currentPosition!,
-                label: _currentLabel,
-              );
+        if (_status == LocationStatus.permissionDenied ||
+            _currentPosition == null) {
+          return null;
+        }
+        return LocationSnapshot(
+          coordinates: _currentPosition!,
+          label: _currentLabel,
+        );
       }
-
-      _currentPosition = coords;
 
       String? label;
       try {
@@ -226,8 +204,58 @@ class DeviceLocationService extends LocationService {
 
   @override
   Future<LatLng?> resolveCoordinates() async {
-    final snapshot = await refresh();
-    return snapshot?.coordinates ?? _currentPosition;
+    final at = _positionAt;
+    if (_currentPosition != null &&
+        at != null &&
+        _clock().difference(at) < _freshFor) {
+      return _currentPosition;
+    }
+    // Panikte adres beklenmez; Kural 8'in 10 sn'si konum alındıktan sonra başlar.
+    try {
+      final coords = await _fetchCoordinates();
+      if (coords != null) {
+        _status = LocationStatus.ready;
+        unawaited(_saveCache(coords, _currentLabel));
+      }
+    } catch (_) {
+      _status = LocationStatus.unavailable;
+    }
+    _notify();
+    return _currentPosition;
+  }
+
+  /// Servis, izin ve GPS kontrolü yapar; adres çözmez. Konum alınamazsa
+  /// [_status]'u günceller ve `null` döner.
+  Future<LatLng?> _fetchCoordinates() async {
+    if (!await _gateway.isLocationServiceEnabled()) {
+      _status = LocationStatus.serviceDisabled;
+      return null;
+    }
+
+    var permission = await _gateway.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await _gateway.requestPermission();
+    }
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      _status = LocationStatus.permissionDenied;
+      return null;
+    }
+
+    LatLng? coords;
+    try {
+      coords = await _gateway.getCurrentPosition().timeout(_positionTimeout);
+    } catch (_) {
+      coords = await _gateway.getLastKnownPosition();
+    }
+
+    if (coords == null) {
+      _status = LocationStatus.unavailable;
+      return null;
+    }
+    _currentPosition = coords;
+    _positionAt = _clock();
+    return coords;
   }
 
   Future<void> _saveCache(LatLng coords, String? label) async {
@@ -276,7 +304,7 @@ class GeolocatorLocationGateway implements LocationGateway {
 
   @override
   Future<LocationPermission> requestPermission() =>
-      Geolocator.requestPermission();
+      PermissionQueue.run(Geolocator.requestPermission);
 
   @override
   Future<LatLng> getCurrentPosition() async {

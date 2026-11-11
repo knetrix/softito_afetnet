@@ -568,4 +568,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whistleOfflineNote => 'Works completely offline.';
+
+  @override
+  String get notificationChannelName => 'Critical alerts';
+
+  @override
+  String get notificationChannelDescription =>
+      'Emergency, evacuation and critical stock notifications';
 }
