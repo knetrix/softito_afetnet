@@ -85,9 +85,6 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 - `HomeScreen` (`lib/features/home/presentation/home_screen.dart`): `TODO(G4)` aktif yardım çağrısı kartı alanı ve `onAddHelpRequest` geri çağrısı hazır.
 - `lib/features/emergency_call/` içindeki G4'e ait `safe_zones_map_screen.dart` ve `quick_need_grid.dart` dosyalarına dokunulmadı.
 
-**G5 notu (Esra):**
-- Panik pini için `safety_signals` belgesinde `state == danger` olanlar okunur. "Ulaşıldı" yalnızca `handledBy` (`auth.uid`) ve `handledAt` yazar. Yeni panik bu iki alanı sildiği için ek kontrol gerekmez: `handledBy` doluysa ulaşılmış, boşsa açıktır (`SafetySignal.isHandled`).
-
 ## G4 — Tuba · Yardım Çağrısı ve Toplanma
 
 | # | Adım | Durum |
