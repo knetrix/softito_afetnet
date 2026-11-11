@@ -11,6 +11,7 @@ import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../data/firestore_profile_repository.dart';
+import '../domain/profile_repository.dart';
 import 'profile_controller.dart';
 import 'sheets/address_edit_sheet.dart';
 import 'sheets/emergency_contact_sheet.dart';
@@ -19,7 +20,9 @@ import 'sheets/physical_edit_sheet.dart';
 
 /// A4 — Profil (Afetzede) (§3.1, 19.52.36)
 class CitizenProfileScreen extends StatelessWidget {
-  const CitizenProfileScreen({super.key});
+  const CitizenProfileScreen({super.key, this.repository});
+
+  final ProfileRepository? repository;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class CitizenProfileScreen extends StatelessWidget {
 
     return ChangeNotifierProvider<ProfileController>(
       create: (_) => ProfileController(
-        repository: FirestoreProfileRepository(),
+        repository: repository ?? FirestoreProfileRepository(),
         uid: user.uid,
       ),
       child: const _CitizenProfileView(),

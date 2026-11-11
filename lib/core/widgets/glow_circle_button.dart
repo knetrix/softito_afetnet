@@ -122,3 +122,4 @@ class _GlowCircleButtonState extends State<GlowCircleButton>
     );
   }
 }
+
