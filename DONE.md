@@ -7,8 +7,8 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | Aşama | Sahip | Durum | PR |
 |---|---|---|---|
 | G1 — Temel ve Giriş | Mustafa | 🟡 Tamam, ekip erişimi bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
-| G2 — Görünüm ve Profil | Sümeyye | ⏳ Sıradaki | — |
-| G3 — Panik, Ana Sayfa ve Düdük | Furkan | ⏳ | — |
+| G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı | — |
+| G3 — Panik, Ana Sayfa ve Düdük | Furkan | ⏳ Sıradaki | — |
 | G4 — Yardım Çağrısı ve Toplanma | Tuba | ⏳ | — |
 | G5 — Canlı Akış ve Ekipler | Esra | ⏳ | — |
 | G6 — Lojistik, Anons ve Teslime Hazırlık | Meryem | ⏳ | — |
@@ -50,13 +50,19 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 | # | Adım | Durum |
 |---|---|---|
-| 1 | Tema (3.4): renk token'ları, yazı tipleri, koyu + açık tema | ⏳ |
-| 2 | Ortak widget'lar: `AppButton`, `StateView`, `GlowCircleButton`, `StatusBadge`, `AppBottomSheet`, `AppDialog` | ⏳ |
-| 3 | Dil kurulumu (ARB, cihaz dili), G1 metinlerini ARB'ye taşıma | ⏳ |
-| 4 | Splash (O1) + Onboarding (O2), Giriş ve Kayıt'a tasarım | ⏳ |
-| 5 | Profil (A4, Y4) ve düzenleme sheet'leri, Çıkış Yap | ⏳ |
+| 1 | Tema (3.4): renk token'ları, yazı tipleri, koyu + açık tema | ✅ |
+| 2 | Ortak widget'lar: `AppButton`, `StateView`, `GlowCircleButton`, `StatusBadge`, `AppBottomSheet`, `AppDialog` | ✅ |
+| 3 | Dil kurulumu (ARB, cihaz dili), G1 metinlerini ARB'ye taşıma | ✅ |
+| 4 | Splash (O1) + Onboarding (O2), Giriş ve Kayıt'a tasarım | ✅ |
+| 5 | Profil (A4, Y4) ve düzenleme sheet'leri, Çıkış Yap | ✅ |
 
-**Çıktı:** Uygulama tasarımdaki gibi görünüyor, TR/EN çalışıyor, profil dolduruluyor. ⏳
+**Çıktı:** Uygulama tasarımdaki gibi görünüyor, TR/EN çalışıyor, profil dolduruluyor. ✅
+
+**G3'e devir:** Kodda `TODO(G3)` Furkan'ın başlayacağı alanlar hazırdır.
+- `LocationService`, bağlantı tespiti (`connectivity_plus`), yerel bildirim + FCM `all_users` aboneliği
+- Panik sinyali (`safety_signals/{uid}`), SMS köprüsü, GÜVENDEYİM
+- Ana Sayfa (A1) düzeni ve panik butonu entegrasyonu
+- Düdük (A3) ekranı ve ses çalma
 
 ## G3 — Furkan · Panik, Ana Sayfa ve Düdük
 

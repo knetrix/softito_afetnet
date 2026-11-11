@@ -2,11 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 
 /// "Resmi kurum uygulaması değildir · Acil durumda 112" (T15).
 /// O2'nin 1. sayfasında ve O3'ün altında gösterilir; 112'ye dokununca arama açılır.
-// TODO(G2): Metni ARB'ye taşı, tasarımın stilini uygula.
 class NotOfficialNotice extends StatefulWidget {
   const NotOfficialNotice({super.key});
 
@@ -27,15 +27,20 @@ class _NotOfficialNoticeState extends State<NotOfficialNotice> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final style = theme.textTheme.bodySmall?.copyWith(
       color: theme.colorScheme.onSurfaceVariant,
     );
+    final disclaimerText = l10n?.notOfficialDisclaimer ??
+        'Resmi kurum uygulaması değildir · Acil durumda ';
+    final emergencyNum = l10n?.emergencyCall ?? AppConfig.emergencyNumber;
+
     return Text.rich(
       TextSpan(
-        text: 'Resmi kurum uygulaması değildir · Acil durumda ',
+        text: disclaimerText,
         children: [
           TextSpan(
-            text: AppConfig.emergencyNumber,
+            text: emergencyNum,
             recognizer: _callTap,
             style: TextStyle(
               color: theme.colorScheme.error,

@@ -1,165 +1,113 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/text_styles.dart';
-import '../widgets/radar_target_widget.dart';
+import 'dart:async'; // Zamanlayıcı (Timer) işlemleri için kütüphanedir
+import 'package:flutter/material.dart'; // Flutter temel UI ve widget kütüphanesidir
+import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır
+import '../../../core/theme/text_styles.dart'; // Başlık ve yazı tipi stilleridir
+import '../widgets/radar_target_widget.dart'; // Dönen radar animasyonu bileşenidir
 
+// StatefulWidget: Zamanla verisi ve ekran görünümü güncellenebilen widget tipidir
 class SplashScreen extends StatefulWidget {
-  final VoidCallback? onInitializationComplete;
+  final VoidCallback? onInitializationComplete; // Yükleme bitince dışarıya haber veren fonksiyondur
 
-  const SplashScreen({
-    super.key,
-    this.onInitializationComplete,
-  });
+  const SplashScreen({super.key, this.onInitializationComplete}); // Kurucu metottur
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState(); // Ekran durum yöneticisini oluşturur
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _progressController;
-  late final Animation<double> _progressAnimation;
-
-  String _statusText = 'AfetNet protokolü hazır.';
+// SingleTickerProviderStateMixin: Animasyon kontrolcüsünü ekran yenileme hızına (vsync) bağlar
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late final AnimationController _progressController; // İlerleme çubuğunun süresini yöneten kontrolcüdür
+  late final Animation<double> _progressAnimation; // 0.15 ile 1.0 arasında değer üreten animasyondur
+  String _statusText = 'AfetNet protokolü hazır.'; // Ekranda görünen dinamik durum metnidir
 
   @override
   void initState() {
-    super.initState();
-
-    _progressController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2500),
+    super.initState(); // Üst sınıfın başlangıç metodunu çalıştırır
+    _progressController = AnimationController( // Animasyon kontrolcüsünü başlatır
+      vsync: this, // Ekran tazeleme hızına eşitler (performans ve pil tasarrufu sağlar)
+      duration: const Duration(seconds: 3), // Splash ekranının 3 saniye sürmesini sağlar
     );
 
-    _progressAnimation = Tween<double>(begin: 0.15, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _progressController,
-        curve: Curves.easeInOutCubic,
-      ),
+    _progressAnimation = Tween<double>(begin: 0.15, end: 1.0).animate( // Değer aralığını belirler
+      CurvedAnimation(parent: _progressController, curve: Curves.easeInOutCubic), // Yumuşak hızlanma eğrisidir
     );
 
-    _progressController.forward().then((_) {
-      if (mounted && widget.onInitializationComplete != null) {
-        widget.onInitializationComplete!();
+    _progressController.forward().then((_) { // Animasyonu ileriye doğru oynatır ve bitişini bekler
+      if (mounted && widget.onInitializationComplete != null) { // Widget ekranda ise ve callback varsa
+        widget.onInitializationComplete!(); // Onboarding ekranına geçiş fonksiyonunu tetikler
       }
     });
 
-    // Optional status transition to feel alive yet clean
-    Timer(const Duration(milliseconds: 900), () {
-      if (mounted) {
-        setState(() {
-          _statusText = 'AfetNet protokolü hazır.';
-        });
+    Timer(const Duration(milliseconds: 900), () { // 0.9 saniye sonra çalışan zamanlayıcıdır
+      if (mounted) { // Widget hâlâ ekrandaysa
+        setState(() => _statusText = 'AfetNet protokolü hazır.'); // Durum metnini yeniler
       }
     });
   }
 
   @override
   void dispose() {
-    _progressController.dispose();
-    super.dispose();
+    _progressController.dispose(); // RAM sızıntısını önlemek için animasyon kontrolcüsünü kapatır
+    super.dispose(); // Üst sınıfın dispose işlemini tamamlar
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
+    return Scaffold( // Ekranın temel arka plan ve gövde iskeletini oluşturur
+      body: Container( // Tüm ekranı kaplayan kutu widget'ıdır
+        width: double.infinity, // Yatayda maksimum genişlik kaplar
+        height: double.infinity, // Dikeyde maksimum yükseklik kaplar
+        decoration: const BoxDecoration( // Arka plana dairesel degrade renk verir
           gradient: RadialGradient(
-            center: Alignment(0.0, -0.2),
-            radius: 1.1,
-            colors: [
-              Color(0xFF101926), // Center subtle dark blue highlight
-              Color(0xFF090D14), // Base deep dark slate
-              Color(0xFF05070B), // Outer dark edge
-            ],
-            stops: [0.0, 0.55, 1.0],
+            center: Alignment(0.0, -0.2), // Degrade merkezini hafif yukarı alır
+            radius: 1.1, // Işığın yayılma yarıçapıdır
+            colors: [Color(0xFF101926), Color(0xFF090D14), Color(0xFF05070B)], // Merkezden dışa renk tonlarıdır
+            stops: [0.0, 0.55, 1.0], // Renklerin geçiş noktalarıdır
           ),
         ),
-        child: SafeArea(
+        child: SafeArea( // Çentik ve sistem çubuklarına taşmayı engelleyen alandır
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 32.0), // Yanlardan 32 piksel boşluk bırakır
+            child: Column( // Elemanları yukarıdan aşağıya dizen dikey yerleşimdir
+              mainAxisAlignment: MainAxisAlignment.center, // İçeriği dikeyde ortalar
               children: [
-                const Spacer(flex: 3),
-
-                // Center Radar Graphic
-                const RadarTargetWidget(size: 200),
-
-                const SizedBox(height: 36),
-
-                // Title
-                const Text(
-                  'AfetNet',
-                  style: AppTextStyles.displayTitle,
-                ),
-
-                const SizedBox(height: 8),
-
-                // Subtitle
-                const Text(
-                  'Canlı Kriz Yönetimi Ağı',
-                  style: AppTextStyles.subtitle,
-                ),
-
-                const Spacer(flex: 2),
-
-                // Circular Progress Spinner
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.2,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.primaryCyan.withValues(alpha: 0.9),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 18),
-
-                // Status Message
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: Text(
+                const Spacer(flex: 3), // Üst kısımda orantılı boşluk bırakır
+                const RadarTargetWidget(size: 200), // Dönen radar ve verici kulesi görselini çizer
+                const SizedBox(height: 36), // Radar ile başlık arasına 36px boşluk koyar
+                const Text('AfetNet', style: AppTextStyles.displayTitle), // Ana uygulama başlığını basar
+                const SizedBox(height: 8), // Başlık ile alt başlık arasına 8px boşluk koyar
+                const Text('Canlı Kriz Yönetimi Ağı', style: AppTextStyles.subtitle), // Alt başlığı basar
+                const Spacer(flex: 2), // Başlık ile progress bar arasına orantılı boşluk koyar
+                AnimatedSwitcher( // Durum metni değiştikçe yumuşak geçiş efekti verir
+                  duration: const Duration(milliseconds: 300), // Geçiş süresi 300ms'dir
+                  child: Text( // Anlık durum mesajını ekrana basar
                     _statusText,
-                    key: ValueKey<String>(_statusText),
-                    style: AppTextStyles.statusText,
-                    textAlign: TextAlign.center,
+                    key: ValueKey<String>(_statusText), // Değer değiştiğinde animasyonu tetikler
+                    style: AppTextStyles.statusText, // Metin stilidir
+                    textAlign: TextAlign.center, // Metni ortalar
                   ),
                 ),
-
-                const SizedBox(height: 18),
-
-                // Progress Bar
-                AnimatedBuilder(
+                const SizedBox(height: 16), // Metin ile bar arasına 16px boşluk koyar
+                AnimatedBuilder( // Animasyon ilerledikçe sadece ilerleme çubuğunu yeniden çizer
                   animation: _progressAnimation,
                   builder: (context, child) {
-                    return Container(
-                      width: 140,
-                      height: 4,
+                    return Container( // İlerleme çubuğunun koyu arka plan yoludur
+                      width: 140, // Toplam bar genişliği 140px'dir
+                      height: 4, // Bar yüksekliği 4px'dir
                       decoration: BoxDecoration(
-                        color: AppColors.backgroundLight,
-                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.backgroundLight, // Çubuğun arka plan rengidir
+                        borderRadius: BorderRadius.circular(10), // Yuvarlatılmış köşeler verir
                       ),
                       child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: 140 * _progressAnimation.value,
-                          height: 4,
+                        alignment: Alignment.centerLeft, // Doldurulan çubuğu soldan başlatır
+                        child: Container( // Animasyonla dolan cyan renkli aktif bardır
+                          width: 140 * _progressAnimation.value, // Anlık yüzdeye göre genişliği hesaplar
+                          height: 4, // Yükseklik 4px'dir
                           decoration: BoxDecoration(
-                            color: AppColors.primaryCyan,
-                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.primaryCyan, // Neon camgöbeği rengidir
+                            borderRadius: BorderRadius.circular(10), // Köşeleri yuvarlatır
                             boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primaryCyan.withValues(alpha: 0.6),
-                                blurRadius: 8,
-                                spreadRadius: 1,
-                              ),
+                              BoxShadow(color: AppColors.primaryCyan.withValues(alpha: 0.6), blurRadius: 8, spreadRadius: 1), // Neon parlama gölgesidir
                             ],
                           ),
                         ),
@@ -167,8 +115,7 @@ class _SplashScreenState extends State<SplashScreen>
                     );
                   },
                 ),
-
-                const Spacer(flex: 2),
+                const Spacer(flex: 2), // Alt kısımda orantılı boşluk bırakır
               ],
             ),
           ),
