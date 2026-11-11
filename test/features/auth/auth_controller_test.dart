@@ -135,6 +135,14 @@ void main() {
     expect(repo.signOutCount, 1);
   });
 
+  test('geç gelen uid olayı sonraki çıkışı ezmez', () async {
+    repo.emit('c1');
+    repo.emit(null);
+    await settle();
+    await settle();
+    expect(auth.currentUser, isNull);
+  });
+
   test('afetzede kaydı → Ana Sayfa (erken oturum olayı yok sayılır)', () async {
     final ok = await auth.register(_input(UserRole.citizen));
     await settle();

@@ -29,6 +29,8 @@ class AuthController extends ChangeNotifier {
   // işlemden önce başlamış bir geri yükleme sonucu da üzerine yazmaz.
   int _generation = 0;
   bool _actionInProgress = false;
+  // Yalnızca en son oturum olayının sonucu uygulanır (geç gelen fetch eskiyi yazmaz).
+  int _eventSeq = 0;
 
   bool _authResolved = false;
   bool _prefsLoaded = false;
@@ -63,30 +65,31 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> _onUidChanged(String? uid) async {
+    final seq = ++_eventSeq;
     if (_actionInProgress) return;
     final gen = _generation;
 
     AppUser? user;
     AuthFailure? failure;
+    var mustSignOut = false;
     if (uid != null) {
       try {
         user = await _repo.fetchUser(uid);
         failure = _check(user);
-        if (failure != null) {
-          user = null;
-          await _repo.signOut();
-        }
+        mustSignOut = failure != null;
       } on AuthException catch (e) {
-        user = null;
+        // Profil okunamadı (ör. bağlantı yok): oturum kapatılmaz.
         failure = e.failure;
       }
+      if (failure != null) user = null;
     }
 
-    if (_disposed || gen != _generation || _actionInProgress) return;
+    if (_disposed || seq != _eventSeq || gen != _generation || _actionInProgress) return;
     _user = user;
     if (failure != null) _failure = failure;
     _authResolved = true;
     _notify();
+    if (mustSignOut) await _repo.signOut();
   }
 
   /// [selectedRole]: Giriş ekranındaki "Giriş Türü". Yetkiyi her zaman
