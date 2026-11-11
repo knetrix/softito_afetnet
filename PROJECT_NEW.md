@@ -1,9 +1,9 @@
 # AfetNet — Canlı Kriz Yönetimi ve Acil Yardım Ağı
 
 > **Ekip:** SoftITO 4. Dönem Mobil — 2. Grup (6 kişi): Hasibe Esra Ergün, Meryem Duymuş, Furkan Çalışkan, Somaya Arab, Tuba Aydın, Mustafa Ersoy
-> **Platform:** Flutter (Android + iOS) · **Mimari:** Clean Architecture + Firebase (ücretsiz Spark plan)
+> **Platform:** Flutter, **Android** (geliştirme, test ve demo Android emülatörü/cihazında; iOS MVP dışı, bkz. 7) · **Mimari:** Clean Architecture + Firebase (ücretsiz Spark plan)
 > **Teslim & Demo Day:** 13 Kasım 2026 Cuma
-> **Hedef:** Mağazaya *yüklenmeye hazır* MVP. Uygulama mağazaya yüklenmez.
+> **Hedef:** Google Play'e *yüklenmeye hazır* MVP. Uygulama mağazaya yüklenmez.
 
 **Tek kaynak kuralı:** Ekranlar yalnızca `design/` klasöründeki tasarımlardan oluşur. Veritabanında yalnızca `database/` klasöründeki mimari (koleksiyonlar ve `help_requests` alan tablosu) kullanılır. Bu belge ikisinin dışına çıkmaz; tasarımdaki bir butonun gerektirdiği küçük işlemler yeni ekran değil, ilgili ekranın üzerinde açılan **bottom sheet / diyalog** olarak yapılır (bkz. 3.2).
 
@@ -159,7 +159,7 @@ Değerler ekran görüntülerinden **yaklaşık** okunmuştur.
 
 8. **Panik sinyali:** TEHLİKEDEYİM (2 sn basılı tutma) `safety_signals/{uid}` belgesine durum, konum ve zamanı yazar; yetkili haritasında mor pin belirir ve yetkiliye bildirim düşer. GÜVENDEYİM sinyali kapatır. Yetkili "Ulaşıldı" işaretleyebilir.
    - **Bağlantı tespiti:** Yazılan belgenin snapshot'ında `hasPendingWrites` 10 sn içinde `false` olmazsa uygulama çevrimdışı kabul edilir. Sinyal Firestore'un kuyruğunda bekler, internet gelince gider. Ekranda "Merkeze iletildi" yalnızca sunucu onayıyla yazar.
-   - İnternet yoksa SMS uygulaması acil durum yakını ve konum linkiyle (`sms:`) hazır açılır, kullanıcı Gönder'e basar. SMS otomatik gönderilemez (iOS izin vermez).
+   - İnternet yoksa SMS uygulaması acil durum yakını ve konum linkiyle (`sms:`) hazır açılır, kullanıcı Gönder'e basar. SMS otomatik gönderilmez (`SEND_SMS` izni Play politikasınca yalnızca varsayılan SMS uygulamalarına verilir).
 
 9. **Konum etiketi:** Ana Sayfa ve Profil'deki "Antakya Merkez, Hatay" metni `geocoding` paketiyle (cihazın yerel servisi, ücretsiz) bulunur. İnternet yoksa son bilinen etiket gösterilir.
 
@@ -318,7 +318,7 @@ firestore.rules · firestore.indexes.json
 | Yerel depolama | `hive_ce`, `hive_ce_flutter`, `shared_preferences` |
 | Konum & harita | `geolocator`, `geocoding`, `flutter_map`, `latlong2`, `geoflutterfire_plus` (yalnızca geohash ve komşu hücre hesabı) |
 | Bildirim | `flutter_local_notifications` |
-| Acil durum | `connectivity_plus`, `audioplayers` (düdük, iOS `playback`), `url_launcher` (`tel:`, `sms:`, harita) |
+| Acil durum | `connectivity_plus`, `audioplayers` (düdük), `url_launcher` (`tel:`, `sms:`, harita) |
 | Form & dil | `mask_text_input_formatter`, `flutter_localizations`, `intl` |
 | Mağaza | `flutter_launcher_icons`, `flutter_native_splash` |
 | Yardımcı | `uuid`, `permission_handler` |
@@ -339,10 +339,11 @@ firestore.rules · firestore.indexes.json
 - **Yasal metinler:** Gizlilik Politikası, KVKK Aydınlatma Metni, Kullanım Koşulları ve hesap silme talep sayfası, TR + EN olarak **Firebase Hosting**'de yayınlanır. Kayıt ekranındaki onay kutusundan ve Profil'deki bağlantıdan açılır. Metinler konum, telefon, acil durum yakını ve **tıbbi bilgi (açık rıza)** işlenmesini; verileri yalnızca doğrulanmış yetkililerin gördüğünü ve silme yolunu belirtir.
 - **Kurulum:**
   - Kimlik: `name: afetnet`, Android `applicationId` ve iOS Bundle ID `com.softito.afetnet`; `flutterfire configure`'dan önce yapılır.
-  - İzinler: `ACCESS_FINE_LOCATION`, `POST_NOTIFICATIONS`, `INTERNET` ve iOS konum metni (TR + EN). Arka plan konumu istenmez. Android `targetSdk` 36.
+  - İzinler: `ACCESS_FINE_LOCATION` (+ `ACCESS_COARSE_LOCATION`), `POST_NOTIFICATIONS`, `INTERNET`. Arka plan konumu istenmez. Android `targetSdk` 36.
+  - **iOS (MVP dışı):** Ücretli Apple Developer hesabı gerektirdiği için iOS'a özgü yapılandırmalar yapılmaz: APNs/push, konum izin metni (`NSLocationWhenInUseUsageDescription`), `AppDelegate` bildirim ayarı, sessiz modda düdük. `ios/` klasörü korunur ve derlemesi bozulmaz; ancak izin metni olmadığından uygulama iOS'ta konum istediği anda kapanır.
   - OpenStreetMap: `userAgentPackageName: 'com.softito.afetnet'` ve haritada "© OpenStreetMap contributors" atfı.
   - Gizli tutulacaklar: `*.jks` ve `key.properties` repoya eklenmez.
-- **Mağaza hazırlığı:** Release derlemesinde seed kodu ve test hesabı bulunmaz. `flutter build appbundle --release` ve `flutter build ios --release --no-codesign` başarılı olmalı. `store/` klasöründe TR + EN açıklama ("resmi değildir" ifadesiyle), iki rolden ekran görüntüleri, ikonlar, Play Veri Güvenliği ve App Store gizlilik etiketi taslağı (ad, e-posta, telefon, konum, sağlık bilgisi, çökme logları).
+- **Mağaza hazırlığı (Google Play):** Release derlemesinde seed kodu ve test hesabı bulunmaz. `flutter build appbundle --release` başarılı olmalı. `store/` klasöründe TR + EN açıklama ("resmi değildir" ifadesiyle), iki rolden ekran görüntüleri, ikonlar ve Play Veri Güvenliği formu taslağı (ad, e-posta, telefon, konum, sağlık bilgisi, çökme logları).
 
 ---
 
@@ -382,4 +383,4 @@ firestore.rules · firestore.indexes.json
 | R6 | Tasarımda kurum adları ve uygulanmayan özellikler var. | Düzeltmeler (3.3) kodlarken uygulanır. |
 | R7 | İstemci öncelik ve sayaçları yazıyor. | Kurallar biçimi doğrular (5.5). |
 | R8 | Wi-Fi'ye bağlı ama internetsiz cihaz "çevrimiçi" sanılabilir. | Sunucu onayıyla bağlantı kararı (Kural 8). |
-| R9 | Emülatörde GPS ve bildirim sınırlı; iOS push Apple hesabı ister; salonda internet kopabilir. | Konum sabitlenir, düdük ve push Android cihazda gösterilir, hotspot ve yedek video hazır. |
+| R9 | Emülatörde GPS ve bildirim sınırlı; salonda internet kopabilir. | Emülatör konumu sabitlenir (Google Play imajlı emülatör), düdük ve push fiziksel Android cihazda gösterilir, hotspot ve yedek video hazır. |
