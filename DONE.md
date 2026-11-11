@@ -74,7 +74,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | 1 | Servisler: konum + konum etiketi, bağlantı tespiti, yerel bildirim + FCM `all_users` | ⏳ |
 | 2 | Panik sinyali: PANİĞİM, GÜVENDEYİM, SMS diyaloğu | ⏳ |
 | 3 | Ana Sayfa (A1) yerleşimi | ⏳ |
-| 4 | Düdük (A3): internetsiz, iOS sessiz modda da çalar | ⏳ |
+| 4 | Düdük (A3): internetsiz, döngüde çalar | ⏳ |
 
 **Çıktı:** Afetzede panik sinyali gönderebiliyor, düdük çalıyor. ⏳
 
@@ -117,6 +117,6 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 | Kim | İş | Durum |
 |---|---|---|
-| G1 | Release derlemeleri (AAB + iOS `--no-codesign`) | ⏳ |
+| G1 | Release derlemesi (AAB) | ⏳ |
 | G2 | `store/` ekran görüntüleri ve açıklamalar (TR + EN) | ⏳ |
 | Herkes | Demo akışını dene, hataları sahibine ilet, demo provası | ⏳ |
