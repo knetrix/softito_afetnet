@@ -457,4 +457,115 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validationInvalidValue => 'Enter a valid value';
+
+  @override
+  String get locationFetching => 'Getting location...';
+
+  @override
+  String get locationUnavailable => 'Location unavailable — Tap to refresh';
+
+  @override
+  String get panicButtonTitle => 'PANIC';
+
+  @override
+  String get panicButtonSubtitle => 'IN DANGER';
+
+  @override
+  String get panicSafeButton => 'I AM SAFE';
+
+  @override
+  String get panicSafeSubtitle => 'Turn off signal';
+
+  @override
+  String get homePanicHoldHint => 'Hold for 2 seconds to send panic signal';
+
+  @override
+  String get homePanicActiveHint =>
+      'Your panic signal is active. Tap above if you are safe.';
+
+  @override
+  String get panicStatusDelivered => 'Delivered to center';
+
+  @override
+  String get panicStatusPending => 'Waiting to send';
+
+  @override
+  String get panicOfflineSmsTitle => 'Offline Signal';
+
+  @override
+  String get panicOfflineSmsMessage =>
+      'Connection could not be verified within 10 seconds. Your signal is queued and will send when online. Would you like to notify your emergency contact via SMS?';
+
+  @override
+  String get panicOfflineSmsAction => 'Notify via SMS';
+
+  @override
+  String panicSmsBodyWithLocation(String locationUrl) {
+    return 'EMERGENCY (AfetNet): I am in danger and need help. My location: $locationUrl';
+  }
+
+  @override
+  String get panicSmsBodyNoLocation =>
+      'EMERGENCY (AfetNet): I am in danger and need help. Location could not be determined.';
+
+  @override
+  String get panicNoEmergencyContactTitle => 'No Emergency Contact';
+
+  @override
+  String get panicNoEmergencyContactMessage =>
+      'No registered emergency contact number found. You can add one from the Profile tab.';
+
+  @override
+  String get panicSmsOpenFailed => 'Could not open the SMS app.';
+
+  @override
+  String get panicLocationFailedTitle => 'Location Unavailable';
+
+  @override
+  String get panicLocationFailedMessage =>
+      'Could not send panic signal because location is unavailable. You can check location permission, sound the offline whistle, or send an SMS.';
+
+  @override
+  String get panicOpenWhistle => 'Open Whistle';
+
+  @override
+  String get panicSafeSuccess => 'Your status has been updated to safe.';
+
+  @override
+  String get homeAddHelpRequest => 'ADD HELP REQUEST';
+
+  @override
+  String get homeHelpRequestPendingTitle => 'Help Request';
+
+  @override
+  String get homeHelpRequestPendingMessage =>
+      'The detailed help request form will be added in step G4.';
+
+  @override
+  String get homeActiveRequestEmptyTitle => 'No active help request';
+
+  @override
+  String get homeActiveRequestEmptySubtitle =>
+      'You can create a help request using the button below when needed.';
+
+  @override
+  String get whistleIdleLabel => 'WHISTLE';
+
+  @override
+  String get whistleIdleSubtitle => 'High-Volume Siren';
+
+  @override
+  String get whistlePlayingLabel => 'PLAYING';
+
+  @override
+  String get whistlePlayingSubtitle => 'Siren active';
+
+  @override
+  String get whistleTapToStart => 'TAP TO START';
+
+  @override
+  String get whistleTapToStop => 'TAP AGAIN TO STOP';
+
+  @override
+  String get whistleOfflineNote => 'Works completely offline.';
 }

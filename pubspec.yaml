@@ -54,6 +54,7 @@ flutter:
     - assets/fonts/OFL-SpaceGrotesk.txt
     - assets/fonts/OFL-Inter.txt
     - assets/fonts/OFL-JetBrainsMono.txt
+    - assets/sounds/whistle.wav
 
   fonts:
     - family: SpaceGrotesk

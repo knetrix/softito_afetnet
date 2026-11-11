@@ -937,6 +937,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter a valid value'**
   String get validationInvalidValue;
+
+  /// No description provided for @locationFetching.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting location...'**
+  String get locationFetching;
+
+  /// No description provided for @locationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable — Tap to refresh'**
+  String get locationUnavailable;
+
+  /// No description provided for @panicButtonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PANIC'**
+  String get panicButtonTitle;
+
+  /// No description provided for @panicButtonSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'IN DANGER'**
+  String get panicButtonSubtitle;
+
+  /// No description provided for @panicSafeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'I AM SAFE'**
+  String get panicSafeButton;
+
+  /// No description provided for @panicSafeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off signal'**
+  String get panicSafeSubtitle;
+
+  /// No description provided for @homePanicHoldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for 2 seconds to send panic signal'**
+  String get homePanicHoldHint;
+
+  /// No description provided for @homePanicActiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your panic signal is active. Tap above if you are safe.'**
+  String get homePanicActiveHint;
+
+  /// No description provided for @panicStatusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered to center'**
+  String get panicStatusDelivered;
+
+  /// No description provided for @panicStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to send'**
+  String get panicStatusPending;
+
+  /// No description provided for @panicOfflineSmsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Signal'**
+  String get panicOfflineSmsTitle;
+
+  /// No description provided for @panicOfflineSmsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection could not be verified within 10 seconds. Your signal is queued and will send when online. Would you like to notify your emergency contact via SMS?'**
+  String get panicOfflineSmsMessage;
+
+  /// No description provided for @panicOfflineSmsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify via SMS'**
+  String get panicOfflineSmsAction;
+
+  /// No description provided for @panicSmsBodyWithLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'EMERGENCY (AfetNet): I am in danger and need help. My location: {locationUrl}'**
+  String panicSmsBodyWithLocation(String locationUrl);
+
+  /// No description provided for @panicSmsBodyNoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'EMERGENCY (AfetNet): I am in danger and need help. Location could not be determined.'**
+  String get panicSmsBodyNoLocation;
+
+  /// No description provided for @panicNoEmergencyContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Emergency Contact'**
+  String get panicNoEmergencyContactTitle;
+
+  /// No description provided for @panicNoEmergencyContactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No registered emergency contact number found. You can add one from the Profile tab.'**
+  String get panicNoEmergencyContactMessage;
+
+  /// No description provided for @panicSmsOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the SMS app.'**
+  String get panicSmsOpenFailed;
+
+  /// No description provided for @panicLocationFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Unavailable'**
+  String get panicLocationFailedTitle;
+
+  /// No description provided for @panicLocationFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send panic signal because location is unavailable. You can check location permission, sound the offline whistle, or send an SMS.'**
+  String get panicLocationFailedMessage;
+
+  /// No description provided for @panicOpenWhistle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Whistle'**
+  String get panicOpenWhistle;
+
+  /// No description provided for @panicSafeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your status has been updated to safe.'**
+  String get panicSafeSuccess;
+
+  /// No description provided for @homeAddHelpRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'ADD HELP REQUEST'**
+  String get homeAddHelpRequest;
+
+  /// No description provided for @homeHelpRequestPendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Request'**
+  String get homeHelpRequestPendingTitle;
+
+  /// No description provided for @homeHelpRequestPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The detailed help request form will be added in step G4.'**
+  String get homeHelpRequestPendingMessage;
+
+  /// No description provided for @homeActiveRequestEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No active help request'**
+  String get homeActiveRequestEmptyTitle;
+
+  /// No description provided for @homeActiveRequestEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can create a help request using the button below when needed.'**
+  String get homeActiveRequestEmptySubtitle;
+
+  /// No description provided for @whistleIdleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'WHISTLE'**
+  String get whistleIdleLabel;
+
+  /// No description provided for @whistleIdleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'High-Volume Siren'**
+  String get whistleIdleSubtitle;
+
+  /// No description provided for @whistlePlayingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'PLAYING'**
+  String get whistlePlayingLabel;
+
+  /// No description provided for @whistlePlayingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Siren active'**
+  String get whistlePlayingSubtitle;
+
+  /// No description provided for @whistleTapToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'TAP TO START'**
+  String get whistleTapToStart;
+
+  /// No description provided for @whistleTapToStop.
+  ///
+  /// In en, this message translates to:
+  /// **'TAP AGAIN TO STOP'**
+  String get whistleTapToStop;
+
+  /// No description provided for @whistleOfflineNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Works completely offline.'**
+  String get whistleOfflineNote;
 }
 
 class _AppLocalizationsDelegate

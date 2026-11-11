@@ -455,4 +455,115 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get validationInvalidValue => 'Geçerli bir değer girin';
+
+  @override
+  String get locationFetching => 'Konum alınıyor...';
+
+  @override
+  String get locationUnavailable => 'Konum alınamadı — Yenilemek için dokunun';
+
+  @override
+  String get panicButtonTitle => 'PANİĞİM';
+
+  @override
+  String get panicButtonSubtitle => 'TEHLİKEDEYİM';
+
+  @override
+  String get panicSafeButton => 'GÜVENDEYİM';
+
+  @override
+  String get panicSafeSubtitle => 'Sinyali kapat';
+
+  @override
+  String get homePanicHoldHint => 'Basılı tutarak acil durum sinyalini iletin';
+
+  @override
+  String get homePanicActiveHint =>
+      'Panik sinyaliniz aktif. Güvendeyseniz yukarıdaki butona dokunun.';
+
+  @override
+  String get panicStatusDelivered => 'Merkeze iletildi';
+
+  @override
+  String get panicStatusPending => 'Gönderilmeyi bekliyor';
+
+  @override
+  String get panicOfflineSmsTitle => 'Çevrimdışı Sinyal';
+
+  @override
+  String get panicOfflineSmsMessage =>
+      'İnternet bağlantısı 10 saniye içinde doğrulanamadı. Sinyalin kuyrukta bekliyor; internet gelince otomatik gönderilecek. Acil durum yakınına SMS ile haber vermek ister misin?';
+
+  @override
+  String get panicOfflineSmsAction => 'SMS ile Haber Ver';
+
+  @override
+  String panicSmsBodyWithLocation(String locationUrl) {
+    return 'ACİL DURUM (AfetNet): Tehlikedeyim, yardıma ihtiyacım var. Konumum: $locationUrl';
+  }
+
+  @override
+  String get panicSmsBodyNoLocation =>
+      'ACİL DURUM (AfetNet): Tehlikedeyim, yardıma ihtiyacım var. Konum bilgisi alınamadı.';
+
+  @override
+  String get panicNoEmergencyContactTitle => 'Acil Durum Yakını Yok';
+
+  @override
+  String get panicNoEmergencyContactMessage =>
+      'Kayıtlı acil durum yakını numarası bulunamadı. Profil sekmesinden acil durum yakını ekleyebilirsiniz.';
+
+  @override
+  String get panicSmsOpenFailed => 'SMS uygulaması açılamadı.';
+
+  @override
+  String get panicLocationFailedTitle => 'Konum Alınamadı';
+
+  @override
+  String get panicLocationFailedMessage =>
+      'Konum bilgisi alınamadığı için panik sinyali merkeze gönderilemedi. Konum iznini kontrol edebilir, çevrimdışı düdüğü çalabilir veya SMS gönderebilirsiniz.';
+
+  @override
+  String get panicOpenWhistle => 'Düdüğü Aç';
+
+  @override
+  String get panicSafeSuccess => 'Durumunuz güvende olarak güncellendi.';
+
+  @override
+  String get homeAddHelpRequest => 'YARDIM ÇAĞRISI EKLE';
+
+  @override
+  String get homeHelpRequestPendingTitle => 'Yardım Çağrısı';
+
+  @override
+  String get homeHelpRequestPendingMessage =>
+      'Detaylı yardım çağrısı formu G4 aşamasında eklenecektir.';
+
+  @override
+  String get homeActiveRequestEmptyTitle => 'Aktif yardım çağrısı yok';
+
+  @override
+  String get homeActiveRequestEmptySubtitle =>
+      'İhtiyaç halinde aşağıdaki butondan yardım çağrısı oluşturabilirsiniz.';
+
+  @override
+  String get whistleIdleLabel => 'DÜDÜK';
+
+  @override
+  String get whistleIdleSubtitle => 'Yüksek Sesli Siren';
+
+  @override
+  String get whistlePlayingLabel => 'ÇALIYOR';
+
+  @override
+  String get whistlePlayingSubtitle => 'Siren aktif';
+
+  @override
+  String get whistleTapToStart => 'BAŞLATMAK İÇİN DOKUNUN';
+
+  @override
+  String get whistleTapToStop => 'DURDURMAK İÇİN TEKRAR DOKUNUN';
+
+  @override
+  String get whistleOfflineNote => 'İnternet bağlantısı olmadan çalışır.';
 }
