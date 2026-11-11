@@ -6,7 +6,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 | Aşama | Sahip | Durum | PR |
 |---|---|---|---|
-| G1 — Temel ve Giriş | Mustafa | 🟡 Kod tamam, 2 iş bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
+| G1 — Temel ve Giriş | Mustafa | 🟡 Tamam, ekip erişimi bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
 | G2 — Görünüm ve Profil | Sümeyye | ⏳ Sıradaki | — |
 | G3 — Panik, Ana Sayfa ve Düdük | Furkan | ⏳ | — |
 | G4 — Yardım Çağrısı ve Toplanma | Tuba | ⏳ | — |
@@ -18,20 +18,22 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 ## G1 — Mustafa · Temel ve Giriş
 
-**Çıktı:** Kayıt olan kullanıcı rolüne göre boş ana sayfaya düşüyor. 🟡 Birim testleriyle doğrulandı; emülatör/cihazda henüz denenmedi.
+**Çıktı:** Kayıt olan kullanıcı rolüne göre boş ana sayfaya düşüyor. ✅ iOS simülatöründe gerçek Firebase'e karşı denendi.
 
 | # | Adım | Durum | Not |
 |---|---|---|---|
 | 1 | Kimlik: `name: afetnet`, `com.softito.afetnet` | ✅ | Conflict işaretli platform dosyaları yeniden üretildi; `macos/` ve `web/` kaldırıldı |
 | 2 | Firebase projesi (`eur3`), `flutterfire configure`, Firestore test modu | ✅ | Proje `afetnet-softito`. Test modu kuralları 11 Aralık 2026'ya kadar geçerli. E-posta/Şifre girişi açık |
-| 2 | Ekibi Firebase Console'a Editor ekle | ⏳ | Ekip üyelerinin e-postaları gerekiyor |
+| 2 | Ekip üyelerine Firebase projesinde Editor yetkisi ver | ⏳ | Console → Proje ayarları → Kullanıcılar ve izinler. Her üyenin Google hesabı e-postası gerekiyor. Uygulamayı çalıştırmak için gerekmez; Console'da veri görmek, yetkili onaylamak ve deploy için gerekir |
 | 3 | Paketler (6.2), klasör yapısı (6.1), `app_config.dart` | ✅ | `pubspec.lock` repoda |
 | 4 | Router: iki alt menü, boş sekmeler | ✅ | `core/router/` |
 | 5 | `validators.dart`: e-posta, telefon maskesi, şifre kuralı | ✅ | Birim testli |
 | 6 | Giriş (O3) ve Kayıt (O4): `users` + `private/contact`, rol kontrolü, onaysız yetkili uyarısı, rolüne göre yönlendirme | ✅ | T3, T4, T5, T15 uygulandı |
-| — | Kayıt akışını emülatör/cihazda dene | ⏳ | Bu bilgisayarda emülatör yok |
+| — | Akışı simülatörde uçtan uca dene | ✅ | iOS simülatörü: afetzede kaydı → Ana Sayfa, çıkış, yanlış giriş türü reddi, afetzede girişi, yetkili kaydı → onay bekliyor. Yazılan `users` ve `private/contact` belgeleri kontrol edildi, test hesapları silindi |
 
-**Kontroller:** `flutter analyze` temiz · 23 test geçiyor · `flutter build apk --debug` ve `flutter build ios --debug --no-codesign` başarılı.
+**Kontroller:** `flutter analyze` temiz · 23 test geçiyor · `flutter build apk --debug` ve `flutter build ios --debug --no-codesign` başarılı · iOS simülatöründe akış denendi.
+
+**Not:** `firebase.json` içindeki `flutter` bölümü `flutterfire configure` tarafından yazılır ve iOS derlemesindeki Crashlytics betiği bu bölümü okur. Bu bölüm silinmemeli.
 
 **G2'ye devir:** Kodda `TODO(G2)` ile işaretli. Ayrıntılar PR #8 açıklamasında.
 - `auth_texts.dart` ve ekran metinleri → ARB
