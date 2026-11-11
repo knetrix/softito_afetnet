@@ -50,7 +50,7 @@ bölümleridir.
 | Mimari | Clean Architecture, feature-first: `features/<f>/{data,domain,presentation}` | Ekran + mantık tek dosyada |
 | State | `provider` + `ChangeNotifier` (ekran state'i), `ValueNotifier` (küçük yerel durum) | Bloc, Riverpod, GetX, GetIt, MobX |
 | Navigasyon | `go_router`: rol başına `StatefulShellRoute.indexedStack` + `redirect` | Ek işlem için yeni rota |
-| Veri | `firebase_auth`, `cloud_firestore` (stream, Transaction, batch) | `http`/REST, Firebase Storage (Blaze ister, R3) |
+| Veri | `firebase_auth`, `cloud_firestore` (stream, Transaction, batch) | `http`/REST, Firebase Storage (tasarımda fotoğraf yok) |
 | Yerel | `hive_ce` (çevrimdışı çağrı kuyruğu), `shared_preferences` (`onboardingDone`) | |
 | Harita | `flutter_map` + OSM (`userAgentPackageName: 'com.softito.afetnet'`, atıf zorunlu) | Google Maps |
 | Konum | `geolocator`, `geocoding`, `geoflutterfire_plus` (yalnızca geohash + komşu hücre) | Arka plan konumu |
