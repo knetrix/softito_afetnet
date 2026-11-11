@@ -5,6 +5,7 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
+<<<<<<< Updated upstream:macos/Runner/Configs/AppInfo.xcconfig
 PRODUCT_NAME = softito_group_project
 
 // The application's bundle identifier
@@ -12,3 +13,12 @@ PRODUCT_BUNDLE_IDENTIFIER = com.softito.groupproject.softitoGroupProject
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.softito.group_project. All rights reserved.
+=======
+PRODUCT_NAME = afetnet
+
+// The application's bundle identifier
+PRODUCT_BUNDLE_IDENTIFIER = com.example.afetnet
+
+// The copyright displayed in application information
+PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
+>>>>>>> Stashed changes:afetnet/macos/Runner/Configs/AppInfo.xcconfig

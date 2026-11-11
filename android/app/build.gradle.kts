@@ -5,7 +5,11 @@ plugins {
 }
 
 android {
+<<<<<<< Updated upstream:android/app/build.gradle.kts
     namespace = "com.softito.group_project.softito_group_project"
+=======
+    namespace = "com.example.afetnet"
+>>>>>>> Stashed changes:afetnet/android/app/build.gradle.kts
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -16,7 +20,11 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+<<<<<<< Updated upstream:android/app/build.gradle.kts
         applicationId = "com.softito.group_project.softito_group_project"
+=======
+        applicationId = "com.example.afetnet"
+>>>>>>> Stashed changes:afetnet/android/app/build.gradle.kts
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
