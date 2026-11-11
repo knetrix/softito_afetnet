@@ -116,3 +116,4 @@ abstract final class AppDialog {
     );
   }
 }
+

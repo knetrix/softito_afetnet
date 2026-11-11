@@ -35,3 +35,4 @@ abstract class ProfileRepository {
   /// Hesabı Sil (PROJECT_NEW.md §7 mağaza zorunluluğu)
   Future<void> deleteAccount(String uid);
 }
+

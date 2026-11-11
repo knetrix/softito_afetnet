@@ -89,3 +89,4 @@ class AppStatusColors extends ThemeExtension<AppStatusColors> {
     );
   }
 }
+

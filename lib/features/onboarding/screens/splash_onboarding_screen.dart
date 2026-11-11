@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/bottom_navigation_row.dart'; // Alt buton ve sayfa göstergesi bileşenidir
@@ -43,6 +45,8 @@ class _SplashOnboardingScreenState extends State<SplashOnboardingScreen> {
   void _finishOnboarding() {
     if (widget.onCompleted != null) {
       widget.onCompleted!();
+    } else if (mounted) {
+      context.go(AppRoutes.login);
     }
   }
 

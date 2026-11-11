@@ -11,11 +11,14 @@ import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../data/firestore_profile_repository.dart';
+import '../domain/profile_repository.dart';
 import 'profile_controller.dart';
 
 /// Y4 — Profil (Yetkili / Saha Koordinatörü) (§3.1, 20.28.08, T2, T11, T12, T13)
 class OfficialProfileScreen extends StatelessWidget {
-  const OfficialProfileScreen({super.key});
+  const OfficialProfileScreen({super.key, this.repository});
+
+  final ProfileRepository? repository;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class OfficialProfileScreen extends StatelessWidget {
 
     return ChangeNotifierProvider<ProfileController>(
       create: (_) => ProfileController(
-        repository: FirestoreProfileRepository(),
+        repository: repository ?? FirestoreProfileRepository(),
         uid: user.uid,
       ),
       child: const _OfficialProfileView(),
