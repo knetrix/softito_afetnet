@@ -352,4 +352,107 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get signOutConfirmMessage =>
       'Oturumunuzu kapatmak istediğinize emin misiniz?';
+
+  @override
+  String get registerPasswordHelper =>
+      'En az 8 karakter, 1 büyük harf, 1 rakam';
+
+  @override
+  String get registerNotificationsSubtitle =>
+      'Tahliye ve artçı sarsıntı uyarılarını almak istiyorum';
+
+  @override
+  String get roleBadgeCitizen => 'SİVİL KULLANICI';
+
+  @override
+  String get roleBadgeOfficial => 'SAHA KOORDİNATÖRÜ';
+
+  @override
+  String get priorityCritical => 'KRİTİK';
+
+  @override
+  String get priorityUrgent => 'ACİL';
+
+  @override
+  String get priorityNormal => 'NORMAL';
+
+  @override
+  String get profileNotSpecified => 'Belirtilmedi';
+
+  @override
+  String get profileNotAssigned => 'Atanmadı';
+
+  @override
+  String get profileEmergencyContactEmpty =>
+      'Acil durum yakını henüz eklenmedi.';
+
+  @override
+  String get profileAddressEmpty => 'Kayıtlı ikamet adresi bulunmuyor.';
+
+  @override
+  String get profileContactName => 'Yakının Adı Soyadı';
+
+  @override
+  String get profileRelationHint => 'Örn. Anne, Eş, Kardeş';
+
+  @override
+  String get profileMedicationsHint => 'Örn. İnsülin, Tansiyon ilacı';
+
+  @override
+  String get profileConditionsHint => 'Örn. Astım, Penisilin alerjisi';
+
+  @override
+  String get profileBirthYear => 'Doğum Yılı';
+
+  @override
+  String get profileBirthYearHint => 'Örn. 1995';
+
+  @override
+  String get profileWeightHint => 'Örn. 72';
+
+  @override
+  String get profileAddressHint =>
+      'İl, ilçe, mahalle, sokak, bina ve kat bilgisi...';
+
+  @override
+  String get profileCoordinationInfo => 'Koordinasyon Bilgileri';
+
+  @override
+  String get deleteAccountConfirmMessageOfficial =>
+      'Bu işlem geri alınamaz. Koordinatör hesabı kalıcı olarak silinecektir.';
+
+  @override
+  String get deleteAccountPasswordTitle => 'Şifrenizi Doğrulayın';
+
+  @override
+  String get deleteAccountPasswordMessage =>
+      'Güvenliğiniz için hesabı silmeden önce şifrenizi girin.';
+
+  @override
+  String get deleteAccountFailed => 'Hesap silinemedi, tekrar deneyin.';
+
+  @override
+  String get debugToolsTitle => 'Demo & Test Araçları (Debug)';
+
+  @override
+  String get demoReset => 'Demo Verisini Sıfırla';
+
+  @override
+  String get demoResetTitle => 'Demo Verisi';
+
+  @override
+  String get demoResetPending =>
+      'Demo verisi yükleme G6 aşamasında bağlanacaktır.';
+
+  @override
+  String get onboardingActive => 'AKTİF';
+
+  @override
+  String get onboardingRadarTeam => 'TİM #04 1.2km';
+
+  @override
+  String get onboardingRadarDepot => 'DEPO %94 L-4';
+
+  @override
+  String get validationInvalidValue => 'Geçerli bir değer girin';
 }

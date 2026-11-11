@@ -31,6 +31,16 @@ void main() {
       expect(Validators.normalizePhone('05321234567'), '+905321234567');
       expect(Validators.normalizePhone('5321234567'), '+905321234567');
     });
+    test('formatPhone kayıtlı numarayı maskeli gösterir', () {
+      expect(Validators.formatPhone('+905339876543'), '+90 533 987 65 43');
+      expect(Validators.formatPhone('+90 533 987 65 43'), '+90 533 987 65 43');
+      expect(Validators.formatPhone('abc'), 'abc');
+    });
+    test('formatter kayıtlı numarayla başlayabilir', () {
+      final f = Validators.phoneFormatter(initialText: '+90 533 987 65 43');
+      expect(f.getMaskedText(), '+90 533 987 65 43');
+      expect(f.isFill(), isTrue);
+    });
     test('formatter maskeyi uygular', () {
       final masked = Validators.phoneFormatter().maskText('5321234567');
       expect(masked, '+90 532 123 45 67');

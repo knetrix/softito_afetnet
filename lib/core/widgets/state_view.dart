@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../../l10n/app_localizations.dart';
+import '../theme/app_status_colors.dart';
 
 /// Ekran veya liste durumları (§6.1, screens-with-provider-integration)
 enum ViewStatus { loading, ready, empty, failure }
@@ -28,6 +29,9 @@ class StateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final l10n = AppLocalizations.of(context);
     switch (status) {
       case ViewStatus.loading:
         return loadingWidget ??
@@ -48,14 +52,14 @@ class StateView extends StatelessWidget {
                 Icon(
                   emptyIcon,
                   size: 56,
-                  color: AppColors.textMuted,
+                  color: colors.onSurfaceVariant.withValues(alpha: 0.6),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  emptyMessage ?? 'Kayıt bulunamadı.',
+                  emptyMessage ?? l10n?.emptyList ?? 'Kayıt bulunamadı.',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colors.onSurfaceVariant,
                       ),
                 ),
               ],
@@ -70,17 +74,17 @@ class StateView extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
+                Icon(
                   Icons.error_outline_rounded,
                   size: 56,
-                  color: AppColors.danger,
+                  color: theme.extension<AppStatusColors>()!.critical,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  errorMessage ?? 'Bir hata oluştu.',
+                  errorMessage ?? l10n?.genericError ?? 'Bir hata oluştu.',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colors.onSurfaceVariant,
                       ),
                 ),
                 if (onRetry != null) ...[
@@ -88,7 +92,7 @@ class StateView extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: onRetry,
                     icon: const Icon(Icons.refresh_rounded, size: 18),
-                    label: const Text('Tekrar Dene'),
+                    label: Text(l10n?.retry ?? 'Tekrar Dene'),
                   ),
                 ],
               ],

@@ -3,15 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/app_config.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_status_colors.dart';
+import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/state_view.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
-import '../data/firestore_profile_repository.dart';
 import '../domain/profile_repository.dart';
+import 'delete_account_flow.dart';
 import 'profile_controller.dart';
 import 'sheets/address_edit_sheet.dart';
 import 'sheets/emergency_contact_sheet.dart';
@@ -30,14 +31,12 @@ class CitizenProfileScreen extends StatelessWidget {
     final user = auth.currentUser;
 
     if (user == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return ChangeNotifierProvider<ProfileController>(
       create: (_) => ProfileController(
-        repository: repository ?? FirestoreProfileRepository(),
+        repository: repository ?? context.read<ProfileRepository>(),
         uid: user.uid,
       ),
       child: const _CitizenProfileView(),
@@ -60,33 +59,14 @@ class _CitizenProfileView extends StatelessWidget {
     final confirmed = await AppDialog.confirm(
       context,
       title: l10n?.signOutConfirmTitle ?? 'Çıkış Yap',
-      message: l10n?.signOutConfirmMessage ??
+      message:
+          l10n?.signOutConfirmMessage ??
           'Oturumunuzu kapatmak istediğinize emin misiniz?',
       confirmLabel: l10n?.signOut ?? 'Çıkış Yap',
       cancelLabel: l10n?.cancel ?? 'İptal',
     );
     if (confirmed == true && context.mounted) {
       context.read<AuthController>().signOut();
-    }
-  }
-
-  Future<void> _deleteAccount(BuildContext context) async {
-    final l10n = AppLocalizations.of(context);
-    final confirmed = await AppDialog.confirm(
-      context,
-      title: l10n?.deleteAccountConfirmTitle ??
-          'Hesabınızı Silmek İstiyor Musunuz?',
-      message: l10n?.deleteAccountConfirmMessage ??
-          'Bu işlem geri alınamaz. Kişisel verileriniz ve sağlık bilgileriniz kalıcı olarak silinecektir.',
-      confirmLabel: l10n?.deleteAccount ?? 'Hesabı Sil',
-      cancelLabel: l10n?.cancel ?? 'İptal',
-      destructive: true,
-    );
-    if (confirmed == true && context.mounted) {
-      final ok = await context.read<ProfileController>().deleteAccount();
-      if (ok && context.mounted) {
-        context.read<AuthController>().signOut();
-      }
     }
   }
 
@@ -97,8 +77,11 @@ class _CitizenProfileView extends StatelessWidget {
     final controller = context.watch<ProfileController>();
     final profile = controller.profile;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colors = theme.colorScheme;
+    final status = theme.extension<AppStatusColors>()!;
     final l10n = AppLocalizations.of(context);
+    final notSpecified = l10n?.profileNotSpecified ?? 'Belirtilmedi';
+    final contactPhone = profile?.emergencyContactPhone;
 
     return Scaffold(
       appBar: AppBar(
@@ -120,19 +103,19 @@ class _CitizenProfileView extends StatelessWidget {
                       height: 80,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.primary.withValues(alpha: 0.15),
+                        color: colors.primary.withValues(alpha: 0.15),
                         border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.4),
+                          color: colors.primary.withValues(alpha: 0.4),
                           width: 2,
                         ),
                       ),
                       child: Center(
                         child: Text(
                           _getInitials(user?.fullName ?? 'Afetzede'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
+                            color: colors.primary,
                           ),
                         ),
                       ),
@@ -146,44 +129,9 @@ class _CitizenProfileView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        StatusBadge.role(isOfficial: false),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? AppColors.surfaceHigh
-                                : AppColors.lightSurfaceHigh,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: isDark
-                                  ? AppColors.border
-                                  : AppColors.lightBorder,
-                            ),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.location_on_outlined,
-                                  size: 12, color: AppColors.textSecondary),
-                              SizedBox(width: 4),
-                              Text(
-                                'Antakya, Hatay',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    // TODO(G3): Konum rozeti (il, ilçe) LocationService'ten gelir (Kural 9);
+                    // gerçek konum yokken uydurma etiket gösterilmez.
+                    StatusBadge.role(isOfficial: false),
                   ],
                 ),
               ),
@@ -191,10 +139,10 @@ class _CitizenProfileView extends StatelessWidget {
 
               // 1. Tıbbi & Sağlık Kimliği Kartı
               _ProfileSectionCard(
-                title: l10n?.profileMedicalCardTitle ??
-                    'Tıbbi & Sağlık Kimliği',
+                title:
+                    l10n?.profileMedicalCardTitle ?? 'Tıbbi & Sağlık Kimliği',
                 icon: Icons.favorite_border_rounded,
-                iconColor: AppColors.danger,
+                iconColor: status.critical,
                 onEdit: () => showMedicalEditSheet(
                   context,
                   currentProfile: profile,
@@ -204,23 +152,23 @@ class _CitizenProfileView extends StatelessWidget {
                   children: [
                     _InfoRow(
                       label: l10n?.profileBloodType ?? 'Kan Grubu',
-                      value: profile?.bloodType ?? 'Belirtilmedi',
-                      valueColor: AppColors.danger,
+                      value: profile?.bloodType ?? notSpecified,
+                      valueColor: status.critical,
                       isBold: true,
                     ),
                     const Divider(),
                     _InfoRow(
                       label: l10n?.profileMedications ?? 'Kullandığı İlaçlar',
                       value: (profile?.medications?.isEmpty ?? true)
-                          ? 'Belirtilmedi'
+                          ? notSpecified
                           : profile!.medications!,
                     ),
                     const Divider(),
                     _InfoRow(
-                      label: l10n?.profileConditions ??
-                          'Kronik Hastalık / Alerji',
+                      label:
+                          l10n?.profileConditions ?? 'Kronik Hastalık / Alerji',
                       value: (profile?.conditions?.isEmpty ?? true)
-                          ? 'Belirtilmedi'
+                          ? notSpecified
                           : profile!.conditions!,
                     ),
                   ],
@@ -232,7 +180,7 @@ class _CitizenProfileView extends StatelessWidget {
               _ProfileSectionCard(
                 title: l10n?.profilePhysicalInfo ?? 'Fiziksel Bilgiler',
                 icon: Icons.accessibility_new_rounded,
-                iconColor: AppColors.primary,
+                iconColor: colors.primary,
                 onEdit: () => showPhysicalEditSheet(
                   context,
                   currentProfile: profile,
@@ -243,11 +191,7 @@ class _CitizenProfileView extends StatelessWidget {
                     Expanded(
                       child: _StatBox(
                         title: l10n?.profileAge ?? 'Yaş',
-                        value: profile?.age != null
-                            ? '${profile!.age}'
-                            : (profile?.birthYear != null
-                                ? '${profile!.birthYear}'
-                                : '-'),
+                        value: profile?.age != null ? '${profile!.age}' : '-',
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -266,16 +210,17 @@ class _CitizenProfileView extends StatelessWidget {
 
               // 3. 1. Derece Acil Durum Yakını Kartı
               _ProfileSectionCard(
-                title: l10n?.profileEmergencyContact ??
+                title:
+                    l10n?.profileEmergencyContact ??
                     '1. Derece Acil Durum Yakını',
                 icon: Icons.contact_phone_outlined,
-                iconColor: AppColors.warning,
+                iconColor: status.urgent,
                 onEdit: () => showEmergencyContactSheet(
                   context,
                   currentProfile: profile,
                   onSave: controller.updateEmergencyContact,
                 ),
-                content: (profile?.emergencyContactPhone?.isNotEmpty ?? false)
+                content: (contactPhone?.isNotEmpty ?? false)
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -286,8 +231,7 @@ class _CitizenProfileView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      profile?.emergencyContactName ??
-                                          'Acil Yakını',
+                                      profile?.emergencyContactName ?? '',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
@@ -297,42 +241,48 @@ class _CitizenProfileView extends StatelessWidget {
                                     Text(
                                       profile?.emergencyContactRelation ?? '',
                                       style: TextStyle(
-                                        color: theme.colorScheme.onSurfaceVariant,
+                                        color:
+                                            theme.colorScheme.onSurfaceVariant,
                                         fontSize: 12,
                                       ),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      profile?.emergencyContactPhone ?? '',
-                                      style: const TextStyle(
+                                      Validators.formatPhone(contactPhone!),
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,
-                                        color: AppColors.primary,
+                                        color: colors.primary,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               IconButton.filled(
-                                onPressed: () {
-                                  final tel = profile?.emergencyContactPhone;
-                                  if (tel != null) {
-                                    launchUrl(Uri(scheme: 'tel', path: tel));
-                                  }
-                                },
+                                onPressed: () => launchUrl(
+                                  Uri(
+                                    scheme: 'tel',
+                                    path:
+                                        Validators.normalizePhone(
+                                          contactPhone,
+                                        ) ??
+                                        contactPhone,
+                                  ),
+                                ),
                                 icon: const Icon(Icons.phone_in_talk_rounded),
                                 style: IconButton.styleFrom(
-                                  backgroundColor: AppColors.success,
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: status.normal,
+                                  foregroundColor: colors.surface,
                                 ),
                               ),
                             ],
                           ),
                         ],
                       )
-                    : const Text(
-                        'Acil durum yakını henüz eklenmedi.',
-                        style: TextStyle(color: AppColors.textSecondary),
+                    : Text(
+                        l10n?.profileEmergencyContactEmpty ??
+                            'Acil durum yakını henüz eklenmedi.',
+                        style: TextStyle(color: colors.onSurfaceVariant),
                       ),
               ),
               const SizedBox(height: 16),
@@ -341,7 +291,7 @@ class _CitizenProfileView extends StatelessWidget {
               _ProfileSectionCard(
                 title: l10n?.profileAddress ?? 'Kayıtlı İkamet Adresi',
                 icon: Icons.home_work_outlined,
-                iconColor: AppColors.success,
+                iconColor: status.normal,
                 onEdit: () => showAddressEditSheet(
                   context,
                   currentProfile: profile,
@@ -350,11 +300,12 @@ class _CitizenProfileView extends StatelessWidget {
                 content: Text(
                   (profile?.addressText?.isNotEmpty ?? false)
                       ? profile!.addressText!
-                      : 'Kayıtlı ikamet adresi bulunmuyor.',
+                      : (l10n?.profileAddressEmpty ??
+                            'Kayıtlı ikamet adresi bulunmuyor.'),
                   style: TextStyle(
                     color: (profile?.addressText?.isNotEmpty ?? false)
                         ? theme.colorScheme.onSurface
-                        : AppColors.textSecondary,
+                        : colors.onSurfaceVariant,
                     height: 1.4,
                   ),
                 ),
@@ -381,22 +332,19 @@ class _CitizenProfileView extends StatelessWidget {
                     ),
                     child: Text(
                       l10n?.privacyPolicy ?? 'Gizlilik Politikası',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: colors.onSurfaceVariant,
                       ),
                     ),
                   ),
-                  const Text('·',
-                      style: TextStyle(color: AppColors.textSecondary)),
+                  Text('·', style: TextStyle(color: colors.onSurfaceVariant)),
                   TextButton(
-                    onPressed: () => _deleteAccount(context),
+                    onPressed: () =>
+                        runDeleteAccountFlow(context, isOfficial: false),
                     child: Text(
                       l10n?.deleteAccount ?? 'Hesabı Sil',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.danger,
-                      ),
+                      style: TextStyle(fontSize: 12, color: status.critical),
                     ),
                   ),
                 ],
@@ -427,17 +375,14 @@ class _ProfileSectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colors = Theme.of(context).colorScheme;
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surface : AppColors.lightSurface,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? AppColors.border : AppColors.lightBorder,
-        ),
+        border: Border.all(color: colors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -460,7 +405,7 @@ class _ProfileSectionCard extends StatelessWidget {
                 onPressed: onEdit,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
-                color: AppColors.primary,
+                color: colors.primary,
               ),
             ],
           ),
@@ -494,17 +439,21 @@ class _InfoRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 13,
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
-              color: valueColor,
+          const SizedBox(width: 12),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
+                color: valueColor,
+              ),
             ),
           ),
         ],
@@ -521,13 +470,12 @@ class _StatBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colors = Theme.of(context).colorScheme;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceHigh : AppColors.lightSurfaceHigh,
+        color: colors.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -535,18 +483,12 @@ class _StatBox extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary,
-            ),
+            style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ],
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_status_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -49,7 +49,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
   late final TextEditingController _name;
   late final TextEditingController _relation;
   late final TextEditingController _phone;
-  final _phoneFormatter = Validators.phoneFormatter();
+  late final _phoneFormatter = Validators.phoneFormatter(initialText: _phone.text);
   bool _isSaving = false;
 
   @override
@@ -61,8 +61,9 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     _relation = TextEditingController(
       text: widget.currentProfile?.emergencyContactRelation ?? '',
     );
+    final savedPhone = widget.currentProfile?.emergencyContactPhone;
     _phone = TextEditingController(
-      text: widget.currentProfile?.emergencyContactPhone ?? '',
+      text: savedPhone == null ? '' : Validators.formatPhone(savedPhone),
     );
   }
 
@@ -84,18 +85,20 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     );
     if (!mounted) return;
     setState(() => _isSaving = false);
-    if (ok) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)?.profileUpdated ??
-                'Profil başarıyla güncellendi.',
-          ),
-          backgroundColor: AppColors.success,
+    final status = Theme.of(context).extension<AppStatusColors>()!;
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (ok) Navigator.of(context).pop();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          ok
+              ? (l10n?.profileUpdated ?? 'Profil başarıyla güncellendi.')
+              : (l10n?.genericError ?? 'Bir hata oluştu, lütfen tekrar deneyin.'),
         ),
-      );
-    }
+        backgroundColor: ok ? status.normal : status.critical,
+      ),
+    );
   }
 
   @override
@@ -110,9 +113,9 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
           TextFormField(
             controller: _name,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(
-              labelText: 'Yakının Adı Soyadı',
-              prefixIcon: Icon(Icons.person_outline, size: 20),
+            decoration: InputDecoration(
+              labelText: l10n?.profileContactName ?? 'Yakının Adı Soyadı',
+              prefixIcon: const Icon(Icons.person_outline, size: 20),
             ),
             validator: (v) => (v == null || v.trim().isEmpty)
                 ? (l10n?.validationRequired ?? 'Bu alan zorunludur')
@@ -123,7 +126,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
             controller: _relation,
             decoration: InputDecoration(
               labelText: l10n?.profileRelation ?? 'Yakınlık Derecesi',
-              hintText: 'Örn. Anne, Eş, Kardeş',
+              hintText: l10n?.profileRelationHint ?? 'Örn. Anne, Eş, Kardeş',
               prefixIcon: const Icon(Icons.favorite_outline, size: 20),
             ),
             validator: (v) => (v == null || v.trim().isEmpty)

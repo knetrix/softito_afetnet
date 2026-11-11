@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
+import '../../auth/domain/auth_failure.dart';
 import '../domain/profile_repository.dart';
 import '../domain/user_contact_profile.dart';
 
@@ -135,21 +136,39 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
-  Future<bool> deleteAccount() async {
+  AuthFailure? _deleteFailure;
+
+  /// Son Hesabı Sil denemesinin hatası (yanlış şifre, bağlantı …).
+  AuthFailure? get deleteFailure => _deleteFailure;
+
+  /// Başarılıysa `true`; Auth hesabı silinince router kullanıcıyı Giriş'e götürür.
+  Future<bool> deleteAccount({required String password}) async {
+    _deleteFailure = null;
     try {
       _isLoading = true;
       _safeNotify();
-      await repository.deleteAccount(uid);
-      _isLoading = false;
-      _safeNotify();
+      await repository.deleteAccount(uid, password: password);
       return true;
+    } on AuthException catch (e) {
+      _deleteFailure = e.failure;
+      return false;
     } catch (e) {
+      _deleteFailure = AuthFailure.unknown;
       _error = e.toString();
+      return false;
+    } finally {
       _isLoading = false;
       _safeNotify();
-      return false;
     }
   }
+
+  final _teamNames = <String, Future<String?>>{};
+
+  /// Y4 "Bağlı Ekip": `teams/{teamId}.name`; build her çalıştığında yeniden okunmaz.
+  Future<String?> teamName(String teamId) => _teamNames.putIfAbsent(
+        teamId,
+        () => repository.getTeamName(teamId).catchError((Object _) => null),
+      );
 
   @override
   void dispose() {

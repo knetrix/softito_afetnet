@@ -745,6 +745,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to sign out?'**
   String get signOutConfirmMessage;
+
+  /// No description provided for @registerPasswordHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters, 1 uppercase letter, 1 digit'**
+  String get registerPasswordHelper;
+
+  /// No description provided for @registerNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I want to receive evacuation and aftershock alerts'**
+  String get registerNotificationsSubtitle;
+
+  /// No description provided for @roleBadgeCitizen.
+  ///
+  /// In en, this message translates to:
+  /// **'CIVILIAN USER'**
+  String get roleBadgeCitizen;
+
+  /// No description provided for @roleBadgeOfficial.
+  ///
+  /// In en, this message translates to:
+  /// **'FIELD COORDINATOR'**
+  String get roleBadgeOfficial;
+
+  /// No description provided for @priorityCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'CRITICAL'**
+  String get priorityCritical;
+
+  /// No description provided for @priorityUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'URGENT'**
+  String get priorityUrgent;
+
+  /// No description provided for @priorityNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'NORMAL'**
+  String get priorityNormal;
+
+  /// No description provided for @profileNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get profileNotSpecified;
+
+  /// No description provided for @profileNotAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get profileNotAssigned;
+
+  /// No description provided for @profileEmergencyContactEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No emergency contact added yet.'**
+  String get profileEmergencyContactEmpty;
+
+  /// No description provided for @profileAddressEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No registered residence address.'**
+  String get profileAddressEmpty;
+
+  /// No description provided for @profileContactName.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact\'s Full Name'**
+  String get profileContactName;
+
+  /// No description provided for @profileRelationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mother, Spouse, Sibling'**
+  String get profileRelationHint;
+
+  /// No description provided for @profileMedicationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Insulin, blood pressure medication'**
+  String get profileMedicationsHint;
+
+  /// No description provided for @profileConditionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Asthma, penicillin allergy'**
+  String get profileConditionsHint;
+
+  /// No description provided for @profileBirthYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Year'**
+  String get profileBirthYear;
+
+  /// No description provided for @profileBirthYearHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 1995'**
+  String get profileBirthYearHint;
+
+  /// No description provided for @profileWeightHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 72'**
+  String get profileWeightHint;
+
+  /// No description provided for @profileAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Province, district, neighbourhood, street, building and floor...'**
+  String get profileAddressHint;
+
+  /// No description provided for @profileCoordinationInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordination Details'**
+  String get profileCoordinationInfo;
+
+  /// No description provided for @deleteAccountConfirmMessageOfficial.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone. The coordinator account will be permanently deleted.'**
+  String get deleteAccountConfirmMessageOfficial;
+
+  /// No description provided for @deleteAccountPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Your Password'**
+  String get deleteAccountPasswordTitle;
+
+  /// No description provided for @deleteAccountPasswordMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'For your security, enter your password before deleting the account.'**
+  String get deleteAccountPasswordMessage;
+
+  /// No description provided for @deleteAccountFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The account could not be deleted, please try again.'**
+  String get deleteAccountFailed;
+
+  /// No description provided for @debugToolsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo & Test Tools (Debug)'**
+  String get debugToolsTitle;
+
+  /// No description provided for @demoReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Demo Data'**
+  String get demoReset;
+
+  /// No description provided for @demoResetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Data'**
+  String get demoResetTitle;
+
+  /// No description provided for @demoResetPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo data loading will be connected in step G6.'**
+  String get demoResetPending;
+
+  /// No description provided for @onboardingActive.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE'**
+  String get onboardingActive;
+
+  /// No description provided for @onboardingRadarTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'TEAM #04 1.2km'**
+  String get onboardingRadarTeam;
+
+  /// No description provided for @onboardingRadarDepot.
+  ///
+  /// In en, this message translates to:
+  /// **'DEPOT 94% L-4'**
+  String get onboardingRadarDepot;
+
+  /// No description provided for @validationInvalidValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid value'**
+  String get validationInvalidValue;
 }
 
 class _AppLocalizationsDelegate

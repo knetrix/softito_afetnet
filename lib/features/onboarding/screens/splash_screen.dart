@@ -2,6 +2,7 @@ import 'dart:async'; // Zamanlayıcı (Timer) işlemleri için kütüphanedir
 import 'package:flutter/material.dart'; // Flutter temel UI ve widget kütüphanesidir
 import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır
 import '../../../core/theme/text_styles.dart'; // Başlık ve yazı tipi stilleridir
+import '../../../l10n/app_localizations.dart';
 import '../widgets/radar_target_widget.dart'; // Dönen radar animasyonu bileşenidir
 
 // StatefulWidget: Zamanla verisi ve ekran görünümü güncellenebilen widget tipidir
@@ -76,12 +77,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 const SizedBox(height: 36), // Radar ile başlık arasına 36px boşluk koyar
                 const Text('AfetNet', style: AppTextStyles.displayTitle), // Ana uygulama başlığını basar
                 const SizedBox(height: 8), // Başlık ile alt başlık arasına 8px boşluk koyar
-                const Text('Canlı Kriz Yönetimi Ağı', style: AppTextStyles.subtitle), // Alt başlığı basar
+                Text(
+                  AppLocalizations.of(context)?.splashSubtitle ?? 'Canlı Kriz Yönetimi Ağı',
+                  style: AppTextStyles.subtitle,
+                ), // Alt başlığı basar
                 const Spacer(flex: 2), // Başlık ile progress bar arasına orantılı boşluk koyar
                 AnimatedSwitcher( // Durum metni değiştikçe yumuşak geçiş efekti verir
                   duration: const Duration(milliseconds: 300), // Geçiş süresi 300ms'dir
                   child: Text( // Anlık durum mesajını ekrana basar
-                    _statusText,
+                    AppLocalizations.of(context)?.splashReady ?? _statusText,
                     key: ValueKey<String>(_statusText), // Değer değiştiğinde animasyonu tetikler
                     style: AppTextStyles.statusText, // Metin stilidir
                     textAlign: TextAlign.center, // Metni ortalar
