@@ -6,7 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/constants/user_role.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_status_colors.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_button.dart';
@@ -90,6 +89,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final auth = context.watch<AuthController>();
     final l10n = AppLocalizations.of(context);
     final busy = auth.isBusy;
+    final theme = Theme.of(context);
+    final danger = theme.extension<AppStatusColors>()!.critical;
 
     return Scaffold(
       appBar: AppBar(
@@ -180,7 +181,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onChanged: (_) => setState(() {}),
                         decoration: InputDecoration(
                           labelText: l10n?.registerPassword ?? 'Şifre',
-                          helperText: 'En az 8 karakter, 1 büyük harf, 1 rakam',
+                          helperText: l10n?.registerPasswordHelper ??
+                              'En az 8 karakter, 1 büyük harf, 1 rakam',
                           prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -232,9 +234,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Kritik Afet Uyarı Bildirimlerini Al',
                     style: const TextStyle(fontSize: 14),
                   ),
-                  subtitle: const Text(
-                    'Tahliye ve artçı sarsıntı uyarılarını almak istiyorum',
-                    style: TextStyle(fontSize: 12),
+                  subtitle: Text(
+                    l10n?.registerNotificationsSubtitle ??
+                        'Tahliye ve artçı sarsıntı uyarılarını almak istiyorum',
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ),
 
@@ -258,8 +261,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ? Text(
                           l10n?.registerLegalError ??
                               'Devam etmek için onay gereklidir',
-                          style: const TextStyle(
-                            color: AppColors.danger,
+                          style: TextStyle(
+                            color: danger,
                             fontSize: 12,
                           ),
                         )
@@ -292,22 +295,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 14, vertical: 10),
                     decoration: BoxDecoration(
-                      color: AppColors.danger.withValues(alpha: 0.12),
+                      color: danger.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: AppColors.danger.withValues(alpha: 0.3),
+                        color: danger.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.error_outline_rounded,
-                            color: AppColors.danger, size: 18),
+                        Icon(Icons.error_outline_rounded, color: danger, size: 18),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             failureMessage(auth.failure!, l10n),
-                            style: const TextStyle(
-                              color: AppColors.danger,
+                            style: TextStyle(
+                              color: danger,
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                             ),
@@ -342,10 +344,11 @@ class _PasswordStrengthBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusColors = Theme.of(context).extension<AppStatusColors>();
-    final criticalColor = statusColors?.critical ?? AppColors.danger;
-    final warningColor = statusColors?.urgent ?? AppColors.warning;
-    final successColor = statusColors?.normal ?? AppColors.success;
+    final theme = Theme.of(context);
+    final statusColors = theme.extension<AppStatusColors>()!;
+    final criticalColor = statusColors.critical;
+    final warningColor = statusColors.urgent;
+    final successColor = statusColors.normal;
 
     final color = switch (strength) {
       <= 1 => criticalColor,
@@ -356,7 +359,7 @@ class _PasswordStrengthBar extends StatelessWidget {
     return LinearProgressIndicator(
       value: strength / 4,
       color: color,
-      backgroundColor: AppColors.border,
+      backgroundColor: theme.colorScheme.outline,
       minHeight: 4,
       borderRadius: BorderRadius.circular(2),
     );

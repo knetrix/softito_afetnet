@@ -1,4 +1,6 @@
 import 'dart:async';
+
+import 'package:afetnet/features/auth/domain/auth_failure.dart';
 import 'package:afetnet/features/profile/domain/profile_repository.dart';
 import 'package:afetnet/features/profile/domain/user_contact_profile.dart';
 import 'package:afetnet/features/profile/presentation/profile_controller.dart';
@@ -67,8 +69,22 @@ class FakeProfileRepository implements ProfileRepository {
     _controller.add(current);
   }
 
+  String password = 'Dogru123';
+  int deleteCalls = 0;
+  int teamNameCalls = 0;
+
   @override
-  Future<void> deleteAccount(String uid) async {
+  Future<String?> getTeamName(String teamId) async {
+    teamNameCalls++;
+    return teamId == 'team_04' ? 'Arama Kurtarma Tim 4' : null;
+  }
+
+  @override
+  Future<void> deleteAccount(String uid, {required String password}) async {
+    if (password != this.password) {
+      throw const AuthException(AuthFailure.invalidCredentials);
+    }
+    deleteCalls++;
     current = null;
     _controller.add(null);
   }
@@ -126,6 +142,30 @@ void main() {
       expect(success, isTrue);
       expect(controller.profile?.emergencyContactName, equals('Ahmet Yılmaz'));
       expect(controller.profile?.emergencyContactPhone, equals('+90 555 123 45 67'));
+    });
+
+    test('deleteAccount yanlış şifrede silmez, hatayı tutar', () async {
+      final ok = await controller.deleteAccount(password: 'Yanlis123');
+
+      expect(ok, isFalse);
+      expect(controller.deleteFailure, AuthFailure.invalidCredentials);
+      expect(repo.deleteCalls, 0);
+      expect(controller.isLoading, isFalse);
+    });
+
+    test('deleteAccount doğru şifrede siler', () async {
+      final ok = await controller.deleteAccount(password: 'Dogru123');
+
+      expect(ok, isTrue);
+      expect(controller.deleteFailure, isNull);
+      expect(repo.deleteCalls, 1);
+    });
+
+    test('teamName ekip adını okur ve önbellekte tutar', () async {
+      expect(await controller.teamName('team_04'), 'Arama Kurtarma Tim 4');
+      expect(await controller.teamName('team_04'), 'Arama Kurtarma Tim 4');
+      expect(await controller.teamName('yok'), isNull);
+      expect(repo.teamNameCalls, 2);
     });
   });
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_status_colors.dart';
 
 /// Parlayan dairesel buton (§3.4, A1 Panik, A3 Düdük)
 class GlowCircleButton extends StatefulWidget {
@@ -10,7 +10,7 @@ class GlowCircleButton extends StatefulWidget {
     this.onLongPress,
     required this.icon,
     this.label,
-    this.color = AppColors.danger,
+    this.color,
     this.size = 140.0,
     this.isPulsing = true,
   });
@@ -19,7 +19,8 @@ class GlowCircleButton extends StatefulWidget {
   final VoidCallback? onLongPress;
   final IconData icon;
   final String? label;
-  final Color color;
+  /// Verilmezse temadaki kritik renk (`AppStatusColors.critical`) kullanılır.
+  final Color? color;
   final double size;
   final bool isPulsing;
 
@@ -70,6 +71,8 @@ class _GlowCircleButtonState extends State<GlowCircleButton>
 
   @override
   Widget build(BuildContext context) {
+    final color =
+        widget.color ?? Theme.of(context).extension<AppStatusColors>()!.critical;
     return AnimatedBuilder(
       animation: _glowAnimation,
       builder: (context, child) {
@@ -81,10 +84,10 @@ class _GlowCircleButtonState extends State<GlowCircleButton>
             height: widget.size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: widget.color,
+              color: color,
               boxShadow: [
                 BoxShadow(
-                  color: widget.color.withValues(alpha: 0.45),
+                  color: color.withValues(alpha: 0.45),
                   blurRadius: widget.isPulsing ? _glowAnimation.value : 10,
                   spreadRadius: widget.isPulsing ? _glowAnimation.value * 0.3 : 2,
                 ),

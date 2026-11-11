@@ -18,7 +18,6 @@
   "privacyPolicy": "Privacy Policy",
   "deleteAccount": "Delete Account",
   "kvkkConsent": "Clarification Text",
-
   "navHome": "Home",
   "navAssembly": "Assembly",
   "navWhistle": "Whistle",
@@ -26,13 +25,10 @@
   "navLiveFeed": "Live Feed",
   "navTeams": "Teams",
   "navLogistics": "Logistics",
-
   "notOfficialDisclaimer": "Not an official agency app · In emergency call ",
   "emergencyCall": "112",
-
   "roleCitizen": "Civilian User (Survivor)",
   "roleOfficial": "Field Coordinator (Official)",
-
   "validationRequired": "This field is required",
   "validationInvalidEmail": "Enter a valid email address",
   "validationInvalidPhone": "Enter phone as +90 5XX XXX XX XX",
@@ -40,7 +36,6 @@
   "validationPasswordNoUppercase": "Password must contain at least 1 uppercase letter",
   "validationPasswordNoDigit": "Password must contain at least 1 digit",
   "validationPasswordMismatch": "Passwords do not match",
-
   "authFailureInvalidCredentials": "Invalid email or password",
   "authFailureEmailAlreadyInUse": "An account already exists with this email",
   "authFailureWeakPassword": "Password is too weak",
@@ -51,7 +46,6 @@
   "authFailureTooManyRequests": "Too many attempts, please try again later",
   "authFailureProviderDisabled": "Email sign-in is currently disabled",
   "authFailureUnknown": "An unexpected error occurred, please try again",
-
   "loginTitle": "Sign In",
   "loginEmail": "Email",
   "loginPassword": "Password",
@@ -61,7 +55,6 @@
   "loginForgotPasswordSent": "Password reset link sent to your email",
   "loginSignUpPrompt": "Don't have an account? Sign Up",
   "loginSubmit": "Sign In",
-
   "registerTitle": "Sign Up",
   "registerAccountType": "Account Type",
   "registerFullName": "Full Name",
@@ -78,7 +71,6 @@
   "passwordStrengthWeak": "Weak",
   "passwordStrengthMedium": "Medium",
   "passwordStrengthStrong": "Strong",
-
   "onboardingSkip": "Skip",
   "onboardingNext": "Next",
   "onboardingStart": "Get Started",
@@ -92,10 +84,8 @@
   "onboardingTeamPill": "Team Tracking",
   "onboardingAutoPriority": "Automatic Prioritization",
   "onboardingAutoPriorityDesc": "Rule-based instant triage & emergency dispatch",
-
   "splashSubtitle": "Live Crisis Management Network",
   "splashReady": "AfetNet protocol ready.",
-
   "profileCivilianTitle": "Survivor Profile",
   "profileOfficialTitle": "Coordinator Profile",
   "profileMedicalCardTitle": "Medical & Health Identity",
@@ -117,6 +107,37 @@
   "deleteAccountConfirmTitle": "Delete Account?",
   "deleteAccountConfirmMessage": "This action cannot be undone. Your personal and medical data will be permanently deleted.",
   "signOutConfirmTitle": "Sign Out",
-  "signOutConfirmMessage": "Are you sure you want to sign out?"
+  "signOutConfirmMessage": "Are you sure you want to sign out?",
+  "registerPasswordHelper": "At least 8 characters, 1 uppercase letter, 1 digit",
+  "registerNotificationsSubtitle": "I want to receive evacuation and aftershock alerts",
+  "roleBadgeCitizen": "CIVILIAN USER",
+  "roleBadgeOfficial": "FIELD COORDINATOR",
+  "priorityCritical": "CRITICAL",
+  "priorityUrgent": "URGENT",
+  "priorityNormal": "NORMAL",
+  "profileNotSpecified": "Not specified",
+  "profileNotAssigned": "Not assigned",
+  "profileEmergencyContactEmpty": "No emergency contact added yet.",
+  "profileAddressEmpty": "No registered residence address.",
+  "profileContactName": "Contact's Full Name",
+  "profileRelationHint": "e.g. Mother, Spouse, Sibling",
+  "profileMedicationsHint": "e.g. Insulin, blood pressure medication",
+  "profileConditionsHint": "e.g. Asthma, penicillin allergy",
+  "profileBirthYear": "Birth Year",
+  "profileBirthYearHint": "e.g. 1995",
+  "profileWeightHint": "e.g. 72",
+  "profileAddressHint": "Province, district, neighbourhood, street, building and floor...",
+  "profileCoordinationInfo": "Coordination Details",
+  "deleteAccountConfirmMessageOfficial": "This action cannot be undone. The coordinator account will be permanently deleted.",
+  "deleteAccountPasswordTitle": "Confirm Your Password",
+  "deleteAccountPasswordMessage": "For your security, enter your password before deleting the account.",
+  "deleteAccountFailed": "The account could not be deleted, please try again.",
+  "debugToolsTitle": "Demo & Test Tools (Debug)",
+  "demoReset": "Reset Demo Data",
+  "demoResetTitle": "Demo Data",
+  "demoResetPending": "Demo data loading will be connected in step G6.",
+  "onboardingActive": "ACTIVE",
+  "onboardingRadarTeam": "TEAM #04 1.2km",
+  "onboardingRadarDepot": "DEPOT 94% L-4",
+  "validationInvalidValue": "Enter a valid value"
 }
-
