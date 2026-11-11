@@ -3,9 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'core/router/app_router.dart';
+import 'core/theme/app_theme.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
 import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
+import 'l10n/app_localizations.dart';
 
 class AfetNetApp extends StatefulWidget {
   const AfetNetApp({super.key});
@@ -32,16 +34,18 @@ class _AfetNetAppState extends State<AfetNetApp> {
       providers: [
         Provider<AuthRepository>.value(value: _authRepository),
         ChangeNotifierProvider<AuthController>.value(value: _auth),
-        // Diğer repository ve servisler buraya eklenir.
+        // Diğer repository ve servisler sonraki adımlarda eklenir.
       ],
       child: MaterialApp.router(
-        title: 'AfetNet',
         debugShowCheckedModeBanner: false,
-        // TODO(G2): AppTheme.light() / AppTheme.dark() (§3.4) ve ARB dil
-        // kurulumu (localizationsDelegates, supportedLocales, cihaz dili).
-        theme: ThemeData(brightness: Brightness.light),
-        darkTheme: ThemeData(brightness: Brightness.dark),
-        themeMode: ThemeMode.system,
+        onGenerateTitle: (context) => AppLocalizations.of(context)?.appTitle ?? 'AfetNet',
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: ThemeMode.system, // T14: Sistem temasını izler
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localeResolutionCallback: (locale, _) =>
+            locale?.languageCode == 'tr' ? const Locale('tr') : const Locale('en'),
         routerConfig: _router,
       ),
     );
