@@ -72,9 +72,21 @@ abstract final class Validators {
     return RegExp(r'^905\d{9}$').hasMatch(digits) ? '+$digits' : null;
   }
 
+  /// `+905XXXXXXXXX` biçimini ekranda `+90 5XX XXX XX XX` olarak gösterir.
+  /// Çözülemeyen değer olduğu gibi döner.
+  static String formatPhone(String value) {
+    final e164 = normalizePhone(value);
+    if (e164 == null) return value;
+    final d = e164.substring(3); // 5XXXXXXXXX
+    return '+90 ${d.substring(0, 3)} ${d.substring(3, 6)} ${d.substring(6, 8)} ${d.substring(8)}';
+  }
+
   /// Her telefon alanı kendi formatter örneğini kullanır (durum tutar).
-  static MaskTextInputFormatter phoneFormatter() => MaskTextInputFormatter(
+  /// Düzenlenen alanda kayıtlı numara varsa [initialText] olarak verilir.
+  static MaskTextInputFormatter phoneFormatter({String? initialText}) =>
+      MaskTextInputFormatter(
         mask: phoneMask,
         filter: {'#': RegExp(r'\d')},
+        initialText: initialText,
       );
 }

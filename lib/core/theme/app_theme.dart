@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 import 'app_status_colors.dart';
+import 'text_styles.dart';
 
 /// AfetNet Uygulama Teması (§3.4, T14)
 /// Koyu ve açık tema; sistem temasını izler (ThemeMode.system).
@@ -27,6 +28,8 @@ abstract final class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      fontFamily: AppFonts.body,
+      textTheme: _textTheme,
       scaffoldBackgroundColor: AppColors.background,
       colorScheme: colorScheme,
       extensions: const [AppStatusColors.dark],
@@ -35,6 +38,7 @@ abstract final class AppTheme {
         elevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
+          fontFamily: AppFonts.heading,
           color: AppColors.textPrimary,
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -126,6 +130,8 @@ abstract final class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      fontFamily: AppFonts.body,
+      textTheme: _textTheme,
       scaffoldBackgroundColor: AppColors.lightBackground,
       colorScheme: colorScheme,
       extensions: const [AppStatusColors.light],
@@ -134,6 +140,7 @@ abstract final class AppTheme {
         elevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
+          fontFamily: AppFonts.heading,
           color: AppColors.lightTextPrimary,
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -203,6 +210,20 @@ abstract final class AppTheme {
       ),
     );
   }
+
+  /// Başlıklar Space Grotesk, gövde Inter (`fontFamily`), etiketler JetBrains Mono.
+  /// Yalnızca aile verilir; boyut ve renkler Material 3 varsayılanıyla birleşir.
+  static const _textTheme = TextTheme(
+    displayLarge: TextStyle(fontFamily: AppFonts.heading),
+    displayMedium: TextStyle(fontFamily: AppFonts.heading),
+    displaySmall: TextStyle(fontFamily: AppFonts.heading),
+    headlineLarge: TextStyle(fontFamily: AppFonts.heading),
+    headlineMedium: TextStyle(fontFamily: AppFonts.heading),
+    headlineSmall: TextStyle(fontFamily: AppFonts.heading),
+    titleLarge: TextStyle(fontFamily: AppFonts.heading),
+    titleMedium: TextStyle(fontFamily: AppFonts.heading),
+    labelSmall: TextStyle(fontFamily: AppFonts.mono),
+  );
 
   // Geriye dönük uyumluluk için getter'lar
   static ThemeData get darkTheme => dark();

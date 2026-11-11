@@ -32,7 +32,12 @@ abstract class ProfileRepository {
     required String addressText,
   });
 
-  /// Hesabı Sil (PROJECT_NEW.md §7 mağaza zorunluluğu)
-  Future<void> deleteAccount(String uid);
+  /// Bağlı ekibin adı (`teams/{teamId}.name`); ekip kaydı yoksa `null`.
+  Future<String?> getTeamName(String teamId);
+
+  /// Hesabı Sil (PROJECT_NEW.md §7 mağaza zorunluluğu).
+  /// Önce [password] ile kimlik yeniden doğrulanır; hatalar `AuthException`
+  /// olarak fırlatılır (yanlış şifrede `AuthFailure.invalidCredentials`).
+  Future<void> deleteAccount(String uid, {required String password});
 }
 

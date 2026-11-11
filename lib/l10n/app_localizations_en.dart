@@ -353,4 +353,108 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signOutConfirmMessage => 'Are you sure you want to sign out?';
+
+  @override
+  String get registerPasswordHelper =>
+      'At least 8 characters, 1 uppercase letter, 1 digit';
+
+  @override
+  String get registerNotificationsSubtitle =>
+      'I want to receive evacuation and aftershock alerts';
+
+  @override
+  String get roleBadgeCitizen => 'CIVILIAN USER';
+
+  @override
+  String get roleBadgeOfficial => 'FIELD COORDINATOR';
+
+  @override
+  String get priorityCritical => 'CRITICAL';
+
+  @override
+  String get priorityUrgent => 'URGENT';
+
+  @override
+  String get priorityNormal => 'NORMAL';
+
+  @override
+  String get profileNotSpecified => 'Not specified';
+
+  @override
+  String get profileNotAssigned => 'Not assigned';
+
+  @override
+  String get profileEmergencyContactEmpty => 'No emergency contact added yet.';
+
+  @override
+  String get profileAddressEmpty => 'No registered residence address.';
+
+  @override
+  String get profileContactName => 'Contact\'s Full Name';
+
+  @override
+  String get profileRelationHint => 'e.g. Mother, Spouse, Sibling';
+
+  @override
+  String get profileMedicationsHint =>
+      'e.g. Insulin, blood pressure medication';
+
+  @override
+  String get profileConditionsHint => 'e.g. Asthma, penicillin allergy';
+
+  @override
+  String get profileBirthYear => 'Birth Year';
+
+  @override
+  String get profileBirthYearHint => 'e.g. 1995';
+
+  @override
+  String get profileWeightHint => 'e.g. 72';
+
+  @override
+  String get profileAddressHint =>
+      'Province, district, neighbourhood, street, building and floor...';
+
+  @override
+  String get profileCoordinationInfo => 'Coordination Details';
+
+  @override
+  String get deleteAccountConfirmMessageOfficial =>
+      'This action cannot be undone. The coordinator account will be permanently deleted.';
+
+  @override
+  String get deleteAccountPasswordTitle => 'Confirm Your Password';
+
+  @override
+  String get deleteAccountPasswordMessage =>
+      'For your security, enter your password before deleting the account.';
+
+  @override
+  String get deleteAccountFailed =>
+      'The account could not be deleted, please try again.';
+
+  @override
+  String get debugToolsTitle => 'Demo & Test Tools (Debug)';
+
+  @override
+  String get demoReset => 'Reset Demo Data';
+
+  @override
+  String get demoResetTitle => 'Demo Data';
+
+  @override
+  String get demoResetPending =>
+      'Demo data loading will be connected in step G6.';
+
+  @override
+  String get onboardingActive => 'ACTIVE';
+
+  @override
+  String get onboardingRadarTeam => 'TEAM #04 1.2km';
+
+  @override
+  String get onboardingRadarDepot => 'DEPOT 94% L-4';
+
+  @override
+  String get validationInvalidValue => 'Enter a valid value';
 }

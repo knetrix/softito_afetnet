@@ -7,6 +7,8 @@ import 'core/theme/app_theme.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
 import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
+import 'features/profile/data/firestore_profile_repository.dart';
+import 'features/profile/domain/profile_repository.dart';
 import 'l10n/app_localizations.dart';
 
 class AfetNetApp extends StatefulWidget {
@@ -34,6 +36,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
       providers: [
         Provider<AuthRepository>.value(value: _authRepository),
         ChangeNotifierProvider<AuthController>.value(value: _auth),
+        Provider<ProfileRepository>(create: (_) => FirestoreProfileRepository()),
         // Diğer repository ve servisler sonraki adımlarda eklenir.
       ],
       child: MaterialApp.router(

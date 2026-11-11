@@ -18,7 +18,6 @@
   "privacyPolicy": "Gizlilik Politikası",
   "deleteAccount": "Hesabı Sil",
   "kvkkConsent": "KVKK Aydınlatma Metni",
-
   "navHome": "Ana Sayfa",
   "navAssembly": "Toplanma",
   "navWhistle": "Düdük",
@@ -26,13 +25,10 @@
   "navLiveFeed": "Canlı Akış",
   "navTeams": "Ekipler",
   "navLogistics": "Lojistik",
-
   "notOfficialDisclaimer": "Resmi kurum uygulaması değildir · Acil durumda ",
   "emergencyCall": "112",
-
   "roleCitizen": "Sivil Kullanıcı (Afetzede)",
   "roleOfficial": "Saha Koordinatörü (Yetkili)",
-
   "validationRequired": "Bu alan zorunludur",
   "validationInvalidEmail": "Geçerli bir e-posta adresi girin",
   "validationInvalidPhone": "Telefonu +90 5XX XXX XX XX biçiminde girin",
@@ -40,7 +36,6 @@
   "validationPasswordNoUppercase": "Şifre en az 1 büyük harf içermeli",
   "validationPasswordNoDigit": "Şifre en az 1 rakam içermeli",
   "validationPasswordMismatch": "Şifreler eşleşmiyor",
-
   "authFailureInvalidCredentials": "E-posta veya şifre hatalı",
   "authFailureEmailAlreadyInUse": "Bu e-posta ile kayıtlı bir hesap var",
   "authFailureWeakPassword": "Şifre çok zayıf",
@@ -51,7 +46,6 @@
   "authFailureTooManyRequests": "Çok fazla deneme yapıldı, biraz sonra tekrar deneyin",
   "authFailureProviderDisabled": "E-posta ile giriş şu an kullanılamıyor",
   "authFailureUnknown": "Bir hata oluştu, tekrar deneyin",
-
   "loginTitle": "Giriş Yap",
   "loginEmail": "E-posta",
   "loginPassword": "Şifre",
@@ -61,7 +55,6 @@
   "loginForgotPasswordSent": "Şifre sıfırlama bağlantısı e-postanıza gönderildi",
   "loginSignUpPrompt": "Hesabınız yok mu? Üye Olun",
   "loginSubmit": "Giriş Yap",
-
   "registerTitle": "Kayıt Ol",
   "registerAccountType": "Hesap Türü",
   "registerFullName": "Ad Soyad",
@@ -78,7 +71,6 @@
   "passwordStrengthWeak": "Zayıf",
   "passwordStrengthMedium": "Orta",
   "passwordStrengthStrong": "Güçlü",
-
   "onboardingSkip": "Atla",
   "onboardingNext": "İleri",
   "onboardingStart": "Başla",
@@ -92,10 +84,8 @@
   "onboardingTeamPill": "Ekip Takibi",
   "onboardingAutoPriority": "Otomatik Önceliklendirme",
   "onboardingAutoPriorityDesc": "Kural tabanlı anlık triage ve acil görev atama",
-
   "splashSubtitle": "Canlı Kriz Yönetimi Ağı",
   "splashReady": "AfetNet protokolü hazır.",
-
   "profileCivilianTitle": "Afetzede Profili",
   "profileOfficialTitle": "Saha Koordinatörü Profili",
   "profileMedicalCardTitle": "Tıbbi & Sağlık Kimliği",
@@ -117,6 +107,37 @@
   "deleteAccountConfirmTitle": "Hesabınızı Silmek İstiyor Musunuz?",
   "deleteAccountConfirmMessage": "Bu işlem geri alınamaz. Kişisel verileriniz ve sağlık bilgileriniz kalıcı olarak silinecektir.",
   "signOutConfirmTitle": "Çıkış Yap",
-  "signOutConfirmMessage": "Oturumunuzu kapatmak istediğinize emin misiniz?"
+  "signOutConfirmMessage": "Oturumunuzu kapatmak istediğinize emin misiniz?",
+  "registerPasswordHelper": "En az 8 karakter, 1 büyük harf, 1 rakam",
+  "registerNotificationsSubtitle": "Tahliye ve artçı sarsıntı uyarılarını almak istiyorum",
+  "roleBadgeCitizen": "SİVİL KULLANICI",
+  "roleBadgeOfficial": "SAHA KOORDİNATÖRÜ",
+  "priorityCritical": "KRİTİK",
+  "priorityUrgent": "ACİL",
+  "priorityNormal": "NORMAL",
+  "profileNotSpecified": "Belirtilmedi",
+  "profileNotAssigned": "Atanmadı",
+  "profileEmergencyContactEmpty": "Acil durum yakını henüz eklenmedi.",
+  "profileAddressEmpty": "Kayıtlı ikamet adresi bulunmuyor.",
+  "profileContactName": "Yakının Adı Soyadı",
+  "profileRelationHint": "Örn. Anne, Eş, Kardeş",
+  "profileMedicationsHint": "Örn. İnsülin, Tansiyon ilacı",
+  "profileConditionsHint": "Örn. Astım, Penisilin alerjisi",
+  "profileBirthYear": "Doğum Yılı",
+  "profileBirthYearHint": "Örn. 1995",
+  "profileWeightHint": "Örn. 72",
+  "profileAddressHint": "İl, ilçe, mahalle, sokak, bina ve kat bilgisi...",
+  "profileCoordinationInfo": "Koordinasyon Bilgileri",
+  "deleteAccountConfirmMessageOfficial": "Bu işlem geri alınamaz. Koordinatör hesabı kalıcı olarak silinecektir.",
+  "deleteAccountPasswordTitle": "Şifrenizi Doğrulayın",
+  "deleteAccountPasswordMessage": "Güvenliğiniz için hesabı silmeden önce şifrenizi girin.",
+  "deleteAccountFailed": "Hesap silinemedi, tekrar deneyin.",
+  "debugToolsTitle": "Demo & Test Araçları (Debug)",
+  "demoReset": "Demo Verisini Sıfırla",
+  "demoResetTitle": "Demo Verisi",
+  "demoResetPending": "Demo verisi yükleme G6 aşamasında bağlanacaktır.",
+  "onboardingActive": "AKTİF",
+  "onboardingRadarTeam": "TİM #04 1.2km",
+  "onboardingRadarDepot": "DEPO %94 L-4",
+  "validationInvalidValue": "Geçerli bir değer girin"
 }
-

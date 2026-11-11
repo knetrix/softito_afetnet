@@ -108,7 +108,7 @@ class IntegrationCard extends StatelessWidget {
                     Container( // Küçük yeşil AKTİF rozet kutusudur
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5), // Rozet iç boşluğu
                       decoration: BoxDecoration(color: AppColors.success.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(4)), // Açık yeşil zemin
-                      child: const Text('AKTİF', style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: AppColors.success, letterSpacing: 0.6)),
+                      child: Text(l10n?.onboardingActive ?? 'AKTİF', style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: AppColors.success, letterSpacing: 0.6)),
                     ),
                   ],
                 ),

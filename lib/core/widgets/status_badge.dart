@@ -1,73 +1,75 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../theme/app_status_colors.dart';
 
+enum _BadgeKind { custom, priority, citizen, official }
+
 /// AfetNet Durum ve Öncelik Rozeti (§3.4, §4 Kural 1, Y1, Y2, Y3)
+///
+/// Öncelik ve rol rozetlerinin metni ARB'den, rengi temadan (`AppStatusColors`)
+/// `build` sırasında okunur; böylece dil ve tema değişince rozet de güncellenir.
 class StatusBadge extends StatelessWidget {
   const StatusBadge({
     super.key,
-    required this.label,
-    required this.color,
+    required String this.label,
+    required Color this.color,
     this.icon,
-  });
+  })  : _kind = _BadgeKind.custom,
+        _priority = 0;
+
+  const StatusBadge._(this._kind, this.icon, this._priority)
+      : label = null,
+        color = null;
 
   /// Öncelik rozeti (1: Kritik, 2: Acil, 3: Normal)
-  factory StatusBadge.priority(int priority, {BuildContext? context}) {
-    String label;
-    Color color;
-
-    switch (priority) {
-      case 1:
-        label = 'KRİTİK';
-        color = AppColors.danger;
-        break;
-      case 2:
-        label = 'ACİL';
-        color = AppColors.warning;
-        break;
-      case 3:
-      default:
-        label = 'NORMAL';
-        color = AppColors.success;
-        break;
-    }
-
-    if (context != null) {
-      final statusColors = Theme.of(context).extension<AppStatusColors>();
-      if (statusColors != null) {
-        color = statusColors.forPriority(priority);
-      }
-    }
-
-    return StatusBadge(
-      label: label,
-      color: color,
-    );
-  }
+  const StatusBadge.priority(int priority)
+      : this._(_BadgeKind.priority, null, priority);
 
   /// Rol rozeti (SİVİL KULLANICI / SAHA KOORDİNATÖRÜ)
-  factory StatusBadge.role({required bool isOfficial}) {
-    return StatusBadge(
-      label: isOfficial ? 'SAHA KOORDİNATÖRÜ' : 'SİVİL KULLANICI',
-      color: isOfficial ? AppColors.warning : AppColors.primary,
-      icon: isOfficial ? Icons.verified_user_rounded : Icons.person_rounded,
-    );
-  }
+  factory StatusBadge.role({required bool isOfficial}) => isOfficial
+      ? const StatusBadge._(_BadgeKind.official, Icons.verified_user_rounded, 0)
+      : const StatusBadge._(_BadgeKind.citizen, Icons.person_rounded, 0);
 
-  final String label;
-  final Color color;
+  final String? label;
+  final Color? color;
   final IconData? icon;
+  final _BadgeKind _kind;
+  final int _priority;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final status = theme.extension<AppStatusColors>()!;
+    final l10n = AppLocalizations.of(context);
+
+    final (String text, Color tint) = switch (_kind) {
+      _BadgeKind.custom => (label!, color!),
+      _BadgeKind.priority => (
+          switch (_priority) {
+            1 => l10n?.priorityCritical ?? 'KRİTİK',
+            2 => l10n?.priorityUrgent ?? 'ACİL',
+            _ => l10n?.priorityNormal ?? 'NORMAL',
+          },
+          status.forPriority(_priority),
+        ),
+      _BadgeKind.citizen => (
+          l10n?.roleBadgeCitizen ?? 'SİVİL KULLANICI',
+          theme.colorScheme.primary,
+        ),
+      _BadgeKind.official => (
+          l10n?.roleBadgeOfficial ?? 'SAHA KOORDİNATÖRÜ',
+          status.urgent,
+        ),
+    };
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
+        color: tint.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: color.withValues(alpha: 0.4),
+          color: tint.withValues(alpha: 0.4),
           width: 1,
         ),
       ),
@@ -75,7 +77,7 @@ class StatusBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: 12, color: color),
+            Icon(icon, size: 12, color: tint),
             const SizedBox(width: 4),
           ] else ...[
             Container(
@@ -83,15 +85,15 @@ class StatusBadge extends StatelessWidget {
               height: 6,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: color,
+                color: tint,
               ),
             ),
             const SizedBox(width: 6),
           ],
           Text(
-            label,
+            text,
             style: TextStyle(
-              color: color,
+              color: tint,
               fontSize: 11,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.6,
@@ -102,4 +104,3 @@ class StatusBadge extends StatelessWidget {
     );
   }
 }
-

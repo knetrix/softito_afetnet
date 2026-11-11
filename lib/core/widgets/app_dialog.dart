@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../../l10n/app_localizations.dart';
+import '../theme/app_status_colors.dart';
 
 /// AfetNet Standart Onay ve Bilgi Diyaloğu (§3.2, screens-with-provider-integration §4)
 abstract final class AppDialog {
@@ -9,22 +10,23 @@ abstract final class AppDialog {
     BuildContext context, {
     required String title,
     required String message,
-    String confirmLabel = 'Onayla',
-    String cancelLabel = 'İptal',
+    String? confirmLabel,
+    String? cancelLabel,
     bool destructive = false,
   }) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
     return showDialog<bool>(
       context: context,
       builder: (dialogContext) {
+        final theme = Theme.of(dialogContext);
+        final colors = theme.colorScheme;
+        final l10n = AppLocalizations.of(dialogContext);
+        final danger = theme.extension<AppStatusColors>()!.critical;
         return AlertDialog(
-          backgroundColor: isDark ? AppColors.surface : AppColors.lightSurface,
+          backgroundColor: colors.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-              color: isDark ? AppColors.border : AppColors.lightBorder,
+              color: colors.outline,
             ),
           ),
           title: Text(
@@ -34,7 +36,7 @@ abstract final class AppDialog {
           content: Text(
             message,
             style: TextStyle(
-              color: isDark ? AppColors.textSecondary : AppColors.lightTextSecondary,
+              color: colors.onSurfaceVariant,
               fontSize: 14,
               height: 1.4,
             ),
@@ -42,21 +44,21 @@ abstract final class AppDialog {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: Text(cancelLabel),
+              child: Text(cancelLabel ?? l10n?.cancel ?? 'İptal'),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
               style: ElevatedButton.styleFrom(
                 backgroundColor:
-                    destructive ? AppColors.danger : theme.colorScheme.primary,
+                    destructive ? danger : colors.primary,
                 foregroundColor:
-                    destructive ? Colors.white : theme.colorScheme.onPrimary,
+                    destructive ? colors.onError : colors.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text(confirmLabel),
+              child: Text(confirmLabel ?? l10n?.confirm ?? 'Onayla'),
             ),
           ],
         );
@@ -69,20 +71,20 @@ abstract final class AppDialog {
     BuildContext context, {
     required String title,
     required String message,
-    String buttonLabel = 'Tamam',
+    String? buttonLabel,
   }) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
     return showDialog<void>(
       context: context,
       builder: (dialogContext) {
+        final theme = Theme.of(dialogContext);
+        final colors = theme.colorScheme;
+        final l10n = AppLocalizations.of(dialogContext);
         return AlertDialog(
-          backgroundColor: isDark ? AppColors.surface : AppColors.lightSurface,
+          backgroundColor: colors.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-              color: isDark ? AppColors.border : AppColors.lightBorder,
+              color: colors.outline,
             ),
           ),
           title: Text(
@@ -92,7 +94,7 @@ abstract final class AppDialog {
           content: Text(
             message,
             style: TextStyle(
-              color: isDark ? AppColors.textSecondary : AppColors.lightTextSecondary,
+              color: colors.onSurfaceVariant,
               fontSize: 14,
               height: 1.4,
             ),
@@ -101,14 +103,14 @@ abstract final class AppDialog {
             ElevatedButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
+                backgroundColor: colors.primary,
+                foregroundColor: colors.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text(buttonLabel),
+              child: Text(buttonLabel ?? l10n?.ok ?? 'Tamam'),
             ),
           ],
         );

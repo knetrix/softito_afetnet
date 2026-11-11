@@ -44,7 +44,7 @@ Bitirince GitHub'da Pull Request aç. **base** kutusunu `development` yap (varsa
 **Çıktı:** Uygulama tasarımdaki gibi görünüyor, TR/EN çalışıyor, profil dolduruluyor.
 
 ### G3 — Furkan · Panik, Ana Sayfa ve Düdük
-1. Servisler: konum + konum etiketi (`geocoding`, Kural 9), bağlantı tespiti (10 sn, Kural 8), yerel bildirim + FCM `all_users` aboneliği.
+1. Servisler: konum + konum etiketi (`geocoding`, Kural 9; A1 başlığı ve A4 konum rozeti), bağlantı tespiti (10 sn, Kural 8), yerel bildirim + FCM `all_users` aboneliği.
 2. Panik sinyali (`safety_signals`): PANİĞİM (2 sn basılı tut), GÜVENDEYİM, internet yoksa SMS diyaloğu (Kural 8).
 3. Ana Sayfa (A1) yerleşimi: ad + konum, panik butonu, "Yardım Çağrısı Ekle" butonu (sheet'i G4 yazar).
 4. Düdük (A3): internetsiz düdük, iOS sessiz modda da çalar.
@@ -71,8 +71,8 @@ Bitirince GitHub'da Pull Request aç. **base** kutusunu `development` yap (varsa
 ### G6 — Meryem · Lojistik, Anons ve Teslime Hazırlık
 1. Lojistik (Y3): depo, envanter, stok etiketi, giriş/çıkış sheet'i + Transaction, kritik stok uyarısı (Kural 3).
 2. Tahliye Anonsu sheet'i (`broadcasts`), yarıçap içindeki afetzedelere bildirim (Kural 10).
-3. Demo verisi: ekipler, depo, stok, toplanma noktaları ve "Demo Verisini Sıfırla" butonu; demo hesaplarını kayıt olarak aç, yetkiliyi Console'dan onayla (8).
-4. Hesabı Sil akışı (7) + yasal metinler TR/EN (`hosting/legal/`, Firebase Hosting).
+3. Demo verisi: ekipler, depo, stok, toplanma noktaları ve "Demo Verisini Sıfırla" servisi (buton Y4'te debug derlemede hazır); demo hesaplarını kayıt olarak aç, yetkiliyi Console'dan onayla (8).
+4. Yasal metinler TR/EN (`hosting/legal/`, Firebase Hosting). Hesabı Sil akışı (7) G2'de yapıldı; G6 yalnızca kurallarda silme izinlerini verir ve akışı dener.
 5. `firestore.rules` + index'ler (5.4, 5.5); test modu kapatılır, demo akışı baştan sona tekrar denenir.
 
 **Çıktı:** Demo akışının (8) tamamı TR ve EN çalışıyor.

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../core/utils/validators.dart';
+import '../../auth/domain/auth_failure.dart';
 import '../domain/profile_repository.dart';
 import '../domain/user_contact_profile.dart';
 
@@ -97,7 +99,8 @@ class FirestoreProfileRepository implements ProfileRepository {
       'emergencyContact': {
         'name': name.trim(),
         'relation': relation.trim(),
-        'phone': phone.trim(),
+        // Kullanıcının kendi telefonu gibi `+905XXXXXXXXX` biçiminde saklanır (SMS köprüsü, Kural 8).
+        'phone': Validators.normalizePhone(phone) ?? phone.trim(),
       },
     }, SetOptions(merge: true));
   }
@@ -115,18 +118,54 @@ class FirestoreProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<void> deleteAccount(String uid) async {
-    // 1. safety_signals/{uid} silinir
-    await _db.collection('safety_signals').doc(uid).delete().catchError((Object _) {});
+  Future<String?> getTeamName(String teamId) async {
+    final snap = await _db.collection('teams').doc(teamId).get();
+    return snap.data()?['name'] as String?;
+  }
 
-    // 2. users/{uid}/private/contact ve users/{uid} silinir
-    await _contactDoc(uid).delete().catchError((Object _) {});
-    await _db.collection('users').doc(uid).delete().catchError((Object _) {});
-
-    // 3. Firebase Auth hesabı silinir
+  @override
+  Future<void> deleteAccount(String uid, {required String password}) async {
     final user = _auth.currentUser;
-    if (user != null && user.uid == uid) {
+    final email = user?.email;
+    if (user == null || user.uid != uid || email == null) {
+      throw const AuthException(AuthFailure.unknown);
+    }
+    try {
+      // Şifre yanlışsa hiçbir veri silinmez (§7: onay → yeniden şifre).
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: email, password: password),
+      );
+
+      final requests = await _db
+          .collection('help_requests')
+          .where('createdBy', isEqualTo: uid)
+          .get();
+      final batch = _db.batch();
+      // 1. Kullanıcının çağrılarındaki private/contact belgeleri
+      //    (çağrı belgeleri operasyonel kayıt olarak kalır).
+      for (final request in requests.docs) {
+        batch.delete(request.reference.collection('private').doc('contact'));
+      }
+      // 2. safety_signals/{uid}
+      batch.delete(_db.collection('safety_signals').doc(uid));
+      // 3. users/{uid}/private/contact ve users/{uid}
+      batch.delete(_contactDoc(uid));
+      batch.delete(_db.collection('users').doc(uid));
+      await batch.commit();
+
+      // 4. Firebase Auth hesabı (oturum kapanır, router Giriş'e döner).
       await user.delete();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(switch (e.code) {
+        'wrong-password' || 'invalid-credential' => AuthFailure.invalidCredentials,
+        'too-many-requests' => AuthFailure.tooManyRequests,
+        'network-request-failed' => AuthFailure.network,
+        _ => AuthFailure.unknown,
+      });
+    } on FirebaseException catch (e) {
+      throw AuthException(
+        e.code == 'unavailable' ? AuthFailure.network : AuthFailure.unknown,
+      );
     }
   }
 }

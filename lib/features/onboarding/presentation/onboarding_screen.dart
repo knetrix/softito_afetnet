@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/router/app_routes.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../screens/splash_onboarding_screen.dart';
 
@@ -14,13 +15,17 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SplashOnboardingScreen(
-      onCompleted: () async {
-        await context.read<AuthController>().completeOnboarding();
-        if (context.mounted) {
-          context.go(AppRoutes.login);
-        }
-      },
+    // Splash ile aynı nedenle her zaman koyu temada gösterilir.
+    return Theme(
+      data: AppTheme.dark(),
+      child: SplashOnboardingScreen(
+        onCompleted: () async {
+          await context.read<AuthController>().completeOnboarding();
+          if (context.mounted) {
+            context.go(AppRoutes.login);
+          }
+        },
+      ),
     );
   }
 }

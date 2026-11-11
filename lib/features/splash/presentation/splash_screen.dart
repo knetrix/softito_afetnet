@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../onboarding/screens/splash_screen.dart' as onboarding_splash;
 
 /// O1 — Splash Ekranı (§3.1).
@@ -10,6 +11,11 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const onboarding_splash.SplashScreen();
+    // Radar çizimleri koyu zemin için tasarlandı; sistem teması açık olsa da
+    // Splash ve Onboarding koyu temada gösterilir (okunabilirlik, T15 uyarısı).
+    return Theme(
+      data: AppTheme.dark(),
+      child: const onboarding_splash.SplashScreen(),
+    );
   }
 }
