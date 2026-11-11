@@ -1,7 +1,7 @@
 # AfetNet — Canlı Kriz Yönetimi ve Acil Yardım Ağı
 
 > **Ekip:** SoftITO 4. Dönem Mobil — 2. Grup (6 kişi): Hasibe Esra Ergün, Meryem Duymuş, Furkan Çalışkan, Somaya Arab, Tuba Aydın, Mustafa Ersoy
-> **Platform:** Flutter, **Android** (geliştirme, test ve demo Android emülatörü/cihazında; iOS MVP dışı, bkz. 7) · **Mimari:** Clean Architecture + Firebase (ücretsiz Spark plan)
+> **Platform:** Flutter, **Android** (geliştirme, test ve demo Android emülatörü/cihazında; iOS'ta yalnızca ücretsiz yapılandırmalar, bkz. 7) · **Mimari:** Clean Architecture + Firebase (ücretsiz Spark plan)
 > **Teslim & Demo Day:** 13 Kasım 2026 Cuma
 > **Hedef:** Google Play'e *yüklenmeye hazır* MVP. Uygulama mağazaya yüklenmez.
 
@@ -318,7 +318,7 @@ firestore.rules · firestore.indexes.json
 | Yerel depolama | `hive_ce`, `hive_ce_flutter`, `shared_preferences` |
 | Konum & harita | `geolocator`, `geocoding`, `flutter_map`, `latlong2`, `geoflutterfire_plus` (yalnızca geohash ve komşu hücre hesabı) |
 | Bildirim | `flutter_local_notifications` |
-| Acil durum | `connectivity_plus`, `audioplayers` (düdük), `url_launcher` (`tel:`, `sms:`, harita) |
+| Acil durum | `connectivity_plus`, `audioplayers` (düdük; iOS'ta `playback`, sessiz modda da çalar), `url_launcher` (`tel:`, `sms:`, harita) |
 | Form & dil | `mask_text_input_formatter`, `flutter_localizations`, `intl` |
 | Mağaza | `flutter_launcher_icons`, `flutter_native_splash` |
 | Yardımcı | `uuid`, `permission_handler` |
@@ -339,8 +339,8 @@ firestore.rules · firestore.indexes.json
 - **Yasal metinler:** Gizlilik Politikası, KVKK Aydınlatma Metni, Kullanım Koşulları ve hesap silme talep sayfası, TR + EN olarak **Firebase Hosting**'de yayınlanır. Kayıt ekranındaki onay kutusundan ve Profil'deki bağlantıdan açılır. Metinler konum, telefon, acil durum yakını ve **tıbbi bilgi (açık rıza)** işlenmesini; verileri yalnızca doğrulanmış yetkililerin gördüğünü ve silme yolunu belirtir.
 - **Kurulum:**
   - Kimlik: `name: afetnet`, Android `applicationId` ve iOS Bundle ID `com.softito.afetnet`; `flutterfire configure`'dan önce yapılır.
-  - İzinler: `ACCESS_FINE_LOCATION` (+ `ACCESS_COARSE_LOCATION`), `POST_NOTIFICATIONS`, `INTERNET`. Arka plan konumu istenmez. Android `targetSdk` 36.
-  - **iOS (MVP dışı):** Ücretli Apple Developer hesabı gerektirdiği için iOS'a özgü yapılandırmalar yapılmaz: APNs/push, konum izin metni (`NSLocationWhenInUseUsageDescription`), `AppDelegate` bildirim ayarı, sessiz modda düdük. `ios/` klasörü korunur ve derlemesi bozulmaz; ancak izin metni olmadığından uygulama iOS'ta konum istediği anda kapanır.
+  - İzinler: `ACCESS_FINE_LOCATION` (+ `ACCESS_COARSE_LOCATION`), `POST_NOTIFICATIONS`, `INTERNET`. Arka plan konumu istenmez. Android `targetSdk` 36. `<queries>`'te `sms` ve `tel` şemaları; FCM için varsayılan bildirim kanalı (`default_notification_channel_id`, "Kritik uyarılar").
+  - **iOS:** Test ve demo Android'de yapılır. iOS'ta yalnızca ücretsiz yapılandırmalar yapılır: konum izin metni (`NSLocationWhenInUseUsageDescription`, TR + EN) ve düdük için `playback` ses oturumu. Ücretli Apple Developer hesabı gerektiren APNs/push ve `AppDelegate` push kurulumu yapılmaz. `ios/` derlemesi bozulmamalı.
   - OpenStreetMap: `userAgentPackageName: 'com.softito.afetnet'` ve haritada "© OpenStreetMap contributors" atfı.
   - Gizli tutulacaklar: `*.jks` ve `key.properties` repoya eklenmez.
 - **Mağaza hazırlığı (Google Play):** Release derlemesinde seed kodu ve test hesabı bulunmaz. `flutter build appbundle --release` başarılı olmalı. `store/` klasöründe TR + EN açıklama ("resmi değildir" ifadesiyle), iki rolden ekran görüntüleri, ikonlar ve Play Veri Güvenliği formu taslağı (ad, e-posta, telefon, konum, sağlık bilgisi, çökme logları).

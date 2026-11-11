@@ -7,7 +7,7 @@ Ayrıntılar `PROJECT_NEW.md`'dedir; parantez içindeki numaralar o belgenin bö
 **Herkes için geçerli:**
 - Ekrana yazılan her metin hem `app_tr.arb` hem `app_en.arb` dosyasına eklenir (İngilizce MVP'dedir).
 - Tasarım düzeltmeleri (3.3) kodlanırken uygulanır: kurum adı, LoRa/telsiz/mesh ifadesi yazılmaz.
-- Testler ve demo **Android** emülatörü/cihazında yapılır (Google Play imajlı emülatör). iOS'a özgü yapılandırma yapılmaz (7); `ios/` derlemesi bozulmamalı.
+- Testler ve demo **Android** emülatörü/cihazında yapılır (Google Play imajlı emülatör). iOS'ta yalnızca ücretsiz yapılandırmalar yapılır, APNs/push yapılmaz (7); `ios/` derlemesi bozulmamalı.
 
 ## Sıra Sana Gelince (GitHub adımları)
 
@@ -48,7 +48,7 @@ Bitirince GitHub'da Pull Request aç. **base** kutusunu `development` yap (varsa
 1. Servisler: konum + konum etiketi (`geocoding`, Kural 9; A1 başlığı ve A4 konum rozeti), bağlantı tespiti (10 sn, Kural 8), yerel bildirim + FCM `all_users` aboneliği.
 2. Panik sinyali (`safety_signals`): PANİĞİM (2 sn basılı tut), GÜVENDEYİM, internet yoksa SMS diyaloğu (Kural 8).
 3. Ana Sayfa (A1) yerleşimi: ad + konum, panik butonu, "Yardım Çağrısı Ekle" butonu (sheet'i G4 yazar).
-4. Düdük (A3): internetsiz düdük, döngüde çalar.
+4. Düdük (A3): internetsiz düdük, döngüde çalar; iOS'ta sessiz modda da çalar (`playback`).
 
 **Çıktı:** Afetzede panik sinyali gönderebiliyor, düdük çalıyor.
 
