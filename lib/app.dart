@@ -1,14 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'core/router/app_router.dart';
+import 'core/services/connectivity_service.dart';
+import 'core/services/location_service.dart';
+import 'core/services/notification_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
 import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
 import 'features/profile/data/firestore_profile_repository.dart';
 import 'features/profile/domain/profile_repository.dart';
+import 'features/safety_signal/data/firestore_safety_signal_repository.dart';
+import 'features/safety_signal/domain/safety_signal_repository.dart';
 import 'l10n/app_localizations.dart';
 
 class AfetNetApp extends StatefulWidget {
@@ -23,8 +30,35 @@ class _AfetNetAppState extends State<AfetNetApp> {
   late final AuthController _auth = AuthController(_authRepository);
   late final GoRouter _router = createAppRouter(_auth);
 
+  final LocationService _locationService = DeviceLocationService();
+  final ConnectivityService _connectivityService = DeviceConnectivityService();
+  final NotificationService _notificationService = DeviceNotificationService();
+  final SafetySignalRepository _safetySignalRepository =
+      FirestoreSafetySignalRepository();
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.addListener(_onAuthChanged);
+    unawaited(_locationService.loadCached());
+    unawaited(_connectivityService.initialize());
+    unawaited(_notificationService.initialize());
+  }
+
+  void _onAuthChanged() {
+    if (_auth.isInitializing) return;
+    final user = _auth.currentUser;
+    final optIn =
+        user != null && !user.isPendingApproval && user.notificationsOptIn;
+    unawaited(_notificationService.syncTopicSubscription(optIn: optIn));
+  }
+
   @override
   void dispose() {
+    _auth.removeListener(_onAuthChanged);
+    _locationService.dispose();
+    _connectivityService.dispose();
+    _notificationService.dispose();
     _router.dispose();
     _auth.dispose();
     super.dispose();
@@ -37,6 +71,12 @@ class _AfetNetAppState extends State<AfetNetApp> {
         Provider<AuthRepository>.value(value: _authRepository),
         ChangeNotifierProvider<AuthController>.value(value: _auth),
         Provider<ProfileRepository>(create: (_) => FirestoreProfileRepository()),
+        ChangeNotifierProvider<LocationService>.value(value: _locationService),
+        ChangeNotifierProvider<ConnectivityService>.value(
+          value: _connectivityService,
+        ),
+        Provider<NotificationService>.value(value: _notificationService),
+        Provider<SafetySignalRepository>.value(value: _safetySignalRepository),
         // Diğer repository ve servisler sonraki adımlarda eklenir.
       ],
       child: MaterialApp.router(

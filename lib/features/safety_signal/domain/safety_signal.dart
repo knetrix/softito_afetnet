@@ -1,0 +1,73 @@
+import 'package:flutter/foundation.dart';
+import 'package:latlong2/latlong.dart';
+
+/// `safety_signals/{uid}.state` değerleri (PROJECT_NEW.md §5.3).
+enum SafetySignalState { danger, safe }
+
+/// Sunucu onayı sonucu (PROJECT_NEW.md §4 Kural 8).
+enum SignalDelivery {
+  /// Sunucu yazımı onayladı (`hasPendingWrites == false`).
+  confirmed,
+
+  /// 10 sn içinde onay gelmedi; Firestore kuyruğunda bekliyor.
+  pending,
+}
+
+/// `safety_signals/{uid}` belgesinin domain modeli (PROJECT_NEW.md §5.3).
+@immutable
+class SafetySignal {
+  const SafetySignal({
+    required this.uid,
+    required this.state,
+    required this.location,
+    required this.geohash,
+    required this.updatedAt,
+    this.handledBy,
+    this.handledAt,
+    this.hasPendingWrites = false,
+  });
+
+  final String uid;
+  final SafetySignalState state;
+  final LatLng location;
+  final String geohash;
+  final DateTime updatedAt;
+  final String? handledBy;
+  final DateTime? handledAt;
+
+  /// Firestore yerel kuyruğunda sunucu onayı bekliyorsa `true`.
+  final bool hasPendingWrites;
+
+  bool get isDanger => state == SafetySignalState.danger;
+  bool get isConfirmed => !hasPendingWrites;
+
+  /// Sahibi `handledBy` alanını silemediği için yeniden panikte eski
+  /// "Ulaşıldı" kaydı kalır; `handledAt < updatedAt` ise sinyal tekrar aktiftir.
+  bool get isHandledAfterLastSignal =>
+      handledAt != null && !handledAt!.isBefore(updatedAt);
+
+  @override
+  bool operator ==(Object other) =>
+      other is SafetySignal &&
+      other.uid == uid &&
+      other.state == state &&
+      other.location == location &&
+      other.geohash == geohash &&
+      other.updatedAt == updatedAt &&
+      other.handledBy == handledBy &&
+      other.handledAt == handledAt &&
+      other.hasPendingWrites == hasPendingWrites;
+
+  @override
+  int get hashCode => Object.hash(
+        uid,
+        state,
+        location,
+        geohash,
+        updatedAt,
+        handledBy,
+        handledAt,
+        hasPendingWrites,
+      );
+}
+

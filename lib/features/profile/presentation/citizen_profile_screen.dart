@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/app_config.dart';
+import '../../../core/services/location_service.dart';
 import '../../../core/theme/app_status_colors.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_button.dart';
@@ -82,6 +83,7 @@ class _CitizenProfileView extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final notSpecified = l10n?.profileNotSpecified ?? 'Belirtilmedi';
     final contactPhone = profile?.emergencyContactPhone;
+    final locationLabel = context.watch<LocationService?>()?.currentLabel;
 
     return Scaffold(
       appBar: AppBar(
@@ -129,9 +131,20 @@ class _CitizenProfileView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // TODO(G3): Konum rozeti (il, ilçe) LocationService'ten gelir (Kural 9);
-                    // gerçek konum yokken uydurma etiket gösterilmez.
-                    StatusBadge.role(isOfficial: false),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        StatusBadge.role(isOfficial: false),
+                        if (locationLabel != null)
+                          StatusBadge(
+                            label: locationLabel,
+                            color: colors.primary,
+                            icon: Icons.location_on_outlined,
+                          ),
+                      ],
+                    ),
                   ],
                 ),
               ),
