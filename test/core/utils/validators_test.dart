@@ -1,4 +1,5 @@
 import 'package:afetnet/core/utils/validators.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -36,15 +37,45 @@ void main() {
       expect(Validators.formatPhone('+90 533 987 65 43'), '+90 533 987 65 43');
       expect(Validators.formatPhone('abc'), 'abc');
     });
-    test('formatter kayıtlı numarayla başlayabilir', () {
-      final f = Validators.phoneFormatter(initialText: '+90 533 987 65 43');
-      expect(f.getMaskedText(), '+90 533 987 65 43');
-      expect(f.isFill(), isTrue);
+    // Alana karakter karakter yazmayı taklit eder.
+    String type(String input, [String start = '']) {
+      final f = Validators.phoneFormatter();
+      var value = TextEditingValue(text: start);
+      for (final ch in input.split('')) {
+        final text = value.text + ch;
+        value = f.formatEditUpdate(
+          value,
+          TextEditingValue(
+            text: text,
+            selection: TextSelection.collapsed(offset: text.length),
+          ),
+        );
+      }
+      return value.text;
+    }
+
+    test('formatter: 5 ile başlayan numara bozulmaz', () {
+      expect(type('5321234567'), '+90 532 123 45 67');
+      expect(Validators.phone(type('5321234567')), isNull);
     });
-    test('formatter maskeyi uygular', () {
-      final masked = Validators.phoneFormatter().maskText('5321234567');
-      expect(masked, '+90 532 123 45 67');
-      expect(Validators.phone(masked), isNull);
+    test('formatter: 0, +90 veya 5 olmadan yazmak aynı sonucu verir', () {
+      expect(type('05321234567'), '+90 532 123 45 67');
+      expect(type('+905321234567'), '+90 532 123 45 67');
+      expect(type('321234567'), '+90 532 123 45 67');
+    });
+    test('formatter: fazla rakam alınmaz, kayıtlı numaranın sonuna yazılmaz', () {
+      expect(type('53212345678'), '+90 532 123 45 67');
+      expect(type('9', '+90 533 987 65 43'), '+90 533 987 65 43');
+    });
+    test('formatter: silme', () {
+      final f = Validators.phoneFormatter();
+      TextEditingValue del(String old, String now) => f.formatEditUpdate(
+            TextEditingValue(text: old),
+            TextEditingValue(text: now),
+          );
+      expect(del('+90 532 1', '+90 532 ').text, '+90 532');
+      expect(del('+90 532 1', '+90 5321').text, '+90 532');
+      expect(del('+90 5', '+90 ').text, '');
     });
   });
 

@@ -1141,6 +1141,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Works completely offline.'**
   String get whistleOfflineNote;
+
+  /// Android notification channel name shown in system settings
+  ///
+  /// In en, this message translates to:
+  /// **'Critical alerts'**
+  String get notificationChannelName;
+
+  /// No description provided for @notificationChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency, evacuation and critical stock notifications'**
+  String get notificationChannelDescription;
 }
 
 class _AppLocalizationsDelegate

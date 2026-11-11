@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 /// Form doğrulama hataları. Metne çeviri ekranda yapılır (ARB, G2).
@@ -14,7 +15,6 @@ enum ValidationError {
 /// Giriş ve Kayıt formu kuralları (PROJECT_NEW.md §7, T3, T4).
 abstract final class Validators {
   static const passwordMinLength = 8;
-  static const phoneMask = '+90 5## ### ## ##';
 
   static final _emailPattern = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]{2,}$');
   static final _uppercasePattern = RegExp(r'[A-ZÇĞİÖŞÜ]');
@@ -81,12 +81,51 @@ abstract final class Validators {
     return '+90 ${d.substring(0, 3)} ${d.substring(3, 6)} ${d.substring(6, 8)} ${d.substring(8)}';
   }
 
-  /// Her telefon alanı kendi formatter örneğini kullanır (durum tutar).
-  /// Düzenlenen alanda kayıtlı numara varsa [initialText] olarak verilir.
-  static MaskTextInputFormatter phoneFormatter({String? initialText}) =>
-      MaskTextInputFormatter(
-        mask: phoneMask,
-        filter: {'#': RegExp(r'\d')},
-        initialText: initialText,
-      );
+  /// Telefon alanı için `+90 5XX XXX XX XX` biçimlendiricisi.
+  static TextInputFormatter phoneFormatter() => const _PhoneInputFormatter();
+}
+
+/// Her değişiklikte rakamları baştan yorumlar. `5321234567`, `05321234567`,
+/// `+90 532...` ya da `+90 5`'ten sonra `321234567` yazmak aynı sonucu verir.
+/// (Durum tutan maske, `+90 5`'ten sonra yazılan `5`'i ikinci kez ekliyordu.)
+class _PhoneInputFormatter extends TextInputFormatter {
+  const _PhoneInputFormatter();
+
+  static final _mask = MaskTextInputFormatter(
+    mask: '+90 ### ### ## ##',
+    filter: {'#': RegExp(r'\d')},
+  );
+
+  static String _digits(String text) => text.replaceAll(RegExp(r'\D'), '');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Elle `+90` yazılırken ülke kodu henüz tamamlanmamıştır.
+    if (RegExp(r'^\+?9?0?$').hasMatch(newValue.text)) return newValue;
+
+    var digits = _digits(newValue.text);
+    // Boşluk gibi bir ayırıcı silindiyse önündeki rakam silinir.
+    if (newValue.text.length < oldValue.text.length &&
+        digits == _digits(oldValue.text) &&
+        digits.isNotEmpty) {
+      digits = digits.substring(0, digits.length - 1);
+    }
+
+    if (digits.startsWith('90')) {
+      digits = digits.substring(2);
+    } else if (digits.startsWith('0')) {
+      digits = digits.substring(1);
+    }
+    if (digits.isNotEmpty && !digits.startsWith('5')) digits = '5$digits';
+    if (digits.length > 10) digits = digits.substring(0, 10);
+
+    final text = digits.isEmpty ? '' : _mask.maskText(digits);
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
 }
