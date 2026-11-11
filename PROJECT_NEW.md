@@ -157,7 +157,7 @@ Değerler ekran görüntülerinden **yaklaşık** okunmuştur.
 
 7. **İptal ve kapatma:** Afetzede çağrısını `resolved` olmadan önce iptal edebilir (`status: cancelled`); yetkili bu çağrıya bir daha dokunmaz. Görev atanmamış bir olayı yetkili Detay'dan **Olayı Kapat** ile doğrudan `resolved` yapabilir.
 
-8. **Panik sinyali:** TEHLİKEDEYİM (2 sn basılı tutma) `safety_signals/{uid}` belgesine durum, konum ve zamanı yazar; yetkili haritasında mor pin belirir ve yetkiliye bildirim düşer. GÜVENDEYİM sinyali kapatır. Yetkili "Ulaşıldı" işaretleyebilir.
+8. **Panik sinyali:** TEHLİKEDEYİM (2 sn basılı tutma) `safety_signals/{uid}` belgesine durum, konum ve zamanı yazar; yetkili haritasında mor pin belirir ve yetkiliye bildirim düşer. GÜVENDEYİM sinyali kapatır. Yetkili "Ulaşıldı" işaretleyebilir; yeni panik önceki "Ulaşıldı" kaydını (`handledBy`, `handledAt`) siler, bu yüzden `handledBy` doluysa son sinyale ulaşılmıştır.
    - **Bağlantı tespiti:** Yazılan belgenin snapshot'ında `hasPendingWrites` 10 sn içinde `false` olmazsa uygulama çevrimdışı kabul edilir. Sinyal Firestore'un kuyruğunda bekler, internet gelince gider. Ekranda "Merkeze iletildi" yalnızca sunucu onayıyla yazar.
    - İnternet yoksa SMS uygulaması acil durum yakını ve konum linkiyle (`sms:`) hazır açılır, kullanıcı Gönder'e basar. SMS otomatik gönderilmez (`SEND_SMS` izni Play politikasınca yalnızca varsayılan SMS uygulamalarına verilir).
 
@@ -255,7 +255,7 @@ Tanımlar: **Sahibi** = belgenin sahibi · **Yetkili** = `role == 'official' && 
 |---|---|---|
 | `users/{uid}` | Giriş yapmış herkes | Oluşturma: sahibi; `isVerified == false`, `teamId`/`unitName`/`region` yok. Güncelleme: sahibi, yalnızca `fullName`, `notificationsOptIn`. `role`, `isVerified`, `teamId`, `unitName`, `region` yalnızca Console'dan. Silme: sahibi |
 | `users/{uid}/private/contact` | Sahibi; Yetkili | Sahibi |
-| `safety_signals/{uid}` | Sahibi; Yetkili | Sahibi: tüm alanlar (`handledBy` hariç). Yetkili: yalnızca `handledBy == auth.uid`, `handledAt` |
+| `safety_signals/{uid}` | Sahibi; Yetkili | Sahibi: tüm alanlar; `handledBy` ve `handledAt`'i yazamaz, yalnızca silebilir (yeni panik). Yetkili: yalnızca `handledBy == auth.uid`, `handledAt` |
 | `help_requests/{id}` | Sahibi; Yetkili | Oluşturma: sahibi; `createdBy == auth.uid`, `status == 'pending'`, `priority` türle uyumlu. Güncelleme: sahibi yalnızca `status → cancelled`; Yetkili yalnızca `status` (ileri adım, `cancelled` hariç), `assignedTeamId`, `updatedAt`, `resolvedAt` |
 | `help_requests/{id}/private/contact` | Sahibi; Yetkili | Sahibi (oluşturma ve silme) |
 | `incidents/{id}` | Giriş yapmış herkes (kişisel veri yok) | Oluşturma: giriş yapmış herkes; `requestCount == 1`, `status == 'pending'`, `isOpen == true`. Güncelleme: afetzede yalnızca `requestCount` +1, `priority`, `updatedAt`; Yetkili `status`, `isOpen`, `assignedTeamId`, `updatedAt`, `resolvedAt` |

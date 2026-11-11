@@ -59,8 +59,9 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     );
 
     // Çevrimdışıyken set() tamamlanmaz; await edilmez (Kural 8).
-    // merge: yetkilinin yazdığı handledBy/handledAt silinmez; sahibi bu alanlara
-    // dokunamadığı için (§5.5) birleştirmesiz yazım kurallarca reddedilir.
+    // Yeni panik önceki "Ulaşıldı" kaydını siler; böylece handledBy yalnızca
+    // bu sinyale aittir (dolu = ulaşıldı, boş = açık). Sahibi bu alanları
+    // yazamaz, yalnızca silebilir (§5.5).
     unawaited(
       ref
           .set(
@@ -69,6 +70,8 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
               'location': geo,
               'geohash': hash,
               'updatedAt': FieldValue.serverTimestamp(),
+              'handledBy': FieldValue.delete(),
+              'handledAt': FieldValue.delete(),
             },
             SetOptions(merge: true),
           )
