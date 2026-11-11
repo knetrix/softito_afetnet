@@ -139,5 +139,46 @@
   "onboardingActive": "ACTIVE",
   "onboardingRadarTeam": "TEAM #04 1.2km",
   "onboardingRadarDepot": "DEPOT 94% L-4",
-  "validationInvalidValue": "Enter a valid value"
+  "validationInvalidValue": "Enter a valid value",
+  "locationFetching": "Getting location...",
+  "locationUnavailable": "Location unavailable — Tap to refresh",
+  "panicButtonTitle": "PANIC",
+  "panicButtonSubtitle": "IN DANGER",
+  "panicSafeButton": "I AM SAFE",
+  "panicSafeSubtitle": "Turn off signal",
+  "homePanicHoldHint": "Hold for 2 seconds to send panic signal",
+  "homePanicActiveHint": "Your panic signal is active. Tap above if you are safe.",
+  "panicStatusDelivered": "Delivered to center",
+  "panicStatusPending": "Waiting to send",
+  "panicOfflineSmsTitle": "Offline Signal",
+  "panicOfflineSmsMessage": "Connection could not be verified within 10 seconds. Your signal is queued and will send when online. Would you like to notify your emergency contact via SMS?",
+  "panicOfflineSmsAction": "Notify via SMS",
+  "panicSmsBodyWithLocation": "EMERGENCY (AfetNet): I am in danger and need help. My location: {locationUrl}",
+  "@panicSmsBodyWithLocation": {
+    "placeholders": {
+      "locationUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "panicSmsBodyNoLocation": "EMERGENCY (AfetNet): I am in danger and need help. Location could not be determined.",
+  "panicNoEmergencyContactTitle": "No Emergency Contact",
+  "panicNoEmergencyContactMessage": "No registered emergency contact number found. You can add one from the Profile tab.",
+  "panicSmsOpenFailed": "Could not open the SMS app.",
+  "panicLocationFailedTitle": "Location Unavailable",
+  "panicLocationFailedMessage": "Could not send panic signal because location is unavailable. You can check location permission, sound the offline whistle, or send an SMS.",
+  "panicOpenWhistle": "Open Whistle",
+  "panicSafeSuccess": "Your status has been updated to safe.",
+  "homeAddHelpRequest": "ADD HELP REQUEST",
+  "homeHelpRequestPendingTitle": "Help Request",
+  "homeHelpRequestPendingMessage": "The detailed help request form will be added in step G4.",
+  "homeActiveRequestEmptyTitle": "No active help request",
+  "homeActiveRequestEmptySubtitle": "You can create a help request using the button below when needed.",
+  "whistleIdleLabel": "WHISTLE",
+  "whistleIdleSubtitle": "High-Volume Siren",
+  "whistlePlayingLabel": "PLAYING",
+  "whistlePlayingSubtitle": "Siren active",
+  "whistleTapToStart": "TAP TO START",
+  "whistleTapToStop": "TAP AGAIN TO STOP",
+  "whistleOfflineNote": "Works completely offline."
 }

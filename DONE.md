@@ -8,8 +8,8 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 |---|---|---|---|
 | G1 — Temel ve Giriş | Mustafa | 🟡 Tamam, ekip erişimi bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
 | G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#11](https://github.com/knetrix/softito_afetnet/pull/11), `fix/mustafa-g2-review` |
-| G3 — Panik, Ana Sayfa ve Düdük | Furkan | ⏳ Sıradaki | — |
-| G4 — Yardım Çağrısı ve Toplanma | Tuba | ⏳ | — |
+| G3 — Panik, Ana Sayfa ve Düdük | Furkan | 🟡 Kod & testler tamam, emülatör denemesi bekliyor | — |
+| G4 — Yardım Çağrısı ve Toplanma | Tuba | ⏳ Sıradaki | — |
 | G5 — Canlı Akış ve Ekipler | Esra | ⏳ | — |
 | G6 — Lojistik, Anons ve Teslime Hazırlık | Meryem | ⏳ | — |
 | Son Tur — 13 Kasım sabah | Herkes | ⏳ | — |
@@ -69,14 +69,24 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 ## G3 — Furkan · Panik, Ana Sayfa ve Düdük
 
-| # | Adım | Durum |
-|---|---|---|
-| 1 | Servisler: konum + konum etiketi, bağlantı tespiti, yerel bildirim + FCM `all_users` | ⏳ |
-| 2 | Panik sinyali: PANİĞİM, GÜVENDEYİM, SMS diyaloğu | ⏳ |
-| 3 | Ana Sayfa (A1) yerleşimi | ⏳ |
-| 4 | Düdük (A3): internetsiz, iOS sessiz modda da çalar | ⏳ |
+| # | Adım | Durum | Not |
+|---|---|---|---|
+| 1 | Servisler: konum + konum etiketi, bağlantı tespiti, yerel bildirim + FCM `all_users` | ✅ | `DeviceLocationService` (`geolocator` + `geocoding` + `SharedPreferences` son etiket önbelleği; A1 ve A4 `TODO(G3)` bağlandı), `DeviceConnectivityService` (`connectivity_plus`), `DeviceNotificationService` (`flutter_local_notifications` `"afetnet_critical_alerts"` kanalı + FCM `all_users` yalnızca `notificationsOptIn == true` ise abone olur, aksi durumda/çıkışta abonelikten çıkar). Android izinleri (`ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`, `POST_NOTIFICATIONS`, `<queries>` `sms`/`tel`) ve iOS ücretsiz konum izin metni (`Info.plist` + `en.lproj`/`tr.lproj/InfoPlist.strings`) eklendi; APNs/push kurulumu yapılmadı |
+| 2 | Panik sinyali: PANİĞİM, GÜVENDEYİM, SMS diyaloğu | ✅ | `features/safety_signal/` (domain/data/presentation): `safety_signals/{uid}` 8 haneli geohash, `set()` await edilmeden `snapshots(includeMetadataChanges: true)` ile 10 sn (`AppConfig.offlineTimeout`) sunucu onayı; çevrimdışı `pending` durumunda `AppDialog.confirm` + `Uri.encodeComponent` ile `sms:` köprüsü (`+` içermez); sinyal açıkken `"GÜVENDEYİM — Sinyali kapat"` (T8). Konum alınamazsa buton asılı kalmaz, Düdük ve SMS seçenekleri sunulur |
+| 3 | Ana Sayfa (A1) yerleşimi | ✅ | `HomeScreen`: ad + dokunarak yenilenen gerçek konum etiketi (sahte veri yok), profil geçişi, `PanicHoldButton` (2 sn basılı tutma ilerleme halkası + `GlowCircleButton`), yalnızca sunucu onayıyla `"Merkeze iletildi"` rozeti, G4 aktif çağrı kartı için boş yer tutucu ve bilgi diyaloğu açan `"YARDIM ÇAĞRISI EKLE"` butonu. Boş G3 prototip dosyaları (`offline_whistle_screen.dart`, `panic_dashboard_screen.dart`, `pulsing_panic_button.dart`) silindi |
+| 4 | Düdük (A3): internetsiz, iOS sessiz modda da çalar | ✅ | `WhistleScreen` (`--ui-only`): üretilen `assets/sounds/whistle.wav` ile `ReleaseMode.loop` internetsiz çalma; Android `AndroidUsageType.alarm` + iOS `AVAudioSessionCategory.playback`. Beklemede turuncu `"DÜDÜK"` / `"Yüksek Sesli Siren"`, çalarken kırmızı `"ÇALIYOR"` / `"Siren aktif"`. **Karar:** `CitizenShell` içindeki `indexedStack` sekmeyi canlı tuttuğu için sekme değiştiğinde düdük çalmaya devam eder |
 
-**Çıktı:** Afetzede panik sinyali gönderebiliyor, düdük çalıyor. ⏳
+**Çıktı:** Afetzede panik sinyali gönderebiliyor, düdük çalıyor. 🟡 (Kod ve testler tamam; Android emülatörde canlı akış denemesi bekliyor.)
+
+**Kontroller:** `flutter analyze` temiz · 53 test geçiyor (G3'te konum/öncelik/SMS URI/controller ve 360×640 büyük yazı ölçekli widget testleri dahil +19 test eklendi) · `flutter build apk --debug` soğuk Gradle derlemesi uzun sürdüğü için iptal edildi; emülatörde canlı deneme ve macOS'ta `flutter build ios --debug --no-codesign` kontrolü yapılacak.
+
+**G4'e devir (Tuba):**
+- Hazır servisler (`app.dart` `MultiProvider`): `LocationService` (`resolveCoordinates()`, `currentLabel`), `ConnectivityService` (`hasNetworkInterface`, `onNetworkChanged` stream'i Hive kuyruğu `flush()` için), `NotificationService` (`showLocalNotification(...)`).
+- `HomeScreen` (`lib/features/home/presentation/home_screen.dart`): `TODO(G4)` aktif yardım çağrısı kartı alanı ve `onAddHelpRequest` geri çağrısı hazır.
+- `lib/features/emergency_call/` içindeki G4'e ait `safe_zones_map_screen.dart` ve `quick_need_grid.dart` dosyalarına dokunulmadı.
+
+**G5 notu (Esra):**
+- Sahibi `safety_signals/{uid}` üzerinde `handledBy` / `handledAt` alanlarına yazamadığı için (§5.5), yetkili "Ulaşıldı" işaretledikten sonra afetzede yeniden panik gönderirse eski `handledBy`/`handledAt` alanları belgede kalır. Kural: **`handledAt == null || handledAt < updatedAt` ise sinyal yeniden açık sayılır** (`SafetySignal.isHandledAfterLastSignal`).
 
 ## G4 — Tuba · Yardım Çağrısı ve Toplanma
 
