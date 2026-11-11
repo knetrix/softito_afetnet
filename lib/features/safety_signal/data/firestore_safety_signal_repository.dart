@@ -59,13 +59,20 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     );
 
     // Çevrimdışıyken set() tamamlanmaz; await edilmez (Kural 8).
+    // merge: yetkilinin yazdığı handledBy/handledAt silinmez; sahibi bu alanlara
+    // dokunamadığı için (§5.5) birleştirmesiz yazım kurallarca reddedilir.
     unawaited(
-      ref.set({
-        'state': SafetySignalState.danger.name,
-        'location': geo,
-        'geohash': hash,
-        'updatedAt': FieldValue.serverTimestamp(),
-      }).catchError((Object _) {}),
+      ref
+          .set(
+            {
+              'state': SafetySignalState.danger.name,
+              'location': geo,
+              'geohash': hash,
+              'updatedAt': FieldValue.serverTimestamp(),
+            },
+            SetOptions(merge: true),
+          )
+          .catchError((Object _) {}),
     );
 
     try {
