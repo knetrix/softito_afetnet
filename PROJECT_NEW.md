@@ -208,7 +208,7 @@ broadcasts/{broadcastId}        → EvacuationBroadcast  tahliye / artçı uyar�
 | `description` | string | hayır | ≤ 500 karakter |
 | `location` | geopoint | evet | |
 | `geohash` | string | evet | 8 hane (Kural 2) |
-| `photoUrls` | array | hayır | MVP'de boş: tasarımda fotoğraf yok, Storage ücretli plan ister (R3) |
+| `photoUrls` | array | hayır | MVP'de boş: tasarımda fotoğraf yok |
 | `incidentId` | string | hayır | Bağlı olay |
 | `assignedTeamId` | string | hayır | |
 | `createdOffline` | boolean | hayır | Hive kuyruğundan geldiyse `true` |
@@ -343,9 +343,6 @@ firestore.rules · firestore.indexes.json
   - OpenStreetMap: `userAgentPackageName: 'com.softito.afetnet'` ve haritada "© OpenStreetMap contributors" atfı.
   - Gizli tutulacaklar: `*.jks` ve `key.properties` repoya eklenmez.
 - **Mağaza hazırlığı:** Release derlemesinde seed kodu ve test hesabı bulunmaz. `flutter build appbundle --release` ve `flutter build ios --release --no-codesign` başarılı olmalı. `store/` klasöründe TR + EN açıklama ("resmi değildir" ifadesiyle), iki rolden ekran görüntüleri, ikonlar, Play Veri Güvenliği ve App Store gizlilik etiketi taslağı (ad, e-posta, telefon, konum, sağlık bilgisi, çökme logları).
-- **Yayın için ücretli adımlar (teslime dahil değil):**
-  - Google Play hesabı (25 $) ve Apple Developer (99 $/yıl; iOS push için gerekli).
-  - Firebase Blaze + Cloud Functions: uygulama kapalıyken otomatik push, birleştirme ve önceliğin sunucuda hesaplanması.
 
 ---
 
@@ -380,10 +377,9 @@ firestore.rules · firestore.indexes.json
 |---|---|---|
 | R1 | Süre ~2 gün, iş sıralı ilerliyor. | Demo akışı (8) kesin kapsamdır. Biten iş hemen `development`'a birleştirilir. |
 | R2 | Sunucu yok: uygulama kapalıyken otomatik push gelmez; arka planda Firestore dinlemesi güvenilir değildir. | Uygulama açıkken yerel bildirim; kapalı uygulamaya Console topic duyurusu. |
-| R3 | Hocanın listesinde Firebase Storage var; Storage Blaze (ücretli) plan ister. | MVP'de fotoğraf yok (tasarımda da yok), `photoUrls` boş kalır. Hocaya bildirilir. |
 | R4 | Kayıtta "Saha Koordinatörü" seçilebilir. | Hesap onaysız açılır, hiçbir veriye erişemez; onay yalnızca Console'dan. |
 | R5 | Tıbbi bilgi KVKK'da özel nitelikli veridir. | Ayrı açık rıza, yalnızca `private/contact`'ta, yalnızca sahibi + doğrulanmış yetkili okur. |
 | R6 | Tasarımda kurum adları ve uygulanmayan özellikler var. | Düzeltmeler (3.3) kodlarken uygulanır. |
-| R7 | İstemci öncelik ve sayaçları yazıyor. | Kurallar biçimi doğrular (5.5); kalıcı çözüm Cloud Functions. |
+| R7 | İstemci öncelik ve sayaçları yazıyor. | Kurallar biçimi doğrular (5.5). |
 | R8 | Wi-Fi'ye bağlı ama internetsiz cihaz "çevrimiçi" sanılabilir. | Sunucu onayıyla bağlantı kararı (Kural 8). |
 | R9 | Emülatörde GPS ve bildirim sınırlı; iOS push Apple hesabı ister; salonda internet kopabilir. | Konum sabitlenir, düdük ve push Android cihazda gösterilir, hotspot ve yedek video hazır. |
