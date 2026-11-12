@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/app_status_colors.dart';
+import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_dialog.dart';
@@ -235,7 +236,9 @@ class _CallerSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      phone ?? l10n.incidentDetailNoPhone,
+                      phone == null
+                          ? l10n.incidentDetailNoPhone
+                          : Validators.formatPhone(phone),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: colors.onSurfaceVariant,
                       ),

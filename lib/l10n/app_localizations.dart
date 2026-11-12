@@ -1607,13 +1607,13 @@ abstract class AppLocalizations {
   /// No description provided for @distanceMeters.
   ///
   /// In en, this message translates to:
-  /// **'{meters} m away'**
+  /// **'{meters} m away'**
   String distanceMeters(int meters);
 
   /// No description provided for @distanceKm.
   ///
   /// In en, this message translates to:
-  /// **'{km} km away'**
+  /// **'{km} km away'**
   String distanceKm(String km);
 
   /// No description provided for @timeJustNow.
