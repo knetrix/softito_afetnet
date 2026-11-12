@@ -278,5 +278,202 @@
         "type": "int"
       }
     }
-  }
+  },
+  "liveFeedTitle": "LIVE CALL FEED",
+  "liveFeedWaitingCount": "{count} OPEN",
+  "@liveFeedWaitingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "liveFeedFilterAll": "All ({count})",
+  "@liveFeedFilterAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "liveFeedFilterCritical": "Critical",
+  "liveFeedFilterUrgent": "Urgent",
+  "liveFeedFilterNormal": "Normal",
+  "liveFeedEmpty": "No open calls right now.",
+  "liveFeedEmptyFiltered": "No calls match this filter.",
+  "liveFeedUnknownName": "Name not provided",
+  "liveFeedMergedCalls": "{count} merged calls",
+  "@liveFeedMergedCalls": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "liveFeedDispatch": "Dispatch Team",
+  "liveFeedAssignedTeam": "Team: {team}",
+  "@liveFeedAssignedTeam": {
+    "placeholders": {
+      "team": {
+        "type": "String"
+      }
+    }
+  },
+  "liveFeedPanicCount": "{count, plural, =1{1 panic signal} other{{count} panic signals}}",
+  "@liveFeedPanicCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "distanceMeters": "{meters} m away",
+  "@distanceMeters": {
+    "placeholders": {
+      "meters": {
+        "type": "int"
+      }
+    }
+  },
+  "distanceKm": "{km} km away",
+  "@distanceKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "timeJustNow": "just now",
+  "timeMinutesAgo": "{count} min ago",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{count} h ago",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "{count} d ago",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "incidentDetailTitle": "Call Detail",
+  "incidentDetailCaller": "Caller",
+  "incidentDetailPhone": "Phone",
+  "incidentDetailCall": "Call",
+  "incidentDetailNoPhone": "No phone number",
+  "incidentDetailMedical": "Medical Summary",
+  "incidentDetailNoMedical": "No medical information shared.",
+  "incidentDetailLinkedCalls": "Linked calls",
+  "incidentDetailTaskStatus": "Task status",
+  "incidentDetailNeedType": "Need type",
+  "incidentDetailLoadFailed": "Caller information could not be loaded.",
+  "incidentCloseAction": "Close Incident",
+  "incidentCloseConfirmTitle": "Close Incident?",
+  "incidentCloseConfirmMessage": "The incident and its linked calls will be marked as resolved. This cannot be undone.",
+  "incidentClosed": "Incident closed.",
+  "incidentCloseFailed": "The incident could not be closed. A team may have been assigned or it may already be closed.",
+  "incidentCloseHasTeam": "A team is working on this incident. It closes when the team is marked Rescued.",
+  "dispatchNoAvailableTeams": "No team is available right now.",
+  "dispatchSuccess": "{team} dispatched.",
+  "@dispatchSuccess": {
+    "placeholders": {
+      "team": {
+        "type": "String"
+      }
+    }
+  },
+  "assignErrorIncidentClosed": "This incident is already closed.",
+  "assignErrorAlreadyAssigned": "A team is already assigned to this incident.",
+  "assignErrorTeamBusy": "This team is no longer available.",
+  "assignErrorInvalidTransition": "The task was updated by someone else. Please check again.",
+  "teamMembers": "{count, plural, =1{1 person} other{{count} people}}",
+  "@teamMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "panicPinTitle": "Panic Signal",
+  "panicPinLocation": "Location",
+  "panicPinTime": "Signal time",
+  "panicPinReached": "Mark as Reached",
+  "panicPinHandled": "Marked as reached",
+  "panicPinReachedSuccess": "Signal marked as reached.",
+  "panicNotificationTitle": "New panic signal",
+  "panicNotificationBody": "A survivor reported being in danger. Check the purple pin on the Live Feed map.",
+  "teamsSummaryTitle": "Field Teams",
+  "teamsSummarySubtitle": "Operational tracking and coordination",
+  "teamsSummaryCount": "{teams} Teams · {members} Personnel",
+  "@teamsSummaryCount": {
+    "placeholders": {
+      "teams": {
+        "type": "int"
+      },
+      "members": {
+        "type": "int"
+      }
+    }
+  },
+  "teamTypeSearchRescue": "Search & Rescue",
+  "teamTypeMedical": "Medical",
+  "teamTypeFire": "Fire",
+  "teamTypeLogistics": "Logistics",
+  "teamStatusOnDuty": "ON DUTY",
+  "teamStatusAvailable": "AVAILABLE",
+  "teamLeaderWithName": "{name} (Team Leader)",
+  "@teamLeaderWithName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "teamCurrentTask": "CURRENT TASK",
+  "teamOperationStatus": "OPERATION STATUS",
+  "teamIdleDescription": "Standing by, ready for a new task.",
+  "teamTaskNotFound": "Task record not found.",
+  "teamsEmpty": "No team records yet.",
+  "assignTaskAction": "Assign Task",
+  "updateTaskAction": "Update Task",
+  "assignSheetSubtitle": "Choose an open incident for {team}.",
+  "@assignSheetSubtitle": {
+    "placeholders": {
+      "team": {
+        "type": "String"
+      }
+    }
+  },
+  "assignNoOpenIncidents": "No open incident is waiting for a team.",
+  "updateSheetCurrent": "Current status",
+  "updateSheetNext": "Mark as {status}",
+  "@updateSheetNext": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "updateSheetResolvedNote": "When marked Rescued, the incident closes and the team becomes available.",
+  "updateSuccess": "Task updated: {status}",
+  "@updateSuccess": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "updateNoActiveTask": "No active task found for this team."
 }
