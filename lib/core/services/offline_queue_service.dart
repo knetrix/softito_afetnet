@@ -144,7 +144,8 @@ class OfflineQueueService extends ChangeNotifier {
             // Bağlantı tekrar koptu, sonraki sefere bırak
             break;
           }
-          // Bilinmeyen hata: kaydı kutuda tut
+          // Bilinmeyen hata: kaydı kutuda tut; sessizce yutulmasın diye loglanır.
+          debugPrint('Kuyruktaki çağrı gönderilemedi (${draft.id}): $e');
         }
       }
     } finally {

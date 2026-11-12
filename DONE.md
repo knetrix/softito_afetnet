@@ -9,7 +9,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | G1 — Temel ve Giriş | Mustafa | 🟡 Tamam, ekip erişimi bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
 | G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#11](https://github.com/knetrix/softito_afetnet/pull/11), `fix/mustafa-g2-review` |
 | G3 — Panik, Ana Sayfa ve Düdük | Furkan | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#14](https://github.com/knetrix/softito_afetnet/pull/14), `fix/mustafa-g3-review` |
-| G4 — Yardım Çağrısı ve Toplanma | Tuba | ⏳ Sıradaki | — |
+| G4 — Yardım Çağrısı ve Toplanma | Tuba | 🟡 1–4 tamam (G1 incelemesiyle düzeltildi), Toplanma (A2) bekliyor | `development`'a doğrudan commit, `fix/mustafa-g4-review` |
 | G5 — Canlı Akış ve Ekipler | Esra | ⏳ | — |
 | G6 — Lojistik, Anons ve Teslime Hazırlık | Meryem | ⏳ | — |
 | Son Tur — 13 Kasım sabah | Herkes | ⏳ | — |
@@ -87,15 +87,19 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 ## G4 — Tuba · Yardım Çağrısı ve Toplanma
 
-| # | Adım | Durum |
-|---|---|---|
-| 1 | Yardım Çağrısı sheet'i, `priority_policy.dart` | ⏳ |
-| 2 | Mükerrer birleştirme (geohash, 9 hücre, 50 m, Transaction) | ⏳ |
-| 3 | Çevrimdışı kuyruk (Hive, "Gönderilmeyi Bekliyor") | ⏳ |
-| 4 | Ana Sayfa'ya aktif çağrı kartı, İptal Et | ⏳ |
-| 5 | Toplanma (A2): harita, noktalar, mesafe, doluluk, hizmetler | ⏳ |
+| # | Adım | Durum | Not |
+|---|---|---|---|
+| 1 | Yardım Çağrısı sheet'i, `priority_policy.dart` | ✅ | Tür chip'leri, kişi sayısı, adres (≤300), açıklama (≤500), canlı öncelik rozeti; `PriorityPolicy` Kural 1 ile aynı. G1 incelemesi: tür artık seçili gelmez (yanlışlıkla "Enkaz Altında"/kritik gönderilmesin), seçilmeden Gönder kapalı; gönderim hata verirse buton takılı kalmıyor, hata mesajı çıkıyor; kişi sayısı butonlarının metni ARB'ye taşındı; chip'te simgeyle çakışan onay işareti kaldırıldı; konum G3'teki `resolveCoordinates()` ile alınıyor |
+| 2 | Mükerrer birleştirme (geohash, 9 hücre, 50 m, Transaction) | ✅ | `FirestoreHelpRequestRepository`: 7 haneli hücre + 8 komşu, 50 m, olay Transaction içinde (`requestCount` +1, öncelik en yükseği), `uuid` ile çift kayıt yok. G1 incelemesi: sorgu bileşik index istiyordu ve index olmadığı için hiçbir çağrı gönderilemiyordu; artık yalnızca `geohash` aralığı sorgulanıyor, `isOpen` istemcide süzülüyor. Arama her zaman sunucudan yapılıyor (internet yeni gelince eksik önbellekten okuyup mükerrer olay açıyordu) |
+| 3 | Çevrimdışı kuyruk (Hive, "Gönderilmeyi Bekliyor") | ✅ | `OfflineQueueService`: ağ yoksa ya da 10 sn'de gitmezse Hive'a yazılır, internet gelince ve uygulama açılınca gönderilir. G1 incelemesi: gönderilemeyen kayıt artık loglanıyor; başka aktif çağrı varken de kuyruktaki çağrı kartta "Gönderilmeyi Bekliyor" olarak gösteriliyor |
+| 4 | Ana Sayfa'ya aktif çağrı kartı, İptal Et | ✅ | Durum, tür, kişi sayısı, öncelik, ekip ve sorumlu (`teams/{assignedTeamId}`), İptal Et. G1 incelemesi: kart sorgusu da bileşik index istiyordu (kart hiç görünmüyordu), sıralama istemciye alındı ve iptal edilmemiş en yeni çağrı seçiliyor; iptalden sonra kalan diğer aktif çağrı gizleniyordu, düzeltildi; iptal yalnızca `status` yazıyor (§5.5); onay penceresinde "İptal"/"Evet, İptal Et" karışıyordu, "Vazgeç" oldu; İngilizce "1 People" → "1 Person" |
+| 5 | Toplanma (A2): harita, noktalar, mesafe, doluluk, hizmetler | ⏳ | |
 
-**Çıktı:** Afetzede tarafı tamamen çalışıyor. ⏳
+**Çıktı:** Afetzede tarafı tamamen çalışıyor. 🟡 (1–4 tamam, Toplanma bekliyor)
+
+**Kontroller (G1 incelemesi):** `flutter analyze` temiz · 94 test geçiyor (sahte "50 m" testi gerçek seçim fonksiyonunu deneyen testle değiştirildi; birleştirme, en yeni aktif çağrı, iptal ve kuyruk gösterimi için testler eklendi) · Android emülatöründe gerçek Firebase'e karşı: çağrı + `private/contact` + yeni olay; aynı noktadan ikinci afetzedenin kritik çağrısı aynı olaya bağlandı (`requestCount: 2`, öncelik 3 → 1); ~200 m uzaktaki çağrı yeni olay açtı; karttan iptal; internetsiz çağrı kartta "Waiting to Send", uygulama kapatılıp açılınca da duruyor, internet gelince ~5 sn'de gönderildi (`createdOffline: true`) ve aynı noktadaki açık olaya bağlandı.
+
+**G6 notu (Meryem):** Gönderim Transaction'ı, çift kaydı önlemek için henüz var olmayan `help_requests/{id}` belgesini okur. Kurallar sahibinin bu okumasına izin vermeli (belge yokken `resource == null`), yoksa gönderim reddedilir. İptal yalnızca `status: cancelled` yazar.
 
 ## G5 — Esra · Canlı Akış ve Ekipler
 
