@@ -188,6 +188,12 @@ abstract class AppLocalizations {
   /// **'Log Out of System'**
   String get officialSignOut;
 
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageLabel;
+
   /// No description provided for @privacyPolicy.
   ///
   /// In en, this message translates to:

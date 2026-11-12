@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/theme/app_status_colors.dart';
 import '../../../core/widgets/app_button.dart';
+import '../../../core/widgets/language_selector.dart';
 import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
@@ -254,6 +255,9 @@ class _OfficialProfileView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
             ],
+
+            const LanguageSelector(),
+            const SizedBox(height: 24),
 
             // Sistemden Çıkış Yap Butonu
             AppButton.danger(
