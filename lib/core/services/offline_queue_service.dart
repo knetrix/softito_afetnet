@@ -25,9 +25,11 @@ class OfflineQueueService extends ChangeNotifier {
     required ConnectivityService connectivityService,
     Box<Map>? box,
     Duration? timeout,
+    Duration? retryInterval,
   })  : _repo = repository,
         _connectivity = connectivityService,
-        _timeout = timeout ?? AppConfig.offlineTimeout {
+        _timeout = timeout ?? AppConfig.offlineTimeout,
+        _retryInterval = retryInterval ?? AppConfig.offlineQueueRetryInterval {
     _box = box;
   }
 
@@ -37,8 +39,10 @@ class OfflineQueueService extends ChangeNotifier {
   final ConnectivityService _connectivity;
   Box<Map>? _box;
   final Duration _timeout;
+  final Duration _retryInterval;
 
   StreamSubscription<bool>? _networkSub;
+  Timer? _retryTimer;
   bool _isFlushing = false;
   bool _disposed = false;
 
@@ -73,6 +77,16 @@ class OfflineQueueService extends ChangeNotifier {
     _networkSub?.cancel();
     _networkSub = _connectivity.onNetworkChanged.listen((hasNetwork) {
       if (hasNetwork && !_disposed) {
+        unawaited(flushQueue());
+      }
+    });
+
+    // "Wi-Fi bağlı ama internet yok" durumunda internet geri gelince ağ arayüzü
+    // değişmez ve yukarıdaki dinleyici tetiklenmez (R8). Kuyrukta çağrı varken
+    // belirli aralıklarla yeniden denenir.
+    _retryTimer?.cancel();
+    _retryTimer = Timer.periodic(_retryInterval, (_) {
+      if (!_disposed && hasPendingItems && _connectivity.hasNetworkInterface) {
         unawaited(flushQueue());
       }
     });
@@ -163,6 +177,7 @@ class OfflineQueueService extends ChangeNotifier {
   void dispose() {
     _disposed = true;
     _networkSub?.cancel();
+    _retryTimer?.cancel();
     super.dispose();
   }
 }
