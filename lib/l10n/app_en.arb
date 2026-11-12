@@ -228,5 +228,43 @@
         "type": "int"
       }
     }
-  }
+  },
+  "assemblyScreenTitle": "Assembly Areas",
+  "assemblyFilterAll": "All",
+  "assemblyFilterAssembly": "Assembly Area",
+  "assemblyFilterFieldHospital": "Field Hospital",
+  "assemblyFilterShelter": "Shelter / Tent",
+  "assemblyServiceWater": "Clean Water",
+  "assemblyServiceHealth": "First Aid",
+  "assemblyServiceFood": "Hot Food",
+  "assemblyServiceTent": "Shelter",
+  "assemblyOccupancyLabel": "Occupancy: %{percent}",
+  "@assemblyOccupancyLabel": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "assemblyCapacityLabel": "{current} / {capacity} People",
+  "@assemblyCapacityLabel": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "capacity": {
+        "type": "String"
+      }
+    }
+  },
+  "assemblyGetDirections": "Get Directions",
+  "assemblyOpenLabel": "Open",
+  "assemblyClosedLabel": "Closed",
+  "assemblyNearestBadge": "Nearest",
+  "assemblyMyLocationTooltip": "Go to My Location",
+  "assemblyZoomInTooltip": "Zoom In",
+  "assemblyZoomOutTooltip": "Zoom Out",
+  "assemblyEmptyList": "No assembly areas found",
+  "assemblyNearestTop3": "Nearest 3 Areas",
+  "assemblyServicesTitle": "Provided Services"
 }

@@ -1369,6 +1369,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} People'**
   String peopleCountLabel(int count);
+
+  /// No description provided for @assemblyScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assembly Areas'**
+  String get assemblyScreenTitle;
+
+  /// No description provided for @assemblyFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get assemblyFilterAll;
+
+  /// No description provided for @assemblyFilterAssembly.
+  ///
+  /// In en, this message translates to:
+  /// **'Assembly Area'**
+  String get assemblyFilterAssembly;
+
+  /// No description provided for @assemblyFilterFieldHospital.
+  ///
+  /// In en, this message translates to:
+  /// **'Field Hospital'**
+  String get assemblyFilterFieldHospital;
+
+  /// No description provided for @assemblyFilterShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter / Tent'**
+  String get assemblyFilterShelter;
+
+  /// No description provided for @assemblyServiceWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean Water'**
+  String get assemblyServiceWater;
+
+  /// No description provided for @assemblyServiceHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'First Aid'**
+  String get assemblyServiceHealth;
+
+  /// No description provided for @assemblyServiceFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot Food'**
+  String get assemblyServiceFood;
+
+  /// No description provided for @assemblyServiceTent.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter'**
+  String get assemblyServiceTent;
+
+  /// No description provided for @assemblyOccupancyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupancy: %{percent}'**
+  String assemblyOccupancyLabel(String percent);
+
+  /// No description provided for @assemblyCapacityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {capacity} People'**
+  String assemblyCapacityLabel(String current, String capacity);
+
+  /// No description provided for @assemblyGetDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Directions'**
+  String get assemblyGetDirections;
+
+  /// No description provided for @assemblyOpenLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get assemblyOpenLabel;
+
+  /// No description provided for @assemblyClosedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get assemblyClosedLabel;
+
+  /// No description provided for @assemblyNearestBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest'**
+  String get assemblyNearestBadge;
+
+  /// No description provided for @assemblyMyLocationTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to My Location'**
+  String get assemblyMyLocationTooltip;
+
+  /// No description provided for @assemblyZoomInTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom In'**
+  String get assemblyZoomInTooltip;
+
+  /// No description provided for @assemblyZoomOutTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom Out'**
+  String get assemblyZoomOutTooltip;
+
+  /// No description provided for @assemblyEmptyList.
+  ///
+  /// In en, this message translates to:
+  /// **'No assembly areas found'**
+  String get assemblyEmptyList;
+
+  /// No description provided for @assemblyNearestTop3.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest 3 Areas'**
+  String get assemblyNearestTop3;
+
+  /// No description provided for @assemblyServicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provided Services'**
+  String get assemblyServicesTitle;
 }
 
 class _AppLocalizationsDelegate
