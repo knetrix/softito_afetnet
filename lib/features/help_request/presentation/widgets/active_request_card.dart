@@ -88,6 +88,8 @@ class ActiveRequestCard extends StatelessWidget {
       title: l10n.cancelRequestTitle,
       message: l10n.cancelRequestMessage,
       confirmLabel: l10n.cancelRequestConfirm,
+      // "İptal" ile "Evet, İptal Et" yan yana karışıyordu.
+      cancelLabel: l10n.cancelRequestKeep,
       destructive: true,
     );
 

@@ -336,11 +336,8 @@ class _HomeViewState extends State<_HomeView> {
               final locationService = context.read<LocationService>();
               final profileRepo = context.read<ProfileRepository>();
 
-              var coords = locationService.currentPosition;
-              if (coords == null) {
-                final snap = await locationService.refresh();
-                coords = snap?.coordinates;
-              }
+              // Son 2 dk'daki konumu beklemeden verir, adres çözmez (G3).
+              final coords = await locationService.resolveCoordinates();
               if (coords == null) {
                 if (!mounted) return false;
                 final l10n = AppLocalizations.of(context);
@@ -471,7 +468,10 @@ class _HomeViewState extends State<_HomeView> {
               const SizedBox(height: 28),
               if (activeHelpCtrl != null && activeHelpCtrl.hasActiveOrQueuedCall)
                 ActiveRequestCard(
-                  request: activeHelpCtrl.activeRequest,
+                  // Kuyrukta bekleyen çağrı varsa önce o gösterilir (Kural 4).
+                  request: activeHelpCtrl.topOfflineDraft == null
+                      ? activeHelpCtrl.activeRequest
+                      : null,
                   offlineDraft: activeHelpCtrl.topOfflineDraft,
                   assignedTeam: activeHelpCtrl.assignedTeam,
                   isCancelling: activeHelpCtrl.isCancelling,

@@ -211,5 +211,9 @@
   "caseStatusOnSite": "Olay Yerinde",
   "caseStatusResolved": "Kurtarıldı",
   "caseStatusCancelled": "İptal Edildi",
-  "peopleCountLabel": "{count} Kişi"
+  "peopleCountLabel": "{count} Kişi",
+  "helpRequestSelectType": "İhtiyaç türünü seçin",
+  "helpRequestPeopleDecrease": "Azalt",
+  "helpRequestPeopleIncrease": "Artır",
+  "cancelRequestKeep": "Vazgeç"
 }

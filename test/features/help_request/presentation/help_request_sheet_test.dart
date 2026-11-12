@@ -29,7 +29,7 @@ Widget _buildTestApp({
 
 void main() {
   group('HelpRequestSheet (PROJECT_NEW.md §3.2, Kural 1)', () {
-    testWidgets('form açılır ve varsayılan seçim KRİTİK rozeti gösterir', (tester) async {
+    testWidgets('form tür seçilmeden açılır, Gönder kapalıdır', (tester) async {
       await tester.pumpWidget(
         _buildTestApp(
           child: Builder(
@@ -46,7 +46,13 @@ void main() {
 
       expect(find.text('Yardım Çağrısı Ekle'), findsOneWidget);
       expect(find.text('Öncelik Seviyesi'), findsOneWidget);
-      expect(find.text('KRİTİK'), findsOneWidget);
+      // Yanlışlıkla kritik çağrı gönderilmesin diye tür seçili gelmez.
+      expect(find.text('KRİTİK'), findsNothing);
+      expect(find.text('İhtiyaç türünü seçin'), findsOneWidget);
+      final submit = tester.widget<ElevatedButton>(
+        find.widgetWithText(ElevatedButton, 'Gönder'),
+      );
+      expect(submit.onPressed, isNull);
       expect(find.text('İhtiyaç Türü'), findsOneWidget);
       expect(find.text('Etkilenen Kişi Sayısı'), findsOneWidget);
       expect(find.text('Adres Tarifi'), findsOneWidget);
@@ -69,7 +75,9 @@ void main() {
       await tester.tap(find.text('Aç'));
       await tester.pumpAndSettle();
 
-      // Başlangıçta debris -> KRİTİK (1)
+      // Enkaz Altında -> KRİTİK (1)
+      await tester.tap(find.text('Enkaz Altında'));
+      await tester.pumpAndSettle();
       expect(find.text('KRİTİK'), findsOneWidget);
 
       // Barınma seç -> ACİL (2)
@@ -211,6 +219,8 @@ void main() {
 
       await tester.tap(find.text('Aç'));
       await tester.pumpAndSettle();
+      await tester.tap(find.text('Enkaz Altında'));
+      await tester.pumpAndSettle();
 
       final submitFinder = find.widgetWithText(ElevatedButton, 'Gönder');
       await tester.ensureVisible(submitFinder);
@@ -222,6 +232,37 @@ void main() {
       expect(submittedDraft!.type, HelpType.debris);
       expect(submittedDraft!.priority, 1);
       expect(find.text('Yardım çağrınız alındı.'), findsOneWidget);
+    });
+
+    testWidgets('gönderim hata verirse buton takılmaz, hata mesajı gösterilir', (tester) async {
+      await tester.pumpWidget(
+        _buildTestApp(
+          child: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () => showHelpRequestSheet(
+                context,
+                onSubmit: (_) async => throw StateError('index yok'),
+              ),
+              child: const Text('Aç'),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Aç'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Su'));
+      await tester.pumpAndSettle();
+      final submitFinder = find.widgetWithText(ElevatedButton, 'Gönder');
+      await tester.ensureVisible(submitFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(submitFinder);
+      await tester.pumpAndSettle();
+
+      // Form açık kalır, buton yeniden basılabilir, hata mesajı görünür.
+      expect(find.text('Yardım Çağrısı Ekle'), findsOneWidget);
+      expect(tester.widget<ElevatedButton>(submitFinder).onPressed, isNotNull);
+      expect(find.byType(SnackBar), findsOneWidget);
     });
 
     testWidgets('360x640 ekranda taşma olmadan çalışır', (tester) async {
