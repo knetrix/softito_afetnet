@@ -72,6 +72,14 @@ service cloud.firestore {
       );
     }
 
+    // Ekip atandıktan sonra olaya birleşen çağrı `pending` açılır ve görevin
+    // bir sonraki adımında olayın durumuna taşınır (Kural 6). Yalnızca
+    // çağrılar için; olayın kendi durumu adım adım ilerler.
+    function validOfficialRequestTransition(oldStatus, newStatus) {
+      return validOfficialCaseTransition(oldStatus, newStatus)
+        || (oldStatus == 'pending' && newStatus in ['enRoute', 'onSite']);
+    }
+
     // -----------------------------
     // 1. Kullanıcılar
     // -----------------------------
@@ -135,11 +143,18 @@ match /users/{uid} {
         && request.resource.data.location is latlng
         && request.resource.data.geohash is string;
 
+      // Sahibi `handledBy`/`handledAt` yazamaz, yalnızca silebilir: yeni
+      // panik önceki "Ulaşıldı" kaydını temizler (Kural 8, §5.5).
       allow update: if (
         isOwner(uid)
         && changedOnly([
-          'state', 'location', 'geohash', 'updatedAt'
+          'state', 'location', 'geohash', 'updatedAt',
+          'handledBy', 'handledAt'
         ])
+        && !request.resource.data.diff(resource.data).addedKeys()
+          .hasAny(['handledBy', 'handledAt'])
+        && !request.resource.data.diff(resource.data).changedKeys()
+          .hasAny(['handledBy', 'handledAt'])
         && request.resource.data.state in ['danger', 'safe']
         && request.resource.data.location is latlng
       ) || (
@@ -157,9 +172,12 @@ match /users/{uid} {
     // -----------------------------
 
     match /help_requests/{requestId} {
+      // Gönderim Transaction'ı çift kaydı önlemek için henüz var olmayan
+      // çağrı belgesini okur (Kural 4); belge yokken okuma serbesttir.
       allow read: if signedIn()
         && (
-          resource.data.createdBy == request.auth.uid
+          resource == null
+          || resource.data.createdBy == request.auth.uid
           || isOfficial()
         );
 
@@ -200,7 +218,7 @@ match /users/{uid} {
       ) || (
         isOfficial()
         && resource.data.status != 'cancelled'
-        && validOfficialCaseTransition(
+        && validOfficialRequestTransition(
           resource.data.status,
           request.resource.data.status
         )

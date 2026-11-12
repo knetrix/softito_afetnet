@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test:rules": "firebase emulators:exec --only firestore --project demo-afetnet-app-flows \"node --test test/firestore/\""
+  },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^6.0.0",
     "firebase": "^13.3.0"
