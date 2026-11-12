@@ -55,6 +55,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get officialSignOut => 'Log Out of System';
 
   @override
+  String get languageLabel => 'Language';
+
+  @override
   String get privacyPolicy => 'Privacy Policy';
 
   @override

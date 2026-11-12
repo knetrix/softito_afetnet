@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'core/constants/user_role.dart';
 import 'core/router/app_router.dart';
 import 'core/services/connectivity_service.dart';
+import 'core/services/locale_controller.dart';
 import 'core/services/location_service.dart';
 import 'core/services/notification_service.dart';
 import 'core/services/offline_queue_service.dart';
@@ -41,7 +42,9 @@ import 'features/teams/domain/teams_repository.dart';
 import 'l10n/app_localizations.dart';
 
 class AfetNetApp extends StatefulWidget {
-  const AfetNetApp({super.key});
+  const AfetNetApp({super.key, required this.localeController});
+
+  final LocaleController localeController;
 
   @override
   State<AfetNetApp> createState() => _AfetNetAppState();
@@ -166,6 +169,10 @@ class _AfetNetAppState extends State<AfetNetApp> {
 
         ChangeNotifierProvider<AuthController>.value(value: _auth),
 
+        ChangeNotifierProvider<LocaleController>.value(
+          value: widget.localeController,
+        ),
+
         Provider<ProfileRepository>(
           create: (_) => FirestoreProfileRepository(),
         ),
@@ -200,25 +207,27 @@ class _AfetNetAppState extends State<AfetNetApp> {
           value: _offlineQueueService,
         ),
       ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
+      child: ListenableBuilder(
+        listenable: widget.localeController,
+        builder: (context, _) => MaterialApp.router(
+          debugShowCheckedModeBanner: false,
 
-        onGenerateTitle: (context) =>
-            AppLocalizations.of(context)?.appTitle ?? 'AfetNet',
+          onGenerateTitle: (context) =>
+              AppLocalizations.of(context)?.appTitle ?? 'AfetNet',
 
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        themeMode: ThemeMode.system,
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          themeMode: ThemeMode.system,
 
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
 
-        supportedLocales: AppLocalizations.supportedLocales,
+          supportedLocales: AppLocalizations.supportedLocales,
 
-        localeResolutionCallback: (locale, _) => locale?.languageCode == 'tr'
-            ? const Locale('tr')
-            : const Locale('en'),
+          // Cihaz dilinden bağımsız: varsayılan Türkçe, Profil'den İngilizce.
+          locale: widget.localeController.locale,
 
-        routerConfig: _router,
+          routerConfig: _router,
+        ),
       ),
     );
   }

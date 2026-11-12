@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../utils/permission_queue.dart';
+import 'locale_controller.dart';
 
 /// Yerel bildirimler ve FCM `all_users` topic aboneliği servisi
 /// (PROJECT_NEW.md §6, Kural 10, R2).
@@ -47,15 +48,11 @@ class DeviceNotificationService implements NotificationService {
   bool _initialized = false;
   bool _permissionRequested = false;
   bool? _lastOptIn;
-  late final AppLocalizations _l10n = _deviceLocalizations();
 
   FirebaseMessaging get _fcm => _messaging ?? FirebaseMessaging.instance;
 
-  /// Kanal adı sistem ayarlarında görünür; uygulamayla aynı dil kuralı (tr, değilse en).
-  static AppLocalizations _deviceLocalizations() {
-    final code = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
-    return lookupAppLocalizations(Locale(code == 'tr' ? 'tr' : 'en'));
-  }
+  /// Kanal adı sistem ayarlarında görünür; uygulamanın seçili dilindedir.
+  AppLocalizations get _l10n => lookupAppLocalizations(LocaleController.current);
 
   @override
   Future<void> initialize() async {
