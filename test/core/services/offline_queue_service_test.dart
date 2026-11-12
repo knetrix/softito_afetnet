@@ -8,6 +8,7 @@ import 'package:afetnet/features/help_request/domain/assigned_team_info.dart';
 import 'package:afetnet/features/help_request/domain/help_request.dart';
 import 'package:afetnet/features/help_request/domain/help_request_draft.dart';
 import 'package:afetnet/features/help_request/domain/help_request_repository.dart';
+import 'package:afetnet/features/help_request/domain/incident_progress.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive.dart';
@@ -37,6 +38,10 @@ class _FakeHelpRequestRepository implements HelpRequestRepository {
 
   @override
   Stream<HelpRequest?> watchActiveHelpRequest(String uid) =>
+      const Stream.empty();
+
+  @override
+  Stream<IncidentProgress?> watchIncidentProgress(String incidentId) =>
       const Stream.empty();
 
   @override

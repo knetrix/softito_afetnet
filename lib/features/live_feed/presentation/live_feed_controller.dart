@@ -207,7 +207,8 @@ class LiveFeedController extends ChangeNotifier {
   Future<bool> closeIncident(Incident incident) =>
       _repo.closeIncident(incident);
 
-  Future<void> markSignalHandled(SafetySignal signal, String officialUid) =>
+  /// `false`: internet yok, kayıt bağlantı gelince gönderilecek.
+  Future<bool> markSignalHandled(SafetySignal signal, String officialUid) =>
       _repo.markSignalHandled(signalUid: signal.uid, officialUid: officialUid);
 
   Future<IncidentDetail> fetchDetail(Incident incident) =>

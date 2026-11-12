@@ -69,6 +69,11 @@ class _AfetNetAppState extends State<AfetNetApp> {
     final optIn =
         user != null && !user.isPendingApproval && user.notificationsOptIn;
     unawaited(_notificationService.syncTopicSubscription(optIn: optIn));
+    // Onaylı yetkili panik bildirimini (Kural 8) duyuru tercihinden bağımsız
+    // almalı; yoksa Android 13+ izni hiç istenmez ve bildirim sessizce düşmez.
+    if (user != null && user.isOfficial && !user.isPendingApproval) {
+      unawaited(_notificationService.requestPermission());
+    }
   }
 
   @override
