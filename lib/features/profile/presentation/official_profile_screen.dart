@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +27,7 @@ class OfficialProfileScreen extends StatelessWidget {
     final user = auth.currentUser;
 
     if (user == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return ChangeNotifierProvider<ProfileController>(
@@ -56,7 +55,8 @@ class _OfficialProfileView extends StatelessWidget {
     final confirmed = await AppDialog.confirm(
       context,
       title: l10n?.signOutConfirmTitle ?? 'Çıkış Yap',
-      message: l10n?.signOutConfirmMessage ??
+      message:
+          l10n?.signOutConfirmMessage ??
           'Oturumunuzu kapatmak istediğinize emin misiniz?',
       confirmLabel: l10n?.officialSignOut ?? 'Sistemden Çıkış Yap',
       cancelLabel: l10n?.cancel ?? 'İptal',
@@ -64,6 +64,219 @@ class _OfficialProfileView extends StatelessWidget {
     if (confirmed == true && context.mounted) {
       context.read<AuthController>().signOut();
     }
+  }
+
+  Future<void> _resetDemoData(BuildContext context) async {
+    if (!kDebugMode) return;
+
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await AppDialog.confirm(
+      context,
+      title: l10n?.demoResetTitle ?? 'Demo Verilerini Sıfırla',
+      message:
+          'Demo stokları, ekipleri ve toplanma alanları '
+          'başlangıç durumuna getirilecek.\n\n'
+          'Gerçek kayıtlar ve stok hareket geçmişi korunacak.\n\n'
+          'Devam etmek istiyor musunuz?',
+      confirmLabel: l10n?.demoReset ?? 'Demo Verisini Sıfırla',
+      cancelLabel: l10n?.cancel ?? 'İptal',
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    try {
+      final db = FirebaseFirestore.instance;
+      const warehouseIds = ['demo_merkez_depo', 'demo_bolge_depo'];
+      const initialStock = <String, int>{
+        'water': 150,
+        'blanket': 8,
+        'food': 60,
+        'medical': 25,
+      };
+
+      var restored = 0;
+      for (final warehouseId in warehouseIds) {
+        final warehouseRef = db.collection('warehouses').doc(warehouseId);
+        restored += await db.runTransaction<int>((transaction) async {
+          // Yetki ve isDemo kontrolleri ayrıca firestore.rules'ta yapılmalı.
+          final warehouse = await transaction.get(warehouseRef);
+          if (!warehouse.exists || warehouse.data()?['isDemo'] != true) {
+            return 0;
+          }
+
+          final itemRefs = initialStock.keys
+              .map((id) => warehouseRef.collection('inventory').doc(id))
+              .toList();
+          final itemSnapshots = <DocumentSnapshot<Map<String, dynamic>>>[];
+          for (final ref in itemRefs) {
+            itemSnapshots.add(await transaction.get(ref));
+          }
+
+          var count = 0;
+          for (var i = 0; i < itemRefs.length; i++) {
+            final item = itemSnapshots[i];
+            if (!item.exists || item.data()?['isDemo'] != true) continue;
+            transaction.update(itemRefs[i], {
+              'quantity': initialStock[itemRefs[i].id],
+              'updatedAt': FieldValue.serverTimestamp(),
+            });
+            count++;
+          }
+          return count;
+        });
+      }
+      final (teams, points) = await _resetDemoTeamsAndPoints(db);
+
+      if (!context.mounted) return;
+      await AppDialog.info(
+        context,
+        title: l10n?.demoResetTitle ?? 'Demo Verisi',
+        message:
+            'Demo verileri başlangıç durumuna getirildi.\n\n'
+            'Stok: $restored kayıt\n'
+            'Ekipler: $teams kayıt\n'
+            'Toplanma alanları: $points kayıt',
+      );
+    } catch (error) {
+      if (!context.mounted) return;
+      await AppDialog.info(
+        context,
+        title: 'İşlem Başarısız',
+        message: 'Demo stokları sıfırlanamadı: $error',
+      );
+    }
+  }
+
+  Future<int> _resetDemoCollection(
+    FirebaseFirestore db,
+    String collection,
+    Map<String, Map<String, dynamic>> records,
+  ) async {
+    var restored = 0;
+
+    for (final entry in records.entries) {
+      final reference = db.collection(collection).doc(entry.key);
+
+      final updated = await db.runTransaction<bool>((transaction) async {
+        final snapshot = await transaction.get(reference);
+
+        // Gerçek bir kayıt varsa asla değiştirme.
+        if (snapshot.exists && snapshot.data()?['isDemo'] != true) {
+          return false;
+        }
+
+        transaction.set(reference, {
+          ...entry.value,
+          'isDemo': true,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+
+        return true;
+      });
+
+      if (updated) {
+        restored++;
+      }
+    }
+
+    return restored;
+  }
+
+  Future<(int teams, int points)> _resetDemoTeamsAndPoints(
+    FirebaseFirestore db,
+  ) async {
+    // Tamamı örnek veridir; gerçek tesis/ekip bilgisi değildir.
+    final demoTeams = <String, Map<String, dynamic>>{
+      'team_01': {
+        'name': 'DEMO - Arama Kurtarma Ekibi',
+        'type': 'searchRescue',
+        'leaderName': 'Demo Ekip Lideri 1',
+        'memberCount': 6,
+        'location': const GeoPoint(36.2021, 36.1606),
+        'geohash': 'sy3tyy7k',
+        'locationText': 'Antakya - Demo Bölgesi',
+        'status': 'available',
+        'currentTask': null,
+      },
+      'team_02': {
+        'name': 'DEMO - Sağlık Ekibi',
+        'type': 'medical',
+        'leaderName': 'Demo Ekip Lideri 2',
+        'memberCount': 4,
+        'location': const GeoPoint(36.2090, 36.1700),
+        'geohash': 'sy3tzpdh',
+        'locationText': 'Antakya - Demo Bölgesi',
+        'status': 'available',
+        'currentTask': null,
+      },
+      'team_03': {
+        'name': 'DEMO - İtfaiye Ekibi',
+        'type': 'fire',
+        'leaderName': 'Demo Ekip Lideri 3',
+        'memberCount': 5,
+        'location': const GeoPoint(36.2060, 36.1650),
+        'geohash': 'sy3tyzne',
+        'locationText': 'Antakya - Demo Bölgesi',
+        'status': 'available',
+        'currentTask': null,
+      },
+      'team_04': {
+        'name': 'DEMO - Lojistik Ekibi',
+        'type': 'logistics',
+        'leaderName': 'Demo Ekip Lideri 4',
+        'memberCount': 4,
+        'location': const GeoPoint(36.1950, 36.1550),
+        'geohash': 'sy3tytp7',
+        'locationText': 'Antakya - Demo Bölgesi',
+        'status': 'available',
+        'currentTask': null,
+      },
+    };
+
+    final demoPoints = <String, Map<String, dynamic>>{
+      'demo_toplanma_01': {
+        'name': 'DEMO - Merkez Toplanma Alanı',
+        'type': 'assembly',
+        'description': 'AfetNet senaryosu için örnek toplanma alanı.',
+        'location': const GeoPoint(36.2030, 36.1630),
+        'geohash': 'sy3tyyt1',
+        'capacity': 500,
+        'currentCount': 120,
+        'services': ['water', 'food'],
+        'isOpen': true,
+      },
+      'demo_sahra_hastanesi': {
+        'name': 'DEMO - Sahra Hastanesi',
+        'type': 'fieldHospital',
+        'description': 'AfetNet senaryosu için örnek sağlık noktası.',
+        'location': const GeoPoint(36.1980, 36.1580),
+        'geohash': 'sy3tyv9k',
+        'capacity': 150,
+        'currentCount': 35,
+        'services': ['health', 'water'],
+        'isOpen': true,
+      },
+      'demo_barinma_01': {
+        'name': 'DEMO - Geçici Barınma Alanı',
+        'type': 'shelter',
+        'description': 'AfetNet senaryosu için örnek barınma noktası.',
+        'location': const GeoPoint(36.2100, 36.1750),
+        'geohash': 'sy3tzpvf',
+        'capacity': 300,
+        'currentCount': 80,
+        'services': ['tent', 'food', 'water'],
+        'isOpen': true,
+      },
+    };
+
+    final teams = await _resetDemoCollection(db, 'teams', demoTeams);
+
+    final points = await _resetDemoCollection(
+      db,
+      'assembly_points',
+      demoPoints,
+    );
+
+    return (teams, points);
   }
 
   @override
@@ -143,7 +356,8 @@ class _OfficialProfileView extends StatelessWidget {
                       Icon(Icons.shield_outlined, size: 20, color: accent),
                       const SizedBox(width: 8),
                       Text(
-                        l10n?.profileCoordinationInfo ?? 'Koordinasyon Bilgileri',
+                        l10n?.profileCoordinationInfo ??
+                            'Koordinasyon Bilgileri',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -171,7 +385,9 @@ class _OfficialProfileView extends StatelessWidget {
                         : context.read<ProfileController>().teamName(teamId),
                     builder: (context, snap) => _OfficialInfoTile(
                       label: l10n?.profileTeam ?? 'Bağlı Ekip',
-                      value: teamId == null ? notAssigned : (snap.data ?? teamId),
+                      value: teamId == null
+                          ? notAssigned
+                          : (snap.data ?? teamId),
                       icon: Icons.groups_outlined,
                     ),
                   ),
@@ -187,9 +403,7 @@ class _OfficialProfileView extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: accent.withValues(alpha: 0.3),
-                  ),
+                  border: Border.all(color: accent.withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +413,8 @@ class _OfficialProfileView extends StatelessWidget {
                         Icon(Icons.developer_mode, size: 16, color: accent),
                         const SizedBox(width: 6),
                         Text(
-                          l10n?.debugToolsTitle ?? 'Demo & Test Araçları (Debug)',
+                          l10n?.debugToolsTitle ??
+                              'Demo & Test Araçları (Debug)',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -213,15 +428,7 @@ class _OfficialProfileView extends StatelessWidget {
                       label: l10n?.demoReset ?? 'Demo Verisini Sıfırla',
                       icon: Icons.restart_alt_rounded,
                       isFullWidth: true,
-                      onPressed: () {
-                        // TODO(G6): Demo verisi yükleme/sıfırlama servisi (§8).
-                        AppDialog.info(
-                          context,
-                          title: l10n?.demoResetTitle ?? 'Demo Verisi',
-                          message: l10n?.demoResetPending ??
-                              'Demo verisi yükleme G6 aşamasında bağlanacaktır.',
-                        );
-                      },
+                      onPressed: () => _resetDemoData(context),
                     ),
                   ],
                 ),
@@ -301,13 +508,7 @@ class _OfficialInfoTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: muted,
-                  ),
-                ),
+                Text(label, style: TextStyle(fontSize: 12, color: muted)),
                 const SizedBox(height: 2),
                 Text(
                   value,

@@ -322,5 +322,82 @@
   "updateSheetNext": "{status} olarak işaretle",
   "updateSheetResolvedNote": "Kurtarıldı işaretlenince olay kapanır ve ekip boşa çıkar.",
   "updateSuccess": "Görev güncellendi: {status}",
-  "updateNoActiveTask": "Bu ekibin aktif görevi bulunamadı."
+  "updateNoActiveTask": "Bu ekibin aktif görevi bulunamadı.",
+
+
+"logisticsWarehouseLoadFailed": "Depolar yüklenemedi.",
+"logisticsNoWarehouses": "Henüz kayıtlı depo bulunmuyor.",
+"logisticsSeedError": "Demo depoları oluşturulamadı: {error}",
+"@logisticsSeedError": {
+  "placeholders": {
+    "error": {
+      "type": "String"
+    }
+  }
+},
+"logisticsRetry": "Tekrar dene",
+"logisticsInventoryLoadFailed": "Stok bilgileri alınamadı.",
+"logisticsNoFilteredItems": "Bu filtreye uygun stok bulunamadı.",
+"logisticsTitle": "LOJİSTİK",
+"logisticsMissingLocation": "Depo konumu belirtilmedi",
+"logisticsCriticalTitle": "KRİTİK STOK UYARISI",
+"logisticsEmergencySupply": "Acil İkmal İste",
+"logisticsSupplyNotActive": "Acil ikmal talebi henüz aktif değil.",
+"logisticsInventoryTitle": "DEPO ENVANTER LİSTESİ",
+"logisticsItemCount": "{count} kalem",
+"@logisticsItemCount": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"logisticsAll": "Tümü",
+"logisticsCritical": "Kritik",
+"logisticsMedium": "Orta",
+"logisticsSufficient": "Yeterli",
+"logisticsStockLevel": "Stok Düzeyi",
+"logisticsLoginRequired": "Stok işlemi için giriş yapmalısınız.",
+"logisticsCriticalNotification": "{itemName} kritik stok seviyesine ulaştı.",
+"@logisticsCriticalNotification": {
+  "placeholders": {
+    "itemName": {
+      "type": "String"
+    }
+  }
+},
+
+"broadcastButton": "Tahliye Anonsu",
+"broadcastTitle": "Tahliye Anonsu Oluştur",
+"broadcastDescription": "Hedef bölgenin merkez koordinatlarını girin. Mevcut konumunuz otomatik kullanılmaz.",
+"broadcastTitleLabel": "Anons başlığı",
+"broadcastMessageLabel": "Tahliye mesajı",
+"broadcastLatitude": "Enlem",
+"broadcastLongitude": "Boylam",
+"broadcastRadius": "Hedef yarıçap: {km} km",
+"@broadcastRadius": {
+  "placeholders": {
+    "km": {
+      "type": "String"
+    }
+  }
+},
+"broadcastInfo": "Anons kaydedilir. Uygulaması açık olan afetzedeler için bölgesel bildirim kontrolü yapılır.",
+"broadcastRequired": "Bu alan zorunludur.",
+"broadcastInvalidLatitude": "Geçerli bir enlem girin (-90 ile 90).",
+"broadcastInvalidLongitude": "Geçerli bir boylam girin (-180 ile 180).",
+"broadcastLoginRequired": "Önce yetkili olarak giriş yapın.",
+"broadcastSaving": "Kaydediliyor...",
+"broadcastSave": "Anonsu Kaydet",
+"broadcastSaved": "Tahliye anonsu kaydedildi.",
+"broadcastSaveFailed": "Anons kaydedilemedi: {error}",
+"@broadcastSaveFailed": {
+  "placeholders": {
+    "error": {
+      "type": "String"
+    }
+  }
+}
+
+
 }
