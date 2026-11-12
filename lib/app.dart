@@ -10,6 +10,8 @@ import 'core/services/location_service.dart';
 import 'core/services/notification_service.dart';
 import 'core/services/offline_queue_service.dart';
 import 'core/theme/app_theme.dart';
+import 'features/assembly_points/data/firestore_assembly_points_repository.dart';
+import 'features/assembly_points/domain/assembly_points_repository.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
 import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
@@ -40,6 +42,8 @@ class _AfetNetAppState extends State<AfetNetApp> {
       FirestoreSafetySignalRepository();
   final HelpRequestRepository _helpRequestRepository =
       FirestoreHelpRequestRepository();
+  final AssemblyPointsRepository _assemblyPointsRepository =
+      FirestoreAssemblyPointsRepository();
   late final OfflineQueueService _offlineQueueService = OfflineQueueService(
     repository: _helpRequestRepository,
     connectivityService: _connectivityService,
@@ -89,6 +93,9 @@ class _AfetNetAppState extends State<AfetNetApp> {
         Provider<NotificationService>.value(value: _notificationService),
         Provider<SafetySignalRepository>.value(value: _safetySignalRepository),
         Provider<HelpRequestRepository>.value(value: _helpRequestRepository),
+        Provider<AssemblyPointsRepository>.value(
+          value: _assemblyPointsRepository,
+        ),
         ChangeNotifierProvider<OfflineQueueService>.value(
           value: _offlineQueueService,
         ),

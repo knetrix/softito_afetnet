@@ -697,6 +697,73 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get assemblyScreenTitle => 'Assembly Areas';
+
+  @override
+  String get assemblyFilterAll => 'All';
+
+  @override
+  String get assemblyFilterAssembly => 'Assembly Area';
+
+  @override
+  String get assemblyFilterFieldHospital => 'Field Hospital';
+
+  @override
+  String get assemblyFilterShelter => 'Shelter / Tent';
+
+  @override
+  String get assemblyServiceWater => 'Clean Water';
+
+  @override
+  String get assemblyServiceHealth => 'First Aid';
+
+  @override
+  String get assemblyServiceFood => 'Hot Food';
+
+  @override
+  String get assemblyServiceTent => 'Shelter';
+
+  @override
+  String assemblyOccupancyLabel(int percent) {
+    return 'Occupancy: $percent%';
+  }
+
+  @override
+  String assemblyCapacityLabel(String current, String capacity) {
+    return '$current / $capacity People';
+  }
+
+  @override
+  String get assemblyGetDirections => 'Get Directions';
+
+  @override
+  String get assemblyOpenLabel => 'Open';
+
+  @override
+  String get assemblyClosedLabel => 'Closed';
+
+  @override
+  String get assemblyNearestBadge => 'Nearest';
+
+  @override
+  String get assemblyMyLocationTooltip => 'Go to My Location';
+
+  @override
+  String get assemblyZoomInTooltip => 'Zoom In';
+
+  @override
+  String get assemblyZoomOutTooltip => 'Zoom Out';
+
+  @override
+  String get assemblyEmptyList => 'No assembly areas found';
+
+  @override
+  String get assemblyNearestTop3 => 'Nearest 3 Areas';
+
+  @override
+  String get assemblyServicesTitle => 'Provided Services';
+
+  @override
   String get helpRequestSelectType => 'Select a need type';
 
   @override
@@ -707,4 +774,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelRequestKeep => 'Keep Request';
+
+  @override
+  String assemblyOccupancyShort(int percent) {
+    return '$percent%';
+  }
 }
