@@ -441,10 +441,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get demoResetTitle => 'Demo Verisi';
 
   @override
-  String get demoResetPending =>
-      'Demo verisi yükleme G6 aşamasında bağlanacaktır.';
-
-  @override
   String get onboardingActive => 'AKTİF';
 
   @override
@@ -1054,14 +1050,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get logisticsNoWarehouses => 'Henüz kayıtlı depo bulunmuyor.';
 
   @override
-  String logisticsSeedError(String error) {
-    return 'Demo depoları oluşturulamadı: $error';
-  }
-
-  @override
-  String get logisticsRetry => 'Tekrar dene';
-
-  @override
   String get logisticsInventoryLoadFailed => 'Stok bilgileri alınamadı.';
 
   @override
@@ -1075,12 +1063,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get logisticsCriticalTitle => 'KRİTİK STOK UYARISI';
-
-  @override
-  String get logisticsEmergencySupply => 'Acil İkmal İste';
-
-  @override
-  String get logisticsSupplyNotActive => 'Acil ikmal talebi henüz aktif değil.';
 
   @override
   String get logisticsInventoryTitle => 'DEPO ENVANTER LİSTESİ';
@@ -1117,23 +1099,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get broadcastButton => 'Tahliye Anonsu';
 
   @override
-  String get broadcastTitle => 'Tahliye Anonsu Oluştur';
+  String get broadcastTitle => 'Tahliye Anonsu';
 
   @override
-  String get broadcastDescription =>
-      'Hedef bölgenin merkez koordinatlarını girin. Mevcut konumunuz otomatik kullanılmaz.';
-
-  @override
-  String get broadcastTitleLabel => 'Anons başlığı';
-
-  @override
-  String get broadcastMessageLabel => 'Tahliye mesajı';
-
-  @override
-  String get broadcastLatitude => 'Enlem';
-
-  @override
-  String get broadcastLongitude => 'Boylam';
+  String get broadcastMessageLabel => 'Mesaj';
 
   @override
   String broadcastRadius(String km) {
@@ -1142,33 +1111,91 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get broadcastInfo =>
-      'Anons kaydedilir. Uygulaması açık olan afetzedeler için bölgesel bildirim kontrolü yapılır.';
+      'Uygulaması açık olan ve yarıçap içindeki afetzedelere bildirim düşer. Uygulaması kapalı cihazlar için Console → Messaging\'den all_users duyurusu gönderin.';
 
   @override
   String get broadcastRequired => 'Bu alan zorunludur.';
 
   @override
-  String get broadcastInvalidLatitude =>
-      'Geçerli bir enlem girin (-90 ile 90).';
+  String get broadcastSave => 'Gönder';
 
   @override
-  String get broadcastInvalidLongitude =>
-      'Geçerli bir boylam girin (-180 ile 180).';
+  String get broadcastSaved => 'Tahliye anonsu gönderildi.';
 
   @override
-  String get broadcastLoginRequired => 'Önce yetkili olarak giriş yapın.';
+  String get broadcastSaveFailed => 'Anons gönderilemedi.';
 
   @override
-  String get broadcastSaving => 'Kaydediliyor...';
+  String get demoResetConfirmMessage =>
+      'Demo ekipleri, depoları, stokları ve toplanma alanları başlangıç hâline getirilecek; eksik olanlar oluşturulacak. Gerçek kayıtlara dokunulmaz.';
 
   @override
-  String get broadcastSave => 'Anonsu Kaydet';
-
-  @override
-  String get broadcastSaved => 'Tahliye anonsu kaydedildi.';
-
-  @override
-  String broadcastSaveFailed(String error) {
-    return 'Anons kaydedilemedi: $error';
+  String demoResetDone(int teams, int warehouses, int items, int points) {
+    return 'Demo verisi hazır.\n\nEkip: $teams\nDepo: $warehouses\nStok kalemi: $items\nToplanma alanı: $points';
   }
+
+  @override
+  String get demoResetFailed =>
+      'Demo verisi sıfırlanamadı. Onaylı yetkili olarak giriş yaptığınızdan ve internetin açık olduğundan emin olun.';
+
+  @override
+  String get stockMovementTitle => 'Stok İşlemi';
+
+  @override
+  String get stockIn => 'Giriş';
+
+  @override
+  String get stockOut => 'Çıkış';
+
+  @override
+  String get stockCurrent => 'Mevcut Stok';
+
+  @override
+  String get stockQuantity => 'Miktar';
+
+  @override
+  String get stockQuantityHint => 'İşlem miktarını girin';
+
+  @override
+  String get stockInvalidQuantity => 'Geçerli bir miktar girin.';
+
+  @override
+  String get stockInsufficient => 'Yetersiz stok.';
+
+  @override
+  String get stockSaveIn => 'Stok Girişi Yap';
+
+  @override
+  String get stockSaveOut => 'Stok Çıkışı Yap';
+
+  @override
+  String get stockSaveFailed => 'Stok işlemi tamamlanamadı.';
+
+  @override
+  String get broadcastTypeEvacuation => 'Acil Tahliye';
+
+  @override
+  String get broadcastTypeAftershock => 'Artçı Sarsıntı';
+
+  @override
+  String get broadcastCenter => 'Merkez (konumunuz)';
+
+  @override
+  String get broadcastLocating => 'Konum alınıyor…';
+
+  @override
+  String get broadcastLocationUnavailable =>
+      'Konum alınamadı. Konum iznini ve GPS\'i kontrol edin.';
+
+  @override
+  String get broadcastRetryLocation => 'Konumu yeniden al';
+
+  @override
+  String broadcastRadiusShort(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get broadcastQueued =>
+      'İnternet yok; anons bağlantı gelince gönderilecek.';
 }

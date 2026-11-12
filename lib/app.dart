@@ -20,6 +20,8 @@ import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
 
 import 'features/broadcast/data/broadcast_notification_listener.dart';
+import 'features/broadcast/data/firestore_broadcast_repository.dart';
+import 'features/broadcast/domain/broadcast_repository.dart';
 
 import 'features/help_request/data/firestore_help_request_repository.dart';
 import 'features/help_request/domain/help_request_repository.dart';
@@ -189,6 +191,10 @@ class _AfetNetAppState extends State<AfetNetApp> {
         ),
 
         Provider<TeamsRepository>(create: (_) => FirestoreTeamsRepository()),
+
+        Provider<BroadcastRepository>(
+          create: (_) => FirestoreBroadcastRepository(),
+        ),
 
         ChangeNotifierProvider<OfflineQueueService>.value(
           value: _offlineQueueService,

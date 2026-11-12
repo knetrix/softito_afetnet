@@ -1,12 +1,9 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/notification_service.dart';
 import '../../../core/theme/app_status_colors.dart';
-import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/state_view.dart';
 import '../../../l10n/app_localizations.dart';
 
@@ -15,24 +12,15 @@ import '../domain/inventory_item.dart';
 import '../domain/logistics_repository.dart';
 import 'widgets/stock_movement_sheet.dart';
 
-enum InventoryFilter {
-  all,
-  critical,
-  medium,
-  sufficient,
-}
+enum InventoryFilter { all, critical, medium, sufficient }
 
 class LogisticsScreen extends StatefulWidget {
-  const LogisticsScreen({
-    super.key,
-    this.repository,
-  });
+  const LogisticsScreen({super.key, this.repository});
 
   final LogisticsRepository? repository;
 
   @override
-  State<LogisticsScreen> createState() =>
-      _LogisticsScreenState();
+  State<LogisticsScreen> createState() => _LogisticsScreenState();
 }
 
 class _LogisticsScreenState extends State<LogisticsScreen> {
@@ -42,16 +30,11 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
   String? _selectedWarehouseId;
   InventoryFilter _selectedFilter = InventoryFilter.all;
 
-  bool _isSeeding = false;
-  bool _seedAttempted = false;
-  String? _seedError;
-
   @override
   void initState() {
     super.initState();
 
-    _repository =
-        widget.repository ?? FirestoreLogisticsRepository();
+    _repository = widget.repository ?? FirestoreLogisticsRepository();
 
     _warehouseStream = _repository.watchWarehouses();
   }
@@ -85,62 +68,14 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
 
         final warehouses = snapshot.data!;
 
+        // Depo ve stok seed verisidir (§5.3); debug derlemede Profil'deki
+        // "Demo Verisini Sıfırla" ile yüklenir.
         if (warehouses.isEmpty) {
-          if (kDebugMode &&
-              widget.repository == null &&
-              !_seedAttempted) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) {
-                _createDemoData();
-              }
-            });
-          }
-
-          if (_isSeeding ||
-              (kDebugMode &&
-                  widget.repository == null &&
-                  !_seedAttempted &&
-                  _seedError == null)) {
-            return const StateView(
-              status: ViewStatus.loading,
-              child: SizedBox.shrink(),
-            );
-          }
-
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.warehouse_outlined,
-                    size: 52,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    _seedError == null
-                        ? strings.logisticsNoWarehouses
-                        : strings.logisticsSeedError(
-                            _seedError!,
-                          ),
-                    textAlign: TextAlign.center,
-                  ),
-                  if (_seedError != null && kDebugMode) ...[
-                    const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _seedAttempted = false;
-                          _seedError = null;
-                        });
-                      },
-                      child: Text(strings.logisticsRetry),
-                    ),
-                  ],
-                ],
-              ),
-            ),
+          return StateView(
+            status: ViewStatus.empty,
+            emptyMessage: strings.logisticsNoWarehouses,
+            emptyIcon: Icons.warehouse_outlined,
+            child: const SizedBox.shrink(),
           );
         }
 
@@ -148,9 +83,7 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
           (warehouse) => warehouse.id == _selectedWarehouseId,
         );
 
-        final warehouse = selected.isEmpty
-            ? warehouses.first
-            : selected.first;
+        final warehouse = selected.isEmpty ? warehouses.first : selected.first;
 
         return _InventoryContent(
           key: ValueKey(warehouse.id),
@@ -171,218 +104,6 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
           },
         );
       },
-    );
-  }
-
-  // Demo verileri sadece debug modunda oluşturulur.
-  // Depo koleksiyonu boş değilse mevcut verilere dokunulmaz.
-  Future<void> _createDemoData() async {
-    if (!kDebugMode ||
-        _isSeeding ||
-        _seedAttempted ||
-        widget.repository != null) {
-      return;
-    }
-
-    setState(() {
-      _seedAttempted = true;
-      _isSeeding = true;
-      _seedError = null;
-    });
-
-    try {
-      final db = FirebaseFirestore.instance;
-
-      final existing =
-          await db.collection('warehouses').limit(1).get();
-
-      if (existing.docs.isNotEmpty) {
-        return;
-      }
-
-      const warehouses = [
-        (
-          'demo_merkez_depo',
-          'Merkez Yardım Deposu',
-          'Antakya',
-          GeoPoint(36.2021, 36.1606),
-        ),
-        (
-          'demo_bolge_depo',
-          'Bölge Yardım Deposu',
-          'Antakya',
-          GeoPoint(36.2090, 36.1700),
-        ),
-      ];
-
-      const inventory = [
-        (
-          'water',
-          'İçme Suyu',
-          'water',
-          'adet',
-          150,
-          200,
-          30,
-        ),
-        (
-          'blanket',
-          'Battaniye',
-          'shelter',
-          'adet',
-          8,
-          100,
-          20,
-        ),
-        (
-          'food',
-          'Gıda Paketi',
-          'food',
-          'adet',
-          60,
-          100,
-          25,
-        ),
-        (
-          'medical',
-          'İlk Yardım Seti',
-          'medical',
-          'adet',
-          25,
-          40,
-          10,
-        ),
-      ];
-
-      final batch = db.batch();
-
-      for (final (id, name, locationText, location)
-          in warehouses) {
-        final warehouseRef =
-            db.collection('warehouses').doc(id);
-
-        batch.set(warehouseRef, {
-          'name': name,
-          'locationText': locationText,
-          'location': location,
-          'isDemo': true,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-
-        for (final (
-          itemId,
-          itemName,
-          category,
-          unit,
-          quantity,
-          target,
-          critical
-        ) in inventory) {
-          final itemRef = warehouseRef
-              .collection('inventory')
-              .doc(itemId);
-
-          batch.set(itemRef, {
-            'name': itemName,
-            'category': category,
-            'unit': unit,
-            'quantity': quantity,
-            'targetLevel': target,
-            'criticalLevel': critical,
-            'isDemo': true,
-            'createdAt': FieldValue.serverTimestamp(),
-            'updatedAt': FieldValue.serverTimestamp(),
-          });
-        }
-      }
-
-      await batch.commit();
-    } catch (error) {
-      if (mounted) {
-        setState(() {
-          _seedError = error.toString();
-        });
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isSeeding = false;
-        });
-      }
-    }
-  }
-}
-
-// --------------------------------------------------
-// KRİTİK STOK YEREL BİLDİRİMİ
-// --------------------------------------------------
-
-class _LogisticsNotifications {
-  static final FlutterLocalNotificationsPlugin _plugin =
-      FlutterLocalNotificationsPlugin();
-
-  static Future<void>? _initialization;
-
-  static Future<void> _initialize() async {
-    await _plugin.initialize(
-      settings: const InitializationSettings(
-        android: AndroidInitializationSettings(
-          '@mipmap/ic_launcher',
-        ),
-        iOS: DarwinInitializationSettings(
-          requestAlertPermission: false,
-          requestBadgePermission: false,
-          requestSoundPermission: false,
-        ),
-      ),
-    );
-
-    await _plugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
-
-    await _plugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-  }
-
-  static Future<void> showCritical({
-    required String warehouseId,
-    required String itemId,
-    required String title,
-    required String body,
-  }) async {
-    _initialization ??= _initialize();
-
-    await _initialization;
-
-    final notificationId =
-        Object.hash(warehouseId, itemId) & 0x7fffffff;
-
-    await _plugin.show(
-      id: notificationId,
-      title: title,
-      body: body,
-      notificationDetails: const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'afetnet_critical_stock',
-          'Kritik Stok Bildirimleri',
-          channelDescription:
-              'Kritik stok seviyesindeki depo ürünleri',
-          importance: Importance.high,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails(
-          presentAlert: true,
-          presentSound: true,
-        ),
-      ),
     );
   }
 }
@@ -410,23 +131,21 @@ class _InventoryContent extends StatefulWidget {
   final ValueChanged<String?> onWarehouseChanged;
 
   @override
-  State<_InventoryContent> createState() =>
-      _InventoryContentState();
+  State<_InventoryContent> createState() => _InventoryContentState();
 }
 
-class _InventoryContentState
-    extends State<_InventoryContent> {
+class _InventoryContentState extends State<_InventoryContent> {
   late Stream<List<InventoryItem>> _inventoryStream;
 
-  final Set<String> _previousCriticalIds = {};
+  /// Önceki snapshot'taki kritik kalemler; ilk yüklemede `null` (bildirim
+  /// yalnızca bir kalem bu ekranda kritik düzeye inince gösterilir).
+  Set<String>? _previousCriticalIds;
 
   @override
   void initState() {
     super.initState();
 
-    _inventoryStream = widget.repository.watchInventory(
-      widget.warehouse.id,
-    );
+    _inventoryStream = widget.repository.watchInventory(widget.warehouse.id);
   }
 
   @override
@@ -442,8 +161,7 @@ class _InventoryContentState
             errorMessage: strings.logisticsInventoryLoadFailed,
             onRetry: () {
               setState(() {
-                _inventoryStream =
-                    widget.repository.watchInventory(
+                _inventoryStream = widget.repository.watchInventory(
                   widget.warehouse.id,
                 );
               });
@@ -462,9 +180,7 @@ class _InventoryContentState
         final items = snapshot.data!;
 
         final criticalItems = items
-            .where(
-              (item) => item.level == StockLevel.critical,
-            )
+            .where((item) => item.level == StockLevel.critical)
             .toList();
 
         _checkCriticalStock(criticalItems);
@@ -472,12 +188,9 @@ class _InventoryContentState
         final filteredItems = items.where((item) {
           return switch (widget.selectedFilter) {
             InventoryFilter.all => true,
-            InventoryFilter.critical =>
-              item.level == StockLevel.critical,
-            InventoryFilter.medium =>
-              item.level == StockLevel.medium,
-            InventoryFilter.sufficient =>
-              item.level == StockLevel.sufficient,
+            InventoryFilter.critical => item.level == StockLevel.critical,
+            InventoryFilter.medium => item.level == StockLevel.medium,
+            InventoryFilter.sufficient => item.level == StockLevel.sufficient,
           };
         }).toList();
 
@@ -492,18 +205,12 @@ class _InventoryContentState
 
               if (criticalItems.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                _buildCriticalWarning(
-                  context,
-                  criticalItems,
-                ),
+                _buildCriticalWarning(context, criticalItems),
               ],
 
               const SizedBox(height: 24),
 
-              _buildInventoryHeader(
-                context,
-                items.length,
-              ),
+              _buildInventoryHeader(context, items.length),
 
               const SizedBox(height: 14),
               _buildFilters(),
@@ -524,24 +231,16 @@ class _InventoryContentState
                   builder: (context, constraints) {
                     return GridView.builder(
                       shrinkWrap: true,
-                      physics:
-                          const NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: filteredItems.length,
-                      gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            constraints.maxWidth >= 650
-                                ? 3
-                                : 2,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: constraints.maxWidth >= 650 ? 3 : 2,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
                         mainAxisExtent: 190,
                       ),
                       itemBuilder: (context, index) {
-                        return _buildStockCard(
-                          context,
-                          filteredItems[index],
-                        );
+                        return _buildStockCard(context, filteredItems[index]);
                       },
                     );
                   },
@@ -553,55 +252,29 @@ class _InventoryContentState
     );
   }
 
-  // Kritik stoklar ekran açıkken kontrol edilir.
-  // Aynı ekran oturumunda değişmeyen stok için
-  // tekrar tekrar bildirim gösterilmez.
-  void _checkCriticalStock(
-    List<InventoryItem> criticalItems,
-  ) {
-    final currentIds =
-        criticalItems.map((item) => item.id).toSet();
+  /// Kural 3: kalem kritik düzeye inince yetkiliye yerel bildirim. İlk
+  /// yüklemede zaten kritik olan kalemler yalnızca uyarı kartında görünür.
+  void _checkCriticalStock(List<InventoryItem> criticalItems) {
+    final currentIds = criticalItems.map((item) => item.id).toSet();
+    final previous = _previousCriticalIds;
+    _previousCriticalIds = currentIds;
+    if (previous == null) return;
 
-    final newlyCritical = criticalItems.where(
-      (item) => !_previousCriticalIds.contains(item.id),
-    ).toList();
+    final newlyCritical = criticalItems
+        .where((item) => !previous.contains(item.id))
+        .toList();
+    if (newlyCritical.isEmpty) return;
 
-    _previousCriticalIds
-      ..clear()
-      ..addAll(currentIds);
-
-    if (newlyCritical.isEmpty) {
-      return;
+    final strings = AppLocalizations.of(context)!;
+    final notifications = context.read<NotificationService>();
+    for (final item in newlyCritical) {
+      notifications.showLocalNotification(
+        id: Object.hash(widget.warehouse.id, item.id) & 0x7fffffff,
+        title: strings.logisticsCriticalTitle,
+        body: strings.logisticsCriticalNotification(item.name),
+        payload: 'stock:${widget.warehouse.id}/${item.id}',
+      );
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) {
-        return;
-      }
-
-      final strings = AppLocalizations.of(context)!;
-
-      for (final item in newlyCritical) {
-        if (!mounted) {
-          return;
-        }
-
-        try {
-          await _LogisticsNotifications.showCritical(
-            warehouseId: widget.warehouse.id,
-            itemId: item.id,
-            title: strings.logisticsCriticalTitle,
-            body: strings.logisticsCriticalNotification(
-              item.name,
-            ),
-          );
-        } catch (error) {
-          debugPrint(
-            'Kritik stok bildirimi gösterilemedi: $error',
-          );
-        }
-      }
-    });
   }
 
   Widget _buildHeader(BuildContext context) {
@@ -610,11 +283,7 @@ class _InventoryContentState
 
     return Row(
       children: [
-        Icon(
-          Icons.circle,
-          size: 9,
-          color: theme.colorScheme.primary,
-        ),
+        Icon(Icons.circle, size: 9, color: theme.colorScheme.primary),
         const SizedBox(width: 10),
         Expanded(
           child: Text(
@@ -625,10 +294,7 @@ class _InventoryContentState
             ),
           ),
         ),
-        const CircleAvatar(
-          radius: 19,
-          child: Icon(Icons.person_outline),
-        ),
+        const CircleAvatar(radius: 19, child: Icon(Icons.person_outline)),
       ],
     );
   }
@@ -642,8 +308,7 @@ class _InventoryContentState
         children: [
           CircleAvatar(
             radius: 25,
-            backgroundColor: theme.colorScheme.primary
-                .withValues(alpha: 0.12),
+            backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.12),
             child: Icon(
               Icons.warehouse_outlined,
               color: theme.colorScheme.primary,
@@ -694,9 +359,7 @@ class _InventoryContentState
     List<InventoryItem> criticalItems,
   ) {
     final strings = AppLocalizations.of(context)!;
-    final critical = Theme.of(context)
-        .extension<AppStatusColors>()!
-        .critical;
+    final critical = Theme.of(context).extension<AppStatusColors>()!.critical;
 
     return _LogisticsPanel(
       backgroundColor: critical.withValues(alpha: 0.10),
@@ -705,10 +368,7 @@ class _InventoryContentState
         children: [
           Row(
             children: [
-              Icon(
-                Icons.warning_amber_rounded,
-                color: critical,
-              ),
+              Icon(Icons.warning_amber_rounded, color: critical),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -724,44 +384,19 @@ class _InventoryContentState
                 backgroundColor: critical,
                 child: Text(
                   '${criticalItems.length}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Text(
-            criticalItems
-                .map((item) => item.name)
-                .join(', '),
-          ),
-          const SizedBox(height: 14),
-
-          // İSTEDİĞİN GİBİ BUTON KORUNDU.
-          AppButton.danger(
-            label: strings.logisticsEmergencySupply,
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    strings.logisticsSupplyNotActive,
-                  ),
-                ),
-              );
-            },
-          ),
+          Text(criticalItems.map((item) => item.name).join(', ')),
         ],
       ),
     );
   }
 
-  Widget _buildInventoryHeader(
-    BuildContext context,
-    int count,
-  ) {
+  Widget _buildInventoryHeader(BuildContext context, int count) {
     final theme = Theme.of(context);
     final strings = AppLocalizations.of(context)!;
 
@@ -826,25 +461,18 @@ class _InventoryContentState
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            colors.surfaceContainerHighest,
-            colors.surface,
-          ],
+          colors: [colors.surfaceContainerHighest, colors.surface],
         ),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Icon(
-            Icons.location_on_outlined,
-            color: colors.primary,
-          ),
+          Icon(Icons.location_on_outlined, color: colors.primary),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              widget.warehouse.locationText ??
-                  widget.warehouse.name,
+              widget.warehouse.locationText ?? widget.warehouse.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -854,15 +482,11 @@ class _InventoryContentState
     );
   }
 
-  Widget _buildStockCard(
-    BuildContext context,
-    InventoryItem item,
-  ) {
+  Widget _buildStockCard(BuildContext context, InventoryItem item) {
     final theme = Theme.of(context);
     final strings = AppLocalizations.of(context)!;
 
-    final statusColors =
-        theme.extension<AppStatusColors>()!;
+    final statusColors = theme.extension<AppStatusColors>()!;
 
     final color = switch (item.level) {
       StockLevel.critical => statusColors.critical,
@@ -871,12 +495,9 @@ class _InventoryContentState
     };
 
     final statusText = switch (item.level) {
-      StockLevel.critical =>
-        strings.logisticsCritical.toUpperCase(),
-      StockLevel.medium =>
-        strings.logisticsMedium.toUpperCase(),
-      StockLevel.sufficient =>
-        strings.logisticsSufficient.toUpperCase(),
+      StockLevel.critical => strings.logisticsCritical.toUpperCase(),
+      StockLevel.medium => strings.logisticsMedium.toUpperCase(),
+      StockLevel.sufficient => strings.logisticsSufficient.toUpperCase(),
     };
 
     final categoryIcon = switch (item.category) {
@@ -899,13 +520,8 @@ class _InventoryContentState
               children: [
                 CircleAvatar(
                   radius: 17,
-                  backgroundColor:
-                      color.withValues(alpha: 0.12),
-                  child: Icon(
-                    categoryIcon,
-                    size: 18,
-                    color: color,
-                  ),
+                  backgroundColor: color.withValues(alpha: 0.12),
+                  child: Icon(categoryIcon, size: 18, color: color),
                 ),
                 const Spacer(),
                 Flexible(
@@ -952,8 +568,7 @@ class _InventoryContentState
             ),
             const Spacer(),
             Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   strings.logisticsStockLevel,
@@ -970,8 +585,7 @@ class _InventoryContentState
               value: item.ratio,
               minHeight: 5,
               color: color,
-              backgroundColor:
-                  color.withValues(alpha: 0.15),
+              backgroundColor: color.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(6),
             ),
           ],
@@ -980,22 +594,15 @@ class _InventoryContentState
     );
   }
 
-  Future<void> _openStockMovement(
-    InventoryItem item,
-  ) async {
+  Future<void> _openStockMovement(InventoryItem item) async {
     final strings = AppLocalizations.of(context)!;
 
-    final userId =
-        FirebaseAuth.instance.currentUser?.uid;
+    final userId = FirebaseAuth.instance.currentUser?.uid;
 
     if (userId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            strings.logisticsLoginRequired,
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(strings.logisticsLoginRequired)));
       return;
     }
 
@@ -1020,10 +627,7 @@ class _InventoryContentState
 // --------------------------------------------------
 
 class _LogisticsPanel extends StatelessWidget {
-  const _LogisticsPanel({
-    required this.child,
-    this.backgroundColor,
-  });
+  const _LogisticsPanel({required this.child, this.backgroundColor});
 
   final Widget child;
   final Color? backgroundColor;
@@ -1037,11 +641,7 @@ class _LogisticsPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? colors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: colors.outlineVariant.withValues(
-            alpha: 0.4,
-          ),
-        ),
+        border: Border.all(color: colors.outlineVariant.withValues(alpha: 0.4)),
       ),
       child: child,
     );

@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/inventory_item.dart';
+import '../../domain/logistics_repository.dart';
 
 class StockMovementSheet extends StatefulWidget {
   const StockMovementSheet({
@@ -14,36 +15,25 @@ class StockMovementSheet extends StatefulWidget {
 
   final InventoryItem item;
 
-  final Future<void> Function(
-    int quantity,
-    bool incoming,
-  ) onSave;
+  final Future<void> Function(int quantity, bool incoming) onSave;
 
   static Future<void> open(
     BuildContext context, {
     required InventoryItem item,
-    required Future<void> Function(
-      int quantity,
-      bool incoming,
-    ) onSave,
+    required Future<void> Function(int quantity, bool incoming) onSave,
   }) {
     return AppBottomSheet.show<void>(
       context,
       title: item.name,
-      child: StockMovementSheet(
-        item: item,
-        onSave: onSave,
-      ),
+      child: StockMovementSheet(item: item, onSave: onSave),
     );
   }
 
   @override
-  State<StockMovementSheet> createState() =>
-      _StockMovementSheetState();
+  State<StockMovementSheet> createState() => _StockMovementSheetState();
 }
 
-class _StockMovementSheetState
-    extends State<StockMovementSheet> {
+class _StockMovementSheetState extends State<StockMovementSheet> {
   final _formKey = GlobalKey<FormState>();
   final _quantityController = TextEditingController();
 
@@ -66,9 +56,7 @@ class _StockMovementSheetState
     });
 
     try {
-      final quantity = int.parse(
-        _quantityController.text.trim(),
-      );
+      final quantity = int.parse(_quantityController.text.trim());
 
       await widget.onSave(quantity, _isIncoming);
 
@@ -78,12 +66,13 @@ class _StockMovementSheetState
     } catch (error) {
       if (!mounted) return;
 
+      final l10n = AppLocalizations.of(context)!;
+      // Transaction eksi stoğu reddeder (Kural 3): bu arada başka biri stok
+      // düşmüş olabilir.
       setState(() {
-        if (error is StateError) {
-          _error = error.message.toString();
-        } else {
-          _error = 'Stok işlemi tamamlanamadı.';
-        }
+        _error = error is InsufficientStockException
+            ? l10n.stockInsufficient
+            : l10n.stockSaveFailed;
       });
     } finally {
       if (mounted) {
@@ -95,6 +84,7 @@ class _StockMovementSheetState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Form(
       key: _formKey,
@@ -102,24 +92,21 @@ class _StockMovementSheetState
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Stok İşlemi',
-            style: theme.textTheme.titleSmall,
-          ),
+          Text(l10n.stockMovementTitle, style: theme.textTheme.titleSmall),
 
           const SizedBox(height: 16),
 
           SegmentedButton<bool>(
-            segments: const [
+            segments: [
               ButtonSegment<bool>(
                 value: true,
-                icon: Icon(Icons.add),
-                label: Text('Giriş'),
+                icon: const Icon(Icons.add),
+                label: Text(l10n.stockIn),
               ),
               ButtonSegment<bool>(
                 value: false,
-                icon: Icon(Icons.remove),
-                label: Text('Çıkış'),
+                icon: const Icon(Icons.remove),
+                label: Text(l10n.stockOut),
               ),
             ],
             selected: {_isIncoming},
@@ -137,21 +124,17 @@ class _StockMovementSheetState
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: theme
-                  .colorScheme.surfaceContainerHighest,
+              color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Mevcut Stok'),
+                Text(l10n.stockCurrent),
                 Text(
                   '${widget.item.quantity} '
                   '${widget.item.unit}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -164,23 +147,20 @@ class _StockMovementSheetState
             enabled: !_isSaving,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: 'Miktar',
-              hintText: 'İşlem miktarını girin',
+              labelText: l10n.stockQuantity,
+              hintText: l10n.stockQuantityHint,
               suffixText: widget.item.unit,
               border: const OutlineInputBorder(),
             ),
             validator: (value) {
-              final quantity = int.tryParse(
-                value?.trim() ?? '',
-              );
+              final quantity = int.tryParse(value?.trim() ?? '');
 
               if (quantity == null || quantity <= 0) {
-                return 'Geçerli bir miktar girin.';
+                return l10n.stockInvalidQuantity;
               }
 
-              if (!_isIncoming &&
-                  quantity > widget.item.quantity) {
-                return 'Yetersiz stok.';
+              if (!_isIncoming && quantity > widget.item.quantity) {
+                return l10n.stockInsufficient;
               }
 
               return null;
@@ -189,20 +169,13 @@ class _StockMovementSheetState
 
           if (_error != null) ...[
             const SizedBox(height: 12),
-            Text(
-              _error!,
-              style: TextStyle(
-                color: theme.colorScheme.error,
-              ),
-            ),
+            Text(_error!, style: TextStyle(color: theme.colorScheme.error)),
           ],
 
           const SizedBox(height: 24),
 
           AppButton.primary(
-            label: _isIncoming
-                ? 'Stok Girişi Yap'
-                : 'Stok Çıkışı Yap',
+            label: _isIncoming ? l10n.stockSaveIn : l10n.stockSaveOut,
             isLoading: _isSaving,
             onPressed: _save,
           ),
