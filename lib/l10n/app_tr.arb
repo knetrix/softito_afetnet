@@ -195,5 +195,21 @@
   "helpRequestSubmitted": "Yardım çağrınız alındı.",
   "helpRequestMinPeople": "Kişi sayısı en az 1 olmalıdır.",
   "helpRequestQueuedOffline": "İnternet bağlantısı kurulamadı. Çağrınız kuyruğa alındı ve bağlantı sağlandığında merkeze iletilecektir.",
-  "helpRequestStatusPendingOffline": "Gönderilmeyi Bekliyor"
+  "helpRequestStatusPendingOffline": "Gönderilmeyi Bekliyor",
+  "cancelRequestTitle": "Çağrıyı İptal Et",
+  "cancelRequestMessage": "Yardım çağrınızı iptal etmek istediğinize emin misiniz? Bu işlem geri alınamaz.",
+  "cancelRequestConfirm": "Evet, İptal Et",
+  "cancelRequestAction": "Çağrıyı İptal Et",
+  "cancelRequestSuccess": "Yardım çağrınız iptal edildi.",
+  "activeRequestTitle": "Aktif Yardım Çağrısı",
+  "assignedTeamLabel": "Yönlendirilen Ekip",
+  "teamLeaderLabel": "Sorumlu",
+  "teamWaitingLabel": "Ekip yönlendirmesi bekleniyor...",
+  "caseStatusPending": "Beklemede",
+  "caseStatusAssigned": "Ekip Yönlendirildi",
+  "caseStatusEnRoute": "Yola Çıktı",
+  "caseStatusOnSite": "Olay Yerinde",
+  "caseStatusResolved": "Kurtarıldı",
+  "caseStatusCancelled": "İptal Edildi",
+  "peopleCountLabel": "{count} Kişi"
 }

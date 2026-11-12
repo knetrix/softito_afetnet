@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:afetnet/core/constants/help_type.dart';
 import 'package:afetnet/core/services/connectivity_service.dart';
 import 'package:afetnet/core/services/offline_queue_service.dart';
+import 'package:afetnet/features/help_request/domain/assigned_team_info.dart';
 import 'package:afetnet/features/help_request/domain/help_request.dart';
 import 'package:afetnet/features/help_request/domain/help_request_draft.dart';
 import 'package:afetnet/features/help_request/domain/help_request_repository.dart';
@@ -37,6 +38,9 @@ class _FakeHelpRequestRepository implements HelpRequestRepository {
   @override
   Stream<HelpRequest?> watchActiveHelpRequest(String uid) =>
       const Stream.empty();
+
+  @override
+  Future<AssignedTeamInfo?> fetchTeamInfo(String teamId) async => null;
 
   @override
   Future<void> cancelHelpRequest(String requestId) async {}

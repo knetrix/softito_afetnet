@@ -1,11 +1,21 @@
 import 'dart:async';
 
+import 'package:afetnet/core/constants/case_status.dart';
+import 'package:afetnet/core/constants/help_type.dart';
 import 'package:afetnet/core/constants/user_role.dart';
+import 'package:afetnet/core/services/connectivity_service.dart';
 import 'package:afetnet/core/services/location_service.dart';
+import 'package:afetnet/core/services/offline_queue_service.dart';
 import 'package:afetnet/core/theme/app_theme.dart';
 import 'package:afetnet/features/auth/domain/app_user.dart';
 import 'package:afetnet/features/auth/domain/auth_repository.dart';
 import 'package:afetnet/features/auth/presentation/auth_controller.dart';
+import 'package:afetnet/features/help_request/domain/assigned_team_info.dart';
+import 'package:afetnet/features/help_request/domain/help_request.dart';
+import 'package:afetnet/features/help_request/domain/help_request_draft.dart';
+import 'package:afetnet/features/help_request/domain/help_request_repository.dart';
+import 'package:afetnet/features/help_request/presentation/active_help_request_controller.dart';
+import 'package:afetnet/features/help_request/presentation/widgets/active_request_card.dart';
 import 'package:afetnet/features/home/presentation/home_screen.dart';
 import 'package:afetnet/features/profile/domain/profile_repository.dart';
 import 'package:afetnet/features/profile/domain/user_contact_profile.dart';
@@ -160,11 +170,32 @@ class _TestProfileRepository implements ProfileRepository {
   }) async {}
 }
 
+class _TestHelpRequestRepository implements HelpRequestRepository {
+  _TestHelpRequestRepository({this.activeRequest});
+
+  final HelpRequest? activeRequest;
+
+  @override
+  Stream<HelpRequest?> watchActiveHelpRequest(String uid) =>
+      Stream.value(activeRequest);
+
+  @override
+  Future<AssignedTeamInfo?> fetchTeamInfo(String teamId) async =>
+      const AssignedTeamInfo(id: 't1', name: 'AKUT Hatay', leaderName: 'Lider');
+
+  @override
+  Future<void> cancelHelpRequest(String requestId) async {}
+
+  @override
+  Future<String> submitHelpRequest(HelpRequestDraft draft) async => draft.id;
+}
+
 Widget _wrapHome({
   required AuthController auth,
   required LocationService location,
   required SafetySignalRepository signalRepo,
   required ProfileRepository profileRepo,
+  ActiveHelpRequestController? activeHelpRequestController,
   Future<bool> Function(Uri uri)? urlLauncher,
   double textScale = 1.0,
 }) {
@@ -189,6 +220,7 @@ Widget _wrapHome({
       home: HomeScreen(
         panicHoldDuration: const Duration(milliseconds: 50),
         urlLauncher: urlLauncher,
+        activeHelpRequestController: activeHelpRequestController,
       ),
     ),
   );
@@ -292,6 +324,62 @@ void main() {
 
     // Buton GÜVENDEYİM görünümüne geçer
     expect(find.textContaining('GÜVENDEYİM'), findsOneWidget);
+  });
+
+  testWidgets('HomeScreen aktif yardım çağrısı varsa ActiveRequestCard gösterir', (tester) async {
+    final auth = AuthController(_TestAuthRepository());
+    final location = _TestLocationService(label: 'Antakya, Hatay');
+    final signalRepo = _TestSafetySignalRepository();
+    final profileRepo = _TestProfileRepository();
+    final helpRepo = _TestHelpRequestRepository(
+      activeRequest: HelpRequest(
+        id: 'req_1',
+        createdBy: 'c1',
+        type: HelpType.debris,
+        priority: 1,
+        status: CaseStatus.assigned,
+        peopleCount: 4,
+        location: const LatLng(36.2, 36.16),
+        geohash: 'sy72wxyz',
+        createdAt: DateTime.now(),
+        assignedTeamId: 't1',
+      ),
+    );
+    final offlineQueue = OfflineQueueService(
+      repository: helpRepo,
+      connectivityService: DeviceConnectivityService(),
+    );
+    final activeCtrl = ActiveHelpRequestController(
+      repository: helpRepo,
+      queueService: offlineQueue,
+      citizenUid: 'c1',
+    );
+
+    addTearDown(() async {
+      auth.dispose();
+      location.dispose();
+      await signalRepo.close();
+      activeCtrl.dispose();
+      offlineQueue.dispose();
+    });
+
+    await tester.pumpWidget(
+      _wrapHome(
+        auth: auth,
+        location: location,
+        signalRepo: signalRepo,
+        profileRepo: profileRepo,
+        activeHelpRequestController: activeCtrl,
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 50));
+
+    expect(find.byType(ActiveRequestCard), findsOneWidget);
+    expect(find.text('Ekip Yönlendirildi'), findsOneWidget);
+    expect(find.text('Enkaz Altında'), findsOneWidget);
+    expect(find.text('4 Kişi'), findsOneWidget);
+    expect(find.textContaining('AKUT Hatay'), findsOneWidget);
   });
 }
 

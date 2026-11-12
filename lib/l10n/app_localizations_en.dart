@@ -638,4 +638,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpRequestStatusPendingOffline => 'Waiting to Send';
+
+  @override
+  String get cancelRequestTitle => 'Cancel Help Request';
+
+  @override
+  String get cancelRequestMessage =>
+      'Are you sure you want to cancel your help request? This action cannot be undone.';
+
+  @override
+  String get cancelRequestConfirm => 'Yes, Cancel';
+
+  @override
+  String get cancelRequestAction => 'Cancel Help Request';
+
+  @override
+  String get cancelRequestSuccess => 'Your help request has been cancelled.';
+
+  @override
+  String get activeRequestTitle => 'Active Help Request';
+
+  @override
+  String get assignedTeamLabel => 'Dispatched Team';
+
+  @override
+  String get teamLeaderLabel => 'Team Leader';
+
+  @override
+  String get teamWaitingLabel => 'Waiting for team assignment...';
+
+  @override
+  String get caseStatusPending => 'Pending';
+
+  @override
+  String get caseStatusAssigned => 'Team Dispatched';
+
+  @override
+  String get caseStatusEnRoute => 'En Route';
+
+  @override
+  String get caseStatusOnSite => 'On Site';
+
+  @override
+  String get caseStatusResolved => 'Resolved';
+
+  @override
+  String get caseStatusCancelled => 'Cancelled';
+
+  @override
+  String peopleCountLabel(int count) {
+    return '$count People';
+  }
 }
