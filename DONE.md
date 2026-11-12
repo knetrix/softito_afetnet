@@ -99,8 +99,6 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 **Kontroller (G1 incelemesi):** `flutter analyze` temiz · 110 test geçiyor (sahte "50 m" testi gerçek seçim fonksiyonunu deneyen testle değiştirildi; birleştirme, en yeni aktif çağrı, iptal ve kuyruk gösterimi için testler eklendi) · Android emülatöründe gerçek Firebase'e karşı: çağrı + `private/contact` + yeni olay; aynı noktadan ikinci afetzedenin kritik çağrısı aynı olaya bağlandı (`requestCount: 2`, öncelik 3 → 1); ~200 m uzaktaki çağrı yeni olay açtı; karttan iptal; internetsiz çağrı kartta "Waiting to Send", uygulama kapatılıp açılınca da duruyor, internet gelince ~5 sn'de gönderildi (`createdOffline: true`) ve aynı noktadaki açık olaya bağlandı. Toplanma: Firestore boşken "No assembly areas found"; 3 test noktası yazılınca canlı geldi, konumsuz nokta atlandı, kart doluluk "25%" ve hizmetleri doğru gösterdi. Son turda afetzede akışının tamamı (panik, GÜVENDEYİM, çağrı, kart, iptal, düdük, profil konum rozeti) ve onaylı yetkili girişi (Y1–Y4 sekmeleri, Y4 profil) tekrar denendi. Test verisi silindi.
 
-**G6 notu (Meryem):** Gönderim Transaction'ı, çift kaydı önlemek için henüz var olmayan `help_requests/{id}` belgesini okur. Kurallar sahibinin bu okumasına izin vermeli (belge yokken `resource == null`), yoksa gönderim reddedilir. İptal yalnızca `status: cancelled` yazar.
-
 **G5'e devir (Esra):**
 - **Index'ler hazır (12 Kasım, `READY`).** Canlı Akış (`incidents`: `isOpen`, `priority`, `createdAt`), panik pinleri (`safety_signals`: `state`, `updatedAt` azalan), Detay'da bağlı çağrılar (`help_requests`: `incidentId`, `createdAt`) ve ekibin görevi (`assignments`: `teamId`, `status`) için bileşik index'ler `firestore.indexes.json`'dan deploy edildi; üç sorgu REST ile denendi. Yeni bir sorgu `FAILED_PRECONDITION` verirse index'i bu dosyaya ekleyip `firebase deploy --only firestore:indexes --project afetnet-softito` çalıştırın (kurallara dokunmaz).
 - Hazır modeller: `Incident` (`live_feed/domain/incident.dart`, §5.3 alanları; Firestore okuması G5'te yazılacak), `HelpRequest`, `HelpType`, `CaseStatus` (`core/constants/`), `PriorityPolicy` (`core/utils/`, rozet: `StatusBadge.priority(int)`), `SafetySignal` (`isHandled` = `handledBy != null`; yeni panik eski "Ulaşıldı" kaydını siler), `AssignedTeamInfo`.
@@ -129,6 +127,8 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | 3 | Demo verisi, "Demo Verisini Sıfırla" (Y4'te debug butonu hazır, servisi bağlanacak), demo hesapları | ⏳ |
 | 4 | Yasal metinler TR/EN (Firebase Hosting). Hesabı Sil akışı hazır (G2 + G1 incelemesi) | ⏳ |
 | 5 | `firestore.rules` + index'ler (Hesabı Sil için sahibine silme izni: `users`, `private/contact`, `safety_signals`, çağrı `private/contact`; `safety_signals`'ta sahibi `handledBy`/`handledAt`'i yazamaz ama silebilir, bkz. §5.5); test modunu kapat, demo akışını dene | ⏳ |
+
+**Not (G4'ten, kurallar için):** Yardım çağrısı gönderim Transaction'ı, çift kaydı önlemek için henüz var olmayan `help_requests/{id}` belgesini okur. Kurallar sahibinin bu okumasına izin vermeli (belge yokken `resource == null`), yoksa gönderim reddedilir. İptal yalnızca `status: cancelled` yazar.
 
 **Çıktı:** Demo akışının (8) tamamı TR ve EN çalışıyor. ⏳
 
