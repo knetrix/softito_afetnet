@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../core/services/locale_controller.dart';
 import '../../../core/services/location_service.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../l10n/app_localizations.dart';
@@ -218,8 +219,7 @@ class BroadcastNotificationListener {
   }
 
   static String? _localizedTitle(Object? type) {
-    final code = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
-    final l10n = lookupAppLocalizations(Locale(code == 'tr' ? 'tr' : 'en'));
+    final l10n = lookupAppLocalizations(LocaleController.current);
     return switch (type) {
       'evacuation' => l10n.broadcastTypeEvacuation,
       'aftershock' => l10n.broadcastTypeAftershock,

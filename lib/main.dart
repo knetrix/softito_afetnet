@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import 'app.dart';
+import 'core/services/locale_controller.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -13,7 +14,9 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Geliştirme sırasında çökme raporu gönderilmez.
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    !kDebugMode,
+  );
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -31,5 +34,9 @@ Future<void> main() async {
   // Çevrimdışı çağrı kuyruğu kutusu G4'te burada açılır (Kural 4).
   await Hive.initFlutter();
 
-  runApp(const AfetNetApp());
+  // İlk kare seçilen dilde çizilir (varsayılan Türkçe).
+  final localeController = LocaleController();
+  await localeController.load();
+
+  runApp(AfetNetApp(localeController: localeController));
 }

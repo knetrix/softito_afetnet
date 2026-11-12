@@ -55,6 +55,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get officialSignOut => 'Sistemden Çıkış Yap';
 
   @override
+  String get languageLabel => 'Dil';
+
+  @override
   String get privacyPolicy => 'Gizlilik Politikası';
 
   @override

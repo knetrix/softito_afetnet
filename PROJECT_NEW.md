@@ -368,7 +368,7 @@ firestore.rules · firestore.indexes.json
 6. Lojistik'te 50 koli su çıkışı yapılır → stok düşer, kritik uyarı ve bildirim çıkar.
 7. Tahliye Anonsu gönderilir → afetzede cihazında bildirim. Afetzede uygulaması kapatılır, Console'dan `all_users` duyurusu gönderilir → kapalı uygulamaya bildirim gelir (Android).
 8. Afetzede 1 GÜVENDEYİM ile sinyali kapatır, uçak moduna geçer ve PANİĞİM'e basar → SMS uygulaması hazır açılır, düdük çalınır. Yeni çağrı "Gönderilmeyi Bekliyor" görünür → internet açılınca otomatik gönderilir.
-9. Cihaz dili İngilizce yapılır → uygulama İngilizce açılır. Profil'de Hesabı Sil akışı gösterilir.
+9. Profil'de Dil → English seçilir → uygulama İngilizce olur (varsayılan Türkçe, cihaz dilinden bağımsız). Profil'de Hesabı Sil akışı gösterilir.
 
 ---
 
