@@ -212,8 +212,40 @@
   "caseStatusResolved": "Kurtarıldı",
   "caseStatusCancelled": "İptal Edildi",
   "peopleCountLabel": "{count} Kişi",
+  "assemblyScreenTitle": "Toplanma Alanları",
+  "assemblyFilterAll": "Tümü",
+  "assemblyFilterAssembly": "Toplanma Alanı",
+  "assemblyFilterFieldHospital": "Sahra Hastanesi",
+  "assemblyFilterShelter": "Barınma / Çadır",
+  "assemblyServiceWater": "Temiz Su",
+  "assemblyServiceHealth": "İlk Yardım",
+  "assemblyServiceFood": "Sıcak Yemek",
+  "assemblyServiceTent": "Barınma",
+  "assemblyOccupancyLabel": "Doluluk: %{percent}",
+  "assemblyCapacityLabel": "{current} / {capacity} Kişi",
+  "@assemblyCapacityLabel": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "capacity": {
+        "type": "String"
+      }
+    }
+  },
+  "assemblyGetDirections": "Yol Tarifi Al",
+  "assemblyOpenLabel": "Açık",
+  "assemblyClosedLabel": "Kapalı",
+  "assemblyNearestBadge": "En Yakın",
+  "assemblyMyLocationTooltip": "Konumuma Git",
+  "assemblyZoomInTooltip": "Yakınlaştır",
+  "assemblyZoomOutTooltip": "Uzaklaştır",
+  "assemblyEmptyList": "Toplanma alanı bulunamadı",
+  "assemblyNearestTop3": "En Yakın 3 Alan",
+  "assemblyServicesTitle": "Sunulan Hizmetler",
   "helpRequestSelectType": "İhtiyaç türünü seçin",
   "helpRequestPeopleDecrease": "Azalt",
   "helpRequestPeopleIncrease": "Artır",
-  "cancelRequestKeep": "Vazgeç"
+  "cancelRequestKeep": "Vazgeç",
+  "assemblyOccupancyShort": "%{percent}"
 }

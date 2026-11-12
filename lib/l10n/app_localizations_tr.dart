@@ -689,6 +689,73 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get assemblyScreenTitle => 'Toplanma Alanları';
+
+  @override
+  String get assemblyFilterAll => 'Tümü';
+
+  @override
+  String get assemblyFilterAssembly => 'Toplanma Alanı';
+
+  @override
+  String get assemblyFilterFieldHospital => 'Sahra Hastanesi';
+
+  @override
+  String get assemblyFilterShelter => 'Barınma / Çadır';
+
+  @override
+  String get assemblyServiceWater => 'Temiz Su';
+
+  @override
+  String get assemblyServiceHealth => 'İlk Yardım';
+
+  @override
+  String get assemblyServiceFood => 'Sıcak Yemek';
+
+  @override
+  String get assemblyServiceTent => 'Barınma';
+
+  @override
+  String assemblyOccupancyLabel(int percent) {
+    return 'Doluluk: %$percent';
+  }
+
+  @override
+  String assemblyCapacityLabel(String current, String capacity) {
+    return '$current / $capacity Kişi';
+  }
+
+  @override
+  String get assemblyGetDirections => 'Yol Tarifi Al';
+
+  @override
+  String get assemblyOpenLabel => 'Açık';
+
+  @override
+  String get assemblyClosedLabel => 'Kapalı';
+
+  @override
+  String get assemblyNearestBadge => 'En Yakın';
+
+  @override
+  String get assemblyMyLocationTooltip => 'Konumuma Git';
+
+  @override
+  String get assemblyZoomInTooltip => 'Yakınlaştır';
+
+  @override
+  String get assemblyZoomOutTooltip => 'Uzaklaştır';
+
+  @override
+  String get assemblyEmptyList => 'Toplanma alanı bulunamadı';
+
+  @override
+  String get assemblyNearestTop3 => 'En Yakın 3 Alan';
+
+  @override
+  String get assemblyServicesTitle => 'Sunulan Hizmetler';
+
+  @override
   String get helpRequestSelectType => 'İhtiyaç türünü seçin';
 
   @override
@@ -699,4 +766,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cancelRequestKeep => 'Vazgeç';
+
+  @override
+  String assemblyOccupancyShort(int percent) {
+    return '%$percent';
+  }
 }

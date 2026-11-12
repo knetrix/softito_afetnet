@@ -25,4 +25,7 @@ abstract final class AppConfig {
 
   /// Bu sürede tamamlanmayan yazma çevrimdışı kabul edilir (Kural 4, 8).
   static const offlineTimeout = Duration(seconds: 10);
+
+  /// Kuyrukta çağrı varken gönderimin yeniden denenme aralığı (Kural 4, R8).
+  static const offlineQueueRetryInterval = Duration(seconds: 30);
 }
