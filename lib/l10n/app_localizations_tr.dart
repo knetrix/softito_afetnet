@@ -687,4 +687,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String peopleCountLabel(int count) {
     return '$count Kişi';
   }
+
+  @override
+  String get helpRequestSelectType => 'İhtiyaç türünü seçin';
+
+  @override
+  String get helpRequestPeopleDecrease => 'Azalt';
+
+  @override
+  String get helpRequestPeopleIncrease => 'Artır';
+
+  @override
+  String get cancelRequestKeep => 'Vazgeç';
 }

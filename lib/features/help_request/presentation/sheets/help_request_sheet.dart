@@ -16,9 +16,12 @@ typedef HelpRequestSubmitCallback = Future<dynamic> Function(HelpRequestDraft dr
 ///
 /// Çağrı türü seçimine göre öncelik seviyesi [PriorityPolicy] üzerinden
 /// anlık hesaplanır ve [StatusBadge.priority] ile gösterilir.
+///
+/// Tür varsayılan olarak seçili gelmez: yanlışlıkla "Enkaz Altında" (kritik)
+/// gönderilmesin diye afetzede türü kendisi seçer.
 Future<HelpRequestDraft?> showHelpRequestSheet(
   BuildContext context, {
-  HelpType initialType = HelpType.debris,
+  HelpType? initialType,
   int initialPeopleCount = 1,
   String? initialAddressText,
   String? initialDescription,
@@ -42,14 +45,14 @@ Future<HelpRequestDraft?> showHelpRequestSheet(
 class HelpRequestForm extends StatefulWidget {
   const HelpRequestForm({
     super.key,
-    this.initialType = HelpType.debris,
+    this.initialType,
     this.initialPeopleCount = 1,
     this.initialAddressText,
     this.initialDescription,
     this.onSubmit,
   });
 
-  final HelpType initialType;
+  final HelpType? initialType;
   final int initialPeopleCount;
   final String? initialAddressText;
   final String? initialDescription;
@@ -61,7 +64,7 @@ class HelpRequestForm extends StatefulWidget {
 
 class _HelpRequestFormState extends State<HelpRequestForm> {
   final _formKey = GlobalKey<FormState>();
-  late HelpType _selectedType;
+  HelpType? _selectedType;
   late int _peopleCount;
   late final TextEditingController _addressController;
   late final TextEditingController _descriptionController;
@@ -83,7 +86,8 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     super.dispose();
   }
 
-  int get _calculatedPriority => PriorityPolicy.calculate(_selectedType);
+  int? get _calculatedPriority =>
+      _selectedType == null ? null : PriorityPolicy.calculate(_selectedType!);
 
   void _incrementPeople() {
     if (_peopleCount < 999) {
@@ -98,10 +102,11 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final type = _selectedType;
+    if (type == null || !_formKey.currentState!.validate()) return;
 
     final draft = HelpRequestDraft(
-      type: _selectedType,
+      type: type,
       peopleCount: _peopleCount,
       addressText: _addressController.text.trim().isEmpty
           ? null
@@ -113,7 +118,14 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
 
     if (widget.onSubmit != null) {
       setState(() => _isSubmitting = true);
-      final result = await widget.onSubmit!(draft);
+      // Hata yakalanmazsa buton sonsuza kadar döner ve kullanıcı çağrının
+      // gittiğini sanabilir; hata durumunda aşağıdaki hata mesajı gösterilir.
+      Object? result;
+      try {
+        result = await widget.onSubmit!(draft);
+      } catch (e) {
+        debugPrint('Yardım çağrısı gönderilemedi: $e');
+      }
       if (!mounted) return;
       setState(() => _isSubmitting = false);
 
@@ -228,7 +240,15 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
                     ),
                   ),
                 ),
-                StatusBadge.priority(_calculatedPriority),
+                if (_calculatedPriority case final priority?)
+                  StatusBadge.priority(priority)
+                else
+                  Text(
+                    l10n?.helpRequestSelectType ?? 'İhtiyaç türünü seçin',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -255,6 +275,8 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
               final priorityTint = statusColors?.forPriority(typePriority) ?? colors.primary;
 
               return ChoiceChip(
+                // Onay işareti tür simgesinin üstüne biniyordu; seçim renkle belli.
+                showCheckmark: false,
                 label: Text(_helpTypeLabel(context, type)),
                 avatar: Icon(
                   _helpTypeIcon(type),
@@ -311,7 +333,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
                   icon: const Icon(Icons.remove, size: 18),
                   visualDensity: VisualDensity.compact,
                   onPressed: _peopleCount > 1 ? _decrementPeople : null,
-                  tooltip: 'Azalt',
+                  tooltip: l10n?.helpRequestPeopleDecrease ?? 'Azalt',
                 ),
                 SizedBox(
                   width: 44,
@@ -327,7 +349,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
                   icon: const Icon(Icons.add, size: 18),
                   visualDensity: VisualDensity.compact,
                   onPressed: _incrementPeople,
-                  tooltip: 'Artır',
+                  tooltip: l10n?.helpRequestPeopleIncrease ?? 'Artır',
                 ),
               ],
             ),
@@ -382,7 +404,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
           AppButton.primary(
             label: l10n?.helpRequestSubmit ?? 'Gönder',
             isLoading: _isSubmitting,
-            onPressed: _submit,
+            onPressed: _selectedType == null ? null : _submit,
           ),
         ],
       ),

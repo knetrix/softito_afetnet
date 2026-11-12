@@ -48,35 +48,48 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     return [cell7, ...neighborGeohashesOf(geohash: cell7)];
   }
 
-  /// 9 hücre üzerinde önek (prefix) sorgusu ile açık olayları tarar
-  /// ve 50 m mesafe içindeki ilk olayın id'sini döndürür (Kural 2).
+  /// 9 hücre üzerinde önek (prefix) sorgusu ile olayları tarar ve 50 m
+  /// içindeki ilk açık olayın id'sini döndürür (Kural 2).
+  ///
+  /// Sorgu yalnızca `geohash` aralığıdır (tek alan index'i, otomatik).
+  /// `isOpen` filtresi bileşik index istediği için istemcide uygulanır.
+  ///
+  /// Sunucudan okunur: internet yeni geldiğinde varsayılan okuma eksik yerel
+  /// önbelleğe düşüyor ve açık olay bulunamadığı için mükerrer olay açılıyordu.
+  /// Sunucuya ulaşılamazsa `unavailable` hatası çağrıyı kuyrukta tutar.
   Future<String?> findMatchingIncidentId(GeoPoint p) async {
     final cells = searchCells(p);
     final queries = cells.map((cell) => _incidents
-        .where('isOpen', isEqualTo: true)
         .where('geohash', isGreaterThanOrEqualTo: cell)
         .where('geohash', isLessThan: '$cell~')
-        .get());
+        .get(const GetOptions(source: Source.server)));
 
     final snapshots = await Future.wait(queries);
+    return pickMatchingIncident(
+      p,
+      snapshots.expand((snap) => snap.docs).map((doc) => (doc.id, doc.data())),
+      _distanceBetween,
+    );
+  }
 
-    for (final snap in snapshots) {
-      for (final doc in snap.docs) {
-        final data = doc.data();
-        final loc = data['location'] as GeoPoint?;
-        if (loc == null) continue;
-
-        final distance = _distanceBetween(
-          p.latitude,
-          p.longitude,
-          loc.latitude,
-          loc.longitude,
-        );
-
-        if (distance <= 50.0) {
-          return doc.id;
-        }
-      }
+  /// [candidates] içinden açık (`isOpen == true`) ve [p]'ye 50 m içindeki
+  /// ilk olayın id'sini seçer (Kural 2).
+  static String? pickMatchingIncident(
+    GeoPoint p,
+    Iterable<(String, Map<String, dynamic>)> candidates,
+    DistanceCalculator distanceBetween,
+  ) {
+    for (final (id, data) in candidates) {
+      if (data['isOpen'] != true) continue;
+      final loc = data['location'] as GeoPoint?;
+      if (loc == null) continue;
+      final distance = distanceBetween(
+        p.latitude,
+        p.longitude,
+        loc.latitude,
+        loc.longitude,
+      );
+      if (distance <= 50.0) return id;
     }
     return null;
   }
@@ -189,20 +202,25 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     });
   }
 
+  /// Sorgu yalnızca `createdBy` eşitliğidir (otomatik index); `createdAt`
+  /// sıralaması bileşik index istediği için istemcide yapılır. Bir afetzedenin
+  /// çağrı sayısı az olduğundan maliyeti önemsizdir.
   @override
   Stream<HelpRequest?> watchActiveHelpRequest(String uid) {
     return _helpRequests
         .where('createdBy', isEqualTo: uid)
-        .orderBy('createdAt', descending: true)
-        .limit(1)
         .snapshots()
-        .map((snap) {
-      if (snap.docs.isEmpty) return null;
-      final doc = snap.docs.first;
-      final hr = _fromDoc(doc);
-      if (hr.isResolved || hr.isCancelled) return null;
-      return hr;
-    });
+        .map((snap) => latestActive(snap.docs.map(_fromDoc)));
+  }
+
+  /// Çözülmemiş ve iptal edilmemiş çağrılardan en yenisi.
+  static HelpRequest? latestActive(Iterable<HelpRequest> requests) {
+    HelpRequest? latest;
+    for (final r in requests) {
+      if (r.isResolved || r.isCancelled) continue;
+      if (latest == null || r.createdAt.isAfter(latest.createdAt)) latest = r;
+    }
+    return latest;
   }
 
   @override
@@ -223,9 +241,9 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
 
   @override
   Future<void> cancelHelpRequest(String requestId) {
+    // §5.5: sahibi yalnızca `status → cancelled` yazabilir.
     return _helpRequests.doc(requestId).update({
       'status': CaseStatus.cancelled.name,
-      'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 
