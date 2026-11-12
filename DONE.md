@@ -6,7 +6,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 | Aşama | Sahip | Durum | PR |
 |---|---|---|---|
-| G1 — Temel ve Giriş | Mustafa | 🟡 Tamam, ekip erişimi bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
+| G1 — Temel ve Giriş | Mustafa | ✅ Tamamlandı | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
 | G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#11](https://github.com/knetrix/softito_afetnet/pull/11), `fix/mustafa-g2-review` |
 | G3 — Panik, Ana Sayfa ve Düdük | Furkan | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#14](https://github.com/knetrix/softito_afetnet/pull/14), `fix/mustafa-g3-review` |
 | G4 — Yardım Çağrısı ve Toplanma | Tuba | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | `development`'a doğrudan commit, `feature/tuba-g4`, [#18](https://github.com/knetrix/softito_afetnet/pull/18), `fix/mustafa-g4-assembly` |
@@ -24,7 +24,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 |---|---|---|---|
 | 1 | Kimlik: `name: afetnet`, `com.softito.afetnet` | ✅ | Conflict işaretli platform dosyaları yeniden üretildi; `macos/` ve `web/` kaldırıldı |
 | 2 | Firebase projesi (`eur3`), `flutterfire configure`, Firestore test modu | ✅ | Proje `afetnet-softito`. Test modu kuralları 11 Aralık 2026'ya kadar geçerli. E-posta/Şifre girişi açık |
-| 2 | Ekip üyelerine Firebase projesinde Editor yetkisi ver | ⏳ | Console → Proje ayarları → Kullanıcılar ve izinler. Her üyenin Google hesabı e-postası gerekiyor. Uygulamayı çalıştırmak için gerekmez; Console'da veri görmek, yetkili onaylamak ve deploy için gerekir |
+| 2 | Ekip üyelerine Firebase projesinde Editor yetkisi ver | ✅ | 12 Kasım: tüm geliştiriciler Editor olarak eklendi (Console → Proje ayarları → Kullanıcılar ve izinler). Console'da veri görmek, yetkili onaylamak ve deploy için gerekir; davet e-postasının kabul edilmesi gerekir |
 | 3 | Paketler (6.2), klasör yapısı (6.1), `app_config.dart` | ✅ | `pubspec.lock` repoda |
 | 4 | Router: iki alt menü, boş sekmeler | ✅ | `core/router/` |
 | 5 | `validators.dart`: e-posta, telefon maskesi, şifre kuralı | ✅ | Birim testli. G3 incelemesinde düzeltildi: `+90 5`'ten sonra `5` ile başlayan numara yazılınca `5` iki kez ekleniyordu (`5321234567` → `+90 553 212 34 56`). Biçimlendirici artık rakamları her değişiklikte baştan yorumlar; `5…`, `05…`, `+90 5…` aynı sonucu verir |
