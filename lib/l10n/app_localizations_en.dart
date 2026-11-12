@@ -836,12 +836,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String distanceMeters(int meters) {
-    return '$meters m away';
+    return '$meters m away';
   }
 
   @override
   String distanceKm(String km) {
-    return '$km km away';
+    return '$km km away';
   }
 
   @override

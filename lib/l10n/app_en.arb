@@ -327,7 +327,7 @@
       }
     }
   },
-  "distanceMeters": "{meters} m away",
+  "distanceMeters": "{meters} m away",
   "@distanceMeters": {
     "placeholders": {
       "meters": {
@@ -335,7 +335,7 @@
       }
     }
   },
-  "distanceKm": "{km} km away",
+  "distanceKm": "{km} km away",
   "@distanceKm": {
     "placeholders": {
       "km": {
