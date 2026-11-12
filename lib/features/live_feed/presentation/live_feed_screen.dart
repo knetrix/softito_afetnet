@@ -166,7 +166,8 @@ class _LiveFeedView extends StatelessWidget {
               )
             else
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
+                // Alt boşluk Tahliye Anonsu butonu son kartı örtmesin diye.
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 96),
                 sliver: SliverList.separated(
                   itemCount: incidents.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 12),

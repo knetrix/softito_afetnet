@@ -1,3 +1,5 @@
+import 'dart:ui' show Locale;
+
 /// Uygulama genelindeki sabit ayarlar (PROJECT_NEW.md §6.1, §7).
 abstract final class AppConfig {
   static const appName = 'AfetNet';
@@ -11,12 +13,16 @@ abstract final class AppConfig {
   static const osmUserAgentPackageName = packageName;
   static const osmAttribution = '© OpenStreetMap contributors';
 
-  // Yasal metinler (Firebase Hosting, `hosting/legal/`; içeriği G6 yazar).
-  static const _legalBaseUrl ='https://afetnet-softito.web.app/legal';
-  static const privacyPolicyUrl = '$_legalBaseUrl/privacy-tr.html';
-  static const kvkkNoticeUrl = '$_legalBaseUrl/kvkk.html';
-  static const termsUrl = '$_legalBaseUrl/terms.html';
-  static const accountDeletionUrl = '$_legalBaseUrl/delete-account.html';
+  // Yasal metinler (Firebase Hosting, `hosting/legal/<sayfa>-<tr|en>.html`, §7).
+  static const _legalBaseUrl = 'https://afetnet-softito.web.app/legal';
+  static const privacyPage = 'privacy';
+  static const kvkkPage = 'kvkk';
+  static const termsPage = 'terms';
+  static const accountDeletionPage = 'delete-account';
+
+  /// Yasal sayfanın uygulama dilindeki adresi (Türkçe değilse İngilizce).
+  static String legalUrl(String page, Locale locale) =>
+      '$_legalBaseUrl/$page-${locale.languageCode == 'tr' ? 'tr' : 'en'}.html';
 
   /// Kayıtta `users.consents` içine yazılan metin sürümleri.
   /// Yasal metin değişirse sürüm artırılır.

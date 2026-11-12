@@ -443,10 +443,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get demoResetTitle => 'Demo Data';
 
   @override
-  String get demoResetPending =>
-      'Demo data loading will be connected in step G6.';
-
-  @override
   String get onboardingActive => 'ACTIVE';
 
   @override
@@ -1075,14 +1071,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logisticsNoWarehouses => 'No warehouses found.';
 
   @override
-  String logisticsSeedError(String error) {
-    return 'Could not create demo warehouses: $error';
-  }
-
-  @override
-  String get logisticsRetry => 'Retry';
-
-  @override
   String get logisticsInventoryLoadFailed => 'Failed to load inventory.';
 
   @override
@@ -1096,13 +1084,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logisticsCriticalTitle => 'CRITICAL STOCK WARNING';
-
-  @override
-  String get logisticsEmergencySupply => 'Request Emergency Supplies';
-
-  @override
-  String get logisticsSupplyNotActive =>
-      'Emergency supply requests are not available yet.';
 
   @override
   String get logisticsInventoryTitle => 'WAREHOUSE INVENTORY';
@@ -1139,23 +1120,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get broadcastButton => 'Evacuation Alert';
 
   @override
-  String get broadcastTitle => 'Create Evacuation Alert';
+  String get broadcastTitle => 'Evacuation Alert';
 
   @override
-  String get broadcastDescription =>
-      'Enter the center coordinates of the target area. Your current location will not be used automatically.';
-
-  @override
-  String get broadcastTitleLabel => 'Alert title';
-
-  @override
-  String get broadcastMessageLabel => 'Evacuation message';
-
-  @override
-  String get broadcastLatitude => 'Latitude';
-
-  @override
-  String get broadcastLongitude => 'Longitude';
+  String get broadcastMessageLabel => 'Message';
 
   @override
   String broadcastRadius(String km) {
@@ -1164,32 +1132,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get broadcastInfo =>
-      'The alert will be saved. Location-based notification checks apply to survivors with the app open.';
+      'Survivors with the app open inside the radius get a notification. For devices with the app closed, send an all_users message from Console → Messaging.';
 
   @override
   String get broadcastRequired => 'This field is required.';
 
   @override
-  String get broadcastInvalidLatitude => 'Enter a valid latitude (-90 to 90).';
+  String get broadcastSave => 'Send';
 
   @override
-  String get broadcastInvalidLongitude =>
-      'Enter a valid longitude (-180 to 180).';
+  String get broadcastSaved => 'Evacuation alert sent.';
 
   @override
-  String get broadcastLoginRequired => 'Please sign in as an official.';
+  String get broadcastSaveFailed => 'The alert could not be sent.';
 
   @override
-  String get broadcastSaving => 'Saving...';
+  String get demoResetConfirmMessage =>
+      'Demo teams, warehouses, stock and assembly areas will be restored to their initial state; missing ones will be created. Real records are not touched.';
 
   @override
-  String get broadcastSave => 'Save Alert';
-
-  @override
-  String get broadcastSaved => 'Evacuation alert saved.';
-
-  @override
-  String broadcastSaveFailed(String error) {
-    return 'Could not save alert: $error';
+  String demoResetDone(int teams, int warehouses, int items, int points) {
+    return 'Demo data is ready.\n\nTeams: $teams\nWarehouses: $warehouses\nStock items: $items\nAssembly areas: $points';
   }
+
+  @override
+  String get demoResetFailed =>
+      'Demo data could not be reset. Make sure you are signed in as a verified official and online.';
+
+  @override
+  String get stockMovementTitle => 'Stock Movement';
+
+  @override
+  String get stockIn => 'In';
+
+  @override
+  String get stockOut => 'Out';
+
+  @override
+  String get stockCurrent => 'Current Stock';
+
+  @override
+  String get stockQuantity => 'Quantity';
+
+  @override
+  String get stockQuantityHint => 'Enter the quantity';
+
+  @override
+  String get stockInvalidQuantity => 'Enter a valid quantity.';
+
+  @override
+  String get stockInsufficient => 'Insufficient stock.';
+
+  @override
+  String get stockSaveIn => 'Record Stock In';
+
+  @override
+  String get stockSaveOut => 'Record Stock Out';
+
+  @override
+  String get stockSaveFailed => 'The stock movement could not be saved.';
+
+  @override
+  String get broadcastTypeEvacuation => 'Emergency Evacuation';
+
+  @override
+  String get broadcastTypeAftershock => 'Aftershock';
+
+  @override
+  String get broadcastCenter => 'Center (your location)';
+
+  @override
+  String get broadcastLocating => 'Getting location…';
+
+  @override
+  String get broadcastLocationUnavailable =>
+      'Location unavailable. Check location permission and GPS.';
+
+  @override
+  String get broadcastRetryLocation => 'Get location again';
+
+  @override
+  String broadcastRadiusShort(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get broadcastQueued =>
+      'No connection; the alert will be sent when you are back online.';
 }

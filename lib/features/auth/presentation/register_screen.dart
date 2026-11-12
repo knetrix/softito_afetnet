@@ -80,7 +80,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     context.canPop() ? context.pop() : context.go(AppRoutes.login);
   }
 
-  void _openLegal(String url) {
+  void _openLegal(String page) {
+    final url = AppConfig.legalUrl(page, Localizations.localeOf(context));
     launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
@@ -272,14 +273,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   spacing: 8,
                   children: [
                     TextButton(
-                      onPressed: () => _openLegal(AppConfig.kvkkNoticeUrl),
+                      onPressed: () => _openLegal(AppConfig.kvkkPage),
                       child: Text(
                         l10n?.kvkkConsent ?? 'KVKK Aydınlatma Metni',
                         style: const TextStyle(fontSize: 12),
                       ),
                     ),
                     TextButton(
-                      onPressed: () => _openLegal(AppConfig.privacyPolicyUrl),
+                      onPressed: () => _openLegal(AppConfig.privacyPage),
                       child: Text(
                         l10n?.privacyPolicy ?? 'Gizlilik Politikası',
                         style: const TextStyle(fontSize: 12),

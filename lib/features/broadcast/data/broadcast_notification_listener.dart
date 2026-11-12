@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/services/location_service.dart';
 import '../../../core/services/notification_service.dart';
+import '../../../l10n/app_localizations.dart';
+import '../domain/broadcast_repository.dart';
 
 /// Afetzede uygulaması açıkken yeni tahliye ve
 /// artçı sarsıntı anonslarını takip eder.
@@ -139,7 +141,7 @@ class BroadcastNotificationListener {
       final center = data['center'];
       final radius = data['radiusMeters'];
 
-      if (type != 'evacuation' && type != 'aftershock') {
+      if (!BroadcastType.values.any((t) => t.name == type)) {
         return;
       }
 
@@ -190,7 +192,8 @@ class BroadcastNotificationListener {
 
       await _notificationService.showLocalNotification(
         id: notificationId,
-        title: title,
+        // Başlık yetkilinin dilinde yazılır; afetzede kendi dilinde görür.
+        title: _localizedTitle(type) ?? title,
         body: body,
         payload: 'broadcast:$id',
       );
@@ -212,6 +215,16 @@ class BroadcastNotificationListener {
     } finally {
       _processingIds.remove(id);
     }
+  }
+
+  static String? _localizedTitle(Object? type) {
+    final code = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+    final l10n = lookupAppLocalizations(Locale(code == 'tr' ? 'tr' : 'en'));
+    return switch (type) {
+      'evacuation' => l10n.broadcastTypeEvacuation,
+      'aftershock' => l10n.broadcastTypeAftershock,
+      _ => null,
+    };
   }
 
   Future<void> _saveProcessedIds(String uid) async {
