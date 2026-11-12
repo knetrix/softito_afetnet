@@ -17,10 +17,14 @@ import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
 import 'features/help_request/data/firestore_help_request_repository.dart';
 import 'features/help_request/domain/help_request_repository.dart';
+import 'features/live_feed/data/firestore_live_feed_repository.dart';
+import 'features/live_feed/domain/live_feed_repository.dart';
 import 'features/profile/data/firestore_profile_repository.dart';
 import 'features/profile/domain/profile_repository.dart';
 import 'features/safety_signal/data/firestore_safety_signal_repository.dart';
 import 'features/safety_signal/domain/safety_signal_repository.dart';
+import 'features/teams/data/firestore_teams_repository.dart';
+import 'features/teams/domain/teams_repository.dart';
 import 'l10n/app_localizations.dart';
 
 class AfetNetApp extends StatefulWidget {
@@ -96,6 +100,10 @@ class _AfetNetAppState extends State<AfetNetApp> {
         Provider<AssemblyPointsRepository>.value(
           value: _assemblyPointsRepository,
         ),
+        Provider<LiveFeedRepository>(
+          create: (_) => FirestoreLiveFeedRepository(),
+        ),
+        Provider<TeamsRepository>(create: (_) => FirestoreTeamsRepository()),
         ChangeNotifierProvider<OfflineQueueService>.value(
           value: _offlineQueueService,
         ),
