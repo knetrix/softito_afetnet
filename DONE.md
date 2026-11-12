@@ -9,8 +9,8 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | G1 — Temel ve Giriş | Mustafa | 🟡 Tamam, ekip erişimi bekliyor | [#8](https://github.com/knetrix/softito_afetnet/pull/8), [#9](https://github.com/knetrix/softito_afetnet/pull/9) |
 | G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#11](https://github.com/knetrix/softito_afetnet/pull/11), `fix/mustafa-g2-review` |
 | G3 — Panik, Ana Sayfa ve Düdük | Furkan | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#14](https://github.com/knetrix/softito_afetnet/pull/14), `fix/mustafa-g3-review` |
-| G4 — Yardım Çağrısı ve Toplanma | Tuba | 🟡 1–4 tamam (G1 incelemesiyle düzeltildi), Toplanma (A2) bekliyor | `development`'a doğrudan commit, `fix/mustafa-g4-review` |
-| G5 — Canlı Akış ve Ekipler | Esra | ⏳ | — |
+| G4 — Yardım Çağrısı ve Toplanma | Tuba | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | `development`'a doğrudan commit, `feature/tuba-g4`, [#18](https://github.com/knetrix/softito_afetnet/pull/18), `fix/mustafa-g4-assembly` |
+| G5 — Canlı Akış ve Ekipler | Esra | ⏳ Sıradaki | — |
 | G6 — Lojistik, Anons ve Teslime Hazırlık | Meryem | ⏳ | — |
 | Son Tur — 13 Kasım sabah | Herkes | ⏳ | — |
 
@@ -83,7 +83,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 **G4'e devir (Tuba):**
 - Hazır servisler (`app.dart` `MultiProvider`): `LocationService` (`resolveCoordinates()`: son 2 dk'daki konumu beklemeden verir, adres çözmez; `currentLabel`), `ConnectivityService` (`hasNetworkInterface`, `onNetworkChanged` stream'i Hive kuyruğu `flush()` için), `NotificationService` (`showLocalNotification(...)`).
 - `HomeScreen` (`lib/features/home/presentation/home_screen.dart`): `TODO(G4)` aktif yardım çağrısı kartı alanı ve `onAddHelpRequest` geri çağrısı hazır.
-- `lib/features/emergency_call/` içindeki G4'e ait `safe_zones_map_screen.dart` ve `quick_need_grid.dart` dosyalarına dokunulmadı.
+- `lib/features/emergency_call/` içindeki G4'e ait boş prototip dosyaları (`safe_zones_map_screen.dart`, `quick_need_grid.dart`) G4 incelemesinde silindi.
 
 ## G4 — Tuba · Yardım Çağrısı ve Toplanma
 
@@ -93,13 +93,21 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | 2 | Mükerrer birleştirme (geohash, 9 hücre, 50 m, Transaction) | ✅ | `FirestoreHelpRequestRepository`: 7 haneli hücre + 8 komşu, 50 m, olay Transaction içinde (`requestCount` +1, öncelik en yükseği), `uuid` ile çift kayıt yok. G1 incelemesi: sorgu bileşik index istiyordu ve index olmadığı için hiçbir çağrı gönderilemiyordu; artık yalnızca `geohash` aralığı sorgulanıyor, `isOpen` istemcide süzülüyor. Arama her zaman sunucudan yapılıyor (internet yeni gelince eksik önbellekten okuyup mükerrer olay açıyordu) |
 | 3 | Çevrimdışı kuyruk (Hive, "Gönderilmeyi Bekliyor") | ✅ | `OfflineQueueService`: ağ yoksa ya da 10 sn'de gitmezse Hive'a yazılır, internet gelince ve uygulama açılınca gönderilir. G1 incelemesi: gönderilemeyen kayıt artık loglanıyor; başka aktif çağrı varken de kuyruktaki çağrı kartta "Gönderilmeyi Bekliyor" olarak gösteriliyor |
 | 4 | Ana Sayfa'ya aktif çağrı kartı, İptal Et | ✅ | Durum, tür, kişi sayısı, öncelik, ekip ve sorumlu (`teams/{assignedTeamId}`), İptal Et. G1 incelemesi: kart sorgusu da bileşik index istiyordu (kart hiç görünmüyordu), sıralama istemciye alındı ve iptal edilmemiş en yeni çağrı seçiliyor; iptalden sonra kalan diğer aktif çağrı gizleniyordu, düzeltildi; iptal yalnızca `status` yazıyor (§5.5); onay penceresinde "İptal"/"Evet, İptal Et" karışıyordu, "Vazgeç" oldu; İngilizce "1 People" → "1 Person" |
-| 5 | Toplanma (A2): harita, noktalar, mesafe, doluluk, hizmetler | ⏳ | |
+| 5 | Toplanma (A2): harita, noktalar, mesafe, doluluk, hizmetler | ✅ | `feature/tuba-g4`: OSM harita, kullanıcı konumu, tür filtreleri, mesafe etiketli pinler, en yakın 3 alan, seçili nokta kartı (açık/kapalı, mesafe, doluluk %, kapasite, hizmetler, açıklama, yol tarifi), yakınlaştır/uzaklaştır, konumuma git; `assembly_points` canlı dinlenir. G1 incelemesi: Firestore boşken ya da hata olunca gösterilen uygulama içi uydurma toplanma noktaları kaldırıldı (var olmayan alan insanları yanlış yere gönderebilir), veri yoksa "Toplanma alanı bulunamadı"; konumu olmayan belge atlanıyor, bilinmeyen hizmet "Su" sanılmıyor; OSM ayarları `AppConfig`'ten ve harita üzerinde zorunlu OSM atfı; doluluk yüzdesi dile göre (TR %34, EN 34%); harita butonları seçili nokta kartının altında kalmıyor |
 
-**Çıktı:** Afetzede tarafı tamamen çalışıyor. 🟡 (1–4 tamam, Toplanma bekliyor)
+**Çıktı:** Afetzede tarafı tamamen çalışıyor. ✅ Android emülatöründe gerçek Firebase'e karşı denendi.
 
-**Kontroller (G1 incelemesi):** `flutter analyze` temiz · 94 test geçiyor (sahte "50 m" testi gerçek seçim fonksiyonunu deneyen testle değiştirildi; birleştirme, en yeni aktif çağrı, iptal ve kuyruk gösterimi için testler eklendi) · Android emülatöründe gerçek Firebase'e karşı: çağrı + `private/contact` + yeni olay; aynı noktadan ikinci afetzedenin kritik çağrısı aynı olaya bağlandı (`requestCount: 2`, öncelik 3 → 1); ~200 m uzaktaki çağrı yeni olay açtı; karttan iptal; internetsiz çağrı kartta "Waiting to Send", uygulama kapatılıp açılınca da duruyor, internet gelince ~5 sn'de gönderildi (`createdOffline: true`) ve aynı noktadaki açık olaya bağlandı.
+**Kontroller (G1 incelemesi):** `flutter analyze` temiz · 110 test geçiyor (sahte "50 m" testi gerçek seçim fonksiyonunu deneyen testle değiştirildi; birleştirme, en yeni aktif çağrı, iptal ve kuyruk gösterimi için testler eklendi) · Android emülatöründe gerçek Firebase'e karşı: çağrı + `private/contact` + yeni olay; aynı noktadan ikinci afetzedenin kritik çağrısı aynı olaya bağlandı (`requestCount: 2`, öncelik 3 → 1); ~200 m uzaktaki çağrı yeni olay açtı; karttan iptal; internetsiz çağrı kartta "Waiting to Send", uygulama kapatılıp açılınca da duruyor, internet gelince ~5 sn'de gönderildi (`createdOffline: true`) ve aynı noktadaki açık olaya bağlandı. Toplanma: Firestore boşken "No assembly areas found"; 3 test noktası yazılınca canlı geldi, konumsuz nokta atlandı, kart doluluk "25%" ve hizmetleri doğru gösterdi. Son turda afetzede akışının tamamı (panik, GÜVENDEYİM, çağrı, kart, iptal, düdük, profil konum rozeti) ve onaylı yetkili girişi (Y1–Y4 sekmeleri, Y4 profil) tekrar denendi. Test verisi silindi.
 
 **G6 notu (Meryem):** Gönderim Transaction'ı, çift kaydı önlemek için henüz var olmayan `help_requests/{id}` belgesini okur. Kurallar sahibinin bu okumasına izin vermeli (belge yokken `resource == null`), yoksa gönderim reddedilir. İptal yalnızca `status: cancelled` yazar.
+
+**G5'e devir (Esra):**
+- **Önce index'ler deploy edilmeli.** Canlı Akış (`incidents`: `isOpen`, `priority`, `createdAt`), panik pinleri (`safety_signals`: `state`, `updatedAt` azalan), Detay'da bağlı çağrılar (`help_requests`: `incidentId`, `createdAt`) bileşik index ister; index yoksa sorgu `FAILED_PRECONDITION` verir (G4'te yaşandı). Tanımlar `firestore.indexes.json`'da hazır; proje sahibi hesabıyla `firebase deploy --only firestore:indexes --project afetnet-softito` çalıştırılmalı (kurallara dokunmaz). Index oluşması birkaç dakika sürer.
+- Hazır modeller: `Incident` (`live_feed/domain/incident.dart`, §5.3 alanları; Firestore okuması G5'te yazılacak), `HelpRequest`, `HelpType`, `CaseStatus` (`core/constants/`), `PriorityPolicy` (`core/utils/`, rozet: `StatusBadge.priority(int)`), `SafetySignal` (`isHandled` = `handledBy != null`; yeni panik eski "Ulaşıldı" kaydını siler), `AssignedTeamInfo`.
+- Hazır servisler: `LocationService`, `NotificationService.showLocalNotification(...)` (panik bildirimi için), `ConnectivityService`. Renkler: `AppStatusColors.panic` (mor pin), `critical`/`urgent`/`normal`.
+- Yetkili menüsü (`OfficialShell`) ve boş Canlı Akış / Ekipler ekranları (`live_feed/presentation/live_feed_screen.dart`, `teams/presentation/teams_screen.dart`) router'a bağlı; onaylı yetkili girişi denendi.
+- Afetzede çağrı kartı `help_requests/{id}` belgesini canlı dinler; G5 `status`, `assignedTeamId` yazınca kart (durum, ekip adı, sorumlu `teams/{id}.leaderName`) kendiliğinden güncellenir. Afetzedenin iptal ettiği (`cancelled`) çağrıya dokunulmaz (Kural 7).
+- `lib/features/crisis_map/` içinde 5 boş (0 bayt) prototip dosya var ve hiçbir yerde kullanılmıyor; şartnamedeki feature `live_feed`'tir. Esra kullanmayacaksa silebilir.
 
 ## G5 — Esra · Canlı Akış ve Ekipler
 
