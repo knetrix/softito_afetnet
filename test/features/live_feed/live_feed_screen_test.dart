@@ -204,7 +204,7 @@ void main() {
         await tester.tap(find.text('Detay'));
         await tester.pumpAndSettle();
         expect(find.text('Çağrı Detayı'), findsOneWidget);
-        expect(find.text('+905321234567'), findsOneWidget);
+        expect(find.text('+90 532 123 45 67'), findsOneWidget);
 
         await tester.tap(find.widgetWithText(ElevatedButton, 'Olayı Kapat'));
         await tester.pumpAndSettle();

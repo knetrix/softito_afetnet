@@ -8,6 +8,7 @@ import '../../../core/theme/app_status_colors.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/state_view.dart';
 import '../../../core/widgets/status_badge.dart';
+import '../../broadcast/presentation/evacuation_fab.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../../live_feed/domain/live_feed_repository.dart';
@@ -112,6 +113,8 @@ class _TeamsView extends StatelessWidget {
     final teams = ctrl.filteredTeams;
 
     return Scaffold(
+      // Ekranın kendi Scaffold'unda: açılan sheet'ler butonu örter (§3.1).
+      floatingActionButton: const EvacuationFab(),
       body: SafeArea(
         bottom: false,
         child: CustomScrollView(
