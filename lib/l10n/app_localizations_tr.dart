@@ -573,4 +573,60 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get notificationChannelDescription =>
       'Acil durum, tahliye ve kritik stok bildirimleri';
+
+  @override
+  String get helpTypeDebris => 'Enkaz Altında';
+
+  @override
+  String get helpTypeMedical => 'Tıbbi Müdahale';
+
+  @override
+  String get helpTypeShelter => 'Barınma';
+
+  @override
+  String get helpTypeHeating => 'Isınma';
+
+  @override
+  String get helpTypeBabyFood => 'Bebek Maması';
+
+  @override
+  String get helpTypeWater => 'Su';
+
+  @override
+  String get helpTypeOther => 'Diğer';
+
+  @override
+  String get helpRequestSheetTitle => 'Yardım Çağrısı Ekle';
+
+  @override
+  String get helpRequestTypeSection => 'İhtiyaç Türü';
+
+  @override
+  String get helpRequestPriorityLabel => 'Öncelik Seviyesi';
+
+  @override
+  String get helpRequestPeopleCount => 'Etkilenen Kişi Sayısı';
+
+  @override
+  String get helpRequestAddress => 'Adres Tarifi';
+
+  @override
+  String get helpRequestAddressHint =>
+      'Bina no, kat, daire veya belirgin çevre tarifi...';
+
+  @override
+  String get helpRequestDescription => 'Durum Açıklaması';
+
+  @override
+  String get helpRequestDescriptionHint =>
+      'Durumunuzu ve aciliyetinizi kısaca açıklayın...';
+
+  @override
+  String get helpRequestSubmit => 'Gönder';
+
+  @override
+  String get helpRequestSubmitted => 'Yardım çağrınız alındı.';
+
+  @override
+  String get helpRequestMinPeople => 'Kişi sayısı en az 1 olmalıdır.';
 }

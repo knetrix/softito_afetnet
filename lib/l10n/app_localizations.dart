@@ -1153,6 +1153,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Emergency, evacuation and critical stock notifications'**
   String get notificationChannelDescription;
+
+  /// No description provided for @helpTypeDebris.
+  ///
+  /// In en, this message translates to:
+  /// **'Trapped'**
+  String get helpTypeDebris;
+
+  /// No description provided for @helpTypeMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get helpTypeMedical;
+
+  /// No description provided for @helpTypeShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter'**
+  String get helpTypeShelter;
+
+  /// No description provided for @helpTypeHeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Heating'**
+  String get helpTypeHeating;
+
+  /// No description provided for @helpTypeBabyFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Baby Food'**
+  String get helpTypeBabyFood;
+
+  /// No description provided for @helpTypeWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get helpTypeWater;
+
+  /// No description provided for @helpTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get helpTypeOther;
+
+  /// No description provided for @helpRequestSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Help Request'**
+  String get helpRequestSheetTitle;
+
+  /// No description provided for @helpRequestTypeSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Need Type'**
+  String get helpRequestTypeSection;
+
+  /// No description provided for @helpRequestPriorityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority Level'**
+  String get helpRequestPriorityLabel;
+
+  /// No description provided for @helpRequestPeopleCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of People Affected'**
+  String get helpRequestPeopleCount;
+
+  /// No description provided for @helpRequestAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address / Description'**
+  String get helpRequestAddress;
+
+  /// No description provided for @helpRequestAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Building no, floor, apt, or landmark description...'**
+  String get helpRequestAddressHint;
+
+  /// No description provided for @helpRequestDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Situation Description'**
+  String get helpRequestDescription;
+
+  /// No description provided for @helpRequestDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Briefly describe your situation and urgency...'**
+  String get helpRequestDescriptionHint;
+
+  /// No description provided for @helpRequestSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Help Request'**
+  String get helpRequestSubmit;
+
+  /// No description provided for @helpRequestSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Help request received.'**
+  String get helpRequestSubmitted;
+
+  /// No description provided for @helpRequestMinPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of people must be at least 1.'**
+  String get helpRequestMinPeople;
 }
 
 class _AppLocalizationsDelegate
