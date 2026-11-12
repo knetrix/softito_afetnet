@@ -634,7 +634,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpRequestQueuedOffline =>
-      'No connection verified within 10 seconds. Your request has been queued and will be sent automatically when online.';
+      'Connection could not be verified. Your request has been queued and will be sent automatically when you are back online.';
 
   @override
   String get helpRequestStatusPendingOffline => 'Waiting to Send';
@@ -687,7 +687,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String peopleCountLabel(int count) {
-    return '$count People';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count People',
+      one: '1 Person',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -756,4 +762,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assemblyServicesTitle => 'Provided Services';
+
+  @override
+  String get helpRequestSelectType => 'Select a need type';
+
+  @override
+  String get helpRequestPeopleDecrease => 'Decrease';
+
+  @override
+  String get helpRequestPeopleIncrease => 'Increase';
+
+  @override
+  String get cancelRequestKeep => 'Keep Request';
 }

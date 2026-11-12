@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../../../core/constants/case_status.dart';
 import '../../../core/services/offline_queue_service.dart';
 import '../domain/assigned_team_info.dart';
 import '../domain/help_request.dart';
@@ -38,8 +37,9 @@ class ActiveHelpRequestController extends ChangeNotifier {
   bool get isCancelling => _isCancelling;
 
   /// Kural 4: Henüz Firestore'a iletilmemiş, yerel Hive kuyruğunda bekleyen çağrı var mı?
-  bool get hasPendingOffline =>
-      _activeRequest == null && _offlineQueue.hasPendingItems;
+  /// Başka aktif çağrı olsa da bekleyen çağrı kartta öncelikli gösterilir;
+  /// yoksa afetzede yeni çağrısının gönderilmediğini göremez.
+  bool get hasPendingOffline => _offlineQueue.hasPendingItems;
 
   /// Hive kuyruğundaki ilk bekleyen çağrı
   HelpRequestDraft? get topOfflineDraft {
@@ -101,8 +101,10 @@ class ActiveHelpRequestController extends ChangeNotifier {
         return true;
       }
 
+      // Kart Firestore akışından güncellenir (yerel önbellek anında yayınlar).
+      // Burada elle `cancelled` yazmak, akışın o arada gösterdiği başka bir
+      // aktif çağrıyı da gizliyordu.
       await _repo.cancelHelpRequest(requestId);
-      _activeRequest = _activeRequest?.copyWith(status: CaseStatus.cancelled);
       _isCancelling = false;
       if (!_disposed) notifyListeners();
       return true;

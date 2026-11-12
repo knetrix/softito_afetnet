@@ -241,11 +241,11 @@ broadcasts/{broadcastId}        → EvacuationBroadcast  tahliye / artçı uyar�
 | Koleksiyon | Alanlar | Kullanım |
 |---|---|---|
 | `incidents` | `isOpen ASC, priority ASC, createdAt ASC` | Canlı Akış |
-| `incidents` | `isOpen ASC, geohash ASC` | Mükerrer arama |
-| `help_requests` | `createdBy ASC, createdAt DESC` | Afetzedenin aktif çağrı kartı |
 | `help_requests` | `incidentId ASC, createdAt ASC` | Detay'da bağlı çağrılar |
 | `safety_signals` | `state ASC, updatedAt DESC` | Panik pinleri |
 | `assignments` | `teamId ASC, status ASC` | Ekibin aktif görevi |
+
+Mükerrer arama (yalnızca `geohash` aralığı, `isOpen` istemcide süzülür) ve afetzedenin aktif çağrı kartı (yalnızca `createdBy` eşitliği, sıralama istemcide) bileşik index istemez; tek alan index'leri otomatiktir.
 
 ### 5.5. Security Rules
 

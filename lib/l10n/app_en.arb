@@ -204,7 +204,7 @@
   "helpRequestSubmit": "Send Help Request",
   "helpRequestSubmitted": "Help request received.",
   "helpRequestMinPeople": "Number of people must be at least 1.",
-  "helpRequestQueuedOffline": "No connection verified within 10 seconds. Your request has been queued and will be sent automatically when online.",
+  "helpRequestQueuedOffline": "Connection could not be verified. Your request has been queued and will be sent automatically when you are back online.",
   "helpRequestStatusPendingOffline": "Waiting to Send",
   "cancelRequestTitle": "Cancel Help Request",
   "cancelRequestMessage": "Are you sure you want to cancel your help request? This action cannot be undone.",
@@ -221,7 +221,7 @@
   "caseStatusOnSite": "On Site",
   "caseStatusResolved": "Resolved",
   "caseStatusCancelled": "Cancelled",
-  "peopleCountLabel": "{count} People",
+  "peopleCountLabel": "{count, plural, =1{1 Person} other{{count} People}}",
   "@peopleCountLabel": {
     "placeholders": {
       "count": {
@@ -266,5 +266,9 @@
   "assemblyZoomOutTooltip": "Zoom Out",
   "assemblyEmptyList": "No assembly areas found",
   "assemblyNearestTop3": "Nearest 3 Areas",
-  "assemblyServicesTitle": "Provided Services"
+  "assemblyServicesTitle": "Provided Services",
+  "helpRequestSelectType": "Select a need type",
+  "helpRequestPeopleDecrease": "Decrease",
+  "helpRequestPeopleIncrease": "Increase",
+  "cancelRequestKeep": "Keep Request"
 }
