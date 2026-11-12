@@ -9,6 +9,7 @@ import 'package:afetnet/features/help_request/domain/assigned_team_info.dart';
 import 'package:afetnet/features/help_request/domain/help_request.dart';
 import 'package:afetnet/features/help_request/domain/help_request_draft.dart';
 import 'package:afetnet/features/help_request/domain/help_request_repository.dart';
+import 'package:afetnet/features/help_request/domain/incident_progress.dart';
 import 'package:afetnet/features/help_request/presentation/active_help_request_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive.dart';
@@ -16,6 +17,8 @@ import 'package:latlong2/latlong.dart';
 
 class _MockRepo implements HelpRequestRepository {
   final _activeController = StreamController<HelpRequest?>.broadcast();
+  final _incidentController = StreamController<IncidentProgress?>.broadcast();
+  final List<String> watchedIncidents = [];
   final List<String> cancelledIds = [];
   AssignedTeamInfo? teamToReturn;
 
@@ -25,6 +28,12 @@ class _MockRepo implements HelpRequestRepository {
   @override
   Stream<HelpRequest?> watchActiveHelpRequest(String uid) =>
       _activeController.stream;
+
+  @override
+  Stream<IncidentProgress?> watchIncidentProgress(String incidentId) {
+    watchedIncidents.add(incidentId);
+    return _incidentController.stream;
+  }
 
   @override
   Future<AssignedTeamInfo?> fetchTeamInfo(String teamId) async => teamToReturn;
@@ -40,7 +49,12 @@ class _MockRepo implements HelpRequestRepository {
 
   void emit(HelpRequest? req) => _activeController.add(req);
 
-  void close() => _activeController.close();
+  void emitIncident(IncidentProgress? p) => _incidentController.add(p);
+
+  void close() {
+    _activeController.close();
+    _incidentController.close();
+  }
 }
 
 class _FakeConnectivity extends ConnectivityService {
@@ -291,4 +305,93 @@ void main() {
     expect(controller.activeRequest?.status, CaseStatus.pending);
     expect(controller.hasActiveOrQueuedCall, isTrue);
   });
+
+  test('ekip atandıktan sonra birleşen bekleyen çağrı olayın ekibini ve durumunu gösterir', () async {
+    repo.teamToReturn = const AssignedTeamInfo(
+      id: 'team_1',
+      name: 'Arama Kurtarma Tim 4',
+      leaderName: 'Ali Kaptan',
+    );
+    final controller = ActiveHelpRequestController(
+      repository: repo,
+      queueService: queue,
+      citizenUid: 'user_1',
+    );
+    addTearDown(controller.dispose);
+
+    repo.emit(
+      HelpRequest(
+        id: 'hr_merged',
+        createdBy: 'user_1',
+        type: HelpType.medical,
+        priority: 1,
+        status: CaseStatus.pending,
+        peopleCount: 1,
+        location: const LatLng(36.2, 36.16),
+        geohash: 'sy72wxyz',
+        createdAt: DateTime.now(),
+        incidentId: 'inc_1',
+      ),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    expect(repo.watchedIncidents, ['inc_1']);
+    expect(controller.activeRequest?.status, CaseStatus.pending);
+
+    repo.emitIncident(
+      const IncidentProgress(
+        status: CaseStatus.enRoute,
+        assignedTeamId: 'team_1',
+      ),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    expect(controller.activeRequest?.status, CaseStatus.enRoute);
+    expect(controller.activeRequest?.assignedTeamId, 'team_1');
+    expect(controller.assignedTeam?.name, 'Arama Kurtarma Tim 4');
+  });
+
+  test(
+    'withIncidentProgress yalnızca bekleyen çağrıyı ve aktif görevi etkiler',
+    () {
+      HelpRequest req(CaseStatus s) => HelpRequest(
+        id: 'r',
+        createdBy: 'u',
+        type: HelpType.water,
+        priority: 3,
+        status: s,
+        peopleCount: 1,
+        location: const LatLng(36.2, 36.16),
+        geohash: 'sy72wxyz',
+        createdAt: DateTime(2026),
+        incidentId: 'inc',
+      );
+      const onSite = IncidentProgress(
+        status: CaseStatus.onSite,
+        assignedTeamId: 't',
+      );
+      final f = ActiveHelpRequestController.withIncidentProgress;
+
+      expect(f(req(CaseStatus.pending), onSite)?.status, CaseStatus.onSite);
+      // Çağrı zaten güncellenmişse kendi durumu geçerlidir.
+      expect(f(req(CaseStatus.assigned), onSite)?.status, CaseStatus.assigned);
+      // Ekip yoksa veya olay çözüldüyse bekleyen çağrı olduğu gibi kalır.
+      expect(
+        f(
+          req(CaseStatus.pending),
+          const IncidentProgress(status: CaseStatus.pending),
+        )?.status,
+        CaseStatus.pending,
+      );
+      expect(
+        f(
+          req(CaseStatus.pending),
+          const IncidentProgress(
+            status: CaseStatus.resolved,
+            assignedTeamId: 't',
+          ),
+        )?.status,
+        CaseStatus.pending,
+      );
+      expect(f(req(CaseStatus.pending), null)?.status, CaseStatus.pending);
+    },
+  );
 }

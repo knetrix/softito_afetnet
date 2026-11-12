@@ -23,7 +23,10 @@ abstract interface class LiveFeedRepository {
   Future<bool> closeIncident(Incident incident);
 
   /// Panik pininde "Ulaşıldı": `handledBy` ve `handledAt` yazılır (Kural 8).
-  Future<void> markSignalHandled({
+  /// Sunucu onayı 10 sn içinde gelmezse `false` döner; yazım Firestore'un
+  /// kuyruğunda kalır ve internet gelince gider (pin yerel önbellekten hemen
+  /// "ulaşıldı" görünür).
+  Future<bool> markSignalHandled({
     required String signalUid,
     required String officialUid,
   });

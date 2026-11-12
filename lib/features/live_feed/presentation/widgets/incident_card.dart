@@ -179,31 +179,87 @@ class IncidentCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: AppButton.secondary(
-                    label: l10n.detail,
-                    icon: Icons.info_outline_rounded,
-                    isFullWidth: true,
-                    onPressed: onDetail,
-                  ),
-                ),
-                if (!hasTeam) ...[
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: AppButton.danger(
+            _CardActions(
+              detail: AppButton.secondary(
+                label: l10n.detail,
+                icon: Icons.info_outline_rounded,
+                isFullWidth: true,
+                onPressed: onDetail,
+              ),
+              dispatch: hasTeam
+                  ? null
+                  : AppButton.danger(
                       label: l10n.liveFeedDispatch,
                       icon: Icons.send_rounded,
                       onPressed: onDispatch,
                     ),
-                  ),
-                ],
-              ],
+              labels: [l10n.detail, l10n.liveFeedDispatch],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Detay ve Ekip Yönlendir butonları yan yana sığmazsa (dar ekran, büyük
+/// yazı, uzun çeviri) metin kesilmesin diye alt alta dizilir.
+class _CardActions extends StatelessWidget {
+  const _CardActions({
+    required this.detail,
+    required this.dispatch,
+    required this.labels,
+  });
+
+  final Widget detail;
+  final Widget? dispatch;
+  final List<String> labels;
+
+  static const _gap = 10.0;
+
+  /// `AppButton`: 2×20 iç boşluk + 18 simge + 8 aralık, metin 15 / w600.
+  static const _buttonChrome = 66.0 + 4; // + yuvarlama payı
+
+  @override
+  Widget build(BuildContext context) {
+    if (dispatch == null) return detail;
+    final scaler = MediaQuery.textScalerOf(context);
+    // Buton metni temanın `labelLarge` yazı tipiyle (Inter) çizilir; ölçüm de
+    // aynı yazı tipiyle yapılmalı, yoksa geniş harfli fontta kesilme kaçar.
+    final style = (Theme.of(context).textTheme.labelLarge ?? const TextStyle())
+        .merge(const TextStyle(fontWeight: FontWeight.w600, fontSize: 15));
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final half = (constraints.maxWidth - _gap) / 2;
+        final fits = labels.every((label) {
+          final painter = TextPainter(
+            text: TextSpan(text: label, style: style),
+            textScaler: scaler,
+            textDirection: Directionality.of(context),
+            maxLines: 1,
+          )..layout();
+          final needed = painter.width + _buttonChrome;
+          painter.dispose();
+          return needed <= half;
+        });
+        if (fits) {
+          return Row(
+            children: [
+              Expanded(child: detail),
+              const SizedBox(width: _gap),
+              Expanded(child: dispatch!),
+            ],
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            dispatch!,
+            const SizedBox(height: _gap),
+            detail,
+          ],
+        );
+      },
     );
   }
 }

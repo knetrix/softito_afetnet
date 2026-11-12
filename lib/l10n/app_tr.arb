@@ -275,6 +275,17 @@
   "incidentDetailMedical": "Tıbbi Özet",
   "incidentDetailNoMedical": "Paylaşılmış tıbbi bilgi yok.",
   "incidentDetailLinkedCalls": "Bağlı çağrı",
+  "incidentDetailLinkedCallsValue": "{count} ({cancelled} iptal edildi)",
+  "@incidentDetailLinkedCallsValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "cancelled": {
+        "type": "int"
+      }
+    }
+  },
   "incidentDetailTaskStatus": "Görev durumu",
   "incidentDetailNeedType": "İhtiyaç türü",
   "incidentDetailLoadFailed": "Çağrı sahibinin bilgileri yüklenemedi.",
@@ -297,6 +308,7 @@
   "panicPinReached": "Ulaşıldı",
   "panicPinHandled": "Ulaşıldı olarak işaretlendi",
   "panicPinReachedSuccess": "Sinyal ulaşıldı olarak işaretlendi.",
+  "panicPinReachedQueued": "İnternet yok; işaret bağlantı gelince iletilecek.",
   "panicNotificationTitle": "Yeni panik sinyali",
   "panicNotificationBody": "Bir afetzede tehlikede olduğunu bildirdi. Canlı Akış haritasındaki mor pine bakın.",
   "teamsSummaryTitle": "Saha Ekipleri",

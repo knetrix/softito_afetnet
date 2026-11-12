@@ -12,6 +12,7 @@ import '../domain/assigned_team_info.dart';
 import '../domain/help_request.dart';
 import '../domain/help_request_draft.dart';
 import '../domain/help_request_repository.dart';
+import '../domain/incident_progress.dart';
 
 typedef DistanceCalculator = double Function(
   double startLatitude,
@@ -221,6 +222,19 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
       if (latest == null || r.createdAt.isAfter(latest.createdAt)) latest = r;
     }
     return latest;
+  }
+
+  @override
+  Stream<IncidentProgress?> watchIncidentProgress(String incidentId) {
+    return _db.collection('incidents').doc(incidentId).snapshots().map((snap) {
+      final data = snap.data();
+      final status = CaseStatus.values.asNameMap()[data?['status']];
+      if (data == null || status == null) return null;
+      return IncidentProgress(
+        status: status,
+        assignedTeamId: data['assignedTeamId'] as String?,
+      );
+    });
   }
 
   @override
