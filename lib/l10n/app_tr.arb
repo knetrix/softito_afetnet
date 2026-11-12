@@ -222,13 +222,6 @@
   "assemblyServiceFood": "Sıcak Yemek",
   "assemblyServiceTent": "Barınma",
   "assemblyOccupancyLabel": "Doluluk: %{percent}",
-  "@assemblyOccupancyLabel": {
-    "placeholders": {
-      "percent": {
-        "type": "String"
-      }
-    }
-  },
   "assemblyCapacityLabel": "{current} / {capacity} Kişi",
   "@assemblyCapacityLabel": {
     "placeholders": {
@@ -253,5 +246,6 @@
   "helpRequestSelectType": "İhtiyaç türünü seçin",
   "helpRequestPeopleDecrease": "Azalt",
   "helpRequestPeopleIncrease": "Artır",
-  "cancelRequestKeep": "Vazgeç"
+  "cancelRequestKeep": "Vazgeç",
+  "assemblyOccupancyShort": "%{percent}"
 }

@@ -238,11 +238,11 @@
   "assemblyServiceHealth": "First Aid",
   "assemblyServiceFood": "Hot Food",
   "assemblyServiceTent": "Shelter",
-  "assemblyOccupancyLabel": "Occupancy: %{percent}",
+  "assemblyOccupancyLabel": "Occupancy: {percent}%",
   "@assemblyOccupancyLabel": {
     "placeholders": {
       "percent": {
-        "type": "String"
+        "type": "int"
       }
     }
   },
@@ -270,5 +270,13 @@
   "helpRequestSelectType": "Select a need type",
   "helpRequestPeopleDecrease": "Decrease",
   "helpRequestPeopleIncrease": "Increase",
-  "cancelRequestKeep": "Keep Request"
+  "cancelRequestKeep": "Keep Request",
+  "assemblyOccupancyShort": "{percent}%",
+  "@assemblyOccupancyShort": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

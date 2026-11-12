@@ -1427,8 +1427,8 @@ abstract class AppLocalizations {
   /// No description provided for @assemblyOccupancyLabel.
   ///
   /// In en, this message translates to:
-  /// **'Occupancy: %{percent}'**
-  String assemblyOccupancyLabel(String percent);
+  /// **'Occupancy: {percent}%'**
+  String assemblyOccupancyLabel(int percent);
 
   /// No description provided for @assemblyCapacityLabel.
   ///
@@ -1519,6 +1519,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep Request'**
   String get cancelRequestKeep;
+
+  /// No description provided for @assemblyOccupancyShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String assemblyOccupancyShort(int percent);
 }
 
 class _AppLocalizationsDelegate

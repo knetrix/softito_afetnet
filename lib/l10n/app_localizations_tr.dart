@@ -716,7 +716,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get assemblyServiceTent => 'Barınma';
 
   @override
-  String assemblyOccupancyLabel(String percent) {
+  String assemblyOccupancyLabel(int percent) {
     return 'Doluluk: %$percent';
   }
 
@@ -766,4 +766,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cancelRequestKeep => 'Vazgeç';
+
+  @override
+  String assemblyOccupancyShort(int percent) {
+    return '%$percent';
+  }
 }

@@ -72,18 +72,29 @@ class AssemblyPoint {
     };
   }
 
+  /// Konumu olmayan ya da geçersiz belgede `null` döner; uydurma konum üretilmez.
+  static AssemblyPoint? tryFromJson(String id, Map<String, dynamic> json) {
+    try {
+      return AssemblyPoint.fromJson(id, json);
+    } on FormatException {
+      return null;
+    }
+  }
+
   factory AssemblyPoint.fromJson(String id, Map<String, dynamic> json) {
     final geo = json['location'];
     LatLng pos;
     if (geo is GeoPoint) {
       pos = LatLng(geo.latitude, geo.longitude);
-    } else if (geo is Map) {
+    } else if (geo is Map &&
+        geo['latitude'] is num &&
+        geo['longitude'] is num) {
       pos = LatLng(
         (geo['latitude'] as num).toDouble(),
         (geo['longitude'] as num).toDouble(),
       );
     } else {
-      pos = const LatLng(36.20, 36.16);
+      throw FormatException('assembly_points/$id: location yok');
     }
 
     final typeStr = json['type'] as String? ?? 'assembly';
@@ -93,14 +104,10 @@ class AssemblyPoint {
     );
 
     final rawServices = json['services'] as List<dynamic>? ?? const [];
+    // Bilinmeyen hizmet gösterilmez (önce "Su" sanılıyordu).
     final parsedServices = rawServices
-        .map((s) {
-          final sName = s.toString();
-          return AssemblyService.values.firstWhere(
-            (e) => e.name == sName,
-            orElse: () => AssemblyService.water,
-          );
-        })
+        .map((s) => AssemblyService.values.asNameMap()[s.toString()])
+        .whereType<AssemblyService>()
         .toSet()
         .toList();
 

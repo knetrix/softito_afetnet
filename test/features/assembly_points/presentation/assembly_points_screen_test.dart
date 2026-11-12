@@ -1,6 +1,7 @@
 import 'package:afetnet/core/theme/app_theme.dart';
-import 'package:afetnet/features/assembly_points/data/default_assembly_points.dart';
 import 'package:afetnet/features/assembly_points/domain/assembly_point.dart';
+import 'package:afetnet/features/assembly_points/domain/assembly_point_type.dart';
+import 'package:afetnet/features/assembly_points/domain/assembly_service.dart';
 import 'package:afetnet/features/assembly_points/domain/assembly_points_repository.dart';
 import 'package:afetnet/features/assembly_points/presentation/assembly_points_controller.dart';
 import 'package:afetnet/features/assembly_points/presentation/assembly_points_screen.dart';
@@ -10,9 +11,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 
+// Yalnızca test verisi; uygulamada uydurma nokta yoktur (veri Firestore'dan gelir).
+final _samplePoints = [
+  AssemblyPoint(
+    id: 'ap1',
+    name: 'Antakya Atatürk Parkı Toplanma Alanı',
+    type: AssemblyPointType.assembly,
+    location: const LatLng(36.2025, 36.1610),
+    geohash: 'sy3tyy6u',
+    capacity: 2500,
+    currentCount: 850,
+    services: const [AssemblyService.water, AssemblyService.food],
+    isOpen: true,
+    updatedAt: DateTime(2026, 11, 12),
+  ),
+  AssemblyPoint(
+    id: 'ap2',
+    name: 'Defne Sahra Hastanesi',
+    type: AssemblyPointType.fieldHospital,
+    location: const LatLng(36.1910, 36.1420),
+    geohash: 'sy3tyx00',
+    capacity: 500,
+    currentCount: 380,
+    services: const [AssemblyService.health],
+    isOpen: true,
+    updatedAt: DateTime(2026, 11, 12),
+  ),
+];
+
 class _FakeAssemblyRepo implements AssemblyPointsRepository {
   _FakeAssemblyRepo([List<AssemblyPoint>? points])
-      : _points = points ?? DefaultAssemblyPoints.list;
+      : _points = points ?? _samplePoints;
 
   final List<AssemblyPoint> _points;
 
@@ -126,5 +155,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Firestore boşsa uydurma nokta yerine boş durum gösterilir', (tester) async {
+    final ctrl = AssemblyPointsController(
+      repository: _FakeAssemblyRepo(const []),
+      initialUserLocation: const LatLng(36.2025, 36.1610),
+    );
+    addTearDown(ctrl.dispose);
+
+    await tester.pumpWidget(_wrapScreen(controller: ctrl));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Toplanma alanı bulunamadı'), findsOneWidget);
+    expect(find.text('En Yakın 3 Alan'), findsNothing);
   });
 }
