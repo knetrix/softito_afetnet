@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../core/config/app_config.dart';
 import '../../../core/constants/case_status.dart';
 import '../../../core/constants/help_type.dart';
 import '../../safety_signal/domain/safety_signal.dart';
@@ -78,6 +82,18 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     final createdBy = results[0].data()?['createdBy'] as String?;
     final contact = results[1].data();
 
+    var cancelledCalls = 0;
+    try {
+      final linked = await _helpRequests
+          .where('incidentId', isEqualTo: incident.id)
+          .get();
+      cancelledCalls = linked.docs
+          .where((d) => d.data()['status'] == CaseStatus.cancelled.name)
+          .length;
+    } on FirebaseException {
+      // Sayı okunamazsa Detay yine açılır.
+    }
+
     Map<String, dynamic>? medical;
     if (createdBy != null && createdBy.isNotEmpty) {
       try {
@@ -101,6 +117,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
       conditions: _nonEmpty(medical?['conditions']),
       birthYear: (medical?['birthYear'] as num?)?.toInt(),
       weightKg: (medical?['weightKg'] as num?)?.toInt(),
+      cancelledCalls: cancelledCalls,
     );
   }
 
@@ -145,15 +162,29 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
   }
 
   @override
-  Future<void> markSignalHandled({
+  Future<bool> markSignalHandled({
     required String signalUid,
     required String officialUid,
-  }) {
+    Duration timeout = AppConfig.offlineTimeout,
+  }) async {
     // §5.5: Yetkili yalnızca `handledBy == auth.uid` ve `handledAt` yazar.
-    return _db.collection('safety_signals').doc(signalUid).update({
+    // İnternet yokken `update` sunucu onayına kadar tamamlanmaz; buton sonsuza
+    // dek dönmesin diye Kural 8'deki gibi 10 sn beklenir.
+    final write = _db.collection('safety_signals').doc(signalUid).update({
       'handledBy': officialUid,
       'handledAt': FieldValue.serverTimestamp(),
     });
+    try {
+      await write.timeout(timeout);
+      return true;
+    } on TimeoutException {
+      unawaited(
+        write.catchError((Object e) {
+          debugPrint('Ulaşıldı kaydı gönderilemedi ($signalUid): $e');
+        }),
+      );
+      return false;
+    }
   }
 
   /// Yetkilinin güncelleyebileceği çağrı: var, iptal edilmemiş ve çözülmemiş.

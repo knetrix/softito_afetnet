@@ -20,6 +20,10 @@ abstract interface class NotificationService {
   /// `optIn == false` ise önceki abonelik varsa bile topic'ten çıkar.
   Future<void> syncTopicSubscription({required bool optIn});
 
+  /// Bildirim iznini (bir kez) ister. Onaylı yetkili, duyuru tercihinden
+  /// bağımsız olarak panik ve kritik stok bildirimlerini almalıdır (Kural 3, 8).
+  Future<void> requestPermission();
+
   /// Uygulama açıkken yerel bildirim gösterir (G3 FCM, G5 panik, G6 anons/stok).
   Future<void> showLocalNotification({
     required int id,
@@ -94,6 +98,9 @@ class DeviceNotificationService implements NotificationService {
       // iOS simülatör veya APNs olmadan FCM hata verirse uygulama çökmez.
     }
   }
+
+  @override
+  Future<void> requestPermission() => _requestPermissionOnce();
 
   Future<void> _requestPermissionOnce() async {
     if (_permissionRequested) return;

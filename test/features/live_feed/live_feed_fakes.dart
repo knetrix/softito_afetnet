@@ -86,9 +86,13 @@ class FakeLiveFeedRepository implements LiveFeedRepository {
   Future<IncidentSummary> fetchSummary(Incident incident) async =>
       summaries[incident.id] ?? const IncidentSummary();
 
+  IncidentDetail detail = const IncidentDetail(
+    fullName: 'Test Kişi',
+    phone: '+905321234567',
+  );
+
   @override
-  Future<IncidentDetail> fetchDetail(Incident incident) async =>
-      const IncidentDetail(fullName: 'Test Kişi', phone: '+905321234567');
+  Future<IncidentDetail> fetchDetail(Incident incident) async => detail;
 
   @override
   Future<bool> closeIncident(Incident incident) async {
@@ -97,10 +101,16 @@ class FakeLiveFeedRepository implements LiveFeedRepository {
   }
 
   @override
-  Future<void> markSignalHandled({
+  Future<bool> markSignalHandled({
     required String signalUid,
     required String officialUid,
-  }) async => handled.add((signalUid, officialUid));
+  }) async {
+    handled.add((signalUid, officialUid));
+    return markDelivered;
+  }
+
+  /// `false`: sunucu onayı gelmedi (internet yok) gibi davranır.
+  bool markDelivered = true;
 
   void dispose() {
     incidents.close();
