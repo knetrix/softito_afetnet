@@ -1273,6 +1273,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Waiting to Send'**
   String get helpRequestStatusPendingOffline;
+
+  /// No description provided for @cancelRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Help Request'**
+  String get cancelRequestTitle;
+
+  /// No description provided for @cancelRequestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel your help request? This action cannot be undone.'**
+  String get cancelRequestMessage;
+
+  /// No description provided for @cancelRequestConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Cancel'**
+  String get cancelRequestConfirm;
+
+  /// No description provided for @cancelRequestAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Help Request'**
+  String get cancelRequestAction;
+
+  /// No description provided for @cancelRequestSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your help request has been cancelled.'**
+  String get cancelRequestSuccess;
+
+  /// No description provided for @activeRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Help Request'**
+  String get activeRequestTitle;
+
+  /// No description provided for @assignedTeamLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatched Team'**
+  String get assignedTeamLabel;
+
+  /// No description provided for @teamLeaderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Leader'**
+  String get teamLeaderLabel;
+
+  /// No description provided for @teamWaitingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for team assignment...'**
+  String get teamWaitingLabel;
+
+  /// No description provided for @caseStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get caseStatusPending;
+
+  /// No description provided for @caseStatusAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Dispatched'**
+  String get caseStatusAssigned;
+
+  /// No description provided for @caseStatusEnRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'En Route'**
+  String get caseStatusEnRoute;
+
+  /// No description provided for @caseStatusOnSite.
+  ///
+  /// In en, this message translates to:
+  /// **'On Site'**
+  String get caseStatusOnSite;
+
+  /// No description provided for @caseStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get caseStatusResolved;
+
+  /// No description provided for @caseStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get caseStatusCancelled;
+
+  /// No description provided for @peopleCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} People'**
+  String peopleCountLabel(int count);
 }
 
 class _AppLocalizationsDelegate

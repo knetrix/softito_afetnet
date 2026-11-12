@@ -60,6 +60,12 @@ class OfflineQueueService extends ChangeNotifier {
     return list;
   }
 
+  /// Belirli bir çağrıyı kuyruktan siler (ör. afetzede iptal ettiğinde).
+  Future<void> removeRequest(String id) async {
+    await _box?.delete(id);
+    if (!_disposed) notifyListeners();
+  }
+
   /// Servisi başlatır, Hive kutusunu açar ve ağ dinleyicisini bağlar.
   Future<void> initialize() async {
     _box ??= await Hive.openBox<Map>(boxName);

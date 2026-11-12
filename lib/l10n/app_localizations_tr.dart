@@ -636,4 +636,55 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get helpRequestStatusPendingOffline => 'Gönderilmeyi Bekliyor';
+
+  @override
+  String get cancelRequestTitle => 'Çağrıyı İptal Et';
+
+  @override
+  String get cancelRequestMessage =>
+      'Yardım çağrınızı iptal etmek istediğinize emin misiniz? Bu işlem geri alınamaz.';
+
+  @override
+  String get cancelRequestConfirm => 'Evet, İptal Et';
+
+  @override
+  String get cancelRequestAction => 'Çağrıyı İptal Et';
+
+  @override
+  String get cancelRequestSuccess => 'Yardım çağrınız iptal edildi.';
+
+  @override
+  String get activeRequestTitle => 'Aktif Yardım Çağrısı';
+
+  @override
+  String get assignedTeamLabel => 'Yönlendirilen Ekip';
+
+  @override
+  String get teamLeaderLabel => 'Sorumlu';
+
+  @override
+  String get teamWaitingLabel => 'Ekip yönlendirmesi bekleniyor...';
+
+  @override
+  String get caseStatusPending => 'Beklemede';
+
+  @override
+  String get caseStatusAssigned => 'Ekip Yönlendirildi';
+
+  @override
+  String get caseStatusEnRoute => 'Yola Çıktı';
+
+  @override
+  String get caseStatusOnSite => 'Olay Yerinde';
+
+  @override
+  String get caseStatusResolved => 'Kurtarıldı';
+
+  @override
+  String get caseStatusCancelled => 'İptal Edildi';
+
+  @override
+  String peopleCountLabel(int count) {
+    return '$count Kişi';
+  }
 }

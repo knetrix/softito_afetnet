@@ -13,7 +13,10 @@ import '../../../core/widgets/state_view.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
+import '../../help_request/domain/help_request_repository.dart';
+import '../../help_request/presentation/active_help_request_controller.dart';
 import '../../help_request/presentation/sheets/help_request_sheet.dart';
+import '../../help_request/presentation/widgets/active_request_card.dart';
 import '../../profile/domain/profile_repository.dart';
 import '../../profile/domain/user_contact_profile.dart';
 import '../../safety_signal/domain/safety_signal.dart';
@@ -28,6 +31,9 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
     this.safetySignalRepository,
+    this.helpRequestRepository,
+    this.offlineQueueService,
+    this.activeHelpRequestController,
     this.onAddHelpRequest,
     this.onOpenWhistle,
     this.onOpenProfile,
@@ -36,11 +42,22 @@ class HomeScreen extends StatelessWidget {
   });
 
   final SafetySignalRepository? safetySignalRepository;
+  final HelpRequestRepository? helpRequestRepository;
+  final OfflineQueueService? offlineQueueService;
+  final ActiveHelpRequestController? activeHelpRequestController;
   final VoidCallback? onAddHelpRequest;
   final VoidCallback? onOpenWhistle;
   final VoidCallback? onOpenProfile;
   final ExternalUrlLauncher? urlLauncher;
   final Duration panicHoldDuration;
+
+  T? _safeRead<T>(BuildContext context) {
+    try {
+      return context.read<T>();
+    } catch (_) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +71,35 @@ class HomeScreen extends StatelessWidget {
       );
     }
 
-    return ChangeNotifierProvider<SafetySignalController>(
-      create: (ctx) => SafetySignalController(
-        repository:
-            safetySignalRepository ?? ctx.read<SafetySignalRepository>(),
-        locationService: ctx.read<LocationService>(),
-        profileRepository: ctx.read<ProfileRepository>(),
-        uid: user.uid,
-      ),
+    final helpRepo =
+        helpRequestRepository ?? _safeRead<HelpRequestRepository>(context);
+    final offlineQueue =
+        offlineQueueService ?? _safeRead<OfflineQueueService>(context);
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<SafetySignalController>(
+          create: (ctx) => SafetySignalController(
+            repository:
+                safetySignalRepository ?? ctx.read<SafetySignalRepository>(),
+            locationService: ctx.read<LocationService>(),
+            profileRepository: ctx.read<ProfileRepository>(),
+            uid: user.uid,
+          ),
+        ),
+        if (activeHelpRequestController != null)
+          ChangeNotifierProvider<ActiveHelpRequestController>.value(
+            value: activeHelpRequestController!,
+          )
+        else if (helpRepo != null && offlineQueue != null)
+          ChangeNotifierProvider<ActiveHelpRequestController>(
+            create: (_) => ActiveHelpRequestController(
+              repository: helpRepo,
+              queueService: offlineQueue,
+              citizenUid: user.uid,
+            ),
+          ),
+      ],
       child: _HomeView(
         fullName: user.fullName,
         onAddHelpRequest: onAddHelpRequest,
@@ -333,6 +371,14 @@ class _HomeViewState extends State<_HomeView> {
     );
   }
 
+  T? _safeWatch<T>(BuildContext context) {
+    try {
+      return context.watch<T>();
+    } catch (_) {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -341,6 +387,7 @@ class _HomeViewState extends State<_HomeView> {
     final status = theme.extension<AppStatusColors>()!;
     final location = context.watch<LocationService>();
     final signalCtrl = context.watch<SafetySignalController>();
+    final activeHelpCtrl = _safeWatch<ActiveHelpRequestController>(context);
 
     final locationText = location.currentLabel ??
         (location.isFetching
@@ -422,8 +469,16 @@ class _HomeViewState extends State<_HomeView> {
                 ),
               ],
               const SizedBox(height: 28),
-              // TODO(G4): Aktif yardım çağrısı kartı G4'te buraya yerleştirilecek.
-              const _ActiveRequestEmptySlot(),
+              if (activeHelpCtrl != null && activeHelpCtrl.hasActiveOrQueuedCall)
+                ActiveRequestCard(
+                  request: activeHelpCtrl.activeRequest,
+                  offlineDraft: activeHelpCtrl.topOfflineDraft,
+                  assignedTeam: activeHelpCtrl.assignedTeam,
+                  isCancelling: activeHelpCtrl.isCancelling,
+                  onCancel: activeHelpCtrl.cancel,
+                )
+              else
+                const _ActiveRequestEmptySlot(),
               const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerRight,

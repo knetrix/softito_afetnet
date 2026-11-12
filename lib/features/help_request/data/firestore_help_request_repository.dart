@@ -8,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../core/constants/case_status.dart';
 import '../../../core/constants/help_type.dart';
 import '../../../core/utils/priority_policy.dart';
+import '../domain/assigned_team_info.dart';
 import '../domain/help_request.dart';
 import '../domain/help_request_draft.dart';
 import '../domain/help_request_repository.dart';
@@ -202,6 +203,22 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
       if (hr.isResolved || hr.isCancelled) return null;
       return hr;
     });
+  }
+
+  @override
+  Future<AssignedTeamInfo?> fetchTeamInfo(String teamId) async {
+    try {
+      final snap = await _db.collection('teams').doc(teamId).get();
+      if (!snap.exists || snap.data() == null) return null;
+      final data = snap.data()!;
+      return AssignedTeamInfo(
+        id: teamId,
+        name: data['name'] as String? ?? teamId,
+        leaderName: data['leaderName'] as String? ?? '',
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   @override
