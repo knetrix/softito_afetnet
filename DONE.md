@@ -11,7 +11,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | G3 — Panik, Ana Sayfa ve Düdük | Furkan | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#14](https://github.com/knetrix/softito_afetnet/pull/14), `fix/mustafa-g3-review` |
 | G4 — Yardım Çağrısı ve Toplanma | Tuba | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | `development`'a doğrudan commit, `feature/tuba-g4`, [#18](https://github.com/knetrix/softito_afetnet/pull/18), `fix/mustafa-g4-assembly` |
 | G5 — Canlı Akış ve Ekipler | Esra | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#20](https://github.com/knetrix/softito_afetnet/pull/20), `fix/mustafa-g5-review` |
-| G6 — Lojistik, Anons ve Teslime Hazırlık | Meryem | ⏳ Sıradaki | — |
+| G6 — Lojistik, Anons ve Teslime Hazırlık | Meryem | ✅ Tamam (G1 incelemesiyle düzeltildi); demo hesapları açıldı, yasal sayfalar yayında | [#22](https://github.com/knetrix/softito_afetnet/pull/22), `fix/mustafa-g6-review` |
 | Son Tur — 13 Kasım sabah | Herkes | ⏳ | — |
 
 ---
@@ -132,17 +132,21 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 ## G6 — Meryem · Lojistik, Anons ve Teslime Hazırlık
 
-| # | Adım | Durum |
-|---|---|---|
-| 1 | Lojistik (Y3): envanter, stok etiketi, giriş/çıkış Transaction, kritik uyarı | ⏳ |
-| 2 | Tahliye Anonsu sheet'i ve yarıçap bildirimi | ⏳ |
-| 3 | Demo verisi, "Demo Verisini Sıfırla" (Y4'te debug butonu hazır, servisi bağlanacak), demo hesapları | ⏳ |
-| 4 | Yasal metinler TR/EN (Firebase Hosting). Hesabı Sil akışı hazır (G2 + G1 incelemesi) | ⏳ |
-| 5 | `firestore.rules` + index'ler (Hesabı Sil için sahibine silme izni: `users`, `private/contact`, `safety_signals`, çağrı `private/contact`; `safety_signals`'ta sahibi `handledBy`/`handledAt`'i yazamaz ama silebilir, bkz. §5.5); test modunu kapat, demo akışını dene | ⏳ |
+| # | Adım | Durum | Not |
+|---|---|---|---|
+| 1 | Lojistik (Y3): envanter, stok etiketi, giriş/çıkış Transaction, kritik uyarı | ✅ | Depo seçimi, kritik stok kartı, filtreler (Tümü / Kritik / Orta / Yeterli), stok kartları; giriş/çıkış tek Transaction, eksi stok yok, `movements` kaydı (Kural 3). G1 incelemesi: Lojistik açılınca depoları kendiliğinden yazan kod kaldırıldı (seed "Demo Verisini Sıfırla"da); T7'nin kaldırılmasını istediği işlevsiz "Acil İkmal İste" butonu kaldırıldı; kritik stok bildirimi kendi bildirim altyapısını kuruyordu, `NotificationService` kullanıyor ve yalnızca kalem bu ekranda kritik düzeye inince düşüyor (her açılışta değil); stok sheet'indeki Türkçe sabit metinler ARB'ye taşındı; eksi stok reddi `InsufficientStockException` |
+| 2 | Tahliye Anonsu sheet'i ve yarıçap bildirimi | ✅ | `broadcasts` yazımı, açık uygulamada yarıçap içindeki afetzedeye yerel bildirim (Kural 10). G1 incelemesi: tür seçimi eklendi (Acil Tahliye / Artçı Sarsıntı; önce yalnızca tahliye gönderilebiliyordu); merkez elle girilen koordinat değil yetkilinin konumu (§3.2); buton Ekipler'de de var (yalnızca Canlı Akış'taydı) ve son kartı örtmüyor; internetsizken 10 sn sonra "bağlantı gelince gönderilecek" der; bildirim başlığı afetzedenin dilinde (tür adı). Sheet `presentation/`a taşındı, silinmiş `crisis_map` klasörü yeniden açılmıştı, kaldırıldı. Bildirim yalnızca kayıtta bildirimlere onay veren afetzedeye düşer (izin yalnızca onlardan istenir) |
+| 3 | Demo verisi, "Demo Verisini Sıfırla", demo hesapları | ✅ | G1 incelemesi: `demo_seed/data/demo_seed_service.dart` yazıldı (önce klasör boştu, kod profil ekranındaydı). Yalnızca debug derlemede, yetkili profilinden: 4 ekip (`team_04` = Arama Kurtarma Tim 4, §8), 2 depo, 8 stok kalemi, 3 toplanma alanı; eksikse oluşturur, varsa başlangıç hâline getirir (`currentTask` silinir), `isDemo` olmayan gerçek kayda dokunmaz. Su 70 koli / kritik 25: §8 adım 6'daki 50 koli çıkışı kritik uyarı ve bildirim üretir. Canlıda bir kez çalıştırıldı. §8'deki demo hesapları 12 Kasım'da açıldı (şifre ekipte): `afetzede1@afetnet.demo` (tıbbi bilgisi, acil durum yakını ve adresi dolu), `afetzede2@afetnet.demo` (ikisi de bildirimlere onaylı, anons bildirimi için gerekli), `yetkili@afetnet.demo` (`isVerified: true`, `teamId: team_04`). Çağrı, olay, görev ve panik kayıtları kurallar gereği uygulamadan silinemez; provadan sonra Console'dan temizlenir |
+| 4 | Yasal metinler TR/EN (Firebase Hosting). Hesabı Sil akışı hazır (G2 + G1 incelemesi) | ✅ | Gizlilik ve Kullanım Koşulları TR/EN yayında. G1 incelemesi: uygulama `kvkk.html`, `terms.html`, `delete-account.html` adreslerini açıyordu (404) ve gizlilik bağlantısı İngilizcede de Türkçe sayfaya gidiyordu; adresler uygulama diline göre (`AppConfig.legalUrl`), KVKK Aydınlatma Metni ve Hesap Silme sayfaları TR/EN yazıldı (uygulamanın gerçekte işlediği verilere göre). Köşeli parantezli alanlar dolduruldu: işletici SoftITO 4. Dönem Mobil — 2. Grup (ticari olmayan eğitim projesi), iletişim e-postası, KVKK m.5/6 hukuki sebepleri, verilerin Firebase Avrupa bölgesinde (eur3) saklanması, saklama ve 30 günlük başvuru süresi. 12 Kasım'da yayınlandı; 8 sayfa da açılıyor |
+| 5 | `firestore.rules` + index'ler; test modunu kapat, demo akışını dene | ✅ | Kurallar §5.5'e göre yazıldı, 19 kural testi (`test/firestore/firestore.rules.test.mjs`) ve canlıya yüklendi (test modu kapandı). G1 incelemesi: kurallar uygulamanın gerçek yazımlarını reddediyordu ve canlıda üç akış bozuktu: hiçbir yardım çağrısı gönderilemiyordu (gönderim henüz olmayan çağrı belgesini okur), "Ulaşıldı" denmiş afetzedenin yeni paniği reddediliyordu (sahibi `handledBy`/`handledAt`'i silemiyordu), ekip atandıktan sonra birleşen çağrı varken görev ilerletilemiyordu. Düzeltildi, uygulamanın 19 yazımını deneyen testler eklendi (`test/firestore/app_flows.rules.test.mjs`, `npm run test:rules`), 12 Kasım'da yeniden yüklendi. `firestore.indexes.json`'a kullanılmayan iki index eklenmişti, dosyadan ve canlıdan kaldırıldı (canlıda 4 index) |
 
-**Not (G4'ten, kurallar için):** Yardım çağrısı gönderim Transaction'ı, çift kaydı önlemek için henüz var olmayan `help_requests/{id}` belgesini okur. Kurallar sahibinin bu okumasına izin vermeli (belge yokken `resource == null`), yoksa gönderim reddedilir. İptal yalnızca `status: cancelled` yazar.
+**Çıktı:** Demo akışının (8) tamamı TR ve EN çalışıyor. ✅ Adımlar emülatörde ayrı ayrı denendi; tam demo provası Son Tur'da.
 
-**Çıktı:** Demo akışının (8) tamamı TR ve EN çalışıyor. ⏳
+**Kontroller (G1 incelemesi):** `flutter analyze` temiz · 157 Flutter testi geçiyor (stok etiketi, stok sheet'i eksi stok ve İngilizce metin, demo verisinin §8 adım 6'yı sağlaması, anons sheet'i tür, merkez, konumsuz ve internetsiz durumlar, yasal adresler) · 38 kural testi geçiyor (Firestore emülatörü) · Android emülatöründe gerçek Firebase'e karşı: kural düzeltmesinden önce yardım çağrısı `PERMISSION_DENIED` ile gönderilemiyordu, sonra gönderildi; "Ulaşıldı" denmiş afetzedenin yeni paniği sunucuya gitti ve eski kayıt silindi; Demo Verisini Sıfırla 4 ekip, 2 depo, 8 kalem, 3 alan yazdı; 50 koli su çıkışı → "Kritik Stok Uyarısı" kartı ve bildirim; Ekipler'den Artçı Sarsıntı anonsu yetkilinin konumuyla yazıldı; yarıçap içindeki afetzedeye bildirim TR cihazda "Acil Tahliye", EN cihazda "Aftershock" başlığıyla geldi, yarıçap dışındakine gelmedi. Test verisi silindi; Meryem'in demo anonsu ve stok hareketi duruyor.
+
+**Not (G4'ten, kurallar için):** Yardım çağrısı gönderim Transaction'ı, çift kaydı önlemek için henüz var olmayan `help_requests/{id}` belgesini okur. Kurallar sahibinin bu okumasına izin vermeli (belge yokken `resource == null`), yoksa gönderim reddedilir. İptal yalnızca `status: cancelled` yazar. *(G6 incelemesinde kurala eklendi.)*
+
+**Kural değişikliği yapacaklara:** Kuralları değiştirdikten sonra `npm ci && npm run test:rules` çalıştırın (Java gerekir); uygulama akışı testleri geçmeden `firebase deploy --only firestore:rules` yapmayın.
 
 ## Son Tur — 13 Kasım sabah
 

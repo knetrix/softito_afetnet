@@ -135,7 +135,6 @@
   "debugToolsTitle": "Demo & Test Tools (Debug)",
   "demoReset": "Reset Demo Data",
   "demoResetTitle": "Demo Data",
-  "demoResetPending": "Demo data loading will be connected in step G6.",
   "onboardingActive": "ACTIVE",
   "onboardingRadarTeam": "TEAM #04 1.2km",
   "onboardingRadarDepot": "DEPOT 94% L-4",
@@ -488,81 +487,95 @@
     }
   },
   "updateNoActiveTask": "No active task found for this team.",
-
-
-"logisticsWarehouseLoadFailed": "Failed to load warehouses.",
-"logisticsNoWarehouses": "No warehouses found.",
-"logisticsSeedError": "Could not create demo warehouses: {error}",
-"@logisticsSeedError": {
-  "placeholders": {
-    "error": {
-      "type": "String"
+  "logisticsWarehouseLoadFailed": "Failed to load warehouses.",
+  "logisticsNoWarehouses": "No warehouses found.",
+  "logisticsInventoryLoadFailed": "Failed to load inventory.",
+  "logisticsNoFilteredItems": "No stock items match this filter.",
+  "logisticsTitle": "LOGISTICS",
+  "logisticsMissingLocation": "Warehouse location unavailable",
+  "logisticsCriticalTitle": "CRITICAL STOCK WARNING",
+  "logisticsInventoryTitle": "WAREHOUSE INVENTORY",
+  "logisticsItemCount": "{count} items",
+  "@logisticsItemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
     }
-  }
-},
-"logisticsRetry": "Retry",
-"logisticsInventoryLoadFailed": "Failed to load inventory.",
-"logisticsNoFilteredItems": "No stock items match this filter.",
-"logisticsTitle": "LOGISTICS",
-"logisticsMissingLocation": "Warehouse location unavailable",
-"logisticsCriticalTitle": "CRITICAL STOCK WARNING",
-"logisticsEmergencySupply": "Request Emergency Supplies",
-"logisticsSupplyNotActive": "Emergency supply requests are not available yet.",
-"logisticsInventoryTitle": "WAREHOUSE INVENTORY",
-"logisticsItemCount": "{count} items",
-"@logisticsItemCount": {
-  "placeholders": {
-    "count": {
-      "type": "int"
+  },
+  "logisticsAll": "All",
+  "logisticsCritical": "Critical",
+  "logisticsMedium": "Medium",
+  "logisticsSufficient": "Sufficient",
+  "logisticsStockLevel": "Stock Level",
+  "logisticsLoginRequired": "Please sign in to manage stock.",
+  "logisticsCriticalNotification": "{itemName} has reached a critical stock level.",
+  "@logisticsCriticalNotification": {
+    "placeholders": {
+      "itemName": {
+        "type": "String"
+      }
     }
-  }
-},
-"logisticsAll": "All",
-"logisticsCritical": "Critical",
-"logisticsMedium": "Medium",
-"logisticsSufficient": "Sufficient",
-"logisticsStockLevel": "Stock Level",
-"logisticsLoginRequired": "Please sign in to manage stock.",
-"logisticsCriticalNotification": "{itemName} has reached a critical stock level.",
-"@logisticsCriticalNotification": {
-  "placeholders": {
-    "itemName": {
-      "type": "String"
+  },
+  "broadcastButton": "Evacuation Alert",
+  "broadcastTitle": "Evacuation Alert",
+  "broadcastMessageLabel": "Message",
+  "broadcastRadius": "Target radius: {km} km",
+  "@broadcastRadius": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
     }
-  }
-},
-
-"broadcastButton": "Evacuation Alert",
-"broadcastTitle": "Create Evacuation Alert",
-"broadcastDescription": "Enter the center coordinates of the target area. Your current location will not be used automatically.",
-"broadcastTitleLabel": "Alert title",
-"broadcastMessageLabel": "Evacuation message",
-"broadcastLatitude": "Latitude",
-"broadcastLongitude": "Longitude",
-"broadcastRadius": "Target radius: {km} km",
-"@broadcastRadius": {
-  "placeholders": {
-    "km": {
-      "type": "String"
+  },
+  "broadcastInfo": "Survivors with the app open inside the radius get a notification. For devices with the app closed, send an all_users message from Console → Messaging.",
+  "broadcastRequired": "This field is required.",
+  "broadcastSave": "Send",
+  "broadcastSaved": "Evacuation alert sent.",
+  "broadcastSaveFailed": "The alert could not be sent.",
+  "demoResetConfirmMessage": "Demo teams, warehouses, stock and assembly areas will be restored to their initial state; missing ones will be created. Real records are not touched.",
+  "demoResetDone": "Demo data is ready.\n\nTeams: {teams}\nWarehouses: {warehouses}\nStock items: {items}\nAssembly areas: {points}",
+  "@demoResetDone": {
+    "placeholders": {
+      "teams": {
+        "type": "int"
+      },
+      "warehouses": {
+        "type": "int"
+      },
+      "items": {
+        "type": "int"
+      },
+      "points": {
+        "type": "int"
+      }
     }
-  }
-},
-"broadcastInfo": "The alert will be saved. Location-based notification checks apply to survivors with the app open.",
-"broadcastRequired": "This field is required.",
-"broadcastInvalidLatitude": "Enter a valid latitude (-90 to 90).",
-"broadcastInvalidLongitude": "Enter a valid longitude (-180 to 180).",
-"broadcastLoginRequired": "Please sign in as an official.",
-"broadcastSaving": "Saving...",
-"broadcastSave": "Save Alert",
-"broadcastSaved": "Evacuation alert saved.",
-"broadcastSaveFailed": "Could not save alert: {error}",
-"@broadcastSaveFailed": {
-  "placeholders": {
-    "error": {
-      "type": "String"
+  },
+  "demoResetFailed": "Demo data could not be reset. Make sure you are signed in as a verified official and online.",
+  "stockMovementTitle": "Stock Movement",
+  "stockIn": "In",
+  "stockOut": "Out",
+  "stockCurrent": "Current Stock",
+  "stockQuantity": "Quantity",
+  "stockQuantityHint": "Enter the quantity",
+  "stockInvalidQuantity": "Enter a valid quantity.",
+  "stockInsufficient": "Insufficient stock.",
+  "stockSaveIn": "Record Stock In",
+  "stockSaveOut": "Record Stock Out",
+  "stockSaveFailed": "The stock movement could not be saved.",
+  "broadcastTypeEvacuation": "Emergency Evacuation",
+  "broadcastTypeAftershock": "Aftershock",
+  "broadcastCenter": "Center (your location)",
+  "broadcastLocating": "Getting location…",
+  "broadcastLocationUnavailable": "Location unavailable. Check location permission and GPS.",
+  "broadcastRetryLocation": "Get location again",
+  "broadcastRadiusShort": "{km} km",
+  "@broadcastRadiusShort": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
     }
-  }
-}
-
-
+  },
+  "broadcastQueued": "No connection; the alert will be sent when you are back online."
 }

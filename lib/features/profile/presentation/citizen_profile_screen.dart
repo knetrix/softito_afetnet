@@ -340,7 +340,12 @@ class _CitizenProfileView extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () => launchUrl(
-                      Uri.parse(AppConfig.privacyPolicyUrl),
+                      Uri.parse(
+                        AppConfig.legalUrl(
+                          AppConfig.privacyPage,
+                          Localizations.localeOf(context),
+                        ),
+                      ),
                       mode: LaunchMode.externalApplication,
                     ),
                     child: Text(
