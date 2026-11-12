@@ -822,12 +822,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String distanceMeters(int meters) {
-    return '$meters m mesafe';
+    return '$meters m mesafe';
   }
 
   @override
   String distanceKm(String km) {
-    return '$km km mesafe';
+    return '$km km mesafe';
   }
 
   @override
