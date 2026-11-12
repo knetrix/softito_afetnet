@@ -771,4 +771,270 @@ class AppLocalizationsTr extends AppLocalizations {
   String assemblyOccupancyShort(int percent) {
     return '%$percent';
   }
+
+  @override
+  String get liveFeedTitle => 'CANLI ÇAĞRI AKIŞI';
+
+  @override
+  String liveFeedWaitingCount(int count) {
+    return '$count AÇIK';
+  }
+
+  @override
+  String liveFeedFilterAll(int count) {
+    return 'Tümü ($count)';
+  }
+
+  @override
+  String get liveFeedFilterCritical => 'Kritik';
+
+  @override
+  String get liveFeedFilterUrgent => 'Acil';
+
+  @override
+  String get liveFeedFilterNormal => 'Normal';
+
+  @override
+  String get liveFeedEmpty => 'Şu anda açık çağrı yok.';
+
+  @override
+  String get liveFeedEmptyFiltered => 'Bu filtreye uyan çağrı yok.';
+
+  @override
+  String get liveFeedUnknownName => 'Ad belirtilmemiş';
+
+  @override
+  String liveFeedMergedCalls(int count) {
+    return '$count birleşik çağrı';
+  }
+
+  @override
+  String get liveFeedDispatch => 'Ekip Yönlendir';
+
+  @override
+  String liveFeedAssignedTeam(String team) {
+    return 'Ekip: $team';
+  }
+
+  @override
+  String liveFeedPanicCount(int count) {
+    return '$count panik sinyali';
+  }
+
+  @override
+  String distanceMeters(int meters) {
+    return '$meters m mesafe';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km km mesafe';
+  }
+
+  @override
+  String get timeJustNow => 'az önce';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return '$count dk önce';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return '$count sa önce';
+  }
+
+  @override
+  String timeDaysAgo(int count) {
+    return '$count gün önce';
+  }
+
+  @override
+  String get incidentDetailTitle => 'Çağrı Detayı';
+
+  @override
+  String get incidentDetailCaller => 'Çağrı Sahibi';
+
+  @override
+  String get incidentDetailPhone => 'Telefon';
+
+  @override
+  String get incidentDetailCall => 'Ara';
+
+  @override
+  String get incidentDetailNoPhone => 'Telefon numarası yok';
+
+  @override
+  String get incidentDetailMedical => 'Tıbbi Özet';
+
+  @override
+  String get incidentDetailNoMedical => 'Paylaşılmış tıbbi bilgi yok.';
+
+  @override
+  String get incidentDetailLinkedCalls => 'Bağlı çağrı';
+
+  @override
+  String get incidentDetailTaskStatus => 'Görev durumu';
+
+  @override
+  String get incidentDetailNeedType => 'İhtiyaç türü';
+
+  @override
+  String get incidentDetailLoadFailed =>
+      'Çağrı sahibinin bilgileri yüklenemedi.';
+
+  @override
+  String get incidentCloseAction => 'Olayı Kapat';
+
+  @override
+  String get incidentCloseConfirmTitle => 'Olay kapatılsın mı?';
+
+  @override
+  String get incidentCloseConfirmMessage =>
+      'Olay ve bağlı çağrılar çözüldü olarak işaretlenecek. Bu işlem geri alınamaz.';
+
+  @override
+  String get incidentClosed => 'Olay kapatıldı.';
+
+  @override
+  String get incidentCloseFailed =>
+      'Olay kapatılamadı. Ekip atanmış ya da olay zaten kapanmış olabilir.';
+
+  @override
+  String get incidentCloseHasTeam =>
+      'Bu olayda görevli ekip var. Ekip Kurtarıldı\'ya geçince olay kapanır.';
+
+  @override
+  String get dispatchNoAvailableTeams => 'Şu anda boşta ekip yok.';
+
+  @override
+  String dispatchSuccess(String team) {
+    return '$team yönlendirildi.';
+  }
+
+  @override
+  String get assignErrorIncidentClosed => 'Bu olay kapanmış.';
+
+  @override
+  String get assignErrorAlreadyAssigned => 'Bu olaya zaten ekip atanmış.';
+
+  @override
+  String get assignErrorTeamBusy => 'Bu ekip artık boşta değil.';
+
+  @override
+  String get assignErrorInvalidTransition =>
+      'Görev başka biri tarafından güncellendi. Lütfen tekrar kontrol edin.';
+
+  @override
+  String teamMembers(int count) {
+    return '$count kişi';
+  }
+
+  @override
+  String get panicPinTitle => 'Panik Sinyali';
+
+  @override
+  String get panicPinLocation => 'Konum';
+
+  @override
+  String get panicPinTime => 'Sinyal zamanı';
+
+  @override
+  String get panicPinReached => 'Ulaşıldı';
+
+  @override
+  String get panicPinHandled => 'Ulaşıldı olarak işaretlendi';
+
+  @override
+  String get panicPinReachedSuccess => 'Sinyal ulaşıldı olarak işaretlendi.';
+
+  @override
+  String get panicNotificationTitle => 'Yeni panik sinyali';
+
+  @override
+  String get panicNotificationBody =>
+      'Bir afetzede tehlikede olduğunu bildirdi. Canlı Akış haritasındaki mor pine bakın.';
+
+  @override
+  String get teamsSummaryTitle => 'Saha Ekipleri';
+
+  @override
+  String get teamsSummarySubtitle => 'Operasyonel takip ve koordinasyon';
+
+  @override
+  String teamsSummaryCount(int teams, int members) {
+    return '$teams Tim · $members Personel';
+  }
+
+  @override
+  String get teamTypeSearchRescue => 'Arama Kurtarma';
+
+  @override
+  String get teamTypeMedical => 'Sağlık';
+
+  @override
+  String get teamTypeFire => 'Yangın';
+
+  @override
+  String get teamTypeLogistics => 'Lojistik';
+
+  @override
+  String get teamStatusOnDuty => 'GÖREVDE';
+
+  @override
+  String get teamStatusAvailable => 'BOŞTA';
+
+  @override
+  String teamLeaderWithName(String name) {
+    return '$name (Ekip Lideri)';
+  }
+
+  @override
+  String get teamCurrentTask => 'MEVCUT GÖREV';
+
+  @override
+  String get teamOperationStatus => 'OPERASYON DURUMU';
+
+  @override
+  String get teamIdleDescription => 'Hazır bekliyor, yeni görev alabilir.';
+
+  @override
+  String get teamTaskNotFound => 'Görev kaydı bulunamadı.';
+
+  @override
+  String get teamsEmpty => 'Henüz ekip kaydı yok.';
+
+  @override
+  String get assignTaskAction => 'Görev Ata';
+
+  @override
+  String get updateTaskAction => 'Görev Güncelle';
+
+  @override
+  String assignSheetSubtitle(String team) {
+    return '$team için açık bir olay seçin.';
+  }
+
+  @override
+  String get assignNoOpenIncidents => 'Ekip bekleyen açık olay yok.';
+
+  @override
+  String get updateSheetCurrent => 'Mevcut durum';
+
+  @override
+  String updateSheetNext(String status) {
+    return '$status olarak işaretle';
+  }
+
+  @override
+  String get updateSheetResolvedNote =>
+      'Kurtarıldı işaretlenince olay kapanır ve ekip boşa çıkar.';
+
+  @override
+  String updateSuccess(String status) {
+    return 'Görev güncellendi: $status';
+  }
+
+  @override
+  String get updateNoActiveTask => 'Bu ekibin aktif görevi bulunamadı.';
 }
