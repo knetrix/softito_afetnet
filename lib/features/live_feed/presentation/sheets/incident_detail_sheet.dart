@@ -141,9 +141,20 @@ class _DetailBodyState extends State<_DetailBody> {
                 label: l10n.helpRequestDescription,
                 value: summary!.description!,
               ),
-            _InfoRow(
-              label: l10n.incidentDetailLinkedCalls,
-              value: '${incident.requestCount}',
+            FutureBuilder<IncidentDetail>(
+              future: _detail,
+              builder: (context, snap) {
+                final cancelled = snap.data?.cancelledCalls ?? 0;
+                return _InfoRow(
+                  label: l10n.incidentDetailLinkedCalls,
+                  value: cancelled > 0
+                      ? l10n.incidentDetailLinkedCallsValue(
+                          incident.requestCount,
+                          cancelled,
+                        )
+                      : '${incident.requestCount}',
+                );
+              },
             ),
             _InfoRow(
               label: l10n.incidentDetailTaskStatus,

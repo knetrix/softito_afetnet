@@ -1,6 +1,7 @@
 import 'assigned_team_info.dart';
 import 'help_request.dart';
 import 'help_request_draft.dart';
+import 'incident_progress.dart';
 
 /// AfetNet Yardım Çağrısı Repository Arayüzü (PROJECT_NEW.md §4 Kural 2, Kural 6, Kural 7, §5.2).
 abstract interface class HelpRequestRepository {
@@ -11,6 +12,10 @@ abstract interface class HelpRequestRepository {
 
   /// Kullanıcının en son aktif (çözümlenmemiş ve iptal edilmemiş) çağrısını izler.
   Stream<HelpRequest?> watchActiveHelpRequest(String uid);
+
+  /// Çağrının bağlı olduğu olayın görev durumu ve ekibi, canlı (Kural 6).
+  /// Olay yoksa `null`.
+  Stream<IncidentProgress?> watchIncidentProgress(String incidentId);
 
   /// Kural 6: Atanan ekibin adı ve sorumlu lider bilgisini okur.
   Future<AssignedTeamInfo?> fetchTeamInfo(String teamId);

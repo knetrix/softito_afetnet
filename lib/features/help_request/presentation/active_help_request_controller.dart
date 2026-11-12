@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import '../../../core/constants/case_status.dart';
 import '../../../core/services/offline_queue_service.dart';
 import '../domain/assigned_team_info.dart';
 import '../domain/help_request.dart';
 import '../domain/help_request_draft.dart';
 import '../domain/help_request_repository.dart';
+import '../domain/incident_progress.dart';
 
 /// Afetzede Aktif Yardım Çağrısı Kontrolcüsü (PROJECT_NEW.md §4 Kural 4, Kural 6, Kural 7, A1).
 class ActiveHelpRequestController extends ChangeNotifier {
@@ -25,6 +27,10 @@ class ActiveHelpRequestController extends ChangeNotifier {
   final String _uid;
 
   StreamSubscription<HelpRequest?>? _requestSub;
+  StreamSubscription<IncidentProgress?>? _incidentSub;
+  String? _watchedIncidentId;
+  HelpRequest? _rawRequest;
+  IncidentProgress? _incidentProgress;
   HelpRequest? _activeRequest;
   AssignedTeamInfo? _assignedTeam;
   bool _isLoading = true;
@@ -58,21 +64,12 @@ class ActiveHelpRequestController extends ChangeNotifier {
   void _init() {
     _offlineQueue.addListener(_onOfflineQueueChanged);
     _requestSub = _repo.watchActiveHelpRequest(_uid).listen(
-      (req) async {
+      (req) {
         if (_disposed) return;
-        _activeRequest = req;
+        _rawRequest = req;
         _isLoading = false;
-
-        final teamId = req?.assignedTeamId;
-        if (teamId != null && teamId.isNotEmpty) {
-          if (_assignedTeam?.id != teamId) {
-            _assignedTeam = await _repo.fetchTeamInfo(teamId);
-          }
-        } else {
-          _assignedTeam = null;
-        }
-
-        if (!_disposed) notifyListeners();
+        _watchIncident(req);
+        unawaited(_apply());
       },
       onError: (_) {
         if (_disposed) return;
@@ -80,6 +77,61 @@ class ActiveHelpRequestController extends ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+
+  /// Bekleyen çağrının olayını dinler: ekip atandıktan sonra birleşen çağrı
+  /// yetkili görevi ilerletene kadar `pending` kalır (§5.5); bu arada kart
+  /// olaydaki ekibi ve görev durumunu gösterir.
+  void _watchIncident(HelpRequest? req) {
+    final incidentId = req != null && req.isPending ? req.incidentId : null;
+    if (incidentId == _watchedIncidentId) return;
+    _incidentSub?.cancel();
+    _incidentSub = null;
+    _incidentProgress = null;
+    _watchedIncidentId = incidentId;
+    if (incidentId == null || incidentId.isEmpty) return;
+    _incidentSub = _repo.watchIncidentProgress(incidentId).listen((progress) {
+      if (_disposed) return;
+      _incidentProgress = progress;
+      unawaited(_apply());
+    }, onError: (Object e) => debugPrint('Incident progress error: $e'));
+  }
+
+  Future<void> _apply() async {
+    final req = withIncidentProgress(_rawRequest, _incidentProgress);
+    _activeRequest = req;
+
+    final teamId = req?.assignedTeamId;
+    if (teamId != null && teamId.isNotEmpty) {
+      if (_assignedTeam?.id != teamId) {
+        _assignedTeam = await _repo.fetchTeamInfo(teamId);
+      }
+    } else {
+      _assignedTeam = null;
+    }
+
+    if (!_disposed) notifyListeners();
+  }
+
+  /// Bekleyen çağrının olayında aktif görev varsa kartta olayın durumu ve
+  /// ekibi gösterilir; diğer durumlarda çağrı olduğu gibi kalır.
+  static HelpRequest? withIncidentProgress(
+    HelpRequest? req,
+    IncidentProgress? progress,
+  ) {
+    if (req == null || progress == null || !req.isPending) return req;
+    const activeSteps = {
+      CaseStatus.assigned,
+      CaseStatus.enRoute,
+      CaseStatus.onSite,
+    };
+    final teamId = progress.assignedTeamId;
+    if (!activeSteps.contains(progress.status) ||
+        teamId == null ||
+        teamId.isEmpty) {
+      return req;
+    }
+    return req.copyWith(status: progress.status, assignedTeamId: teamId);
   }
 
   void _onOfflineQueueChanged() {
@@ -120,6 +172,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     _disposed = true;
     _offlineQueue.removeListener(_onOfflineQueueChanged);
     _requestSub?.cancel();
+    _incidentSub?.cancel();
     super.dispose();
   }
 }
