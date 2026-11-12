@@ -1,4 +1,5 @@
 import 'package:afetnet/features/assembly_points/domain/assembly_point.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:afetnet/features/assembly_points/domain/assembly_point_type.dart';
 import 'package:afetnet/features/assembly_points/domain/assembly_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -62,5 +63,16 @@ void main() {
       expect(restored.services, contains(AssemblyService.water));
       expect(restored.isOpen, samplePoint.isOpen);
     });
+  });
+
+  test('konumu olmayan belge atlanır, bilinmeyen hizmet gösterilmez', () {
+    expect(AssemblyPoint.tryFromJson('x', {'name': 'Konumsuz'}), isNull);
+    final p = AssemblyPoint.tryFromJson('y', {
+      'name': 'Nokta',
+      'location': const GeoPoint(36.2, 36.16),
+      'services': ['water', 'wifi'],
+    });
+    expect(p, isNotNull);
+    expect(p!.services, [AssemblyService.water]);
   });
 }

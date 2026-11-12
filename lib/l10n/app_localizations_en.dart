@@ -724,8 +724,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assemblyServiceTent => 'Shelter';
 
   @override
-  String assemblyOccupancyLabel(String percent) {
-    return 'Occupancy: %$percent';
+  String assemblyOccupancyLabel(int percent) {
+    return 'Occupancy: $percent%';
   }
 
   @override
@@ -774,4 +774,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelRequestKeep => 'Keep Request';
+
+  @override
+  String assemblyOccupancyShort(int percent) {
+    return '$percent%';
+  }
 }

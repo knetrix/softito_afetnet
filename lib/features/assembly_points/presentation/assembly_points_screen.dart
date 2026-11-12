@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/config/app_config.dart';
 import '../../../core/services/location_service.dart';
 import '../../../core/widgets/state_view.dart';
 import '../../../l10n/app_localizations.dart';
@@ -152,10 +153,15 @@ class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
               // Tile Katmanı (testlerde override edilebilir)
               widget.tileLayer ??
                   TileLayer(
-                    urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'com.softito.afetnet',
+                    urlTemplate: AppConfig.osmTileUrl,
+                    userAgentPackageName: AppConfig.osmUserAgentPackageName,
                   ),
+              // OSM kullanım koşulu: harita üzerinde atıf zorunlu. Rich sürümü
+              // küçük bir düğme olarak durur; Simple dar ekranda taşıyordu.
+              const RichAttributionWidget(
+                alignment: AttributionAlignment.bottomLeft,
+                attributions: [TextSourceAttribution(AppConfig.osmAttribution)],
+              ),
 
               // Kullanıcı Konum Rozeti (Varsa)
               if (userLoc != null)
@@ -264,9 +270,10 @@ class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
           // 3. Sağ Taraf Harita Kontrolleri (Zoom In / Out / My Location)
           SafeArea(
             child: Align(
-              alignment: Alignment.centerRight,
+              // Üstte durur; ortada olunca seçili nokta kartının altında kalıyordu.
+              alignment: Alignment.topRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 14),
+                padding: const EdgeInsets.only(right: 14, top: 72),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -320,7 +327,9 @@ class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
                             _mapController.move(pt.location, 15.0);
                           },
                         )
-                      : const SizedBox.shrink(),
+                      : (!ctrl.isLoading && ctrl.points.isEmpty)
+                          ? const _EmptyPointsBanner()
+                          : const SizedBox.shrink(),
             ),
           ),
         ],
@@ -520,7 +529,8 @@ class _NearestPointsPeekBar extends StatelessWidget {
                                 ),
                               ),
                             Text(
-                              '%${pt.occupancyPercentage}',
+                              l10n?.assemblyOccupancyShort(pt.occupancyPercentage) ??
+                                  '%${pt.occupancyPercentage}',
                               style: TextStyle(
                                 fontSize: 11,
                                 color: colors.onSurfaceVariant,
@@ -533,6 +543,41 @@ class _NearestPointsPeekBar extends StatelessWidget {
                   ),
                 );
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Firestore'da toplanma noktası yoksa gösterilir (uydurma nokta gösterilmez).
+class _EmptyPointsBanner extends StatelessWidget {
+  const _EmptyPointsBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: colors.surface.withValues(alpha: 0.95),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.outline.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.info_outline_rounded, size: 18, color: colors.onSurfaceVariant),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              l10n?.assemblyEmptyList ?? 'Toplanma alanı bulunamadı',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
             ),
           ),
         ],

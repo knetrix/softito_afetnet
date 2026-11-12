@@ -237,7 +237,7 @@ class AssemblyPointCard extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      l10n?.assemblyOccupancyLabel(point.occupancyPercentage.toString()) ??
+                      l10n?.assemblyOccupancyLabel(point.occupancyPercentage) ??
                           'Doluluk: %${point.occupancyPercentage}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.w600,

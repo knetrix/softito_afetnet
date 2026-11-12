@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../domain/assembly_point.dart';
 import '../domain/assembly_points_repository.dart';
-import 'default_assembly_points.dart';
 
 /// Firestore Toplanma Alanları Deposu (PROJECT_NEW.md §5.3: assembly_points/{pointId}).
+///
+/// Koleksiyon boşsa boş liste döner; uygulama içinde uydurma nokta gösterilmez
+/// (var olmayan bir alan insanları yanlış yere gönderebilir). Demo verisini
+/// G6 Firestore'a yazar (§8). Konumu geçersiz belgeler atlanır.
 class FirestoreAssemblyPointsRepository implements AssemblyPointsRepository {
   FirestoreAssemblyPointsRepository({FirebaseFirestore? firestore})
       : _db = firestore ?? FirebaseFirestore.instance;
@@ -14,33 +17,17 @@ class FirestoreAssemblyPointsRepository implements AssemblyPointsRepository {
   CollectionReference<Map<String, dynamic>> get _collection =>
       _db.collection('assembly_points');
 
-  @override
-  Stream<List<AssemblyPoint>> watchAssemblyPoints() {
-    return _collection.snapshots().map((snapshot) {
-      if (snapshot.docs.isEmpty) {
-        return DefaultAssemblyPoints.list;
-      }
-      return snapshot.docs
-          .map((doc) => AssemblyPoint.fromJson(doc.id, doc.data()))
+  static List<AssemblyPoint> _parse(QuerySnapshot<Map<String, dynamic>> snap) =>
+      snap.docs
+          .map((doc) => AssemblyPoint.tryFromJson(doc.id, doc.data()))
+          .whereType<AssemblyPoint>()
           .toList();
-    }).handleError((_) {
-      // Çevrimdışı veya hata durumunda varsayılan güvenli listeyi dön
-      return DefaultAssemblyPoints.list;
-    });
-  }
 
   @override
-  Future<List<AssemblyPoint>> getAssemblyPoints() async {
-    try {
-      final snap = await _collection.get();
-      if (snap.docs.isEmpty) {
-        return DefaultAssemblyPoints.list;
-      }
-      return snap.docs
-          .map((doc) => AssemblyPoint.fromJson(doc.id, doc.data()))
-          .toList();
-    } catch (_) {
-      return DefaultAssemblyPoints.list;
-    }
-  }
+  Stream<List<AssemblyPoint>> watchAssemblyPoints() =>
+      _collection.snapshots().map(_parse);
+
+  @override
+  Future<List<AssemblyPoint>> getAssemblyPoints() async =>
+      _parse(await _collection.get());
 }
