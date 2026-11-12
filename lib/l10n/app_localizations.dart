@@ -908,12 +908,6 @@ abstract class AppLocalizations {
   /// **'Demo Data'**
   String get demoResetTitle;
 
-  /// No description provided for @demoResetPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Demo data loading will be connected in step G6.'**
-  String get demoResetPending;
-
   /// No description provided for @onboardingActive.
   ///
   /// In en, this message translates to:
@@ -2000,18 +1994,6 @@ abstract class AppLocalizations {
   /// **'No warehouses found.'**
   String get logisticsNoWarehouses;
 
-  /// No description provided for @logisticsSeedError.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not create demo warehouses: {error}'**
-  String logisticsSeedError(String error);
-
-  /// No description provided for @logisticsRetry.
-  ///
-  /// In en, this message translates to:
-  /// **'Retry'**
-  String get logisticsRetry;
-
   /// No description provided for @logisticsInventoryLoadFailed.
   ///
   /// In en, this message translates to:
@@ -2041,18 +2023,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'CRITICAL STOCK WARNING'**
   String get logisticsCriticalTitle;
-
-  /// No description provided for @logisticsEmergencySupply.
-  ///
-  /// In en, this message translates to:
-  /// **'Request Emergency Supplies'**
-  String get logisticsEmergencySupply;
-
-  /// No description provided for @logisticsSupplyNotActive.
-  ///
-  /// In en, this message translates to:
-  /// **'Emergency supply requests are not available yet.'**
-  String get logisticsSupplyNotActive;
 
   /// No description provided for @logisticsInventoryTitle.
   ///
@@ -2117,38 +2087,14 @@ abstract class AppLocalizations {
   /// No description provided for @broadcastTitle.
   ///
   /// In en, this message translates to:
-  /// **'Create Evacuation Alert'**
+  /// **'Evacuation Alert'**
   String get broadcastTitle;
-
-  /// No description provided for @broadcastDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the center coordinates of the target area. Your current location will not be used automatically.'**
-  String get broadcastDescription;
-
-  /// No description provided for @broadcastTitleLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Alert title'**
-  String get broadcastTitleLabel;
 
   /// No description provided for @broadcastMessageLabel.
   ///
   /// In en, this message translates to:
-  /// **'Evacuation message'**
+  /// **'Message'**
   String get broadcastMessageLabel;
-
-  /// No description provided for @broadcastLatitude.
-  ///
-  /// In en, this message translates to:
-  /// **'Latitude'**
-  String get broadcastLatitude;
-
-  /// No description provided for @broadcastLongitude.
-  ///
-  /// In en, this message translates to:
-  /// **'Longitude'**
-  String get broadcastLongitude;
 
   /// No description provided for @broadcastRadius.
   ///
@@ -2159,7 +2105,7 @@ abstract class AppLocalizations {
   /// No description provided for @broadcastInfo.
   ///
   /// In en, this message translates to:
-  /// **'The alert will be saved. Location-based notification checks apply to survivors with the app open.'**
+  /// **'Survivors with the app open inside the radius get a notification. For devices with the app closed, send an all_users message from Console → Messaging.'**
   String get broadcastInfo;
 
   /// No description provided for @broadcastRequired.
@@ -2168,47 +2114,155 @@ abstract class AppLocalizations {
   /// **'This field is required.'**
   String get broadcastRequired;
 
-  /// No description provided for @broadcastInvalidLatitude.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a valid latitude (-90 to 90).'**
-  String get broadcastInvalidLatitude;
-
-  /// No description provided for @broadcastInvalidLongitude.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a valid longitude (-180 to 180).'**
-  String get broadcastInvalidLongitude;
-
-  /// No description provided for @broadcastLoginRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Please sign in as an official.'**
-  String get broadcastLoginRequired;
-
-  /// No description provided for @broadcastSaving.
-  ///
-  /// In en, this message translates to:
-  /// **'Saving...'**
-  String get broadcastSaving;
-
   /// No description provided for @broadcastSave.
   ///
   /// In en, this message translates to:
-  /// **'Save Alert'**
+  /// **'Send'**
   String get broadcastSave;
 
   /// No description provided for @broadcastSaved.
   ///
   /// In en, this message translates to:
-  /// **'Evacuation alert saved.'**
+  /// **'Evacuation alert sent.'**
   String get broadcastSaved;
 
   /// No description provided for @broadcastSaveFailed.
   ///
   /// In en, this message translates to:
-  /// **'Could not save alert: {error}'**
-  String broadcastSaveFailed(String error);
+  /// **'The alert could not be sent.'**
+  String get broadcastSaveFailed;
+
+  /// No description provided for @demoResetConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo teams, warehouses, stock and assembly areas will be restored to their initial state; missing ones will be created. Real records are not touched.'**
+  String get demoResetConfirmMessage;
+
+  /// No description provided for @demoResetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo data is ready.\n\nTeams: {teams}\nWarehouses: {warehouses}\nStock items: {items}\nAssembly areas: {points}'**
+  String demoResetDone(int teams, int warehouses, int items, int points);
+
+  /// No description provided for @demoResetFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo data could not be reset. Make sure you are signed in as a verified official and online.'**
+  String get demoResetFailed;
+
+  /// No description provided for @stockMovementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock Movement'**
+  String get stockMovementTitle;
+
+  /// No description provided for @stockIn.
+  ///
+  /// In en, this message translates to:
+  /// **'In'**
+  String get stockIn;
+
+  /// No description provided for @stockOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get stockOut;
+
+  /// No description provided for @stockCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Stock'**
+  String get stockCurrent;
+
+  /// No description provided for @stockQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get stockQuantity;
+
+  /// No description provided for @stockQuantityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the quantity'**
+  String get stockQuantityHint;
+
+  /// No description provided for @stockInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid quantity.'**
+  String get stockInvalidQuantity;
+
+  /// No description provided for @stockInsufficient.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient stock.'**
+  String get stockInsufficient;
+
+  /// No description provided for @stockSaveIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Record Stock In'**
+  String get stockSaveIn;
+
+  /// No description provided for @stockSaveOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Record Stock Out'**
+  String get stockSaveOut;
+
+  /// No description provided for @stockSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The stock movement could not be saved.'**
+  String get stockSaveFailed;
+
+  /// No description provided for @broadcastTypeEvacuation.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Evacuation'**
+  String get broadcastTypeEvacuation;
+
+  /// No description provided for @broadcastTypeAftershock.
+  ///
+  /// In en, this message translates to:
+  /// **'Aftershock'**
+  String get broadcastTypeAftershock;
+
+  /// No description provided for @broadcastCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Center (your location)'**
+  String get broadcastCenter;
+
+  /// No description provided for @broadcastLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting location…'**
+  String get broadcastLocating;
+
+  /// No description provided for @broadcastLocationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable. Check location permission and GPS.'**
+  String get broadcastLocationUnavailable;
+
+  /// No description provided for @broadcastRetryLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Get location again'**
+  String get broadcastRetryLocation;
+
+  /// No description provided for @broadcastRadiusShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String broadcastRadiusShort(String km);
+
+  /// No description provided for @broadcastQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection; the alert will be sent when you are back online.'**
+  String get broadcastQueued;
 }
 
 class _AppLocalizationsDelegate

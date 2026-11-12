@@ -101,7 +101,7 @@ class FirestoreLogisticsRepository
           : currentQuantity - quantity;
 
       if (newQuantity < 0) {
-        throw StateError('Yetersiz stok.');
+        throw const InsufficientStockException();
       }
 
       transaction.update(itemRef, {
