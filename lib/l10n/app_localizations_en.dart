@@ -631,4 +631,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpRequestMinPeople => 'Number of people must be at least 1.';
+
+  @override
+  String get helpRequestQueuedOffline =>
+      'No connection verified within 10 seconds. Your request has been queued and will be sent automatically when online.';
+
+  @override
+  String get helpRequestStatusPendingOffline => 'Waiting to Send';
 }

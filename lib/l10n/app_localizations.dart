@@ -1261,6 +1261,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Number of people must be at least 1.'**
   String get helpRequestMinPeople;
+
+  /// No description provided for @helpRequestQueuedOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection verified within 10 seconds. Your request has been queued and will be sent automatically when online.'**
+  String get helpRequestQueuedOffline;
+
+  /// No description provided for @helpRequestStatusPendingOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to Send'**
+  String get helpRequestStatusPendingOffline;
 }
 
 class _AppLocalizationsDelegate

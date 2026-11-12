@@ -203,5 +203,7 @@
   "helpRequestDescriptionHint": "Briefly describe your situation and urgency...",
   "helpRequestSubmit": "Send Help Request",
   "helpRequestSubmitted": "Help request received.",
-  "helpRequestMinPeople": "Number of people must be at least 1."
+  "helpRequestMinPeople": "Number of people must be at least 1.",
+  "helpRequestQueuedOffline": "No connection verified within 10 seconds. Your request has been queued and will be sent automatically when online.",
+  "helpRequestStatusPendingOffline": "Waiting to Send"
 }

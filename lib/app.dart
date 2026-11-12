@@ -8,10 +8,13 @@ import 'core/router/app_router.dart';
 import 'core/services/connectivity_service.dart';
 import 'core/services/location_service.dart';
 import 'core/services/notification_service.dart';
+import 'core/services/offline_queue_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
 import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
+import 'features/help_request/data/firestore_help_request_repository.dart';
+import 'features/help_request/domain/help_request_repository.dart';
 import 'features/profile/data/firestore_profile_repository.dart';
 import 'features/profile/domain/profile_repository.dart';
 import 'features/safety_signal/data/firestore_safety_signal_repository.dart';
@@ -35,6 +38,12 @@ class _AfetNetAppState extends State<AfetNetApp> {
   final NotificationService _notificationService = DeviceNotificationService();
   final SafetySignalRepository _safetySignalRepository =
       FirestoreSafetySignalRepository();
+  final HelpRequestRepository _helpRequestRepository =
+      FirestoreHelpRequestRepository();
+  late final OfflineQueueService _offlineQueueService = OfflineQueueService(
+    repository: _helpRequestRepository,
+    connectivityService: _connectivityService,
+  );
 
   @override
   void initState() {
@@ -43,6 +52,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
     unawaited(_locationService.loadCached());
     unawaited(_connectivityService.initialize());
     unawaited(_notificationService.initialize());
+    unawaited(_offlineQueueService.initialize());
   }
 
   void _onAuthChanged() {
@@ -59,6 +69,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
     _locationService.dispose();
     _connectivityService.dispose();
     _notificationService.dispose();
+    _offlineQueueService.dispose();
     _router.dispose();
     _auth.dispose();
     super.dispose();
@@ -77,7 +88,10 @@ class _AfetNetAppState extends State<AfetNetApp> {
         ),
         Provider<NotificationService>.value(value: _notificationService),
         Provider<SafetySignalRepository>.value(value: _safetySignalRepository),
-        // Diğer repository ve servisler sonraki adımlarda eklenir.
+        Provider<HelpRequestRepository>.value(value: _helpRequestRepository),
+        ChangeNotifierProvider<OfflineQueueService>.value(
+          value: _offlineQueueService,
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

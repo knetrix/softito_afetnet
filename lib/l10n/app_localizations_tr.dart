@@ -629,4 +629,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get helpRequestMinPeople => 'Kişi sayısı en az 1 olmalıdır.';
+
+  @override
+  String get helpRequestQueuedOffline =>
+      'İnternet bağlantısı kurulamadı. Çağrınız kuyruğa alındı ve bağlantı sağlandığında merkeze iletilecektir.';
+
+  @override
+  String get helpRequestStatusPendingOffline => 'Gönderilmeyi Bekliyor';
 }
