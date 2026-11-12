@@ -754,4 +754,16 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get assemblyServicesTitle => 'Sunulan Hizmetler';
+
+  @override
+  String get helpRequestSelectType => 'İhtiyaç türünü seçin';
+
+  @override
+  String get helpRequestPeopleDecrease => 'Azalt';
+
+  @override
+  String get helpRequestPeopleIncrease => 'Artır';
+
+  @override
+  String get cancelRequestKeep => 'Vazgeç';
 }

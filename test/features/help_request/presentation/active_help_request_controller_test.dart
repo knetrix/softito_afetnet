@@ -19,6 +19,9 @@ class _MockRepo implements HelpRequestRepository {
   final List<String> cancelledIds = [];
   AssignedTeamInfo? teamToReturn;
 
+  /// Firestore gibi: iptalden sonra akış yeni durumu yayınlar (yerel önbellek).
+  HelpRequest? nextActiveAfterCancel;
+
   @override
   Stream<HelpRequest?> watchActiveHelpRequest(String uid) =>
       _activeController.stream;
@@ -29,6 +32,7 @@ class _MockRepo implements HelpRequestRepository {
   @override
   Future<void> cancelHelpRequest(String requestId) async {
     cancelledIds.add(requestId);
+    emit(nextActiveAfterCancel);
   }
 
   @override
@@ -162,6 +166,41 @@ void main() {
     expect(controller.hasActiveOrQueuedCall, isTrue);
   });
 
+  test('başka aktif çağrı varken de kuyruktaki taslak gösterilir (Kural 4)', () async {
+    final draft = HelpRequestDraft(
+      id: 'draft_offline_3',
+      createdBy: 'user_1',
+      location: const LatLng(36.2, 36.16),
+      type: HelpType.heating,
+      createdOffline: true,
+    );
+    await hiveBox.put(draft.id, draft.toJson());
+
+    final controller = ActiveHelpRequestController(
+      repository: repo,
+      queueService: queue,
+      citizenUid: 'user_1',
+    );
+    addTearDown(controller.dispose);
+
+    repo.emit(HelpRequest(
+      id: 'hr_active_2',
+      createdBy: 'user_1',
+      type: HelpType.debris,
+      priority: 1,
+      status: CaseStatus.pending,
+      peopleCount: 1,
+      location: const LatLng(36.2, 36.16),
+      geohash: 'sy72wxyz',
+      createdAt: DateTime.now(),
+    ));
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+
+    expect(controller.activeRequest?.id, 'hr_active_2');
+    expect(controller.hasPendingOffline, isTrue);
+    expect(controller.topOfflineDraft?.id, 'draft_offline_3');
+  });
+
   test('ActiveHelpRequestController çevrimdışı taslağı iptal ettiğinde kuyruktan siler', () async {
     final draft = HelpRequestDraft(
       id: 'draft_offline_2',
@@ -216,7 +255,40 @@ void main() {
     final result = await controller.cancel('hr_active_1');
     expect(result, isTrue);
     expect(repo.cancelledIds, contains('hr_active_1'));
-    expect(controller.activeRequest?.status, CaseStatus.cancelled);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    expect(controller.activeRequest, isNull);
     expect(controller.hasActiveOrQueuedCall, isFalse);
+  });
+
+  test('iptalden sonra kalan diğer aktif çağrı gizlenmez', () async {
+    final controller = ActiveHelpRequestController(
+      repository: repo,
+      queueService: queue,
+      citizenUid: 'user_1',
+    );
+    addTearDown(controller.dispose);
+
+    HelpRequest req(String id, HelpType type) => HelpRequest(
+          id: id,
+          createdBy: 'user_1',
+          type: type,
+          priority: 1,
+          status: CaseStatus.pending,
+          peopleCount: 1,
+          location: const LatLng(36.2, 36.16),
+          geohash: 'sy72wxyz',
+          createdAt: DateTime.now(),
+        );
+    repo.emit(req('yeni', HelpType.medical));
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+
+    // "yeni" iptal edilince akış bir önceki aktif çağrıyı ("eski") gösterir.
+    repo.nextActiveAfterCancel = req('eski', HelpType.debris);
+    expect(await controller.cancel('yeni'), isTrue);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+
+    expect(controller.activeRequest?.id, 'eski');
+    expect(controller.activeRequest?.status, CaseStatus.pending);
+    expect(controller.hasActiveOrQueuedCall, isTrue);
   });
 }

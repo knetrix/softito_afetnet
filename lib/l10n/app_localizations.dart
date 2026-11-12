@@ -1265,7 +1265,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpRequestQueuedOffline.
   ///
   /// In en, this message translates to:
-  /// **'No connection verified within 10 seconds. Your request has been queued and will be sent automatically when online.'**
+  /// **'Connection could not be verified. Your request has been queued and will be sent automatically when you are back online.'**
   String get helpRequestQueuedOffline;
 
   /// No description provided for @helpRequestStatusPendingOffline.
@@ -1367,7 +1367,7 @@ abstract class AppLocalizations {
   /// No description provided for @peopleCountLabel.
   ///
   /// In en, this message translates to:
-  /// **'{count} People'**
+  /// **'{count, plural, =1{1 Person} other{{count} People}}'**
   String peopleCountLabel(int count);
 
   /// No description provided for @assemblyScreenTitle.
@@ -1495,6 +1495,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Provided Services'**
   String get assemblyServicesTitle;
+
+  /// No description provided for @helpRequestSelectType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a need type'**
+  String get helpRequestSelectType;
+
+  /// No description provided for @helpRequestPeopleDecrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get helpRequestPeopleDecrease;
+
+  /// No description provided for @helpRequestPeopleIncrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get helpRequestPeopleIncrease;
+
+  /// No description provided for @cancelRequestKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Request'**
+  String get cancelRequestKeep;
 }
 
 class _AppLocalizationsDelegate
