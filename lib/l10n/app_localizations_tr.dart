@@ -1046,4 +1046,129 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get updateNoActiveTask => 'Bu ekibin aktif görevi bulunamadı.';
+
+  @override
+  String get logisticsWarehouseLoadFailed => 'Depolar yüklenemedi.';
+
+  @override
+  String get logisticsNoWarehouses => 'Henüz kayıtlı depo bulunmuyor.';
+
+  @override
+  String logisticsSeedError(String error) {
+    return 'Demo depoları oluşturulamadı: $error';
+  }
+
+  @override
+  String get logisticsRetry => 'Tekrar dene';
+
+  @override
+  String get logisticsInventoryLoadFailed => 'Stok bilgileri alınamadı.';
+
+  @override
+  String get logisticsNoFilteredItems => 'Bu filtreye uygun stok bulunamadı.';
+
+  @override
+  String get logisticsTitle => 'LOJİSTİK';
+
+  @override
+  String get logisticsMissingLocation => 'Depo konumu belirtilmedi';
+
+  @override
+  String get logisticsCriticalTitle => 'KRİTİK STOK UYARISI';
+
+  @override
+  String get logisticsEmergencySupply => 'Acil İkmal İste';
+
+  @override
+  String get logisticsSupplyNotActive => 'Acil ikmal talebi henüz aktif değil.';
+
+  @override
+  String get logisticsInventoryTitle => 'DEPO ENVANTER LİSTESİ';
+
+  @override
+  String logisticsItemCount(int count) {
+    return '$count kalem';
+  }
+
+  @override
+  String get logisticsAll => 'Tümü';
+
+  @override
+  String get logisticsCritical => 'Kritik';
+
+  @override
+  String get logisticsMedium => 'Orta';
+
+  @override
+  String get logisticsSufficient => 'Yeterli';
+
+  @override
+  String get logisticsStockLevel => 'Stok Düzeyi';
+
+  @override
+  String get logisticsLoginRequired => 'Stok işlemi için giriş yapmalısınız.';
+
+  @override
+  String logisticsCriticalNotification(String itemName) {
+    return '$itemName kritik stok seviyesine ulaştı.';
+  }
+
+  @override
+  String get broadcastButton => 'Tahliye Anonsu';
+
+  @override
+  String get broadcastTitle => 'Tahliye Anonsu Oluştur';
+
+  @override
+  String get broadcastDescription =>
+      'Hedef bölgenin merkez koordinatlarını girin. Mevcut konumunuz otomatik kullanılmaz.';
+
+  @override
+  String get broadcastTitleLabel => 'Anons başlığı';
+
+  @override
+  String get broadcastMessageLabel => 'Tahliye mesajı';
+
+  @override
+  String get broadcastLatitude => 'Enlem';
+
+  @override
+  String get broadcastLongitude => 'Boylam';
+
+  @override
+  String broadcastRadius(String km) {
+    return 'Hedef yarıçap: $km km';
+  }
+
+  @override
+  String get broadcastInfo =>
+      'Anons kaydedilir. Uygulaması açık olan afetzedeler için bölgesel bildirim kontrolü yapılır.';
+
+  @override
+  String get broadcastRequired => 'Bu alan zorunludur.';
+
+  @override
+  String get broadcastInvalidLatitude =>
+      'Geçerli bir enlem girin (-90 ile 90).';
+
+  @override
+  String get broadcastInvalidLongitude =>
+      'Geçerli bir boylam girin (-180 ile 180).';
+
+  @override
+  String get broadcastLoginRequired => 'Önce yetkili olarak giriş yapın.';
+
+  @override
+  String get broadcastSaving => 'Kaydediliyor...';
+
+  @override
+  String get broadcastSave => 'Anonsu Kaydet';
+
+  @override
+  String get broadcastSaved => 'Tahliye anonsu kaydedildi.';
+
+  @override
+  String broadcastSaveFailed(String error) {
+    return 'Anons kaydedilemedi: $error';
+  }
 }
