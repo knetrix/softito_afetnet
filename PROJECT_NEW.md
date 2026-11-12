@@ -354,10 +354,12 @@ firestore.rules · firestore.indexes.json
 | Hesap | Rol | Cihaz |
 |---|---|---|
 | `afetzede1@afetnet.demo` | citizen (tıbbi bilgisi dolu) | Fiziksel Android (düdük, GPS) |
-| `afetzede2@afetnet.demo` | citizen | Emülatör, afetzede 1'in 50 m yakınında |
+| `afetzede2@afetnet.demo` | citizen | Fiziksel Android, afetzede 1'in 50 m yakınında |
 | `yetkili@afetnet.demo` | official (onaylı), `teamId: team_04` | Projeksiyondaki emülatör |
 
-**Hazırlık:** "Demo Verisini Sıfırla" (yalnızca debug derlemede, yetkili profilinde) çalıştırılır. Telefon hotspot'u kullanılır, emülatör konumları Antakya'ya sabitlenir, yedek ekran kaydı hazır tutulur.
+**Hazırlık:** "Demo Verisini Sıfırla" (yalnızca debug derlemede, yetkili profilinde) çalıştırılır. Telefon hotspot'u kullanılır, yedek ekran kaydı hazır tutulur. Tüm cihazlar Antakya'ya sabitlenir (ekip, depo ve toplanma noktaları orada; adım 3 ve 7 aynı bölgeyi ister):
+- **Emülatör (yetkili):** `adb emu geo fix 36.1620 36.2030` (boylam, enlem), sonra uygulamayı yeniden açın.
+- **Telefonlar:** Play Store'dan "Fake GPS Location" (Lexa) kurulur; Geliştirici seçenekleri → Sahte konum uygulamasını seç → Fake GPS; Ayarlar → Konum → Google Konum Doğruluğu, Wi-Fi ve Bluetooth taraması kapatılır. Afetzede 1: `36.2025, 36.1610`, afetzede 2: `36.2027, 36.1611` (~25 m). Ana Sayfa'da "Antakya, Hatay" görünmelidir. Demodan sonra Fake GPS durdurulur ve ayarlar geri açılır.
 
 **Akış:**
 1. Afetzede 1 PANİĞİM'e 2 sn basar → yetkilinin Canlı Akış haritasında mor pin ve bildirim belirir.
