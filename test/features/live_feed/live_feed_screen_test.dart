@@ -4,6 +4,7 @@ import 'package:afetnet/core/theme/app_theme.dart';
 import 'package:afetnet/features/live_feed/domain/incident_summary.dart';
 import 'package:afetnet/features/live_feed/presentation/live_feed_controller.dart';
 import 'package:afetnet/features/live_feed/presentation/live_feed_screen.dart';
+import 'package:afetnet/features/live_feed/presentation/sheets/panic_signal_sheet.dart';
 import 'package:afetnet/features/teams/domain/team.dart';
 import 'package:afetnet/features/teams/presentation/teams_controller.dart';
 import 'package:afetnet/features/teams/presentation/teams_screen.dart';
@@ -213,6 +214,125 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(repo.closed, ['inc1']);
+      },
+    );
+  });
+
+  group('G1 incelemesi', () {
+    Future<LiveFeedController> pumpFeed(
+      WidgetTester tester, {
+      required Size size,
+      Locale locale = const Locale('tr'),
+    }) async {
+      await tester.binding.setSurfaceSize(size);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final ctrl = LiveFeedController(
+        repository: repo,
+        teamsRepository: teamsRepo,
+      );
+      addTearDown(ctrl.dispose);
+      await tester.pumpWidget(
+        _wrap(
+          LiveFeedScreen(
+            controller: ctrl,
+            tileLayer: const SizedBox.shrink(),
+            officialUid: 'off1',
+          ),
+          locale: locale,
+        ),
+      );
+      return ctrl;
+    }
+
+    testWidgets(
+      'kart butonları sığmazsa metin kesilmez, alt alta dizilir (EN, 411 dp)',
+      (tester) async {
+        await pumpFeed(
+          tester,
+          size: const Size(411, 1400),
+          locale: const Locale('en'),
+        );
+        repo.incidents.add([testIncident()]);
+        await tester.pumpAndSettle();
+
+        final dispatch = find.text('Dispatch Team');
+        final detail = find.text('Detail');
+        expect(
+          tester.getTopLeft(dispatch).dy,
+          isNot(tester.getTopLeft(detail).dy),
+        );
+        final text = tester.widget<Text>(dispatch);
+        final painter = TextPainter(
+          text: TextSpan(text: 'Dispatch Team', style: text.style),
+          textDirection: TextDirection.ltr,
+        )..layout();
+        expect(
+          tester.getSize(dispatch).width,
+          greaterThanOrEqualTo(painter.width),
+        );
+        painter.dispose();
+      },
+    );
+
+    testWidgets('geniş ekranda kart butonları yan yana kalır', (tester) async {
+      await pumpFeed(tester, size: const Size(800, 1400));
+      repo.incidents.add([testIncident()]);
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.getTopLeft(find.text('Ekip Yönlendir')).dy,
+        tester.getTopLeft(find.text('Detay')).dy,
+      );
+    });
+
+    testWidgets('Detay bağlı çağrılardaki iptalleri ayrıca yazar', (
+      tester,
+    ) async {
+      repo.detail = const IncidentDetail(
+        fullName: 'Test Kişi',
+        phone: '+905321234567',
+        cancelledCalls: 1,
+      );
+      await pumpFeed(tester, size: const Size(400, 1400));
+      repo.incidents.add([testIncident(requestCount: 3)]);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Detay'));
+      await tester.pumpAndSettle();
+      expect(find.text('3 (1 iptal edildi)'), findsOneWidget);
+    });
+
+    testWidgets(
+      'internet yokken Ulaşıldı takılı kalmaz, bağlantı gelince gönderileceğini söyler',
+      (tester) async {
+        await tester.pumpWidget(
+          _wrap(
+            Builder(
+              builder: (context) => Scaffold(
+                body: Center(
+                  child: TextButton(
+                    onPressed: () => PanicSignalSheet.show(
+                      context,
+                      signal: testSignal(),
+                      onMarkReached: () async => false,
+                    ),
+                    child: const Text('aç'),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.tap(find.text('aç'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Ulaşıldı'));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Panik Sinyali'), findsNothing);
+        expect(
+          find.text('İnternet yok; işaret bağlantı gelince iletilecek.'),
+          findsOneWidget,
+        );
       },
     );
   });

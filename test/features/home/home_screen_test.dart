@@ -14,6 +14,7 @@ import 'package:afetnet/features/help_request/domain/assigned_team_info.dart';
 import 'package:afetnet/features/help_request/domain/help_request.dart';
 import 'package:afetnet/features/help_request/domain/help_request_draft.dart';
 import 'package:afetnet/features/help_request/domain/help_request_repository.dart';
+import 'package:afetnet/features/help_request/domain/incident_progress.dart';
 import 'package:afetnet/features/help_request/presentation/active_help_request_controller.dart';
 import 'package:afetnet/features/help_request/presentation/widgets/active_request_card.dart';
 import 'package:afetnet/features/home/presentation/home_screen.dart';
@@ -178,6 +179,10 @@ class _TestHelpRequestRepository implements HelpRequestRepository {
   @override
   Stream<HelpRequest?> watchActiveHelpRequest(String uid) =>
       Stream.value(activeRequest);
+
+  @override
+  Stream<IncidentProgress?> watchIncidentProgress(String incidentId) =>
+      const Stream.empty();
 
   @override
   Future<AssignedTeamInfo?> fetchTeamInfo(String teamId) async =>

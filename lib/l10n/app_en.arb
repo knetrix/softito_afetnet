@@ -376,6 +376,17 @@
   "incidentDetailMedical": "Medical Summary",
   "incidentDetailNoMedical": "No medical information shared.",
   "incidentDetailLinkedCalls": "Linked calls",
+  "incidentDetailLinkedCallsValue": "{count} ({cancelled} cancelled)",
+  "@incidentDetailLinkedCallsValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "cancelled": {
+        "type": "int"
+      }
+    }
+  },
   "incidentDetailTaskStatus": "Task status",
   "incidentDetailNeedType": "Need type",
   "incidentDetailLoadFailed": "Caller information could not be loaded.",
@@ -384,7 +395,7 @@
   "incidentCloseConfirmMessage": "The incident and its linked calls will be marked as resolved. This cannot be undone.",
   "incidentClosed": "Incident closed.",
   "incidentCloseFailed": "The incident could not be closed. A team may have been assigned or it may already be closed.",
-  "incidentCloseHasTeam": "A team is working on this incident. It closes when the team is marked Rescued.",
+  "incidentCloseHasTeam": "A team is working on this incident. It closes when the task is marked Resolved.",
   "dispatchNoAvailableTeams": "No team is available right now.",
   "dispatchSuccess": "{team} dispatched.",
   "@dispatchSuccess": {
@@ -412,6 +423,7 @@
   "panicPinReached": "Mark as Reached",
   "panicPinHandled": "Marked as reached",
   "panicPinReachedSuccess": "Signal marked as reached.",
+  "panicPinReachedQueued": "No connection; it will be sent when you are back online.",
   "panicNotificationTitle": "New panic signal",
   "panicNotificationBody": "A survivor reported being in danger. Check the purple pin on the Live Feed map.",
   "teamsSummaryTitle": "Field Teams",
@@ -466,7 +478,7 @@
       }
     }
   },
-  "updateSheetResolvedNote": "When marked Rescued, the incident closes and the team becomes available.",
+  "updateSheetResolvedNote": "When marked Resolved, the incident closes and the team becomes available.",
   "updateSuccess": "Task updated: {status}",
   "@updateSuccess": {
     "placeholders": {

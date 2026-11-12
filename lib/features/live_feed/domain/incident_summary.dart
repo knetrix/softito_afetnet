@@ -31,6 +31,7 @@ class IncidentDetail {
     this.conditions,
     this.birthYear,
     this.weightKg,
+    this.cancelledCalls = 0,
   });
 
   final String? fullName;
@@ -40,6 +41,10 @@ class IncidentDetail {
   final String? conditions;
   final int? birthYear;
   final int? weightKg;
+
+  /// Olaya bağlı çağrılardan afetzedenin iptal ettikleri. `requestCount`
+  /// birleşen tüm çağrıları sayar (Kural 2); Detay'da iptaller ayrıca yazılır.
+  final int cancelledCalls;
 
   bool get hasMedical =>
       [

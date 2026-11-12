@@ -1688,6 +1688,12 @@ abstract class AppLocalizations {
   /// **'Linked calls'**
   String get incidentDetailLinkedCalls;
 
+  /// No description provided for @incidentDetailLinkedCallsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} ({cancelled} cancelled)'**
+  String incidentDetailLinkedCallsValue(int count, int cancelled);
+
   /// No description provided for @incidentDetailTaskStatus.
   ///
   /// In en, this message translates to:
@@ -1739,7 +1745,7 @@ abstract class AppLocalizations {
   /// No description provided for @incidentCloseHasTeam.
   ///
   /// In en, this message translates to:
-  /// **'A team is working on this incident. It closes when the team is marked Rescued.'**
+  /// **'A team is working on this incident. It closes when the task is marked Resolved.'**
   String get incidentCloseHasTeam;
 
   /// No description provided for @dispatchNoAvailableTeams.
@@ -1819,6 +1825,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signal marked as reached.'**
   String get panicPinReachedSuccess;
+
+  /// No description provided for @panicPinReachedQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection; it will be sent when you are back online.'**
+  String get panicPinReachedQueued;
 
   /// No description provided for @panicNotificationTitle.
   ///
@@ -1961,7 +1973,7 @@ abstract class AppLocalizations {
   /// No description provided for @updateSheetResolvedNote.
   ///
   /// In en, this message translates to:
-  /// **'When marked Rescued, the incident closes and the team becomes available.'**
+  /// **'When marked Resolved, the incident closes and the team becomes available.'**
   String get updateSheetResolvedNote;
 
   /// No description provided for @updateSuccess.
