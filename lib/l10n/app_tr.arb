@@ -193,5 +193,7 @@
   "helpRequestDescriptionHint": "Durumunuzu ve aciliyetinizi kısaca açıklayın...",
   "helpRequestSubmit": "Gönder",
   "helpRequestSubmitted": "Yardım çağrınız alındı.",
-  "helpRequestMinPeople": "Kişi sayısı en az 1 olmalıdır."
+  "helpRequestMinPeople": "Kişi sayısı en az 1 olmalıdır.",
+  "helpRequestQueuedOffline": "İnternet bağlantısı kurulamadı. Çağrınız kuyruğa alındı ve bağlantı sağlandığında merkeze iletilecektir.",
+  "helpRequestStatusPendingOffline": "Gönderilmeyi Bekliyor"
 }

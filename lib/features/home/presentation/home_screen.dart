@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/services/location_service.dart';
+import '../../../core/services/offline_queue_service.dart';
 import '../../../core/theme/app_status_colors.dart';
 import '../../../core/utils/sms_uri.dart';
 import '../../../core/widgets/app_dialog.dart';
@@ -14,6 +15,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../../help_request/presentation/sheets/help_request_sheet.dart';
 import '../../profile/domain/profile_repository.dart';
+import '../../profile/domain/user_contact_profile.dart';
 import '../../safety_signal/domain/safety_signal.dart';
 import '../../safety_signal/domain/safety_signal_repository.dart';
 import '../../safety_signal/presentation/safety_signal_controller.dart';
@@ -278,8 +280,57 @@ class _HomeViewState extends State<_HomeView> {
     );
   }
 
-  Future<void> _openHelpRequestSheet() {
-    return showHelpRequestSheet(context);
+  Future<void> _openHelpRequestSheet() async {
+    OfflineQueueService? offlineQueue;
+    try {
+      offlineQueue = context.read<OfflineQueueService>();
+    } catch (_) {}
+
+    await showHelpRequestSheet(
+      context,
+      onSubmit: offlineQueue == null
+          ? null
+          : (draft) async {
+              final authController = context.read<AuthController>();
+              final user = authController.currentUser;
+              if (user == null) return false;
+
+              final locationService = context.read<LocationService>();
+              final profileRepo = context.read<ProfileRepository>();
+
+              var coords = locationService.currentPosition;
+              if (coords == null) {
+                final snap = await locationService.refresh();
+                coords = snap?.coordinates;
+              }
+              if (coords == null) {
+                if (!mounted) return false;
+                final l10n = AppLocalizations.of(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      l10n?.panicLocationFailedTitle ?? 'Konum Alınamadı',
+                    ),
+                  ),
+                );
+                return false;
+              }
+
+              UserContactProfile? profile;
+              try {
+                profile = await profileRepo.getProfile(user.uid);
+              } catch (_) {}
+
+              final fullDraft = draft.copyWith(
+                createdBy: user.uid,
+                fullName: user.fullName,
+                phone: profile?.phone ?? '',
+                location: coords,
+              );
+
+              return offlineQueue!.submitOrQueue(fullDraft);
+            },
+    );
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/help_type.dart';
+import '../../../../core/services/offline_queue_service.dart';
 import '../../../../core/theme/app_status_colors.dart';
 import '../../../../core/utils/priority_policy.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
@@ -8,6 +9,8 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/help_request_draft.dart';
+
+typedef HelpRequestSubmitCallback = Future<dynamic> Function(HelpRequestDraft draft);
 
 /// Afetzede Yardım Çağrısı Formu Sheet'i (PROJECT_NEW.md §3.2, A1, Kural 1).
 ///
@@ -19,7 +22,7 @@ Future<HelpRequestDraft?> showHelpRequestSheet(
   int initialPeopleCount = 1,
   String? initialAddressText,
   String? initialDescription,
-  Future<bool> Function(HelpRequestDraft draft)? onSubmit,
+  HelpRequestSubmitCallback? onSubmit,
 }) {
   final l10n = AppLocalizations.of(context);
   return AppBottomSheet.show<HelpRequestDraft>(
@@ -50,7 +53,7 @@ class HelpRequestForm extends StatefulWidget {
   final int initialPeopleCount;
   final String? initialAddressText;
   final String? initialDescription;
-  final Future<bool> Function(HelpRequestDraft draft)? onSubmit;
+  final HelpRequestSubmitCallback? onSubmit;
 
   @override
   State<HelpRequestForm> createState() => _HelpRequestFormState();
@@ -110,7 +113,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
 
     if (widget.onSubmit != null) {
       setState(() => _isSubmitting = true);
-      final ok = await widget.onSubmit!(draft);
+      final result = await widget.onSubmit!(draft);
       if (!mounted) return;
       setState(() => _isSubmitting = false);
 
@@ -118,12 +121,23 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
       final status = Theme.of(context).extension<AppStatusColors>()!;
       final messenger = ScaffoldMessenger.of(context);
 
-      if (ok) {
+      if (result == SubmitResult.sent || result == true) {
         Navigator.of(context).pop(draft);
         messenger.showSnackBar(
           SnackBar(
             content: Text(l10n?.helpRequestSubmitted ?? 'Yardım çağrınız alındı.'),
             backgroundColor: status.normal,
+          ),
+        );
+      } else if (result == SubmitResult.queued) {
+        Navigator.of(context).pop(draft);
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n?.helpRequestQueuedOffline ??
+                  'İnternet bağlantısı kurulamadı. Çağrınız kuyruğa alındı ve bağlantı sağlandığında merkeze iletilecektir.',
+            ),
+            backgroundColor: status.urgent,
           ),
         );
       } else {
