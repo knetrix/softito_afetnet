@@ -14,7 +14,7 @@ abstract final class PanicSignalSheet {
   static Future<void> show(
     BuildContext context, {
     required SafetySignal signal,
-    required Future<void> Function() onMarkReached,
+    required Future<bool> Function() onMarkReached,
     LatLng? userLocation,
   }) {
     final l10n = AppLocalizations.of(context)!;
@@ -26,9 +26,15 @@ abstract final class PanicSignalSheet {
         signal: signal,
         userLocation: userLocation,
         onMarkReached: () async {
-          await onMarkReached();
+          final delivered = await onMarkReached();
           messenger.showSnackBar(
-            SnackBar(content: Text(l10n.panicPinReachedSuccess)),
+            SnackBar(
+              content: Text(
+                delivered
+                    ? l10n.panicPinReachedSuccess
+                    : l10n.panicPinReachedQueued,
+              ),
+            ),
           );
         },
       ),

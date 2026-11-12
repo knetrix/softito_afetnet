@@ -888,6 +888,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get incidentDetailLinkedCalls => 'Linked calls';
 
   @override
+  String incidentDetailLinkedCallsValue(int count, int cancelled) {
+    return '$count ($cancelled cancelled)';
+  }
+
+  @override
   String get incidentDetailTaskStatus => 'Task status';
 
   @override
@@ -916,7 +921,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get incidentCloseHasTeam =>
-      'A team is working on this incident. It closes when the team is marked Rescued.';
+      'A team is working on this incident. It closes when the task is marked Resolved.';
 
   @override
   String get dispatchNoAvailableTeams => 'No team is available right now.';
@@ -968,6 +973,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get panicPinReachedSuccess => 'Signal marked as reached.';
+
+  @override
+  String get panicPinReachedQueued =>
+      'No connection; it will be sent when you are back online.';
 
   @override
   String get panicNotificationTitle => 'New panic signal';
@@ -1049,7 +1058,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateSheetResolvedNote =>
-      'When marked Rescued, the incident closes and the team becomes available.';
+      'When marked Resolved, the incident closes and the team becomes available.';
 
   @override
   String updateSuccess(String status) {

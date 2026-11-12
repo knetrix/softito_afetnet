@@ -874,6 +874,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get incidentDetailLinkedCalls => 'Bağlı çağrı';
 
   @override
+  String incidentDetailLinkedCallsValue(int count, int cancelled) {
+    return '$count ($cancelled iptal edildi)';
+  }
+
+  @override
   String get incidentDetailTaskStatus => 'Görev durumu';
 
   @override
@@ -947,6 +952,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get panicPinReachedSuccess => 'Sinyal ulaşıldı olarak işaretlendi.';
+
+  @override
+  String get panicPinReachedQueued =>
+      'İnternet yok; işaret bağlantı gelince iletilecek.';
 
   @override
   String get panicNotificationTitle => 'Yeni panik sinyali';
