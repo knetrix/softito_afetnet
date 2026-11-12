@@ -12,8 +12,8 @@ abstract final class AppConfig {
   static const osmAttribution = '© OpenStreetMap contributors';
 
   // Yasal metinler (Firebase Hosting, `hosting/legal/`; içeriği G6 yazar).
-  static const _legalBaseUrl = 'https://afetnet-softito.web.app/legal';
-  static const privacyPolicyUrl = '$_legalBaseUrl/privacy.html';
+  static const _legalBaseUrl ='https://afetnet-softito.web.app/legal';
+  static const privacyPolicyUrl = '$_legalBaseUrl/privacy-tr.html';
   static const kvkkNoticeUrl = '$_legalBaseUrl/kvkk.html';
   static const termsUrl = '$_legalBaseUrl/terms.html';
   static const accountDeletionUrl = '$_legalBaseUrl/delete-account.html';

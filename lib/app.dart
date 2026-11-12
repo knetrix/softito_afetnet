@@ -4,27 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'core/constants/user_role.dart';
 import 'core/router/app_router.dart';
 import 'core/services/connectivity_service.dart';
 import 'core/services/location_service.dart';
 import 'core/services/notification_service.dart';
 import 'core/services/offline_queue_service.dart';
 import 'core/theme/app_theme.dart';
+
 import 'features/assembly_points/data/firestore_assembly_points_repository.dart';
 import 'features/assembly_points/domain/assembly_points_repository.dart';
+
 import 'features/auth/data/firebase_auth_repository.dart';
 import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/auth_controller.dart';
+
+import 'features/broadcast/data/broadcast_notification_listener.dart';
+
 import 'features/help_request/data/firestore_help_request_repository.dart';
 import 'features/help_request/domain/help_request_repository.dart';
+
 import 'features/live_feed/data/firestore_live_feed_repository.dart';
 import 'features/live_feed/domain/live_feed_repository.dart';
+
 import 'features/profile/data/firestore_profile_repository.dart';
 import 'features/profile/domain/profile_repository.dart';
+
 import 'features/safety_signal/data/firestore_safety_signal_repository.dart';
 import 'features/safety_signal/domain/safety_signal_repository.dart';
+
 import 'features/teams/data/firestore_teams_repository.dart';
 import 'features/teams/domain/teams_repository.dart';
+
 import 'l10n/app_localizations.dart';
 
 class AfetNetApp extends StatefulWidget {
@@ -36,55 +47,112 @@ class AfetNetApp extends StatefulWidget {
 
 class _AfetNetAppState extends State<AfetNetApp> {
   final AuthRepository _authRepository = FirebaseAuthRepository();
+
   late final AuthController _auth = AuthController(_authRepository);
+
   late final GoRouter _router = createAppRouter(_auth);
 
   final LocationService _locationService = DeviceLocationService();
+
   final ConnectivityService _connectivityService = DeviceConnectivityService();
+
   final NotificationService _notificationService = DeviceNotificationService();
+
   final SafetySignalRepository _safetySignalRepository =
       FirestoreSafetySignalRepository();
+
+  // G4 - Yardım çağrıları ve çevrimdışı kuyruk
   final HelpRequestRepository _helpRequestRepository =
       FirestoreHelpRequestRepository();
+
   final AssemblyPointsRepository _assemblyPointsRepository =
       FirestoreAssemblyPointsRepository();
+
   late final OfflineQueueService _offlineQueueService = OfflineQueueService(
     repository: _helpRequestRepository,
     connectivityService: _connectivityService,
   );
 
+  // G6 - Bölgesel tahliye bildirimleri
+  late final BroadcastNotificationListener _broadcastListener =
+      BroadcastNotificationListener(
+        locationService: _locationService,
+        notificationService: _notificationService,
+      );
+
+  String? _listeningCitizenUid;
+
   @override
   void initState() {
     super.initState();
+
     _auth.addListener(_onAuthChanged);
+
     unawaited(_locationService.loadCached());
     unawaited(_connectivityService.initialize());
     unawaited(_notificationService.initialize());
+
+    // G4 - Çevrimdışı işlemleri başlat.
     unawaited(_offlineQueueService.initialize());
   }
 
   void _onAuthChanged() {
-    if (_auth.isInitializing) return;
+    if (_auth.isInitializing) {
+      return;
+    }
+
     final user = _auth.currentUser;
+
+    // G3 - FCM topic aboneliği
     final optIn =
         user != null && !user.isPendingApproval && user.notificationsOptIn;
+
     unawaited(_notificationService.syncTopicSubscription(optIn: optIn));
-    // Onaylı yetkili panik bildirimini (Kural 8) duyuru tercihinden bağımsız
-    // almalı; yoksa Android 13+ izni hiç istenmez ve bildirim sessizce düşmez.
+
+    // G3 - Onaylı yetkililerin panik bildirimleri için izin
     if (user != null && user.isOfficial && !user.isPendingApproval) {
       unawaited(_notificationService.requestPermission());
     }
+
+    // G6 - Tahliye anonslarını yalnızca uygun afetzedeler dinler
+    final shouldListen =
+        user != null &&
+        user.role == UserRole.citizen &&
+        !user.isPendingApproval &&
+        user.notificationsOptIn;
+
+    if (!shouldListen) {
+      _listeningCitizenUid = null;
+      _broadcastListener.stop();
+      return;
+    }
+
+    final uid = user.uid;
+
+    // Aynı kullanıcı için dinleyiciyi tekrar başlatma.
+    if (_listeningCitizenUid == uid) {
+      return;
+    }
+
+    _listeningCitizenUid = uid;
+
+    unawaited(_broadcastListener.start(uid));
   }
 
   @override
   void dispose() {
     _auth.removeListener(_onAuthChanged);
+
+    _broadcastListener.dispose();
+    _offlineQueueService.dispose();
+
     _locationService.dispose();
     _connectivityService.dispose();
     _notificationService.dispose();
-    _offlineQueueService.dispose();
+
     _router.dispose();
     _auth.dispose();
+
     super.dispose();
   }
 
@@ -93,36 +161,57 @@ class _AfetNetAppState extends State<AfetNetApp> {
     return MultiProvider(
       providers: [
         Provider<AuthRepository>.value(value: _authRepository),
+
         ChangeNotifierProvider<AuthController>.value(value: _auth),
-        Provider<ProfileRepository>(create: (_) => FirestoreProfileRepository()),
+
+        Provider<ProfileRepository>(
+          create: (_) => FirestoreProfileRepository(),
+        ),
+
         ChangeNotifierProvider<LocationService>.value(value: _locationService),
+
         ChangeNotifierProvider<ConnectivityService>.value(
           value: _connectivityService,
         ),
+
         Provider<NotificationService>.value(value: _notificationService),
+
         Provider<SafetySignalRepository>.value(value: _safetySignalRepository),
+
         Provider<HelpRequestRepository>.value(value: _helpRequestRepository),
+
         Provider<AssemblyPointsRepository>.value(
           value: _assemblyPointsRepository,
         ),
+
         Provider<LiveFeedRepository>(
           create: (_) => FirestoreLiveFeedRepository(),
         ),
+
         Provider<TeamsRepository>(create: (_) => FirestoreTeamsRepository()),
+
         ChangeNotifierProvider<OfflineQueueService>.value(
           value: _offlineQueueService,
         ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        onGenerateTitle: (context) => AppLocalizations.of(context)?.appTitle ?? 'AfetNet',
+
+        onGenerateTitle: (context) =>
+            AppLocalizations.of(context)?.appTitle ?? 'AfetNet',
+
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
-        themeMode: ThemeMode.system, // T14: Sistem temasını izler
+        themeMode: ThemeMode.system,
+
         localizationsDelegates: AppLocalizations.localizationsDelegates,
+
         supportedLocales: AppLocalizations.supportedLocales,
-        localeResolutionCallback: (locale, _) =>
-            locale?.languageCode == 'tr' ? const Locale('tr') : const Locale('en'),
+
+        localeResolutionCallback: (locale, _) => locale?.languageCode == 'tr'
+            ? const Locale('tr')
+            : const Locale('en'),
+
         routerConfig: _router,
       ),
     );

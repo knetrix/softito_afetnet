@@ -487,5 +487,82 @@
       }
     }
   },
-  "updateNoActiveTask": "No active task found for this team."
+  "updateNoActiveTask": "No active task found for this team.",
+
+
+"logisticsWarehouseLoadFailed": "Failed to load warehouses.",
+"logisticsNoWarehouses": "No warehouses found.",
+"logisticsSeedError": "Could not create demo warehouses: {error}",
+"@logisticsSeedError": {
+  "placeholders": {
+    "error": {
+      "type": "String"
+    }
+  }
+},
+"logisticsRetry": "Retry",
+"logisticsInventoryLoadFailed": "Failed to load inventory.",
+"logisticsNoFilteredItems": "No stock items match this filter.",
+"logisticsTitle": "LOGISTICS",
+"logisticsMissingLocation": "Warehouse location unavailable",
+"logisticsCriticalTitle": "CRITICAL STOCK WARNING",
+"logisticsEmergencySupply": "Request Emergency Supplies",
+"logisticsSupplyNotActive": "Emergency supply requests are not available yet.",
+"logisticsInventoryTitle": "WAREHOUSE INVENTORY",
+"logisticsItemCount": "{count} items",
+"@logisticsItemCount": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"logisticsAll": "All",
+"logisticsCritical": "Critical",
+"logisticsMedium": "Medium",
+"logisticsSufficient": "Sufficient",
+"logisticsStockLevel": "Stock Level",
+"logisticsLoginRequired": "Please sign in to manage stock.",
+"logisticsCriticalNotification": "{itemName} has reached a critical stock level.",
+"@logisticsCriticalNotification": {
+  "placeholders": {
+    "itemName": {
+      "type": "String"
+    }
+  }
+},
+
+"broadcastButton": "Evacuation Alert",
+"broadcastTitle": "Create Evacuation Alert",
+"broadcastDescription": "Enter the center coordinates of the target area. Your current location will not be used automatically.",
+"broadcastTitleLabel": "Alert title",
+"broadcastMessageLabel": "Evacuation message",
+"broadcastLatitude": "Latitude",
+"broadcastLongitude": "Longitude",
+"broadcastRadius": "Target radius: {km} km",
+"@broadcastRadius": {
+  "placeholders": {
+    "km": {
+      "type": "String"
+    }
+  }
+},
+"broadcastInfo": "The alert will be saved. Location-based notification checks apply to survivors with the app open.",
+"broadcastRequired": "This field is required.",
+"broadcastInvalidLatitude": "Enter a valid latitude (-90 to 90).",
+"broadcastInvalidLongitude": "Enter a valid longitude (-180 to 180).",
+"broadcastLoginRequired": "Please sign in as an official.",
+"broadcastSaving": "Saving...",
+"broadcastSave": "Save Alert",
+"broadcastSaved": "Evacuation alert saved.",
+"broadcastSaveFailed": "Could not save alert: {error}",
+"@broadcastSaveFailed": {
+  "placeholders": {
+    "error": {
+      "type": "String"
+    }
+  }
+}
+
+
 }

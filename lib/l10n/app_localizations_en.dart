@@ -1067,4 +1067,129 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateNoActiveTask => 'No active task found for this team.';
+
+  @override
+  String get logisticsWarehouseLoadFailed => 'Failed to load warehouses.';
+
+  @override
+  String get logisticsNoWarehouses => 'No warehouses found.';
+
+  @override
+  String logisticsSeedError(String error) {
+    return 'Could not create demo warehouses: $error';
+  }
+
+  @override
+  String get logisticsRetry => 'Retry';
+
+  @override
+  String get logisticsInventoryLoadFailed => 'Failed to load inventory.';
+
+  @override
+  String get logisticsNoFilteredItems => 'No stock items match this filter.';
+
+  @override
+  String get logisticsTitle => 'LOGISTICS';
+
+  @override
+  String get logisticsMissingLocation => 'Warehouse location unavailable';
+
+  @override
+  String get logisticsCriticalTitle => 'CRITICAL STOCK WARNING';
+
+  @override
+  String get logisticsEmergencySupply => 'Request Emergency Supplies';
+
+  @override
+  String get logisticsSupplyNotActive =>
+      'Emergency supply requests are not available yet.';
+
+  @override
+  String get logisticsInventoryTitle => 'WAREHOUSE INVENTORY';
+
+  @override
+  String logisticsItemCount(int count) {
+    return '$count items';
+  }
+
+  @override
+  String get logisticsAll => 'All';
+
+  @override
+  String get logisticsCritical => 'Critical';
+
+  @override
+  String get logisticsMedium => 'Medium';
+
+  @override
+  String get logisticsSufficient => 'Sufficient';
+
+  @override
+  String get logisticsStockLevel => 'Stock Level';
+
+  @override
+  String get logisticsLoginRequired => 'Please sign in to manage stock.';
+
+  @override
+  String logisticsCriticalNotification(String itemName) {
+    return '$itemName has reached a critical stock level.';
+  }
+
+  @override
+  String get broadcastButton => 'Evacuation Alert';
+
+  @override
+  String get broadcastTitle => 'Create Evacuation Alert';
+
+  @override
+  String get broadcastDescription =>
+      'Enter the center coordinates of the target area. Your current location will not be used automatically.';
+
+  @override
+  String get broadcastTitleLabel => 'Alert title';
+
+  @override
+  String get broadcastMessageLabel => 'Evacuation message';
+
+  @override
+  String get broadcastLatitude => 'Latitude';
+
+  @override
+  String get broadcastLongitude => 'Longitude';
+
+  @override
+  String broadcastRadius(String km) {
+    return 'Target radius: $km km';
+  }
+
+  @override
+  String get broadcastInfo =>
+      'The alert will be saved. Location-based notification checks apply to survivors with the app open.';
+
+  @override
+  String get broadcastRequired => 'This field is required.';
+
+  @override
+  String get broadcastInvalidLatitude => 'Enter a valid latitude (-90 to 90).';
+
+  @override
+  String get broadcastInvalidLongitude =>
+      'Enter a valid longitude (-180 to 180).';
+
+  @override
+  String get broadcastLoginRequired => 'Please sign in as an official.';
+
+  @override
+  String get broadcastSaving => 'Saving...';
+
+  @override
+  String get broadcastSave => 'Save Alert';
+
+  @override
+  String get broadcastSaved => 'Evacuation alert saved.';
+
+  @override
+  String broadcastSaveFailed(String error) {
+    return 'Could not save alert: $error';
+  }
 }
