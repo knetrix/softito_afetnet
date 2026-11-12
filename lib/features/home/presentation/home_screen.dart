@@ -12,6 +12,7 @@ import '../../../core/widgets/state_view.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
+import '../../help_request/presentation/sheets/help_request_sheet.dart';
 import '../../profile/domain/profile_repository.dart';
 import '../../safety_signal/domain/safety_signal.dart';
 import '../../safety_signal/domain/safety_signal_repository.dart';
@@ -277,13 +278,8 @@ class _HomeViewState extends State<_HomeView> {
     );
   }
 
-  Future<void> _showHelpRequestPendingDialog() {
-    final l10n = AppLocalizations.of(context)!;
-    return AppDialog.info(
-      context,
-      title: l10n.homeHelpRequestPendingTitle,
-      message: l10n.homeHelpRequestPendingMessage,
-    );
+  Future<void> _openHelpRequestSheet() {
+    return showHelpRequestSheet(context);
   }
 
   @override
@@ -382,7 +378,7 @@ class _HomeViewState extends State<_HomeView> {
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed:
-                      widget.onAddHelpRequest ?? _showHelpRequestPendingDialog,
+                      widget.onAddHelpRequest ?? _openHelpRequestSheet,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colors.primary,
                     foregroundColor: colors.onPrimary,

@@ -575,4 +575,60 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notificationChannelDescription =>
       'Emergency, evacuation and critical stock notifications';
+
+  @override
+  String get helpTypeDebris => 'Trapped';
+
+  @override
+  String get helpTypeMedical => 'Medical';
+
+  @override
+  String get helpTypeShelter => 'Shelter';
+
+  @override
+  String get helpTypeHeating => 'Heating';
+
+  @override
+  String get helpTypeBabyFood => 'Baby Food';
+
+  @override
+  String get helpTypeWater => 'Water';
+
+  @override
+  String get helpTypeOther => 'Other';
+
+  @override
+  String get helpRequestSheetTitle => 'Add Help Request';
+
+  @override
+  String get helpRequestTypeSection => 'Need Type';
+
+  @override
+  String get helpRequestPriorityLabel => 'Priority Level';
+
+  @override
+  String get helpRequestPeopleCount => 'Number of People Affected';
+
+  @override
+  String get helpRequestAddress => 'Address / Description';
+
+  @override
+  String get helpRequestAddressHint =>
+      'Building no, floor, apt, or landmark description...';
+
+  @override
+  String get helpRequestDescription => 'Situation Description';
+
+  @override
+  String get helpRequestDescriptionHint =>
+      'Briefly describe your situation and urgency...';
+
+  @override
+  String get helpRequestSubmit => 'Send Help Request';
+
+  @override
+  String get helpRequestSubmitted => 'Help request received.';
+
+  @override
+  String get helpRequestMinPeople => 'Number of people must be at least 1.';
 }

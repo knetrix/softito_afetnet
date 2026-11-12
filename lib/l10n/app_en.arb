@@ -185,5 +185,23 @@
   "notificationChannelDescription": "Emergency, evacuation and critical stock notifications",
   "@notificationChannelName": {
     "description": "Android notification channel name shown in system settings"
-  }
+  },
+  "helpTypeDebris": "Trapped",
+  "helpTypeMedical": "Medical",
+  "helpTypeShelter": "Shelter",
+  "helpTypeHeating": "Heating",
+  "helpTypeBabyFood": "Baby Food",
+  "helpTypeWater": "Water",
+  "helpTypeOther": "Other",
+  "helpRequestSheetTitle": "Add Help Request",
+  "helpRequestTypeSection": "Need Type",
+  "helpRequestPriorityLabel": "Priority Level",
+  "helpRequestPeopleCount": "Number of People Affected",
+  "helpRequestAddress": "Address / Description",
+  "helpRequestAddressHint": "Building no, floor, apt, or landmark description...",
+  "helpRequestDescription": "Situation Description",
+  "helpRequestDescriptionHint": "Briefly describe your situation and urgency...",
+  "helpRequestSubmit": "Send Help Request",
+  "helpRequestSubmitted": "Help request received.",
+  "helpRequestMinPeople": "Number of people must be at least 1."
 }
