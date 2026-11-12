@@ -221,5 +221,31 @@ void main() {
       expect(repo.submitted.length, 1);
       expect(repo.submitted.first.id, 'auto_flush');
     });
+
+    test('ağ arayüzü değişmeden internet geri gelince periyodik deneme kuyruğu gönderir (R8)',
+        () async {
+      final retrying = OfflineQueueService(
+        repository: repo,
+        connectivityService: connectivity,
+        box: box,
+        timeout: const Duration(milliseconds: 50),
+        retryInterval: const Duration(milliseconds: 100),
+      );
+      addTearDown(retrying.dispose);
+      await retrying.initialize();
+
+      // Wi-Fi bağlı ama internet yok: sunucu ulaşılamaz, çağrı kuyruğa düşer.
+      repo.shouldBeUnavailable = true;
+      expect(await retrying.submitOrQueue(makeDraft(id: 'wifi_no_net')),
+          SubmitResult.queued);
+      expect(retrying.queueLength, 1);
+
+      // İnternet geri geldi; ağ arayüzü olayı yok (setNetwork çağrılmıyor).
+      repo.shouldBeUnavailable = false;
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+
+      expect(retrying.queueLength, 0);
+      expect(repo.submitted.map((d) => d.id), contains('wifi_no_net'));
+    });
   });
 }
