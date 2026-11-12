@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/broadcast/presentation/evacuation_fab.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Yetkili alt menüsü: Canlı Akış / Ekipler / Lojistik / Profil (§3.1, T10).
@@ -15,10 +14,6 @@ class OfficialShell extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: shell,
-      // Tahliye Anonsu Y1 ve Y2'de (§3.1).
-      floatingActionButton: shell.currentIndex <= 1
-          ? const EvacuationFab()
-          : null,
       bottomNavigationBar: NavigationBar(
         selectedIndex: shell.currentIndex,
         onDestinationSelected: (i) =>
