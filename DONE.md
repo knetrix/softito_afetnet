@@ -10,7 +10,7 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 | G2 — Görünüm ve Profil | Sümeyye | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#11](https://github.com/knetrix/softito_afetnet/pull/11), `fix/mustafa-g2-review` |
 | G3 — Panik, Ana Sayfa ve Düdük | Furkan | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | [#14](https://github.com/knetrix/softito_afetnet/pull/14), `fix/mustafa-g3-review` |
 | G4 — Yardım Çağrısı ve Toplanma | Tuba | ✅ Tamamlandı (G1 incelemesiyle düzeltildi) | `development`'a doğrudan commit, `feature/tuba-g4`, [#18](https://github.com/knetrix/softito_afetnet/pull/18), `fix/mustafa-g4-assembly` |
-| G5 — Canlı Akış ve Ekipler | Esra | ⏳ Sıradaki | — |
+| G5 — Canlı Akış ve Ekipler | Esra | 🟡 Kodlandı, testli; gerçek Firebase'e karşı emülatör denemesi yapılmadı | `feature/esra-live-feed-teams` |
 | G6 — Lojistik, Anons ve Teslime Hazırlık | Meryem | ⏳ | — |
 | Son Tur — 13 Kasım sabah | Herkes | ⏳ | — |
 
@@ -109,14 +109,22 @@ Adımlar `GOREV_DAGILIMI.md`'deki sırayla ilerler. Aşamasını bitiren kişi k
 
 ## G5 — Esra · Canlı Akış ve Ekipler
 
-| # | Adım | Durum |
-|---|---|---|
-| 1 | Canlı Akış (Y1): harita, olay kartları, filtreler | ⏳ |
-| 2 | Y1 sheet'leri: Detay, Ekip Yönlendir, panik pini | ⏳ |
-| 3 | Ekipler (Y2): özet, filtreler, mini harita, Görev Ata / Güncelle | ⏳ |
-| 4 | Görev akışı (`assignments`), tek batch | ⏳ |
+| # | Adım | Durum | Not |
+|---|---|---|---|
+| 1 | Canlı Akış (Y1): harita, olay kartları, filtreler | ✅ | Açık olaylar `isOpen` + `priority` + `createdAt` sırasıyla canlı (§5.4 index'i). Haritada öncelik renkli olay pinleri ve mor panik pinleri (ulaşılmış pin soluk). Filtreler (Tümü / Kritik / Acil / Normal / türler) istemcide. Kartta ad (`primaryRequestId` çağrısının `private/contact.fullName`), kişi sayısı, mesafe, adres, açıklama, süre, öncelik; butonlar yalnızca Detay ve Ekip Yönlendir (T9). Ekibi olan kartta ekip adı ve görev durumu |
+| 2 | Y1 sheet'leri: Detay, Ekip Yönlendir, panik pini | ✅ | Detay: telefon + Ara, tıbbi özet (`users/{createdBy}/private/contact.medical`), bağlı çağrı, görev durumu; Olayı Kapat yalnızca ekip yokken (Kural 7). Ekip Yönlendir: boştaki ekipler olaya yakından uzağa. Panik pini: konum, zaman, Ulaşıldı (`handledBy`, `handledAt`). Ekran açıkken yeni panikte yetkiliye yerel bildirim (Kural 8) |
+| 3 | Ekipler (Y2): özet, filtreler, mini harita, Görev Ata / Güncelle | ✅ | Tim ve personel sayısı, tür filtreleri, mini harita (boşta yeşil, görevde kırmızı). Görev Ata: ekip bekleyen açık olaylar (öncelik sırası). Görev Güncelle: yalnızca sonraki adım. Telsiz butonu yok (T2) |
+| 4 | Görev akışı (`assignments`), tek batch | ✅ | `assignments`, `incidents`, bağlı açık `help_requests` ve `teams` tek atomik commit. Batch yerine Transaction: yazmadan önce olay, ekip ve görevin güncel durumu okunur; böylece iki yetkili aynı olaya ekip atayamaz, adım iki kez ilerletilemez. Geri adım yok, olayda tek aktif görev; `resolved`'da olay kapanır, ekip `available` olur. İptal edilmiş çağrıya dokunulmaz (Kural 7) |
 
-**Çıktı:** Yetkili çağrıyı görüp ekip atayabiliyor; afetzedenin kartı canlı güncelleniyor. ⏳
+**Çıktı:** Yetkili çağrıyı görüp ekip atayabiliyor; afetzedenin kartı canlı güncelleniyor. 🟡 Birim ve widget testleriyle doğrulandı; gerçek Firebase'e karşı emülatörde uçtan uca denenmedi (zaman yetmedi). G1 incelemesinde veya demo provasında denenmeli.
+
+**Kontroller:** `flutter analyze` temiz · 136 test geçiyor (25'i G5: görev akışı ileri/geri, Firestore dönüşümleri, Kural 7 süzgeci, filtre, panik bildirimi, ekip sıralaması, Y1/Y2 ekranları ve sheet'leri, TR/EN) · Yeni sorgu için index gerekmedi (`assignments`: tek alanlı `status in [...]`).
+
+**G6'ya devir (Meryem):**
+- **Demo verisi (`teams`):** Alanlar §5.3'teki gibi; `status: available` ile başlar, `currentTask` yazılmaz. Ekip kartları, mini harita ve Ekip Yönlendir sıralaması için `location` (geopoint) gerekli. `teams/{id}.currentTask` metin değil, olayın id'sidir; ekranda tür ve durum cihaz dilinde gösterilir.
+- **Kurallar (§5.5):** Görev atama ve ilerletme Transaction içinde `incidents/{id}`, `teams/{id}`, `assignments/{id}` ve bağlı `help_requests/{id}` belgelerini okur, sonra yazar. Yetkili `help_requests`'e yalnızca `status`, `assignedTeamId`, `updatedAt`, `resolvedAt`; `incidents`'a `status`, `isOpen`, `assignedTeamId`, `updatedAt`, `resolvedAt` yazar. `teams` güncellemesinde `currentTask` silinebilir (`FieldValue.delete()`). Olayı Kapat da Transaction'dır. Ulaşıldı yalnızca `handledBy` (= yetkilinin uid'si) ve `handledAt` yazar.
+- **Tahliye Anonsu butonu:** Y1 ve Y2'de eklenmedi (sheet G6'da). İki ekran da `CustomScrollView`; buton `Scaffold.floatingActionButton` olarak eklenebilir.
+- **Bilinen sınır:** Ekip atandıktan sonra aynı olaya birleşen yeni çağrı, görevin bir sonraki adımında güncellenir (durum ve `assignedTeamId`).
 
 ## G6 — Meryem · Lojistik, Anons ve Teslime Hazırlık
 
