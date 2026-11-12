@@ -779,4 +779,283 @@ class AppLocalizationsEn extends AppLocalizations {
   String assemblyOccupancyShort(int percent) {
     return '$percent%';
   }
+
+  @override
+  String get liveFeedTitle => 'LIVE CALL FEED';
+
+  @override
+  String liveFeedWaitingCount(int count) {
+    return '$count OPEN';
+  }
+
+  @override
+  String liveFeedFilterAll(int count) {
+    return 'All ($count)';
+  }
+
+  @override
+  String get liveFeedFilterCritical => 'Critical';
+
+  @override
+  String get liveFeedFilterUrgent => 'Urgent';
+
+  @override
+  String get liveFeedFilterNormal => 'Normal';
+
+  @override
+  String get liveFeedEmpty => 'No open calls right now.';
+
+  @override
+  String get liveFeedEmptyFiltered => 'No calls match this filter.';
+
+  @override
+  String get liveFeedUnknownName => 'Name not provided';
+
+  @override
+  String liveFeedMergedCalls(int count) {
+    return '$count merged calls';
+  }
+
+  @override
+  String get liveFeedDispatch => 'Dispatch Team';
+
+  @override
+  String liveFeedAssignedTeam(String team) {
+    return 'Team: $team';
+  }
+
+  @override
+  String liveFeedPanicCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count panic signals',
+      one: '1 panic signal',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String distanceMeters(int meters) {
+    return '$meters m away';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km km away';
+  }
+
+  @override
+  String get timeJustNow => 'just now';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return '$count min ago';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return '$count h ago';
+  }
+
+  @override
+  String timeDaysAgo(int count) {
+    return '$count d ago';
+  }
+
+  @override
+  String get incidentDetailTitle => 'Call Detail';
+
+  @override
+  String get incidentDetailCaller => 'Caller';
+
+  @override
+  String get incidentDetailPhone => 'Phone';
+
+  @override
+  String get incidentDetailCall => 'Call';
+
+  @override
+  String get incidentDetailNoPhone => 'No phone number';
+
+  @override
+  String get incidentDetailMedical => 'Medical Summary';
+
+  @override
+  String get incidentDetailNoMedical => 'No medical information shared.';
+
+  @override
+  String get incidentDetailLinkedCalls => 'Linked calls';
+
+  @override
+  String get incidentDetailTaskStatus => 'Task status';
+
+  @override
+  String get incidentDetailNeedType => 'Need type';
+
+  @override
+  String get incidentDetailLoadFailed =>
+      'Caller information could not be loaded.';
+
+  @override
+  String get incidentCloseAction => 'Close Incident';
+
+  @override
+  String get incidentCloseConfirmTitle => 'Close Incident?';
+
+  @override
+  String get incidentCloseConfirmMessage =>
+      'The incident and its linked calls will be marked as resolved. This cannot be undone.';
+
+  @override
+  String get incidentClosed => 'Incident closed.';
+
+  @override
+  String get incidentCloseFailed =>
+      'The incident could not be closed. A team may have been assigned or it may already be closed.';
+
+  @override
+  String get incidentCloseHasTeam =>
+      'A team is working on this incident. It closes when the team is marked Rescued.';
+
+  @override
+  String get dispatchNoAvailableTeams => 'No team is available right now.';
+
+  @override
+  String dispatchSuccess(String team) {
+    return '$team dispatched.';
+  }
+
+  @override
+  String get assignErrorIncidentClosed => 'This incident is already closed.';
+
+  @override
+  String get assignErrorAlreadyAssigned =>
+      'A team is already assigned to this incident.';
+
+  @override
+  String get assignErrorTeamBusy => 'This team is no longer available.';
+
+  @override
+  String get assignErrorInvalidTransition =>
+      'The task was updated by someone else. Please check again.';
+
+  @override
+  String teamMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count people',
+      one: '1 person',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get panicPinTitle => 'Panic Signal';
+
+  @override
+  String get panicPinLocation => 'Location';
+
+  @override
+  String get panicPinTime => 'Signal time';
+
+  @override
+  String get panicPinReached => 'Mark as Reached';
+
+  @override
+  String get panicPinHandled => 'Marked as reached';
+
+  @override
+  String get panicPinReachedSuccess => 'Signal marked as reached.';
+
+  @override
+  String get panicNotificationTitle => 'New panic signal';
+
+  @override
+  String get panicNotificationBody =>
+      'A survivor reported being in danger. Check the purple pin on the Live Feed map.';
+
+  @override
+  String get teamsSummaryTitle => 'Field Teams';
+
+  @override
+  String get teamsSummarySubtitle => 'Operational tracking and coordination';
+
+  @override
+  String teamsSummaryCount(int teams, int members) {
+    return '$teams Teams · $members Personnel';
+  }
+
+  @override
+  String get teamTypeSearchRescue => 'Search & Rescue';
+
+  @override
+  String get teamTypeMedical => 'Medical';
+
+  @override
+  String get teamTypeFire => 'Fire';
+
+  @override
+  String get teamTypeLogistics => 'Logistics';
+
+  @override
+  String get teamStatusOnDuty => 'ON DUTY';
+
+  @override
+  String get teamStatusAvailable => 'AVAILABLE';
+
+  @override
+  String teamLeaderWithName(String name) {
+    return '$name (Team Leader)';
+  }
+
+  @override
+  String get teamCurrentTask => 'CURRENT TASK';
+
+  @override
+  String get teamOperationStatus => 'OPERATION STATUS';
+
+  @override
+  String get teamIdleDescription => 'Standing by, ready for a new task.';
+
+  @override
+  String get teamTaskNotFound => 'Task record not found.';
+
+  @override
+  String get teamsEmpty => 'No team records yet.';
+
+  @override
+  String get assignTaskAction => 'Assign Task';
+
+  @override
+  String get updateTaskAction => 'Update Task';
+
+  @override
+  String assignSheetSubtitle(String team) {
+    return 'Choose an open incident for $team.';
+  }
+
+  @override
+  String get assignNoOpenIncidents => 'No open incident is waiting for a team.';
+
+  @override
+  String get updateSheetCurrent => 'Current status';
+
+  @override
+  String updateSheetNext(String status) {
+    return 'Mark as $status';
+  }
+
+  @override
+  String get updateSheetResolvedNote =>
+      'When marked Rescued, the incident closes and the team becomes available.';
+
+  @override
+  String updateSuccess(String status) {
+    return 'Task updated: $status';
+  }
+
+  @override
+  String get updateNoActiveTask => 'No active task found for this team.';
 }

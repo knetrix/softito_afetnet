@@ -1525,6 +1525,456 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{percent}%'**
   String assemblyOccupancyShort(int percent);
+
+  /// No description provided for @liveFeedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE CALL FEED'**
+  String get liveFeedTitle;
+
+  /// No description provided for @liveFeedWaitingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} OPEN'**
+  String liveFeedWaitingCount(int count);
+
+  /// No description provided for @liveFeedFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All ({count})'**
+  String liveFeedFilterAll(int count);
+
+  /// No description provided for @liveFeedFilterCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get liveFeedFilterCritical;
+
+  /// No description provided for @liveFeedFilterUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get liveFeedFilterUrgent;
+
+  /// No description provided for @liveFeedFilterNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get liveFeedFilterNormal;
+
+  /// No description provided for @liveFeedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No open calls right now.'**
+  String get liveFeedEmpty;
+
+  /// No description provided for @liveFeedEmptyFiltered.
+  ///
+  /// In en, this message translates to:
+  /// **'No calls match this filter.'**
+  String get liveFeedEmptyFiltered;
+
+  /// No description provided for @liveFeedUnknownName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name not provided'**
+  String get liveFeedUnknownName;
+
+  /// No description provided for @liveFeedMergedCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} merged calls'**
+  String liveFeedMergedCalls(int count);
+
+  /// No description provided for @liveFeedDispatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatch Team'**
+  String get liveFeedDispatch;
+
+  /// No description provided for @liveFeedAssignedTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team: {team}'**
+  String liveFeedAssignedTeam(String team);
+
+  /// No description provided for @liveFeedPanicCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 panic signal} other{{count} panic signals}}'**
+  String liveFeedPanicCount(int count);
+
+  /// No description provided for @distanceMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'{meters} m away'**
+  String distanceMeters(int meters);
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km away'**
+  String distanceKm(String km);
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min ago'**
+  String timeMinutesAgo(int count);
+
+  /// No description provided for @timeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h ago'**
+  String timeHoursAgo(int count);
+
+  /// No description provided for @timeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} d ago'**
+  String timeDaysAgo(int count);
+
+  /// No description provided for @incidentDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Detail'**
+  String get incidentDetailTitle;
+
+  /// No description provided for @incidentDetailCaller.
+  ///
+  /// In en, this message translates to:
+  /// **'Caller'**
+  String get incidentDetailCaller;
+
+  /// No description provided for @incidentDetailPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get incidentDetailPhone;
+
+  /// No description provided for @incidentDetailCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get incidentDetailCall;
+
+  /// No description provided for @incidentDetailNoPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone number'**
+  String get incidentDetailNoPhone;
+
+  /// No description provided for @incidentDetailMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Summary'**
+  String get incidentDetailMedical;
+
+  /// No description provided for @incidentDetailNoMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'No medical information shared.'**
+  String get incidentDetailNoMedical;
+
+  /// No description provided for @incidentDetailLinkedCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked calls'**
+  String get incidentDetailLinkedCalls;
+
+  /// No description provided for @incidentDetailTaskStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Task status'**
+  String get incidentDetailTaskStatus;
+
+  /// No description provided for @incidentDetailNeedType.
+  ///
+  /// In en, this message translates to:
+  /// **'Need type'**
+  String get incidentDetailNeedType;
+
+  /// No description provided for @incidentDetailLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Caller information could not be loaded.'**
+  String get incidentDetailLoadFailed;
+
+  /// No description provided for @incidentCloseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Close Incident'**
+  String get incidentCloseAction;
+
+  /// No description provided for @incidentCloseConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Close Incident?'**
+  String get incidentCloseConfirmTitle;
+
+  /// No description provided for @incidentCloseConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The incident and its linked calls will be marked as resolved. This cannot be undone.'**
+  String get incidentCloseConfirmMessage;
+
+  /// No description provided for @incidentClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Incident closed.'**
+  String get incidentClosed;
+
+  /// No description provided for @incidentCloseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The incident could not be closed. A team may have been assigned or it may already be closed.'**
+  String get incidentCloseFailed;
+
+  /// No description provided for @incidentCloseHasTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'A team is working on this incident. It closes when the team is marked Rescued.'**
+  String get incidentCloseHasTeam;
+
+  /// No description provided for @dispatchNoAvailableTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'No team is available right now.'**
+  String get dispatchNoAvailableTeams;
+
+  /// No description provided for @dispatchSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'{team} dispatched.'**
+  String dispatchSuccess(String team);
+
+  /// No description provided for @assignErrorIncidentClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'This incident is already closed.'**
+  String get assignErrorIncidentClosed;
+
+  /// No description provided for @assignErrorAlreadyAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'A team is already assigned to this incident.'**
+  String get assignErrorAlreadyAssigned;
+
+  /// No description provided for @assignErrorTeamBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'This team is no longer available.'**
+  String get assignErrorTeamBusy;
+
+  /// No description provided for @assignErrorInvalidTransition.
+  ///
+  /// In en, this message translates to:
+  /// **'The task was updated by someone else. Please check again.'**
+  String get assignErrorInvalidTransition;
+
+  /// No description provided for @teamMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person} other{{count} people}}'**
+  String teamMembers(int count);
+
+  /// No description provided for @panicPinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Panic Signal'**
+  String get panicPinTitle;
+
+  /// No description provided for @panicPinLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get panicPinLocation;
+
+  /// No description provided for @panicPinTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal time'**
+  String get panicPinTime;
+
+  /// No description provided for @panicPinReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Reached'**
+  String get panicPinReached;
+
+  /// No description provided for @panicPinHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as reached'**
+  String get panicPinHandled;
+
+  /// No description provided for @panicPinReachedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal marked as reached.'**
+  String get panicPinReachedSuccess;
+
+  /// No description provided for @panicNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New panic signal'**
+  String get panicNotificationTitle;
+
+  /// No description provided for @panicNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A survivor reported being in danger. Check the purple pin on the Live Feed map.'**
+  String get panicNotificationBody;
+
+  /// No description provided for @teamsSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Field Teams'**
+  String get teamsSummaryTitle;
+
+  /// No description provided for @teamsSummarySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operational tracking and coordination'**
+  String get teamsSummarySubtitle;
+
+  /// No description provided for @teamsSummaryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{teams} Teams · {members} Personnel'**
+  String teamsSummaryCount(int teams, int members);
+
+  /// No description provided for @teamTypeSearchRescue.
+  ///
+  /// In en, this message translates to:
+  /// **'Search & Rescue'**
+  String get teamTypeSearchRescue;
+
+  /// No description provided for @teamTypeMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get teamTypeMedical;
+
+  /// No description provided for @teamTypeFire.
+  ///
+  /// In en, this message translates to:
+  /// **'Fire'**
+  String get teamTypeFire;
+
+  /// No description provided for @teamTypeLogistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics'**
+  String get teamTypeLogistics;
+
+  /// No description provided for @teamStatusOnDuty.
+  ///
+  /// In en, this message translates to:
+  /// **'ON DUTY'**
+  String get teamStatusOnDuty;
+
+  /// No description provided for @teamStatusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'AVAILABLE'**
+  String get teamStatusAvailable;
+
+  /// No description provided for @teamLeaderWithName.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (Team Leader)'**
+  String teamLeaderWithName(String name);
+
+  /// No description provided for @teamCurrentTask.
+  ///
+  /// In en, this message translates to:
+  /// **'CURRENT TASK'**
+  String get teamCurrentTask;
+
+  /// No description provided for @teamOperationStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'OPERATION STATUS'**
+  String get teamOperationStatus;
+
+  /// No description provided for @teamIdleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing by, ready for a new task.'**
+  String get teamIdleDescription;
+
+  /// No description provided for @teamTaskNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Task record not found.'**
+  String get teamTaskNotFound;
+
+  /// No description provided for @teamsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No team records yet.'**
+  String get teamsEmpty;
+
+  /// No description provided for @assignTaskAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Task'**
+  String get assignTaskAction;
+
+  /// No description provided for @updateTaskAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Task'**
+  String get updateTaskAction;
+
+  /// No description provided for @assignSheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an open incident for {team}.'**
+  String assignSheetSubtitle(String team);
+
+  /// No description provided for @assignNoOpenIncidents.
+  ///
+  /// In en, this message translates to:
+  /// **'No open incident is waiting for a team.'**
+  String get assignNoOpenIncidents;
+
+  /// No description provided for @updateSheetCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current status'**
+  String get updateSheetCurrent;
+
+  /// No description provided for @updateSheetNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as {status}'**
+  String updateSheetNext(String status);
+
+  /// No description provided for @updateSheetResolvedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'When marked Rescued, the incident closes and the team becomes available.'**
+  String get updateSheetResolvedNote;
+
+  /// No description provided for @updateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Task updated: {status}'**
+  String updateSuccess(String status);
+
+  /// No description provided for @updateNoActiveTask.
+  ///
+  /// In en, this message translates to:
+  /// **'No active task found for this team.'**
+  String get updateNoActiveTask;
 }
 
 class _AppLocalizationsDelegate
