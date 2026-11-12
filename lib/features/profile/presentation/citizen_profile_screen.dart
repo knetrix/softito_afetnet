@@ -7,6 +7,7 @@ import '../../../core/services/location_service.dart';
 import '../../../core/theme/app_status_colors.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_button.dart';
+import '../../../core/widgets/language_selector.dart';
 import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/state_view.dart';
 import '../../../core/widgets/status_badge.dart';
@@ -324,6 +325,9 @@ class _CitizenProfileView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
+
+              const LanguageSelector(),
+              const SizedBox(height: 24),
 
               // Çıkış Yap Butonu
               AppButton.secondary(
