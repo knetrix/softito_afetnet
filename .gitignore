@@ -1,5 +1,11 @@
 .DS_Store
 .claude
+.agents
+design/
+database/
+PROJECT_NEW.md
+GOREV_DAGILIMI.md
+DONE.md
 
 
 # See https://www.dartlang.org/guides/libraries/private-files
