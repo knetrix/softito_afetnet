@@ -7,6 +7,7 @@ import '../../../core/services/notification_service.dart';
 import '../../../core/theme/app_status_colors.dart';
 import '../../../core/utils/priority_policy.dart';
 import '../../../core/widgets/state_view.dart';
+import '../../broadcast/presentation/evacuation_fab.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../../safety_signal/domain/safety_signal.dart';
@@ -128,6 +129,8 @@ class _LiveFeedView extends StatelessWidget {
     final now = DateTime.now();
 
     return Scaffold(
+      // Ekranın kendi Scaffold'unda: açılan sheet'ler butonu örter (§3.1).
+      floatingActionButton: const EvacuationFab(),
       body: SafeArea(
         bottom: false,
         child: CustomScrollView(

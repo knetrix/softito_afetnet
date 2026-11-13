@@ -215,8 +215,6 @@ class _InventoryContentState extends State<_InventoryContent> {
               const SizedBox(height: 14),
               _buildFilters(),
               const SizedBox(height: 16),
-              _buildWarehouseBanner(context),
-              const SizedBox(height: 16),
 
               if (filteredItems.isEmpty)
                 Padding(
@@ -294,7 +292,6 @@ class _InventoryContentState extends State<_InventoryContent> {
             ),
           ),
         ),
-        const CircleAvatar(radius: 19, child: Icon(Icons.person_outline)),
       ],
     );
   }
@@ -449,35 +446,6 @@ class _InventoryContentState extends State<_InventoryContent> {
             ),
           );
         }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildWarehouseBanner(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
-    return Container(
-      height: 90,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [colors.surfaceContainerHighest, colors.surface],
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Icon(Icons.location_on_outlined, color: colors.primary),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              widget.warehouse.locationText ?? widget.warehouse.name,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
       ),
     );
   }
