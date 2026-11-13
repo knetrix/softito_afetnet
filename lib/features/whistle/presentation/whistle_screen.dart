@@ -1,3 +1,5 @@
+// A3 Düdük ekranı.
+
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_status_colors.dart';

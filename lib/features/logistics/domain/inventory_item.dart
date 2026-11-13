@@ -1,3 +1,5 @@
+// Stok kalemi modeli ve Kritik / Orta / Yeterli hesabı.
+
 
 import 'package:flutter/foundation.dart';
 

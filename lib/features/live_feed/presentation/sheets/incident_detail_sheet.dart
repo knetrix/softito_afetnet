@@ -1,3 +1,5 @@
+// Olay Detay paneli: telefon, tıbbi özet, Olayı Kapat.
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 

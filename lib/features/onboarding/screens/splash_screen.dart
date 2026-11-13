@@ -1,3 +1,5 @@
+// Splash ekranının görsel kısmı (logo ve radar animasyonu).
+
 import 'dart:async'; // Zamanlayıcı (Timer) işlemleri için kütüphanedir
 import 'package:flutter/material.dart'; // Flutter temel UI ve widget kütüphanesidir
 import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır

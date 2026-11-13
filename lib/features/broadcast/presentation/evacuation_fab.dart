@@ -1,3 +1,5 @@
+// Canlı Akış ve Ekipler'deki "Tahliye Anonsu" butonu.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

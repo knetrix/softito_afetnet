@@ -1,3 +1,5 @@
+// Gönderilecek çağrının taslağı (form ve çevrimdışı kuyruk için).
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';

@@ -1,3 +1,5 @@
+// Oturum ve rol durumu; router yönlendirmesi bunu dinler.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

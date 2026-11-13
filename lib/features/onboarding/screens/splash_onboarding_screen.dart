@@ -1,3 +1,5 @@
+// Onboarding sayfa geçişleri ve Atla / İleri / Başla butonları.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

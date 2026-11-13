@@ -1,3 +1,5 @@
+// Yardım çağrısı repository arayüzü.
+
 import 'assigned_team_info.dart';
 import 'help_request.dart';
 import 'help_request_draft.dart';

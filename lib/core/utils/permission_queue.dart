@@ -1,3 +1,5 @@
+// İzin pencerelerini sıraya koyar (Android aynı anda iki izin penceresi göstermez).
+
 /// Android aynı anda iki izin penceresi göstermez; ikinci istek hiç dönmez.
 /// (Kayıttan sonra bildirim ve konum izni aynı anda isteniyordu.)
 /// İzin istekleri bu kuyrukta sırayla çalışır.

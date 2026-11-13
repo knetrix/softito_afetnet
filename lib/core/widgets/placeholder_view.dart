@@ -1,3 +1,5 @@
+// Geliştirme sırasında boş sekmeler için geçici görünüm (artık kullanılmıyor).
+
 import 'package:flutter/material.dart';
 
 /// Henüz yazılmamış sekmeler için geçici gövde (G1). Ekranın sahibi kendi

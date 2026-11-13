@@ -1,3 +1,5 @@
+// Toplanma alanları repository arayüzü.
+
 import 'assembly_point.dart';
 
 /// Toplanma Alanları Depo Arayüzü (PROJECT_NEW.md §3.1 A2, §5.3).

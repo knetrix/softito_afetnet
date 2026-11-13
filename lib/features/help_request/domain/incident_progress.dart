@@ -1,3 +1,5 @@
+// Çağrının bağlı olduğu olayın görev durumu.
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/case_status.dart';

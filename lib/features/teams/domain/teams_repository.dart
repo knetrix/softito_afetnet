@@ -1,3 +1,5 @@
+// Ekipler repository arayüzü ve görev hatası.
+
 import '../../../core/constants/case_status.dart';
 import '../../live_feed/domain/incident.dart';
 import 'assignment.dart';

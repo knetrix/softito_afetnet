@@ -1,3 +1,5 @@
+// Giriş ve kayıt hata türleri.
+
 /// Giriş/Kayıt hata türleri. Metne çeviri ekranda yapılır.
 enum AuthFailure {
   invalidCredentials,

@@ -1,3 +1,5 @@
+// Hesabı Sil akışı: onay → şifre → silme.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

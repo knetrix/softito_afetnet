@@ -1,3 +1,5 @@
+// Gizli profil modeli (users/{uid}/private/contact): telefon, adres, tıbbi bilgi.
+
 import 'package:flutter/foundation.dart';
 
 /// Afetzede ve Yetkili Gizli İletişim & Sağlık Profili (PROJECT_NEW.md §5.3)

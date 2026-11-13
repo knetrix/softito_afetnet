@@ -1,3 +1,5 @@
+// Parlayan yuvarlak buton (panik ve düdük).
+
 import 'package:flutter/material.dart';
 
 import '../theme/app_status_colors.dart';

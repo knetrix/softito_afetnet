@@ -1,3 +1,5 @@
+// İnternetsiz panikte açılacak hazır SMS bağlantısını üretir.
+
 /// Acil durum SMS köprüsü için RFC uyumlu URI üretir (PROJECT_NEW.md §4 Kural 8).
 ///
 /// `Uri(..., queryParameters: ...)` boşlukları `+` olarak kodladığından

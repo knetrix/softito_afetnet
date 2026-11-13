@@ -1,3 +1,5 @@
+// Profil repository arayüzü.
+
 import 'user_contact_profile.dart';
 
 /// Profil verileri yönetim arayüzü (Clean Architecture - Domain katmanı)

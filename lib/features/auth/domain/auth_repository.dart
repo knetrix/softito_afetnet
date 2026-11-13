@@ -1,3 +1,5 @@
+// Kimlik doğrulama repository arayüzü ve kayıt formu verisi.
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/user_role.dart';

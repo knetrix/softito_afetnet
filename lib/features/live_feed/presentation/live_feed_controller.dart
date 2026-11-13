@@ -1,3 +1,5 @@
+// Canlı Akış durumu: olaylar, filtreler, mesafeler, yeni panik bildirimi.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

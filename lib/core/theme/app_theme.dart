@@ -1,3 +1,5 @@
+// Material 3 açık ve koyu tema.
+
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';

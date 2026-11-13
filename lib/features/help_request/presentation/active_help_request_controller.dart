@@ -1,3 +1,5 @@
+// Afetzedenin aktif çağrısını ve ekip durumunu canlı izler.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

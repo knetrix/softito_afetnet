@@ -1,3 +1,5 @@
+// GoRouter tanımı: rotalar, iki rolün alt menüsü ve rol bazlı yönlendirme.
+
 import 'package:go_router/go_router.dart';
 
 import '../../features/assembly_points/presentation/assembly_points_screen.dart';

@@ -1,3 +1,5 @@
+// Görev ataması modeli ve ileri-yönlü durum akışı.
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/case_status.dart';

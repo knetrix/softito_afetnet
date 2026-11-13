@@ -1,3 +1,5 @@
+// Y1 Canlı Akış ekranı: harita, filtreler, olay kartları.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

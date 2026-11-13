@@ -1,3 +1,5 @@
+// A2 Toplanma ekranı: harita ve seçili nokta kartı.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';

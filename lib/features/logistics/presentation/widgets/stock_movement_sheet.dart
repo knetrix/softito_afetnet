@@ -1,3 +1,5 @@
+// Stok giriş / çıkış formu.
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/app_bottom_sheet.dart';

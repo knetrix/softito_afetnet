@@ -1,3 +1,5 @@
+// Tek bir onboarding sayfasının içeriği.
+
 import 'package:flutter/material.dart'; // Flutter temel arayüz kütüphanesidir
 
 import '../../../core/theme/app_colors.dart'; // Uygulamanın özel tema renkleridir

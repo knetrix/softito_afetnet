@@ -1,3 +1,5 @@
+// Kartta ve Detay'da gösterilen olay özeti (ad, telefon, tıbbi bilgi).
+
 import 'package:flutter/foundation.dart';
 
 /// Canlı Akış kartında gösterilen, olayın ilk çağrısından (`primaryRequestId`)

@@ -1,3 +1,5 @@
+// Tasarımdaki renk token'ları.
+
 import 'package:flutter/material.dart';
 
 /// AfetNet Tasarım Sistemi Renk Token'ları (§3.4)

@@ -1,3 +1,5 @@
+// Haritadaki toplanma noktası pini.
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart' hide Path;
 

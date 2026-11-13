@@ -1,3 +1,5 @@
+// Yardım çağrısı: 50 m birleştirme Transaction'ı, canlı takip ve iptal.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

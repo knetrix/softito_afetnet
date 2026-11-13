@@ -1,3 +1,5 @@
+// Çağrıya atanan ekibin adı ve lideri.
+
 import 'package:flutter/foundation.dart';
 
 /// Çağrıya atanan ekip ve sorumlu lider özeti (PROJECT_NEW.md §4 Kural 6).

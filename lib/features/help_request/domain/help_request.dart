@@ -1,3 +1,5 @@
+// Yardım çağrısı modeli (help_requests/{id}).
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 

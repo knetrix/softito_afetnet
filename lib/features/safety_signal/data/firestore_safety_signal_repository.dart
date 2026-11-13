@@ -1,3 +1,5 @@
+// Panik sinyalini (safety_signals/{uid}) Firestore'a yazar.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

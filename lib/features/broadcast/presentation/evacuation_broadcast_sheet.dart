@@ -1,3 +1,5 @@
+// Tahliye Anonsu formu: tür, yarıçap, mesaj.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
