@@ -1,4 +1,5 @@
-// O4 Kayıt ekranı (KVKK onayı, telefon maskesi, şifre gücü).
+// O4 Kayıt ekranı: hesap türü, ad, e-posta, telefon (maskeli), şifre + güç göstergesi,
+// şifre tekrarı, bildirim onayı ve zorunlu KVKK/Gizlilik onayı.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +25,7 @@ import 'auth_texts.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -44,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _legalAccepted = false;
   bool _showLegalError = false;
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _fullName.dispose();
@@ -56,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  // Formu doğrular ve hesabı açar.
+  // Formu doğrular, KVKK onayını kontrol eder ve hesabı açar.
   Future<void> _submit() async {
     final valid = _formKey.currentState!.validate();
     setState(() => _showLegalError = !_legalAccepted);
@@ -92,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -346,13 +347,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-// Şifre güç göstergesi çubuğu.
+// Şifrenin ne kadar güçlü olduğunu gösteren renkli çubuk (zayıf / orta / güçlü).
 class _PasswordStrengthBar extends StatelessWidget {
   const _PasswordStrengthBar({required this.strength});
 
   final int strength;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -1,4 +1,5 @@
-// Ekip Yönlendir, Görev Ata ve Görev Güncelle panelleri.
+// Ekip/görev panelleri: Ekip Yönlendir (olaydan ekibe), Görev Ata (ekipten olaya)
+// ve Görev Güncelle (bir sonraki durum butonu).
 
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
@@ -176,7 +177,7 @@ class _PickList<T> extends StatefulWidget {
   final Widget Function(BuildContext context, T item) tileBuilder;
   final Future<void> Function(T item) onPick;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_PickList<T>> createState() => _PickListState<T>();
 }
@@ -204,7 +205,7 @@ class _PickListState<T> extends State<_PickList<T>> {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     if (widget.items.isEmpty) {
@@ -264,7 +265,7 @@ class _TeamTile extends StatelessWidget {
   final Team team;
   final String? distance;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -320,7 +321,7 @@ class _IncidentTile extends StatelessWidget {
   final Incident incident;
   final LatLng? teamLocation;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -393,7 +394,7 @@ class _UpdateTaskBody extends StatefulWidget {
   final Incident? incident;
   final Future<void> Function() onAdvance;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_UpdateTaskBody> createState() => _UpdateTaskBodyState();
 }
@@ -421,7 +422,7 @@ class _UpdateTaskBodyState extends State<_UpdateTaskBody> {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -504,7 +505,7 @@ class _StepIndicator extends StatelessWidget {
 
   final CaseStatus current;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;

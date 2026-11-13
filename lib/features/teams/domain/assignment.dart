@@ -1,4 +1,5 @@
-// Görev ataması modeli ve ileri-yönlü durum akışı.
+// "domain" katmanı: görev ataması modeli ve durum akışı.
+// AssignmentFlow, bir durumdan sonra hangi durumun geleceğini söyler (yalnızca ileri).
 
 import 'package:flutter/foundation.dart';
 
@@ -45,7 +46,7 @@ class Assignment {
           other.teamId == teamId &&
           other.status == status;
 
-  // Eşitlik karşılaştırması için hash değeri.
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(id, incidentId, teamId, status);
 }

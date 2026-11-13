@@ -1,10 +1,11 @@
-// Ortak buton bileşeni.
+// Uygulamanın ortak butonu. Ana, ikincil, tehlike ve metin türleri vardır;
+// yükleniyor durumunda buton kilitlenir ve dönen gösterge çıkar.
 
 import 'package:flutter/material.dart';
 
 import '../theme/app_status_colors.dart';
 
-// Buton görünüm türleri.
+// Butonun görünüm türleri: ana (dolu), ikincil (çerçeveli), tehlike (kırmızı), metin (sade).
 enum _AppButtonVariant { primary, secondary, danger, text }
 
 /// AfetNet Genel Buton Bileşeni (§3.4, §6.1)
@@ -52,7 +53,7 @@ class AppButton extends StatelessWidget {
   final bool isFullWidth;
   final _AppButtonVariant _variant;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

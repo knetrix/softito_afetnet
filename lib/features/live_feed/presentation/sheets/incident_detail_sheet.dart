@@ -1,4 +1,5 @@
-// Olay Detay paneli: telefon, tıbbi özet, Olayı Kapat.
+// Olay Detay paneli: çağrı sahibinin telefonu (Ara butonu), tıbbi özeti, bağlı çağrı sayısı, görev durumu
+// ve ekip atanmamışsa "Olayı Kapat" butonu.
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,7 +52,7 @@ class _DetailBody extends StatefulWidget {
   final Incident incident;
   final ScaffoldMessengerState messenger;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_DetailBody> createState() => _DetailBodyState();
 }
@@ -92,7 +93,7 @@ class _DetailBodyState extends State<_DetailBody> {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -207,7 +208,7 @@ class _CallerSection extends StatelessWidget {
 
   final IncidentDetail detail;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -342,7 +343,7 @@ class _InfoRow extends StatelessWidget {
   final String value;
   final Color? valueColor;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -1,4 +1,5 @@
-// İhtiyaç türünden öncelik hesaplar (triage: Kritik / Acil / Normal).
+// Önceliği (triage) hesaplayan kural:
+// Enkaz ve Tıbbi = 1 (Kritik), Barınma/Isınma/Bebek Maması = 2 (Acil), Su ve Diğer = 3 (Normal).
 
 import '../constants/help_type.dart';
 

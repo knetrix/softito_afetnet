@@ -1,4 +1,5 @@
-// Form doğrulama: e-posta, telefon maskesi, şifre kuralı.
+// Form alanlarının doğrulama kuralları: e-posta biçimi, telefon maskesi,
+// şifre kuralı (en az 8 karakter, 1 büyük harf, 1 rakam) ve şifre tekrarı.
 
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -22,11 +23,11 @@ abstract final class Validators {
   static final _uppercasePattern = RegExp(r'[A-ZÇĞİÖŞÜ]');
   static final _digitPattern = RegExp(r'\d');
 
-  // Alan boş mu kontrol eder.
+  // Alan boş bırakılmış mı? Boşsa hata, doluysa null döndürür.
   static ValidationError? required(String? value) =>
       (value == null || value.trim().isEmpty) ? ValidationError.required : null;
 
-  // E-posta biçimini kontrol eder.
+  // E-posta adresi doğru biçimde mi (ör. ad@site.com)? Regex ile kontrol eder.
   static ValidationError? email(String? value) {
     final v = value?.trim() ?? '';
     if (v.isEmpty) return ValidationError.required;
@@ -50,7 +51,7 @@ abstract final class Validators {
     return null;
   }
 
-  // Şifre tekrarı ilk şifreyle aynı mı kontrol eder.
+  // "Şifre Tekrar" alanı ilk yazılan şifreyle aynı mı?
   static ValidationError? confirmPassword(String? value, String password) {
     if (value == null || value.isEmpty) return ValidationError.required;
     return value == password ? null : ValidationError.passwordMismatch;
@@ -101,10 +102,11 @@ class _PhoneInputFormatter extends TextInputFormatter {
     filter: {'#': RegExp(r'\d')},
   );
 
-  // Metindeki rakamlar dışındaki karakterleri siler.
+  // Metinden rakam olmayan her şeyi siler (ör. "+90 (532)" → "90532").
   static String _digits(String text) => text.replaceAll(RegExp(r'\D'), '');
 
-  // Yazılan telefonu "+90 5XX XXX XX XX" biçimine sokar.
+  // Kullanıcı yazdıkça telefonu "+90 5XX XXX XX XX" biçimine çevirir (InputFormatter).
+  // 5…, 05… veya +90 5… ile başlamak aynı sonucu verir.
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,

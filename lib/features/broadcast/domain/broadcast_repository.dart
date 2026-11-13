@@ -1,4 +1,4 @@
-// Anons türleri (tahliye / artçı) ve repository arayüzü.
+// "domain" katmanı: anons türleri (Acil Tahliye / Artçı Sarsıntı) ve anons gönderme sözleşmesi.
 
 import 'package:latlong2/latlong.dart';
 

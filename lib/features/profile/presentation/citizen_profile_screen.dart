@@ -1,4 +1,5 @@
-// A4 Afetzede Profil: tıbbi kimlik, acil durum yakını, adres, dil.
+// A4 Afetzede Profil ekranı: tıbbi kimlik, yaş/kilo, acil durum yakını (Ara butonu), adres,
+// dil seçimi, Çıkış Yap, Gizlilik Politikası ve Hesabı Sil.
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,7 @@ class CitizenProfileScreen extends StatelessWidget {
 
   final ProfileRepository? repository;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -78,7 +79,7 @@ class _CitizenProfileView extends StatelessWidget {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -403,7 +404,7 @@ class _ProfileSectionCard extends StatelessWidget {
   final Widget content;
   final VoidCallback onEdit;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -462,7 +463,7 @@ class _InfoRow extends StatelessWidget {
   final Color? valueColor;
   final bool isBold;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -502,7 +503,7 @@ class _StatBox extends StatelessWidget {
   final String title;
   final String value;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;

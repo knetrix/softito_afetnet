@@ -1,4 +1,4 @@
-// Profil ekranının durumu ve kaydetme işlemleri.
+// Profil ekranının controller'ı: gizli profili canlı dinler ve düzenleme formlarından gelen kayıtları yapar.
 
 import 'dart:async';
 import 'package:flutter/foundation.dart';
@@ -181,7 +181,7 @@ class ProfileController extends ChangeNotifier {
         () => repository.getTeamName(teamId).catchError((Object _) => null),
       );
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

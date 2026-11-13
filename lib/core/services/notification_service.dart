@@ -1,4 +1,5 @@
-// Yerel bildirimler ve FCM all_users topic aboneliği.
+// Bildirim servisi. İki iş yapar:
+// 1) Uygulama açıkken ekrana yerel bildirim gösterir, 2) FCM ile all_users konusuna (topic) abone olur.
 
 import 'dart:async';
 
@@ -16,7 +17,7 @@ abstract interface class NotificationService {
   static const criticalChannelId = 'afetnet_critical_alerts';
   static const allUsersTopic = 'all_users';
 
-  // Bildirim altyapısını hazırlar.
+  // Bildirim altyapısını hazırlar (uygulama açılışında bir kez).
   Future<void> initialize();
 
   /// Kullanıcı tercihine göre `all_users` topic aboneliğini günceller.
@@ -36,11 +37,12 @@ abstract interface class NotificationService {
     String? payload,
   });
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   void dispose();
 }
 
-// Bildirim servisinin gerçek uygulaması (flutter_local_notifications + FCM).
+// NotificationService arayüzünün gerçek hâli.
+// flutter_local_notifications paketiyle yerel bildirim, Firebase Cloud Messaging (FCM) ile push kullanır.
 class DeviceNotificationService implements NotificationService {
   DeviceNotificationService({
     FlutterLocalNotificationsPlugin? localNotifications,
@@ -54,13 +56,14 @@ class DeviceNotificationService implements NotificationService {
   bool _permissionRequested = false;
   bool? _lastOptIn;
 
-  // Kullanılacak FirebaseMessaging örneği (testte sahtesi verilebilir).
+  // Kullanılacak FirebaseMessaging nesnesi. Testlerde dışarıdan sahtesi verilebilir.
   FirebaseMessaging get _fcm => _messaging ?? FirebaseMessaging.instance;
 
   /// Kanal adı sistem ayarlarında görünür; uygulamanın seçili dilindedir.
   AppLocalizations get _l10n => lookupAppLocalizations(LocaleController.current);
 
-  // Bildirim kanalını oluşturur ve ön plandaki FCM mesajlarını dinler.
+  // Android'de "Kritik uyarılar" bildirim kanalını oluşturur ve
+  // uygulama açıkken gelen FCM mesajlarını dinlemeye başlar.
   @override
   Future<void> initialize() async {
     if (_initialized) return;
@@ -103,11 +106,11 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
-  // Bildirim iznini ister.
+  // Kullanıcıdan bildirim izni ister.
   @override
   Future<void> requestPermission() => _requestPermissionOnce();
 
-  // Bildirim iznini yalnızca bir kez ister.
+  // Bildirim iznini yalnızca bir kez ister; ikinci çağrıda tekrar pencere açmaz.
   Future<void> _requestPermissionOnce() async {
     if (_permissionRequested) return;
     _permissionRequested = true;
@@ -124,7 +127,8 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
-  // Uygulama açıkken gelen FCM mesajını yerel bildirim olarak gösterir.
+  // Uygulama açıkken FCM mesajı gelirse sistem onu göstermez;
+  // bu yüzden mesajı burada yakalayıp yerel bildirim olarak biz gösteririz.
   Future<void> _onForegroundMessage(RemoteMessage message) async {
     final title = message.notification?.title ?? message.data['title'] as String?;
     final body = message.notification?.body ?? message.data['body'] as String?;
@@ -139,7 +143,8 @@ class DeviceNotificationService implements NotificationService {
     );
   }
 
-  // Kullanıcının onayına göre all_users topic'ine abone olur ya da çıkar.
+  // Kullanıcı kayıtta bildirim onayı verdiyse all_users konusuna abone eder, vermediyse aboneliği kaldırır.
+  // Firebase Console'dan bu konuya gönderilen duyuru, uygulama kapalıyken bile gelir.
   @override
   Future<void> syncTopicSubscription({required bool optIn}) async {
     if (_lastOptIn == optIn) return;
@@ -156,7 +161,7 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
-  // Ekranda yerel bildirim gösterir.
+  // Telefonun bildirim alanında bir bildirim gösterir (başlık + metin).
   @override
   Future<void> showLocalNotification({
     required int id,
@@ -190,7 +195,7 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _foregroundSub?.cancel();

@@ -1,4 +1,5 @@
-// Toplanma ekranının durumu: noktalar, seçili nokta, mesafeler.
+// Toplanma ekranının durumunu tutan controller (ChangeNotifier).
+// Noktaları ve kullanıcı konumunu dinler; filtre ya da seçim değişince ekrana notifyListeners ile haber verir.
 
 import 'dart:async';
 
@@ -65,7 +66,7 @@ class AssemblyPointsController extends ChangeNotifier {
     return list.take(3).toList();
   }
 
-  // Noktaları dinlemeye ve konumu almaya başlar.
+  // Başlangıçta: toplanma noktalarını Firestore'dan dinlemeye başlar ve kullanıcının konumunu ister.
   void _init() {
     _locationService?.addListener(_onLocationChanged);
     _subscription = _repo.watchAssemblyPoints().listen(
@@ -90,7 +91,7 @@ class AssemblyPointsController extends ChangeNotifier {
     );
   }
 
-  // Konum değişince mesafeleri günceller.
+  // Kullanıcının konumu değişince çalışır; mesafeler yeni konuma göre hesaplansın diye ekranı yeniler.
   void _onLocationChanged() {
     final newPos = _locationService?.currentPosition;
     if (newPos != null && newPos != _userLocation) {
@@ -126,7 +127,7 @@ class AssemblyPointsController extends ChangeNotifier {
     return 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng';
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

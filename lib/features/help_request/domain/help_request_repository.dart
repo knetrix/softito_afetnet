@@ -1,4 +1,4 @@
-// Yardım çağrısı repository arayüzü.
+// "domain" katmanı: yardım çağrısı işlemlerinin sözleşmesi (arayüz): gönder, canlı izle, iptal et.
 
 import 'assigned_team_info.dart';
 import 'help_request.dart';

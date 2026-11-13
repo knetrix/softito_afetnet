@@ -1,4 +1,5 @@
-// Panik akışı: sinyal gönderme, bağlantı kontrolü, SMS köprüsü.
+// Panik akışını yöneten controller: konumu alır, sinyali gönderir, sunucu onayını bekler.
+// İnternet yoksa SMS köprüsü için acil durum yakınının numarasını ve konumu hazırlar.
 
 import 'dart:async';
 
@@ -173,7 +174,7 @@ class SafetySignalController extends ChangeNotifier {
     if (!_disposed) notifyListeners();
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     if (_disposed) return;

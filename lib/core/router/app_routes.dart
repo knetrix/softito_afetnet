@@ -1,4 +1,5 @@
-// Rota yolları (ekran adresleri) sabitleri.
+// Ekranların adreslerini (rota yollarını) tek yerde tutan sabitler.
+// Böylece "/feed" gibi metinleri kodun her yerine tek tek yazmayız.
 
 /// 12 ekranın rotaları (PROJECT_NEW.md §3.1). Ek işlemler için rota eklenmez;
 /// bottom sheet / diyalog açılır (§3.2).

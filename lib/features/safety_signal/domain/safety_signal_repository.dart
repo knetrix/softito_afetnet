@@ -1,4 +1,4 @@
-// Panik sinyali repository arayüzü.
+// "domain" katmanı: panik sinyali işlemlerinin sözleşmesi (arayüz).
 
 import 'safety_signal.dart';
 

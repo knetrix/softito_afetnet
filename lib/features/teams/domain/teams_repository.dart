@@ -1,4 +1,4 @@
-// Ekipler repository arayüzü ve görev hatası.
+// "domain" katmanı: ekip ve görev işlemlerinin sözleşmesi (arayüz) ve görev hataları.
 
 import '../../../core/constants/case_status.dart';
 import '../../live_feed/domain/incident.dart';
@@ -38,7 +38,7 @@ class AssignmentException implements Exception {
 
   final AssignmentFailure reason;
 
-  // Hata ayıklama için okunur metin döndürür.
+  // Nesneyi hata ayıklarken (print/log) okunabilir bir metne çevirir.
   @override
   String toString() => 'AssignmentException($reason)';
 }

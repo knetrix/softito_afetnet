@@ -1,4 +1,5 @@
-// Firebase Auth ile giriş, kayıt, şifre sıfırlama ve hesap silme.
+// "data" katmanı: kimlik işlemleri (giriş, kayıt, şifre sıfırlama, çıkış).
+// Firebase Authentication ve Firestore'daki users koleksiyonuyla konuşur.
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,7 @@ import '../domain/app_user.dart';
 import '../domain/auth_failure.dart';
 import '../domain/auth_repository.dart';
 
-// Kimlik işlemlerinin Firebase Auth + Firestore uygulaması.
+// AuthRepository arayüzünün Firebase ile çalışan hâli.
 class FirebaseAuthRepository implements AuthRepository {
   FirebaseAuthRepository({FirebaseAuth? auth, FirebaseFirestore? firestore})
       : _auth = auth ?? FirebaseAuth.instance,
@@ -23,11 +24,11 @@ class FirebaseAuthRepository implements AuthRepository {
   DocumentReference<Map<String, dynamic>> _userDoc(String uid) =>
       _db.collection('users').doc(uid);
 
-  // Oturum açan kullanıcının uid'sini canlı verir (çıkışta null).
+  // Oturum durumunu canlı dinler: biri giriş yapınca uid'sini, çıkış yapınca null gönderir.
   @override
   Stream<String?> uidChanges() => _auth.authStateChanges().map((u) => u?.uid);
 
-  // users/{uid} belgesini okuyup AppUser'a çevirir.
+  // Firestore'dan users/{uid} belgesini okur ve AppUser nesnesine çevirir (rol, onay durumu burada).
   @override
   Future<AppUser?> fetchUser(String uid) async {
     try {
@@ -39,7 +40,7 @@ class FirebaseAuthRepository implements AuthRepository {
     }
   }
 
-  // E-posta ve şifreyle giriş yapar, uid döndürür.
+  // Firebase Auth ile e-posta/şifre girişi yapar; başarılıysa kullanıcının uid'sini döndürür.
   @override
   Future<String> signIn({required String email, required String password}) async {
     try {
@@ -53,7 +54,8 @@ class FirebaseAuthRepository implements AuthRepository {
     }
   }
 
-  // Hesap açar; users ve private/contact belgelerini tek batch'te yazar.
+  // Yeni hesap açar. Önce Firebase Auth'ta kullanıcı oluşturulur, sonra
+  // users/{uid} (herkese açık) ve private/contact (gizli: telefon, e-posta) belgeleri tek batch ile birlikte yazılır.
   @override
   Future<AppUser> register(RegisterInput input) async {
     final UserCredential cred;
@@ -133,7 +135,7 @@ class FirebaseAuthRepository implements AuthRepository {
     );
   }
 
-  // Firebase Auth hata kodunu uygulamanın hata türüne çevirir.
+  // Firebase'in hata kodunu (ör. "wrong-password") uygulamanın kendi hata türüne çevirir; ekranda doğru mesaj çıksın diye.
   AuthFailure _mapAuth(FirebaseAuthException e) => switch (e.code) {
         'invalid-credential' ||
         'invalid-email' ||

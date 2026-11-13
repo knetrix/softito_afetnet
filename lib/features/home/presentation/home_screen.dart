@@ -1,4 +1,5 @@
-// A1 Afetzede Ana Sayfa: panik butonu, aktif çağrı, yardım çağrısı.
+// A1 Afetzede Ana Sayfa. Üstte ad ve konum, ortada 2 sn basılı tutulan PANİĞİM butonu,
+// altta aktif çağrı kartı ve "Yardım Çağrısı Ekle" butonu. İnternet yoksa SMS köprüsü buradan açılır.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -62,7 +63,7 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthController>().currentUser;
@@ -134,14 +135,14 @@ class _HomeView extends StatefulWidget {
   final ExternalUrlLauncher urlLauncher;
   final Duration panicHoldDuration;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_HomeView> createState() => _HomeViewState();
 }
 
 // Panik, SMS köprüsü ve yardım çağrısı akışlarını yönetir.
 class _HomeViewState extends State<_HomeView> {
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -179,7 +180,8 @@ class _HomeViewState extends State<_HomeView> {
     _goToBranch(2, AppRoutes.whistle);
   }
 
-  // PANİĞİM: panik sinyalini gönderir; internet yoksa SMS köprüsünü önerir.
+  // PANİĞİM'e 2 sn basılınca çalışır: konumla birlikte panik sinyali gönderir.
+  // 10 sn içinde sunucu onayı gelmezse internet yok sayılır ve "SMS ile ailene haber ver" önerilir.
   Future<void> _handleTriggerDanger() async {
     final controller = context.read<SafetySignalController>();
     final outcome = await controller.triggerDanger();
@@ -202,7 +204,7 @@ class _HomeViewState extends State<_HomeView> {
     }
   }
 
-  // GÜVENDEYİM: panik sinyalini kapatır.
+  // GÜVENDEYİM'e basılınca çalışır: panik sinyalini kapatır (durum "safe" olur).
   Future<void> _handleMarkSafe() async {
     final ok = await context.read<SafetySignalController>().markSafe();
     if (!mounted) return;
@@ -228,7 +230,8 @@ class _HomeViewState extends State<_HomeView> {
     await _launchEmergencySms();
   }
 
-  // SMS uygulamasını acil durum yakını ve konum linkiyle açar.
+  // Telefonun SMS uygulamasını, acil durum yakınının numarası ve konum linkiyle hazır açar.
+  // SMS otomatik gitmez; kullanıcı Gönder'e basar (Play politikası gereği).
   Future<void> _launchEmergencySms() async {
     final controller = context.read<SafetySignalController>();
     final target = await controller.loadEmergencySmsTarget();
@@ -394,7 +397,7 @@ class _HomeViewState extends State<_HomeView> {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -561,7 +564,7 @@ class _HomeHeader extends StatelessWidget {
   final VoidCallback onRefreshLocation;
   final VoidCallback onOpenProfile;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -649,7 +652,7 @@ class _HomeHeader extends StatelessWidget {
 class _ActiveRequestEmptySlot extends StatelessWidget {
   const _ActiveRequestEmptySlot();
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

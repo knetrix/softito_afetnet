@@ -1,4 +1,5 @@
-// GoRouter tanımı: rotalar, iki rolün alt menüsü ve rol bazlı yönlendirme.
+// Sayfa geçişlerini yöneten GoRouter tanımı.
+// Her ekranın adresi (rota), iki rolün alt menüsü ve "kim hangi sayfaya gidebilir" kuralı burada.
 
 import 'package:go_router/go_router.dart';
 
@@ -24,12 +25,14 @@ GoRouter createAppRouter(AuthController auth) {
   return GoRouter(
     initialLocation: AppRoutes.splash,
     refreshListenable: auth, // oturum/rol değişince redirect yeniden çalışır
+    // Her sayfa geçişinde çalışır: kullanıcı oraya gidebilir mi? Gidemezse başka sayfaya yönlendirir.
     redirect: (context, state) => appRedirect(auth, state.matchedLocation),
     routes: [
       GoRoute(path: AppRoutes.splash, builder: (_, _) => const SplashScreen()),
       GoRoute(path: AppRoutes.onboarding, builder: (_, _) => const OnboardingScreen()),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.register, builder: (_, _) => const RegisterScreen()),
+      // Afetzedenin 4 sekmesi. StatefulShellRoute: sekmeler arasında geçince her sekmenin durumu korunur.
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => CitizenShell(shell: shell),
         branches: [
@@ -47,6 +50,7 @@ GoRouter createAppRouter(AuthController auth) {
           ]),
         ],
       ),
+      // Yetkilinin 4 sekmesi.
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => OfficialShell(shell: shell),
         branches: [
@@ -70,10 +74,12 @@ GoRouter createAppRouter(AuthController auth) {
 
 /// Rol bazlı yönlendirme (§2). Test edilebilmesi için ayrı fonksiyondur.
 String? appRedirect(AuthController auth, String location) {
+  // Oturum bilgisi henüz yükleniyorsa Splash ekranında beklenir.
   if (auth.isInitializing) {
     return location == AppRoutes.splash ? null : AppRoutes.splash;
   }
 
+  // Giriş yapılmamışsa yalnızca Onboarding, Giriş ve Kayıt açılabilir.
   final user = auth.currentUser;
   if (user == null) {
     if (AppRoutes.publicPaths.contains(location)) return null;

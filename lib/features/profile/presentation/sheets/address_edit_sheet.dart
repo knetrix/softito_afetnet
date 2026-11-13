@@ -1,4 +1,4 @@
-// Adres düzenleme formu.
+// Kayıtlı ikamet adresini düzenleme formu (alttan açılan panel).
 
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class _AddressEditForm extends StatefulWidget {
   final UserContactProfile? currentProfile;
   final Future<bool> Function({required String addressText}) onSave;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_AddressEditForm> createState() => _AddressEditFormState();
 }
@@ -44,7 +44,7 @@ class _AddressEditFormState extends State<_AddressEditForm> {
   late final TextEditingController _address;
   bool _isSaving = false;
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -53,7 +53,7 @@ class _AddressEditFormState extends State<_AddressEditForm> {
     );
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _address.dispose();
@@ -82,7 +82,7 @@ class _AddressEditFormState extends State<_AddressEditForm> {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

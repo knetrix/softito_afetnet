@@ -1,4 +1,4 @@
-// Canlı Akış ve Ekipler'in ortak etiket ve simgeleri.
+// Canlı Akış ve Ekipler ekranlarının ortak etiketleri: ihtiyaç türü, durum ve ekip türü için metin ve simge.
 
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';

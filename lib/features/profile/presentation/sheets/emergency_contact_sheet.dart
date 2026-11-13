@@ -1,4 +1,5 @@
-// Acil durum yakını düzenleme formu.
+// 1. derece acil durum yakınını (ad, yakınlık, telefon) düzenleme formu.
+// Bu numara internet yokken SMS köprüsünde kullanılır.
 
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,7 @@ class _EmergencyContactForm extends StatefulWidget {
     required String phone,
   }) onSave;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_EmergencyContactForm> createState() => _EmergencyContactFormState();
 }
@@ -58,7 +59,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
   final _phoneFormatter = Validators.phoneFormatter();
   bool _isSaving = false;
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -74,7 +75,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     );
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _name.dispose();
@@ -110,7 +111,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

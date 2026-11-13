@@ -1,4 +1,4 @@
-// Yaş ve kilo düzenleme formu.
+// Doğum yılı ve kilo düzenleme formu (yaş doğum yılından hesaplanır).
 
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class _PhysicalEditForm extends StatefulWidget {
   final Future<bool> Function({required int? birthYear, required int? weightKg})
   onSave;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_PhysicalEditForm> createState() => _PhysicalEditFormState();
 }
@@ -47,7 +47,7 @@ class _PhysicalEditFormState extends State<_PhysicalEditForm> {
   late final TextEditingController _weight;
   bool _isSaving = false;
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -59,7 +59,7 @@ class _PhysicalEditFormState extends State<_PhysicalEditForm> {
     );
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _birthYear.dispose();
@@ -104,7 +104,7 @@ class _PhysicalEditFormState extends State<_PhysicalEditForm> {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

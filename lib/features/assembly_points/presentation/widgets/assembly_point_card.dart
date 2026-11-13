@@ -1,4 +1,4 @@
-// Seçili toplanma noktasının bilgi kartı.
+// Haritada seçilen toplanma noktasının bilgi kartı: tür, mesafe, doluluk yüzdesi, hizmetler, açıklama.
 
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
@@ -82,7 +82,7 @@ class AssemblyPointCard extends StatelessWidget {
     }
   }
 
-  // Doluluk oranına göre renk (yeşil / turuncu / kırmızı).
+  // Doluluk oranına göre renk seçer: az doluysa yeşil, orta ise turuncu, çok doluysa kırmızı.
   Color _occupancyColor(BuildContext context, double rate) {
     final status = Theme.of(context).extension<AppStatusColors>()!;
     if (rate >= 0.90) return status.critical;
@@ -90,7 +90,7 @@ class AssemblyPointCard extends StatelessWidget {
     return status.normal;
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -1,4 +1,5 @@
 // "Resmi kurum uygulaması değildir · Acil durumda 112" uyarısı.
+// 112'ye dokununca telefonun arama ekranı açılır. Onboarding'de ve Giriş'te görünür.
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -12,24 +13,24 @@ import '../config/app_config.dart';
 class NotOfficialNotice extends StatefulWidget {
   const NotOfficialNotice({super.key});
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<NotOfficialNotice> createState() => _NotOfficialNoticeState();
 }
 
-// 112 bağlantısının dokunma tanıyıcısını tutar.
+// "112" yazısına dokunmayı algılayan nesne (metnin içindeki tıklanabilir kısım için).
 class _NotOfficialNoticeState extends State<NotOfficialNotice> {
   late final TapGestureRecognizer _callTap = TapGestureRecognizer()
     ..onTap = () => launchUrl(Uri(scheme: 'tel', path: AppConfig.emergencyNumber));
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _callTap.dispose();
     super.dispose();
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

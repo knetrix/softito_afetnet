@@ -1,4 +1,5 @@
-// Ortak bottom sheet (alttan açılan panel) bileşeni.
+// Ekranın altından açılan ortak panel (bottom sheet).
+// Çağrı formu, Detay, Ekip Yönlendir gibi küçük işlemler ayrı sayfa yerine bu panelde açılır.
 
 import 'package:flutter/material.dart';
 

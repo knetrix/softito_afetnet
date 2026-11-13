@@ -1,4 +1,5 @@
-// Toplanma alanları repository arayüzü.
+// "domain" katmanı: toplanma alanlarını getirme sözleşmesi (arayüz).
+// Ekranlar Firestore'u değil bu arayüzü bilir; böylece testte sahte veri verilebilir.
 
 import 'assembly_point.dart';
 

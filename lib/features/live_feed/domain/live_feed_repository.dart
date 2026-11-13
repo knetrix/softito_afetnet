@@ -1,4 +1,4 @@
-// Canlı Akış repository arayüzü.
+// "domain" katmanı: Canlı Akış verilerinin sözleşmesi (arayüz).
 
 import '../../safety_signal/domain/safety_signal.dart';
 import 'incident.dart';

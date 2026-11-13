@@ -1,4 +1,5 @@
-// Ana Sayfa'daki aktif çağrı kartı (durum, ekip, iptal).
+// Ana Sayfa'daki aktif çağrı kartı: durum, ihtiyaç türü, öncelik, yönlendirilen ekip ve "Çağrıyı İptal Et".
+// Çağrı kuyruktaysa "Gönderilmeyi Bekliyor" yazar.
 
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class ActiveRequestCard extends StatelessWidget {
   final Future<bool> Function(String requestId) onCancel;
   final bool isCancelling;
 
-  // Çağrı henüz gönderilemedi mi (kuyrukta mı).
+  // Çağrı henüz sunucuya gitmedi mi? (internet yokken kuyruğa yazılmış taslak)
   bool get isOffline => offlineDraft != null && request == null;
   // Çağrının kimliği (gönderilmiş ya da kuyruktaki).
   String get requestId => request?.id ?? offlineDraft!.id;
@@ -91,7 +92,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
-  // Onay sorup çağrıyı iptal eder.
+  // "Emin misiniz?" diye sorar; onaylanırsa çağrıyı iptal eder.
   Future<void> _handleCancel(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     final statusColors = Theme.of(context).extension<AppStatusColors>()!;
@@ -120,7 +121,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

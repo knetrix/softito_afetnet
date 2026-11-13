@@ -1,4 +1,5 @@
-// Profil'deki Türkçe / English seçimi.
+// Profil ekranındaki dil seçimi (Türkçe / English).
+// Seçim LocaleController'a iletilir, uygulama anında o dile geçer.
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ import '../services/locale_controller.dart';
 class LanguageSelector extends StatelessWidget {
   const LanguageSelector({super.key});
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

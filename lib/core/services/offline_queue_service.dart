@@ -1,4 +1,5 @@
-// İnternetsiz açılan yardım çağrılarını Hive'da tutup internet gelince gönderir.
+// Çevrimdışı çağrı kuyruğu: internet yokken açılan yardım çağrıları Hive'a (cihazdaki yerel veritabanı) yazılır,
+// internet gelince sırayla Firestore'a gönderilir. Uygulama kapanıp açılsa da kuyruk silinmez.
 
 import 'dart:async';
 
@@ -48,11 +49,11 @@ class OfflineQueueService extends ChangeNotifier {
   bool _isFlushing = false;
   bool _disposed = false;
 
-  // Çevrimdışı kuyruğun Hive kutusu.
+  // Kuyruğun saklandığı Hive kutusu (box = Hive'daki tablo gibi düşünülebilir).
   Box<Map>? get box => _box;
   // Kuyrukta bekleyen çağrı sayısı.
   int get queueLength => _box?.length ?? 0;
-  // Gönderilmeyi bekleyen çağrı var mı.
+  // Gönderilmeyi bekleyen çağrı var mı?
   bool get hasPendingItems => queueLength > 0;
 
   /// Kutudaki tüm bekleyen çağrıları döndürür.
@@ -123,20 +124,24 @@ class OfflineQueueService extends ChangeNotifier {
       return SubmitResult.queued;
     }
 
+    // Ağ var: göndermeyi dene. timeout: 10 sn içinde bitmezse TimeoutException fırlatır.
     try {
       await _repo.submitHelpRequest(effectiveDraft).timeout(_timeout);
       return SubmitResult.sent;
     } catch (e) {
+      // Hata internet yokluğundan kaynaklıysa çağrı kaybolmasın diye kuyruğa yazılır.
       if (isOfflineException(e)) {
         await _enqueue(effectiveDraft.copyWith(createdOffline: true));
         return SubmitResult.queued;
       }
+      // Başka bir hataysa (ör. yetki) ekrana iletilir.
       rethrow;
     }
   }
 
   /// Hive kutusundaki bekleyen çağrıları sırayla gönderir.
   Future<void> flushQueue() async {
+    // Zaten gönderim sürüyorsa ya da kuyruk boşsa bir şey yapma (aynı anda iki gönderim olmasın).
     if (_isFlushing || _box == null || _box!.isEmpty) return;
     _isFlushing = true;
 
@@ -156,6 +161,7 @@ class OfflineQueueService extends ChangeNotifier {
           await _repo
               .submitHelpRequest(draft.copyWith(createdOffline: true))
               .timeout(_timeout);
+          // Başarıyla gönderildi: kuyruktan sil ve ekrana haber ver (kart "Beklemede"ye döner).
           await _box!.delete(key);
           if (!_disposed) notifyListeners();
         } catch (e) {
@@ -172,14 +178,14 @@ class OfflineQueueService extends ChangeNotifier {
     }
   }
 
-  // Çağrıyı Hive kuyruğuna ekler.
+  // Çağrıyı kuyruğa ekler. Anahtar olarak çağrının kendi ID'si kullanılır; böylece aynı çağrı iki kez eklenmez.
   Future<void> _enqueue(HelpRequestDraft draft) async {
     _box ??= await Hive.openBox<Map>(boxName);
     await _box!.put(draft.id, draft.toJson());
     if (!_disposed) notifyListeners();
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

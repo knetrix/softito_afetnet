@@ -1,4 +1,5 @@
-// O3 Giriş ekranı.
+// O3 Giriş ekranı: giriş türü (afetzede/yetkili), e-posta, şifre, Şifremi Unuttum, Üye Olun.
+// Altta "Resmi kurum değildir · 112" uyarısı vardır.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +20,7 @@ import 'auth_texts.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -32,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _obscure = ValueNotifier(true);
   UserRole _role = UserRole.citizen;
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _email.dispose();
@@ -41,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  // Formu doğrular ve giriş yapar.
+  // Önce Form'u doğrular (alanlar doğru mu), sonra AuthController ile giriş yapar.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
@@ -84,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();

@@ -1,4 +1,5 @@
-// Tıbbi bilgi düzenleme formu (KVKK açık rızası ile).
+// Tıbbi bilgi formu: kan grubu, ilaçlar, kronik hastalık/alerji.
+// Tıbbi bilgi KVKK'da özel nitelikli veri olduğu için ilk kayıtta ayrıca açık rıza istenir.
 
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class _MedicalEditForm extends StatefulWidget {
     required DateTime consentAt,
   }) onSave;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_MedicalEditForm> createState() => _MedicalEditFormState();
 }
@@ -71,7 +72,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     '0 Rh-',
   ];
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -88,7 +89,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     _consent = widget.currentProfile?.hasMedicalConsent ?? false;
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _medications.dispose();
@@ -96,7 +97,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     super.dispose();
   }
 
-  // Açık rızayı kontrol eder ve tıbbi bilgiyi kaydeder.
+  // Açık rıza kutusu işaretli mi kontrol eder, sonra tıbbi bilgiyi kaydeder.
   Future<void> _submit() async {
     if (!_consent) {
       setState(() => _showConsentError = true);
@@ -127,7 +128,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

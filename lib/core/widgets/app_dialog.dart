@@ -1,4 +1,5 @@
-// Ortak onay ve bilgi diyaloğu.
+// Uygulamanın ortak diyalog (açılır pencere) bileşeni.
+// "Emin misiniz?" gibi onay soruları ve bilgi mesajları için kullanılır.
 
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,5 @@
-// Tasarımdaki renk token'ları.
+// Tasarım dosyalarından alınan renk kodları (token'lar).
+// Ekranlarda renk doğrudan yazılmaz, hep buradan kullanılır.
 
 import 'package:flutter/material.dart';
 

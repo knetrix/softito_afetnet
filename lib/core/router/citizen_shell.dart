@@ -1,4 +1,5 @@
-// Afetzede alt menüsü: Ana Sayfa / Toplanma / Düdük / Profil.
+// Afetzedenin kalıcı alt menüsü: Ana Sayfa / Toplanma / Düdük / Profil.
+// "Shell" = sekmeler değişse de ekranda sabit kalan çerçeve.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ class CitizenShell extends StatelessWidget {
 
   final StatefulNavigationShell shell;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

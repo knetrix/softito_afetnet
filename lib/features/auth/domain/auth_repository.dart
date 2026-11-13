@@ -1,4 +1,4 @@
-// Kimlik doğrulama repository arayüzü ve kayıt formu verisi.
+// "domain" katmanı: kimlik işlemlerinin sözleşmesi (arayüz) ve kayıt formundan gelen veriler (RegisterInput).
 
 import 'package:flutter/foundation.dart';
 

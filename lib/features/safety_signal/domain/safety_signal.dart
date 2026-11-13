@@ -1,4 +1,5 @@
-// Panik sinyali modeli: TEHLİKEDEYİM / GÜVENDEYİM ve iletim durumu.
+// "domain" katmanı: panik sinyali modeli. Durum (TEHLİKEDEYİM / GÜVENDEYİM), konum, zaman,
+// "Ulaşıldı" bilgisi ve sinyalin sunucuya ulaşıp ulaşmadığı.
 
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
@@ -61,7 +62,7 @@ class SafetySignal {
       other.handledAt == handledAt &&
       other.hasPendingWrites == hasPendingWrites;
 
-  // Eşitlik karşılaştırması için hash değeri.
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(
         uid,

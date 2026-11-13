@@ -1,4 +1,5 @@
-// Düdük sesini çalar/durdurur (internetsiz).
+// Düdük sesini çalan/durduran controller. Ses dosyası uygulamanın içindedir, internet gerekmez;
+// en yüksek seste döngüde çalar.
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
@@ -9,7 +10,7 @@ abstract interface class WhistleAudioBackend {
   Future<void> configureAndPlayLoop(String assetPath);
   // Sesi durdurur.
   Future<void> stop();
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   Future<void> dispose();
 }
 
@@ -53,7 +54,7 @@ class AudioPlayersWhistleBackend implements WhistleAudioBackend {
   @override
   Future<void> stop() => _player.stop();
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   Future<void> dispose() => _player.dispose();
 }
@@ -97,7 +98,7 @@ class WhistleController {
     if (!_disposed) isPlaying.value = false;
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   void dispose() {
     if (_disposed) return;
     _disposed = true;

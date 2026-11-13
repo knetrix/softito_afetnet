@@ -1,4 +1,4 @@
-// Onboarding'in küçük ortak parçaları (rozet, özellik etiketi).
+// Onboarding'de tekrar kullanılan küçük parçalar: kategori rozeti ve özellik etiketi.
 
 import 'package:flutter/material.dart'; // Flutter temel arayüz bileşenleri kütüphanesidir
 
@@ -11,7 +11,7 @@ class CategoryBadge extends StatelessWidget {
   final String text; // Rozet içerisinde yazılacak metindir
   const CategoryBadge({super.key, required this.dotColor, required this.text}); // Kurucu metottur
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Container( // Rozet kutusudur
@@ -47,7 +47,7 @@ class FeaturePill extends StatelessWidget {
   final String label; // Hap üzerinde gösterilecek metindir
   const FeaturePill({super.key, required this.icon, required this.label}); // Kurucu metottur
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Container( // Hap kutusudur
@@ -73,7 +73,7 @@ class FeaturePill extends StatelessWidget {
 class IntegrationCard extends StatelessWidget {
   const IntegrationCard({super.key}); // Kurucu metottur
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

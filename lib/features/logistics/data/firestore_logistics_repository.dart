@@ -1,4 +1,5 @@
-// Depo ve stok verileri; giriş/çıkış tek Transaction (eksi stok yok).
+// "data" katmanı: depo ve stok işlemleri. Stok giriş/çıkışı tek bir Transaction'dır:
+// miktar okunur, kontrol edilir (eksi stok yok), güncellenir ve hareket kaydı yazılır.
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -65,7 +66,8 @@ class FirestoreLogisticsRepository
         });
   }
 
-  // Stok giriş/çıkışı: tek Transaction'da miktarı günceller ve hareket kaydı yazar.
+  // Stok giriş/çıkışı yapar. Transaction = ya hepsi olur ya hiçbiri: iki yetkili aynı anda çıkış yapsa bile
+  // stok yanlış hesaplanmaz. Çıkış miktarı stoktan fazlaysa işlem reddedilir.
   @override
   Future<void> moveStock({
     required String warehouseId,
@@ -74,6 +76,7 @@ class FirestoreLogisticsRepository
     required int quantity,
     required bool isIncoming,
   }) async {
+    // Önce basit kontroller: miktar pozitif olmalı ve işlemi yapan kullanıcı belli olmalı.
     if (quantity <= 0) {
       throw ArgumentError('Miktar sıfırdan büyük olmalı.');
     }
@@ -82,6 +85,8 @@ class FirestoreLogisticsRepository
       throw ArgumentError('Kullanıcı bulunamadı.');
     }
 
+    // Kullanılacak belgelerin adresleri (referansları): depo, stok kalemi ve yeni hareket kaydı.
+    // movements.doc() parametresiz çağrılınca Firestore yeni, benzersiz bir ID üretir.
     final warehouseRef =
         _db.collection('warehouses').doc(warehouseId);
 
@@ -92,6 +97,7 @@ class FirestoreLogisticsRepository
         warehouseRef.collection('movements').doc();
 
     await _db.runTransaction((transaction) async {
+      // 1) Kalemin güncel miktarını Transaction içinde oku (o anki gerçek değer).
       final snapshot = await transaction.get(itemRef);
 
       if (!snapshot.exists) {
@@ -102,19 +108,23 @@ class FirestoreLogisticsRepository
       final currentQuantity =
           (data['quantity'] as num?)?.toInt() ?? 0;
 
+      // 2) Girişse ekle, çıkışsa çıkar.
       final newQuantity = isIncoming
           ? currentQuantity + quantity
           : currentQuantity - quantity;
 
+      // 3) Sonuç eksiye düşüyorsa işlemi durdur: hata fırlatılınca Transaction hiçbir şey yazmaz.
       if (newQuantity < 0) {
         throw const InsufficientStockException();
       }
 
+      // 4) Yeni miktarı yaz.
       transaction.update(itemRef, {
         'quantity': newQuantity,
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
+      // 5) Aynı işlemde hareket kaydını (kim, ne kadar, giriş/çıkış) yaz.
       transaction.set(movementRef, {
         'itemId': itemId,
         'type': isIncoming ? 'in' : 'out',

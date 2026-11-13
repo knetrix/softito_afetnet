@@ -1,4 +1,4 @@
-// Lojistik repository arayüzü ve yetersiz stok hatası.
+// "domain" katmanı: lojistik işlemlerinin sözleşmesi (arayüz) ve "stok yetersiz" hatası.
 
 import 'inventory_item.dart';
 

@@ -1,4 +1,5 @@
-// Kullanıcı modeli (users/{uid}: ad, rol, onay durumu).
+// "domain" katmanı: kullanıcı modeli (users/{uid}). Ad, rol (afetzede/yetkili), onay durumu,
+// birim, bölge ve ekip bilgisi. Telefon gibi gizli bilgiler burada değil, private/contact'tadır.
 
 import 'package:flutter/foundation.dart';
 

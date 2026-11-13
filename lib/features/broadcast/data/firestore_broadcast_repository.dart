@@ -1,4 +1,4 @@
-// Tahliye anonsunu Firestore'a yazar ve okur.
+// "data" katmanı: tahliye anonsunu Firestore'daki broadcasts koleksiyonuna yazar.
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
@@ -15,7 +15,7 @@ class FirestoreBroadcastRepository implements BroadcastRepository {
   static const minRadiusMeters = 100;
   static const maxRadiusMeters = 20000;
 
-  // Anonsu broadcasts koleksiyonuna yazar.
+  // Anonsu (tür, başlık, mesaj, merkez konum, yarıçap, gönderen) yeni bir belge olarak yazar.
   @override
   Future<void> send({
     required BroadcastType type,
