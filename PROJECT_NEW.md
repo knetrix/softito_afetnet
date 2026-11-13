@@ -115,7 +115,7 @@ Değerler ekran görüntülerinden **yaklaşık** okunmuştur.
 
 - **Yazı tipleri:** Space Grotesk (başlık), Inter (gövde), JetBrains Mono (etiket). `assets/fonts/` altına gömülür (internetsiz çalışır).
 - **Tema:** Material 3; renkler `ColorScheme` içine açıkça verilir, durum renkleri `ThemeExtension<AppStatusColors>` ile. Koyu ve açık tema; `ThemeMode.system`.
-- **Dil:** Türkçe + İngilizce (ARB). Uygulama **cihaz dilini** izler; Türkçe dışındaki dillerde İngilizce açılır. Ekranlarda sabit metin yazılmaz.
+- **Dil:** Türkçe + İngilizce (ARB). Uygulama cihaz dilinden bağımsız olarak **Türkçe** açılır; Profil'deki Dil seçiminden İngilizce seçilebilir, seçim cihazda saklanır. Ekranlarda sabit metin yazılmaz.
 
 ---
 
@@ -282,7 +282,7 @@ Tanımlar: **Sahibi** = belgenin sahibi · **Yetkili** = `role == 'official' && 
 | Hata & analitik | Firebase Crashlytics + Analytics |
 | State | Provider + `ChangeNotifier` / `ValueNotifier` |
 | Navigasyon | GoRouter: rol başına `StatefulShellRoute` (alt menü) + rol bazlı yönlendirme |
-| Yerel depolama | Hive (çevrimdışı çağrı kuyruğu) + SharedPreferences (`onboardingDone`) |
+| Yerel depolama | Hive (çevrimdışı çağrı kuyruğu) + SharedPreferences (`onboardingDone`, `app_language`) |
 | Harita | `flutter_map` + OpenStreetMap (API anahtarı gerekmez) |
 | Dil | `flutter_localizations` + `intl`: `app_tr.arb` + `app_en.arb` |
 | Kalite | `flutter analyze` temiz, `RenderFlex overflow` yok, `await` sonrası `mounted` kontrolü, iş kuralları için unit test |
