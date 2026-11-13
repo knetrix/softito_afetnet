@@ -43,15 +43,18 @@ import 'features/teams/domain/teams_repository.dart';
 
 import 'l10n/app_localizations.dart';
 
+// Uygulamanın kök widget'ı; dil denetleyicisini dışarıdan alır.
 class AfetNetApp extends StatefulWidget {
   const AfetNetApp({super.key, required this.localeController});
 
   final LocaleController localeController;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<AfetNetApp> createState() => _AfetNetAppState();
 }
 
+// Servisleri bir kez oluşturur ve oturum değişikliklerini dinler.
 class _AfetNetAppState extends State<AfetNetApp> {
   final AuthRepository _authRepository = FirebaseAuthRepository();
 
@@ -89,6 +92,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
 
   String? _listeningCitizenUid;
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -103,6 +107,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
     unawaited(_offlineQueueService.initialize());
   }
 
+  // Oturum veya rol değişince bildirim aboneliği gibi işleri günceller.
   void _onAuthChanged() {
     if (_auth.isInitializing) {
       return;
@@ -146,6 +151,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
     unawaited(_broadcastListener.start(uid));
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _auth.removeListener(_onAuthChanged);
@@ -163,6 +169,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
     super.dispose();
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

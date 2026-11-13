@@ -29,15 +29,18 @@ class PanicHoldButton extends StatefulWidget {
   final double size;
   final Duration holdDuration;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<PanicHoldButton> createState() => _PanicHoldButtonState();
 }
 
+// 2 sn basılı tutma animasyonunu yönetir.
 class _PanicHoldButtonState extends State<PanicHoldButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _holdController;
   bool _triggered = false;
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -47,6 +50,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     )..addStatusListener(_onHoldStatus);
   }
 
+  // Widget parametreleri değiştiğinde çalışır.
   @override
   void didUpdateWidget(covariant PanicHoldButton oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -58,6 +62,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     }
   }
 
+  // Animasyon tamamlanınca butonun işlemini çalıştırır.
   void _onHoldStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed && !_triggered) {
       _triggered = true;
@@ -66,6 +71,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     }
   }
 
+  // Basılı tutma başladı: animasyonu başlatır.
   void _startHold() {
     if (widget.isBusy || widget.isDangerActive) return;
     _triggered = false;
@@ -73,12 +79,14 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     _holdController.forward(from: 0);
   }
 
+  // Parmak erken kalktı: animasyonu geri sarar.
   void _cancelHold() {
     if (_holdController.isAnimating || _holdController.value > 0) {
       _holdController.reset();
     }
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _holdController.removeStatusListener(_onHoldStatus);
@@ -86,6 +94,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     super.dispose();
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

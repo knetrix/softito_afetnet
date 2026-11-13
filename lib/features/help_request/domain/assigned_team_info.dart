@@ -24,6 +24,7 @@ class AssignedTeamInfo {
           name == other.name &&
           leaderName == other.leaderName;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(id, name, leaderName);
 }

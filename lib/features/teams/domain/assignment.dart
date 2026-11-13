@@ -30,6 +30,7 @@ class Assignment {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
+  // Görev hâlâ sürüyor mu.
   bool get isActive => AssignmentFlow.isActive(status);
 
   /// Bir sonraki adım; görev bittiyse `null`.
@@ -44,6 +45,7 @@ class Assignment {
           other.teamId == teamId &&
           other.status == status;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(id, incidentId, teamId, status);
 }

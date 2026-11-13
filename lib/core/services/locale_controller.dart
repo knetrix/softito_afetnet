@@ -19,6 +19,7 @@ class LocaleController extends ChangeNotifier {
 
   final Future<SharedPreferences> Function() _prefsLoader;
 
+  // Seçili uygulama dili.
   Locale get locale => current;
 
   /// Saklanan seçimi yükler; ilk kare doğru dilde çizilsin diye
@@ -35,6 +36,7 @@ class LocaleController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Dili değiştirir ve seçimi cihaza kaydeder.
   Future<void> setLocale(Locale locale) async {
     final next = locale.languageCode == english.languageCode
         ? english

@@ -33,15 +33,24 @@ class ActiveRequestCard extends StatelessWidget {
   final Future<bool> Function(String requestId) onCancel;
   final bool isCancelling;
 
+  // Çağrı henüz gönderilemedi mi (kuyrukta mı).
   bool get isOffline => offlineDraft != null && request == null;
+  // Çağrının kimliği (gönderilmiş ya da kuyruktaki).
   String get requestId => request?.id ?? offlineDraft!.id;
+  // Çağrının ihtiyaç türü.
   HelpType get type => request?.type ?? offlineDraft!.type;
+  // Çağrının önceliği.
   int get priority => request?.priority ?? offlineDraft!.priority;
+  // Etkilenen kişi sayısı.
   int get peopleCount => request?.peopleCount ?? offlineDraft!.peopleCount;
+  // Adres tarifi.
   String? get addressText => request?.addressText ?? offlineDraft?.addressText;
+  // Açıklama.
   String? get description => request?.description ?? offlineDraft?.description;
+  // Çağrının durumu (kuyruktaysa beklemede).
   CaseStatus get status => request?.status ?? CaseStatus.pending;
 
+  // İhtiyaç türünün metni.
   String _typeLabel(BuildContext context, HelpType t) {
     final l10n = AppLocalizations.of(context);
     switch (t) {
@@ -62,6 +71,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
+  // İhtiyaç türünün simgesi.
   IconData _typeIcon(HelpType t) {
     switch (t) {
       case HelpType.debris:
@@ -81,6 +91,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
+  // Onay sorup çağrıyı iptal eder.
   Future<void> _handleCancel(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     final statusColors = Theme.of(context).extension<AppStatusColors>()!;
@@ -109,6 +120,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

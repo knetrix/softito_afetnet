@@ -15,6 +15,7 @@ class FirestoreBroadcastRepository implements BroadcastRepository {
   static const minRadiusMeters = 100;
   static const maxRadiusMeters = 20000;
 
+  // Anonsu broadcasts koleksiyonuna yazar.
   @override
   Future<void> send({
     required BroadcastType type,

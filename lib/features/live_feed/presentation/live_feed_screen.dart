@@ -40,6 +40,7 @@ class LiveFeedScreen extends StatelessWidget {
   /// Testlerde giriş yapmış yetkili; verilmezse `AuthController`'dan okunur.
   final String? officialUid;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final view = _LiveFeedView(tileLayer: tileLayer, officialUid: officialUid);
@@ -75,12 +76,14 @@ class LiveFeedScreen extends StatelessWidget {
   }
 }
 
+// Canlı Akış'ın asıl gövdesi: harita, filtreler, liste.
 class _LiveFeedView extends StatelessWidget {
   const _LiveFeedView({this.tileLayer, this.officialUid});
 
   final Widget? tileLayer;
   final String? officialUid;
 
+  // Oturumdaki yetkilinin uid'si.
   String? _officialUid(BuildContext context) {
     if (officialUid != null) return officialUid;
     try {
@@ -90,6 +93,7 @@ class _LiveFeedView extends StatelessWidget {
     }
   }
 
+  // Olay Detay panelini açar.
   void _openDetail(BuildContext context, Incident incident) {
     IncidentDetailSheet.show(
       context,
@@ -98,6 +102,7 @@ class _LiveFeedView extends StatelessWidget {
     );
   }
 
+  // Ekip Yönlendir panelini açar.
   void _openDispatch(BuildContext context, Incident incident) {
     final uid = _officialUid(context);
     if (uid == null) return;
@@ -111,6 +116,7 @@ class _LiveFeedView extends StatelessWidget {
     );
   }
 
+  // Panik sinyali panelini açar.
   void _openSignal(BuildContext context, SafetySignal signal) {
     final uid = _officialUid(context);
     if (uid == null) return;
@@ -123,6 +129,7 @@ class _LiveFeedView extends StatelessWidget {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final ctrl = context.watch<LiveFeedController>();
@@ -198,11 +205,13 @@ class _LiveFeedView extends StatelessWidget {
   }
 }
 
+// Öncelik ve tür filtre chip'leri.
 class _FilterBar extends StatelessWidget {
   const _FilterBar({required this.controller});
 
   final LiveFeedController controller;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -270,6 +279,7 @@ class FeedChoiceChip extends StatelessWidget {
   final Color? dotColor;
   final IconData? icon;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -321,11 +331,13 @@ class FeedChoiceChip extends StatelessWidget {
   }
 }
 
+// "Canlı Çağrı Akışı" başlığı ve sayaçlar.
 class _FeedHeader extends StatelessWidget {
   const _FeedHeader({required this.controller});
 
   final LiveFeedController controller;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

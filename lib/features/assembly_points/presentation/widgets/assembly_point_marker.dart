@@ -24,6 +24,7 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
   final LatLng? userLocation;
   final bool isNearest;
 
+  // Nokta türünün simgesi.
   IconData _iconForType(AssemblyPointType type) {
     switch (type) {
       case AssemblyPointType.assembly:
@@ -35,6 +36,7 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
     }
   }
 
+  // Pinin rengi.
   Color _pinColor(ThemeData theme) {
     final status = theme.extension<AppStatusColors>()!;
     switch (point.type) {
@@ -47,6 +49,7 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
     }
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -140,11 +143,13 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
   }
 }
 
+// Pinin altındaki küçük üçgeni çizer.
 class _TrianglePainter extends CustomPainter {
   _TrianglePainter({required this.color});
 
   final Color color;
 
+  // Şekli tuvale çizer.
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -160,6 +165,7 @@ class _TrianglePainter extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  // Değişiklik yoksa yeniden çizmez.
   @override
   bool shouldRepaint(_TrianglePainter oldDelegate) => oldDelegate.color != color;
 }

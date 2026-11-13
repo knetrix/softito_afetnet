@@ -24,6 +24,7 @@ class OfficialProfileScreen extends StatelessWidget {
 
   final ProfileRepository? repository;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -43,9 +44,11 @@ class OfficialProfileScreen extends StatelessWidget {
   }
 }
 
+// Yetkili profilinin asıl gövdesi.
 class _OfficialProfileView extends StatelessWidget {
   const _OfficialProfileView();
 
+  // Addan baş harfleri çıkarır (avatar için).
   String _getInitials(String name) {
     final parts = name.trim().split(RegExp(r'\s+'));
     if (parts.isEmpty) return 'Y';
@@ -53,6 +56,7 @@ class _OfficialProfileView extends StatelessWidget {
     return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
   }
 
+  // Onay sorup oturumu kapatır.
   Future<void> _signOut(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     final confirmed = await AppDialog.confirm(
@@ -101,6 +105,7 @@ class _OfficialProfileView extends StatelessWidget {
     }
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -314,6 +319,7 @@ class _OfficialProfileView extends StatelessWidget {
   }
 }
 
+// Birim / bölge / ekip bilgi satırı.
 class _OfficialInfoTile extends StatelessWidget {
   const _OfficialInfoTile({
     required this.label,
@@ -325,6 +331,7 @@ class _OfficialInfoTile extends StatelessWidget {
   final String value;
   final IconData icon;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final muted = Theme.of(context).colorScheme.onSurfaceVariant;

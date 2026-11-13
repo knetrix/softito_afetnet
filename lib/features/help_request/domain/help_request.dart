@@ -47,10 +47,14 @@ class HelpRequest {
   final DateTime? updatedAt;
   final DateTime? resolvedAt;
 
+  // Çağrı beklemede mi.
   bool get isPending => status == CaseStatus.pending;
+  // Çağrı çözüldü mü.
   bool get isResolved => status == CaseStatus.resolved;
+  // Çağrı iptal edildi mi.
   bool get isCancelled => status == CaseStatus.cancelled;
 
+  // Verilen alanları değiştirilmiş bir kopya döndürür.
   HelpRequest copyWith({
     String? id,
     String? createdBy,
@@ -102,6 +106,7 @@ class HelpRequest {
           incidentId == other.incidentId &&
           updatedAt == other.updatedAt;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(id, createdBy, status, incidentId, updatedAt);
 }

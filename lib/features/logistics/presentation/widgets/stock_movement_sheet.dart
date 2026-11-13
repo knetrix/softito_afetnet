@@ -8,6 +8,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../domain/inventory_item.dart';
 import '../../domain/logistics_repository.dart';
 
+// Stok giriş/çıkış formu.
 class StockMovementSheet extends StatefulWidget {
   const StockMovementSheet({
     super.key,
@@ -19,6 +20,7 @@ class StockMovementSheet extends StatefulWidget {
 
   final Future<void> Function(int quantity, bool incoming) onSave;
 
+  // Formu alttan açar.
   static Future<void> open(
     BuildContext context, {
     required InventoryItem item,
@@ -31,10 +33,12 @@ class StockMovementSheet extends StatefulWidget {
     );
   }
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<StockMovementSheet> createState() => _StockMovementSheetState();
 }
 
+// Hareket türünü, miktarı ve kaydetmeyi yönetir.
 class _StockMovementSheetState extends State<StockMovementSheet> {
   final _formKey = GlobalKey<FormState>();
   final _quantityController = TextEditingController();
@@ -43,12 +47,14 @@ class _StockMovementSheetState extends State<StockMovementSheet> {
   bool _isSaving = false;
   String? _error;
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _quantityController.dispose();
     super.dispose();
   }
 
+  // Hareketi kaydeder; stok yetersizse uyarır.
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -83,6 +89,7 @@ class _StockMovementSheetState extends State<StockMovementSheet> {
     }
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

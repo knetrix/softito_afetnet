@@ -14,7 +14,9 @@ abstract class ConnectivityService extends ChangeNotifier {
   bool get hasNetworkInterface;
   Stream<bool> get onNetworkChanged;
 
+  // Bağlantı dinlemesini başlatır.
   Future<void> initialize();
+  // Cihazın şu an bir ağa bağlı olup olmadığını kontrol eder.
   Future<bool> checkNetworkInterface();
 }
 
@@ -31,12 +33,15 @@ class DeviceConnectivityService extends ConnectivityService {
   bool _initialized = false;
   bool _disposed = false;
 
+  // Son bilinen ağ bağlantısı durumu.
   @override
   bool get hasNetworkInterface => _hasNetworkInterface;
 
+  // Ağ bağlantısı değiştiğinde haber veren akış.
   @override
   Stream<bool> get onNetworkChanged => _changes.stream;
 
+  // İlk bağlantı durumunu okur ve değişiklikleri dinlemeye başlar.
   @override
   Future<void> initialize() async {
     if (_initialized) return;
@@ -50,6 +55,7 @@ class DeviceConnectivityService extends ConnectivityService {
     }
   }
 
+  // Bağlantı durumunu anlık olarak sorgular.
   @override
   Future<bool> checkNetworkInterface() async {
     try {
@@ -61,6 +67,7 @@ class DeviceConnectivityService extends ConnectivityService {
     return _hasNetworkInterface;
   }
 
+  // Gelen bağlantı sonucunu işleyip dinleyicilere bildirir.
   void _handleResults(List<ConnectivityResult> results) {
     final next = results.any((r) => r != ConnectivityResult.none);
     if (next == _hasNetworkInterface) return;
@@ -69,6 +76,7 @@ class DeviceConnectivityService extends ConnectivityService {
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

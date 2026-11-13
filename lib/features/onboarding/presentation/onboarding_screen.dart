@@ -15,6 +15,7 @@ import '../screens/splash_onboarding_screen.dart';
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     // Splash ile aynı nedenle her zaman koyu temada gösterilir.

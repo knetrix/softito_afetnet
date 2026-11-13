@@ -10,10 +10,13 @@ import '../../profile/domain/profile_repository.dart';
 import '../domain/safety_signal.dart';
 import '../domain/safety_signal_repository.dart';
 
+// Panik hata türleri: konum yok, gönderilemedi.
 enum SafetySignalError { locationUnavailable, sendFailed }
 
+// PANİĞİM sonucu: iletildi, çevrimdışı bekliyor, konum yok, başarısız.
 enum PanicTriggerOutcome { confirmed, pendingOffline, locationUnavailable, failed }
 
+// SMS köprüsü hedefi: acil durum yakınının telefonu ve konum.
 @immutable
 class EmergencySmsTarget {
   const EmergencySmsTarget({
@@ -62,11 +65,14 @@ class SafetySignalController extends ChangeNotifier {
   bool _disposed = false;
 
   SafetySignal? _signal;
+  // Kullanıcının mevcut sinyali.
   SafetySignal? get signal => _signal;
 
+  // TEHLİKEDEYİM sinyali açık mı.
   bool get isDangerActive => _signal?.isDanger ?? false;
 
   SignalDelivery? _lastDelivery;
+  // Açık sinyalin iletim durumu (iletildi / bekliyor).
   SignalDelivery? get delivery => isDangerActive
       ? (_signal!.hasPendingWrites
           ? SignalDelivery.pending
@@ -74,15 +80,19 @@ class SafetySignalController extends ChangeNotifier {
       : _lastDelivery;
 
   bool _busy = false;
+  // Bir işlem sürüyor mu.
   bool get isBusy => _busy;
 
   SafetySignalError? _error;
+  // Son hata.
   SafetySignalError? get error => _error;
 
   LatLng? _lastPanicCoordinates;
+  // Son panik sinyalinin koordinatı (SMS linki için).
   LatLng? get lastPanicCoordinates =>
       _lastPanicCoordinates ?? _signal?.location ?? _location.currentPosition;
 
+  // Hatayı temizler.
   void clearError() {
     if (_error == null) return;
     _error = null;
@@ -158,10 +168,12 @@ class SafetySignalController extends ChangeNotifier {
     }
   }
 
+  // Kapanmadıysa dinleyicilere haber verir.
   void _notify() {
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     if (_disposed) return;

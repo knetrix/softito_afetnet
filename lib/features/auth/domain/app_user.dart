@@ -30,6 +30,7 @@ class AppUser {
   final String? region;
   final String? teamId;
 
+  // Kullanıcı yetkili mi.
   bool get isOfficial => role == UserRole.official;
 
   /// Onaysız yetkili hiçbir yetkili verisine erişemez (§2, R4).

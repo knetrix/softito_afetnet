@@ -23,6 +23,7 @@ class IncidentProgress {
       other.status == status &&
       other.assignedTeamId == assignedTeamId;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(status, assignedTeamId);
 }

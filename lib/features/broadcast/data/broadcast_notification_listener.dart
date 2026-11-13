@@ -89,6 +89,7 @@ class BroadcastNotificationListener {
     }
   }
 
+  // Yeni gelen anonsları ayıklayıp işler.
   void _onSnapshot(QuerySnapshot<Map<String, dynamic>> snapshot) {
     if (_activeUid == null) {
       return;
@@ -114,6 +115,7 @@ class BroadcastNotificationListener {
     }
   }
 
+  // Kullanıcı yarıçap içindeyse anons bildirimini gösterir.
   Future<void> _handleBroadcast(
     DocumentSnapshot<Map<String, dynamic>> document,
   ) async {
@@ -220,6 +222,7 @@ class BroadcastNotificationListener {
     }
   }
 
+  // Anons türünün seçili dildeki başlığı.
   static String? _localizedTitle(Object? type) {
     final l10n = lookupAppLocalizations(LocaleController.current);
     return switch (type) {
@@ -229,6 +232,7 @@ class BroadcastNotificationListener {
     };
   }
 
+  // Gösterilen anonsları kaydeder (aynı bildirim iki kez çıkmasın).
   Future<void> _saveProcessedIds(String uid) async {
     final preferences = await SharedPreferences.getInstance();
 
@@ -263,6 +267,7 @@ class BroadcastNotificationListener {
     _processingIds.clear();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   void dispose() {
     stop();
   }

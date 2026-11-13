@@ -21,6 +21,7 @@ class AuthException implements Exception {
 
   final AuthFailure failure;
 
+  // Hata ayıklama için okunur metin döndürür.
   @override
   String toString() => 'AuthException(${failure.name})';
 }

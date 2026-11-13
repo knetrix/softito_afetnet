@@ -39,9 +39,13 @@ class ActiveHelpRequestController extends ChangeNotifier {
   bool _isCancelling = false;
   bool _disposed = false;
 
+  // Afetzedenin aktif çağrısı (yoksa null).
   HelpRequest? get activeRequest => _activeRequest;
+  // Çağrıya atanan ekip bilgisi.
   AssignedTeamInfo? get assignedTeam => _assignedTeam;
+  // Veriler yükleniyor mu.
   bool get isLoading => _isLoading;
+  // İptal işlemi sürüyor mu.
   bool get isCancelling => _isCancelling;
 
   /// Kural 4: Henüz Firestore'a iletilmemiş, yerel Hive kuyruğunda bekleyen çağrı var mı?
@@ -63,6 +67,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
           !_activeRequest!.isResolved) ||
       hasPendingOffline;
 
+  // Aktif çağrıyı ve çevrimdışı kuyruğu dinlemeye başlar.
   void _init() {
     _offlineQueue.addListener(_onOfflineQueueChanged);
     _requestSub = _repo.watchActiveHelpRequest(_uid).listen(
@@ -99,6 +104,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     }, onError: (Object e) => debugPrint('Incident progress error: $e'));
   }
 
+  // Gelen çağrıya göre olay durumunu ve ekip bilgisini günceller.
   Future<void> _apply() async {
     final req = withIncidentProgress(_rawRequest, _incidentProgress);
     _activeRequest = req;
@@ -136,6 +142,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     return req.copyWith(status: progress.status, assignedTeamId: teamId);
   }
 
+  // Çevrimdışı kuyruk değişince kartı yeniler.
   void _onOfflineQueueChanged() {
     if (!_disposed) notifyListeners();
   }
@@ -169,6 +176,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     }
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

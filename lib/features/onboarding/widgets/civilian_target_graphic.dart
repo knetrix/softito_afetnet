@@ -8,6 +8,7 @@ import '../../../core/theme/app_colors.dart'; // Projenin renk paletidir
 class CivilianTargetGraphic extends StatelessWidget {
   const CivilianTargetGraphic({super.key}); // Kurucu metottur
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     const double size = 260.0; // Hedef alanının sabit kare boyutudur (260x260 px)
@@ -67,6 +68,7 @@ class _CoordText extends StatelessWidget {
   final String text; // Ekrana yazılacak koordinat metnidir
   const _CoordText(this.text);
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return Text( // Metni ekrana basar
@@ -78,6 +80,7 @@ class _CoordText extends StatelessWidget {
 
 // CustomPainter: Tuvale kalın çember ve yay çizen özel grafik ressamıdır
 class _TargetArcPainter extends CustomPainter {
+  // Şekli tuvale çizer.
   @override
   void paint(Canvas canvas, Size size) { // Çizim işlemlerini yürüten ana metottur
     final center = Offset(size.width / 2, size.height / 2); // Tuvalin tam orta koordinatıdır
@@ -104,6 +107,7 @@ class _TargetArcPainter extends CustomPainter {
     );
   }
 
+  // Değişiklik yoksa yeniden çizmez.
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false; // Çizim sabit olduğu için tekrar çizimi engeller
 }

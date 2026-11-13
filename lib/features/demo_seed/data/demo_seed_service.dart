@@ -19,6 +19,7 @@ class DemoSeedService {
 
   final FirebaseFirestore _db;
 
+  // Koordinatın 8 haneli geohash'i.
   static String _geohash(GeoPoint p) => GeoFirePoint(p).geohash.substring(0, 8);
 
   /// Ekipler (T1 örnek adları). `team_04` demo yetkilisinin ekibidir (§8).
@@ -57,6 +58,7 @@ class DemoSeedService {
     ),
   };
 
+  // Demo ekip belgesinin verisi.
   static Map<String, dynamic> _team(
     String name,
     String type,
@@ -155,6 +157,7 @@ class DemoSeedService {
     ),
   };
 
+  // Demo toplanma noktası belgesinin verisi.
   static Map<String, dynamic> _point(
     String name,
     String type,

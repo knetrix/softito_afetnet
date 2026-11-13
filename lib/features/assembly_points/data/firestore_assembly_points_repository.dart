@@ -16,19 +16,23 @@ class FirestoreAssemblyPointsRepository implements AssemblyPointsRepository {
 
   final FirebaseFirestore _db;
 
+  // assembly_points koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _collection =>
       _db.collection('assembly_points');
 
+  // Firestore belgelerini AssemblyPoint listesine çevirir.
   static List<AssemblyPoint> _parse(QuerySnapshot<Map<String, dynamic>> snap) =>
       snap.docs
           .map((doc) => AssemblyPoint.tryFromJson(doc.id, doc.data()))
           .whereType<AssemblyPoint>()
           .toList();
 
+  // Toplanma noktalarını canlı izler.
   @override
   Stream<List<AssemblyPoint>> watchAssemblyPoints() =>
       _collection.snapshots().map(_parse);
 
+  // Toplanma noktalarını bir kez okur.
   @override
   Future<List<AssemblyPoint>> getAssemblyPoints() async =>
       _parse(await _collection.get());

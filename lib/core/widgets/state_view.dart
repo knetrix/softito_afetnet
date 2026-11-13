@@ -29,6 +29,7 @@ class StateView extends StatelessWidget {
   final Widget? loadingWidget;
   final IconData emptyIcon;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

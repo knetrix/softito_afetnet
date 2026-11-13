@@ -38,6 +38,7 @@ class TeamsScreen extends StatelessWidget {
   /// Testlerde giriş yapmış yetkili; verilmezse `AuthController`'dan okunur.
   final String? officialUid;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final view = _TeamsView(tileLayer: tileLayer, officialUid: officialUid);
@@ -58,12 +59,14 @@ class TeamsScreen extends StatelessWidget {
   }
 }
 
+// Ekipler ekranının asıl gövdesi.
 class _TeamsView extends StatelessWidget {
   const _TeamsView({this.tileLayer, this.officialUid});
 
   final Widget? tileLayer;
   final String? officialUid;
 
+  // Oturumdaki yetkilinin uid'si.
   String? _officialUid(BuildContext context) {
     if (officialUid != null) return officialUid;
     try {
@@ -73,6 +76,7 @@ class _TeamsView extends StatelessWidget {
     }
   }
 
+  // Görev Ata panelini açar.
   void _assign(BuildContext context, Team team) {
     final uid = _officialUid(context);
     if (uid == null) return;
@@ -85,6 +89,7 @@ class _TeamsView extends StatelessWidget {
     );
   }
 
+  // Görev Güncelle panelini açar.
   void _update(BuildContext context, Team team) {
     final uid = _officialUid(context);
     if (uid == null) return;
@@ -108,6 +113,7 @@ class _TeamsView extends StatelessWidget {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final ctrl = context.watch<TeamsController>();
@@ -186,11 +192,13 @@ class _TeamsView extends StatelessWidget {
   }
 }
 
+// Özet başlık: tim ve personel sayısı.
 class _Header extends StatelessWidget {
   const _Header({required this.controller});
 
   final TeamsController controller;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -254,11 +262,13 @@ class _Header extends StatelessWidget {
   }
 }
 
+// Ekip türü filtre chip'leri.
 class _TypeFilterBar extends StatelessWidget {
   const _TypeFilterBar({required this.controller});
 
   final TeamsController controller;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -296,6 +306,7 @@ class _TypeFilterBar extends StatelessWidget {
   }
 }
 
+// Ekiplerin konumunu gösteren küçük harita.
 class _MiniMap extends StatelessWidget {
   const _MiniMap({
     required this.teams,
@@ -307,6 +318,7 @@ class _MiniMap extends StatelessWidget {
   final TeamsController controller;
   final Widget? tileLayer;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final status = Theme.of(context).extension<AppStatusColors>()!;
@@ -411,6 +423,7 @@ class TeamCard extends StatelessWidget {
   final VoidCallback onAssign;
   final VoidCallback onUpdate;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

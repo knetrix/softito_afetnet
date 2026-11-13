@@ -24,10 +24,12 @@ import 'auth_texts.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+// Kayıt formunun durumu.
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _fullName = TextEditingController();
@@ -42,6 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _legalAccepted = false;
   bool _showLegalError = false;
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _fullName.dispose();
@@ -53,6 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  // Formu doğrular ve hesabı açar.
   Future<void> _submit() async {
     final valid = _formKey.currentState!.validate();
     setState(() => _showLegalError = !_legalAccepted);
@@ -82,11 +86,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     context.canPop() ? context.pop() : context.go(AppRoutes.login);
   }
 
+  // Yasal metni (KVKK, Gizlilik) tarayıcıda açar.
   void _openLegal(String page) {
     final url = AppConfig.legalUrl(page, Localizations.localeOf(context));
     launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -340,11 +346,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
+// Şifre güç göstergesi çubuğu.
 class _PasswordStrengthBar extends StatelessWidget {
   const _PasswordStrengthBar({required this.strength});
 
   final int strength;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

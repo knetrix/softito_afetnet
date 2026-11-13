@@ -12,20 +12,24 @@ import '../config/app_config.dart';
 class NotOfficialNotice extends StatefulWidget {
   const NotOfficialNotice({super.key});
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<NotOfficialNotice> createState() => _NotOfficialNoticeState();
 }
 
+// 112 bağlantısının dokunma tanıyıcısını tutar.
 class _NotOfficialNoticeState extends State<NotOfficialNotice> {
   late final TapGestureRecognizer _callTap = TapGestureRecognizer()
     ..onTap = () => launchUrl(Uri(scheme: 'tel', path: AppConfig.emergencyNumber));
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _callTap.dispose();
     super.dispose();
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

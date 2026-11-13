@@ -9,6 +9,7 @@ class RadarTargetWidget extends StatefulWidget {
   final double size; // Radarın piksel cinsinden kare boyutudur
   const RadarTargetWidget({super.key, this.size = 220}); // Kurucu metottur (varsayılan 220px)
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<RadarTargetWidget> createState() => _RadarTargetWidgetState(); // Durum yöneticisini başlatır
 }
@@ -19,6 +20,7 @@ class _RadarTargetWidgetState extends State<RadarTargetWidget> with SingleTicker
   late final Animation<double> _pulse; // Radarın büyüyüp küçülmesini sağlayan nabız animasyonudur
   late final Animation<double> _rotation; // Radarın kesikli halkasını döndüren açı animasyonudur
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState(); // Üst sınıfın başlangıç mantığını çalıştırır
@@ -31,12 +33,14 @@ class _RadarTargetWidgetState extends State<RadarTargetWidget> with SingleTicker
     );
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _controller.dispose(); // Bellek sızıntısını önlemek için animasyon kontrolcüsünü siler
     super.dispose(); // Üst sınıfın dispose işlemini tamamlar
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder( // Animasyon her kare ilerlediğinde altındaki ağacı yeniden çizer
@@ -88,6 +92,7 @@ class _RadarPainter extends CustomPainter {
   final double rotation; // Anlık dönme açısıdır
   _RadarPainter({required this.rotation}); // Kurucu metottur
 
+  // Şekli tuvale çizer.
   @override
   void paint(Canvas canvas, Size size) { // Tuval çizim fonksiyonudur
     final center = Offset(size.width / 2, size.height / 2); // Tuval orta noktasıdır
@@ -118,6 +123,7 @@ class _RadarPainter extends CustomPainter {
     canvas.drawLine(Offset(center.dx + dist - 8, center.dy), Offset(center.dx + dist + 8, center.dy), tick); // Sağ çentik (Doğu)
   }
 
+  // Değişiklik yoksa yeniden çizmez.
   @override
   bool shouldRepaint(covariant _RadarPainter oldDelegate) => oldDelegate.rotation != rotation; // Açı değiştikçe tuvali yeniden çizer
 }

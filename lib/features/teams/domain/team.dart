@@ -44,6 +44,7 @@ class Team {
   final String? currentTask;
   final DateTime? updatedAt;
 
+  // Ekip boşta mı.
   bool get isAvailable => status == TeamStatus.available;
 
   @override
@@ -60,6 +61,7 @@ class Team {
           other.locationText == locationText &&
           other.currentTask == currentTask;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(
     id,

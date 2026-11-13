@@ -34,9 +34,11 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
   final FirebaseFirestore _db;
   final DistanceCalculator _distanceBetween;
 
+  // help_requests koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _helpRequests =>
       _db.collection('help_requests');
 
+  // incidents koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _incidents =>
       _db.collection('incidents');
 
@@ -97,6 +99,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     return null;
   }
 
+  // Çağrıyı gönderir: 50 m içinde açık olay varsa ona bağlar, yoksa yeni olay açar (Transaction).
   @override
   Future<String> submitHelpRequest(HelpRequestDraft draft) async {
     final location = draft.location;
@@ -226,6 +229,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     return latest;
   }
 
+  // Bağlı olayın görev durumunu canlı izler.
   @override
   Stream<IncidentProgress?> watchIncidentProgress(String incidentId) {
     return _db.collection('incidents').doc(incidentId).snapshots().map((snap) {
@@ -239,6 +243,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     });
   }
 
+  // Atanan ekibin adını ve liderini okur.
   @override
   Future<AssignedTeamInfo?> fetchTeamInfo(String teamId) async {
     try {
@@ -255,6 +260,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     }
   }
 
+  // Çağrıyı iptal eder (yalnızca status → cancelled).
   @override
   Future<void> cancelHelpRequest(String requestId) {
     // §5.5: sahibi yalnızca `status → cancelled` yazabilir.
@@ -263,6 +269,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     });
   }
 
+  // Firestore belgesini HelpRequest modeline çevirir.
   HelpRequest _fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
     final geo = data['location'] as GeoPoint;

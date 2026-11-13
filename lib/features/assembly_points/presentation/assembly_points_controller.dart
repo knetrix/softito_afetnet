@@ -33,10 +33,15 @@ class AssemblyPointsController extends ChangeNotifier {
   bool _isLoading = true;
   bool _disposed = false;
 
+  // Gösterilen toplanma noktaları.
   List<AssemblyPoint> get points => _points;
+  // Seçili tür filtresi (null = tümü).
   AssemblyPointType? get filter => _filter;
+  // Haritada seçili nokta.
   AssemblyPoint? get selectedPoint => _selectedPoint;
+  // Kullanıcının konumu.
   LatLng? get userLocation => _userLocation;
+  // Veriler yükleniyor mu.
   bool get isLoading => _isLoading;
 
   /// Filtrelenmiş ve kullanıcı konumuna olan mesafeye göre sıralanmış liste
@@ -60,6 +65,7 @@ class AssemblyPointsController extends ChangeNotifier {
     return list.take(3).toList();
   }
 
+  // Noktaları dinlemeye ve konumu almaya başlar.
   void _init() {
     _locationService?.addListener(_onLocationChanged);
     _subscription = _repo.watchAssemblyPoints().listen(
@@ -84,6 +90,7 @@ class AssemblyPointsController extends ChangeNotifier {
     );
   }
 
+  // Konum değişince mesafeleri günceller.
   void _onLocationChanged() {
     final newPos = _locationService?.currentPosition;
     if (newPos != null && newPos != _userLocation) {
@@ -119,6 +126,7 @@ class AssemblyPointsController extends ChangeNotifier {
     return 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng';
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

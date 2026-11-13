@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/user_contact_profile.dart';
 
+// Adres düzenleme formunu alttan açar.
 Future<void> showAddressEditSheet(
   BuildContext context, {
   required UserContactProfile? currentProfile,
@@ -23,6 +24,7 @@ Future<void> showAddressEditSheet(
   );
 }
 
+// Adres formu widget'ı.
 class _AddressEditForm extends StatefulWidget {
   const _AddressEditForm({
     required this.currentProfile,
@@ -32,14 +34,17 @@ class _AddressEditForm extends StatefulWidget {
   final UserContactProfile? currentProfile;
   final Future<bool> Function({required String addressText}) onSave;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<_AddressEditForm> createState() => _AddressEditFormState();
 }
 
+// Adres alanlarını ve kaydetmeyi yönetir.
 class _AddressEditFormState extends State<_AddressEditForm> {
   late final TextEditingController _address;
   bool _isSaving = false;
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -48,12 +53,14 @@ class _AddressEditFormState extends State<_AddressEditForm> {
     );
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _address.dispose();
     super.dispose();
   }
 
+  // Formu doğrular ve adresi kaydeder.
   Future<void> _submit() async {
     setState(() => _isSaving = true);
     final ok = await widget.onSave(addressText: _address.text);
@@ -75,6 +82,7 @@ class _AddressEditFormState extends State<_AddressEditForm> {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

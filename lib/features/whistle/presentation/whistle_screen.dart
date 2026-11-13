@@ -16,15 +16,18 @@ class WhistleScreen extends StatefulWidget {
 
   final WhistleController? controller;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<WhistleScreen> createState() => _WhistleScreenState();
 }
 
+// Düdük ekranının animasyonlarını yönetir.
 class _WhistleScreenState extends State<WhistleScreen> {
   late final WhistleController _controller =
       widget.controller ?? WhistleController();
   late final bool _ownsController = widget.controller == null;
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     if (_ownsController) {
@@ -33,6 +36,7 @@ class _WhistleScreenState extends State<WhistleScreen> {
     super.dispose();
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -155,6 +159,7 @@ class _WhistleScreenState extends State<WhistleScreen> {
   }
 }
 
+// Düdük çalarken dalgalanan halka.
 class _PulseRing extends StatelessWidget {
   const _PulseRing({
     required this.size,
@@ -166,6 +171,7 @@ class _PulseRing extends StatelessWidget {
   final Color color;
   final double alpha;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(

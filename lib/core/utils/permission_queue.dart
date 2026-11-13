@@ -6,6 +6,7 @@
 abstract final class PermissionQueue {
   static Future<void> _last = Future.value();
 
+  // İzin isteğini sıraya koyar; önceki bitmeden yenisini açmaz.
   static Future<T> run<T>(Future<T> Function() request) {
     final result = _last.then((_) => request());
     _last = result.then((_) {}, onError: (Object _) {});
