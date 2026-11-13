@@ -63,7 +63,7 @@ const _pending = AppUser(uid: 'o2', fullName: 'Onaysız', role: UserRole.officia
 RegisterInput _input(UserRole role) => RegisterInput(
       role: role,
       fullName: 'Yeni Kullanıcı',
-      email: 'yeni@afetnet.demo',
+      email: 'yeni@example.com',
       phone: '+905321234567',
       password: 'Abcdefg1',
       notificationsOptIn: true,

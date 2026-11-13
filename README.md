@@ -97,7 +97,7 @@ Demo verisi (ekipler, depolar, stok ve toplanma noktaları) debug derlemede yetk
 
 ## Mimari
 
-Clean Architecture: ortak kodlar `core/` altında (tema, router, servisler, ortak widget'lar), her özellik `features/<özellik>/` altında `domain/` (model + repository arayüzü), `data/` (Firestore repository) ve `presentation/` (ekran + controller) katmanlarına ayrılır. State `Provider` + `ChangeNotifier`, navigasyon GoRouter (her rol için ayrı `StatefulShellRoute` ve rol bazlı yönlendirme). Ücretsiz Spark planda sunucu kodu çalışmadığı için iş mantığı istemcide, doğruluğu Security Rules ile denetlenir. Ayrıntılar: [PROJECT_NEW.md](PROJECT_NEW.md). Geliştirme günlüğü ve kararlar: [DONE.md](DONE.md), görev dağılımı: [GOREV_DAGILIMI.md](GOREV_DAGILIMI.md).
+Clean Architecture: ortak kodlar `core/` altında (tema, router, servisler, ortak widget'lar), her özellik `features/<özellik>/` altında `domain/` (model + repository arayüzü), `data/` (Firestore repository) ve `presentation/` (ekran + controller) katmanlarına ayrılır. State `Provider` + `ChangeNotifier`, navigasyon GoRouter (her rol için ayrı `StatefulShellRoute` ve rol bazlı yönlendirme). Ücretsiz Spark planda sunucu kodu çalışmadığı için iş mantığı istemcide, doğruluğu Security Rules ile denetlenir.
 
 ## Notlar
 

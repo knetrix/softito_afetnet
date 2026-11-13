@@ -19,7 +19,7 @@ doc/api/
 .flutter-plugins
 .flutter-plugins-dependencies
 
-# Android imzalama anahtarları repoya eklenmez (PROJECT_NEW.md §7)
+# Android imzalama anahtarları repoya eklenmez
 *.jks
 *.keystore
 key.properties

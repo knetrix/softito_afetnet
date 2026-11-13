@@ -14,7 +14,7 @@ void main() {
       expect(Validators.email('ali @x.com'), ValidationError.invalidEmail);
     });
     test('geçerli (boşluklar kırpılır)', () {
-      expect(Validators.email(' afetzede1@afetnet.demo '), isNull);
+      expect(Validators.email(' ornek@example.com '), isNull);
     });
   });
 
