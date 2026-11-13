@@ -75,33 +75,6 @@ Ek görüntüler: [Tanıtım — Saha Yönetimi](docs/screenshots/02-onboarding-
 - Kişisel veriler (ad, telefon, adres, tıbbi bilgi) ayrı `private/contact` belgelerinde; yalnızca sahibi ve onaylı yetkili okuyabilir
 - Gizlilik Politikası, KVKK Aydınlatma Metni, Kullanım Koşulları ve Hesap Silme sayfaları (TR + EN) Firebase Hosting'de
 
-## Kurulum ve çalıştırma
-
-Firebase yapılandırma dosyaları (`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`, `lib/firebase_options.dart`) repoda yoktur. Önce kendi Firebase projenle üret:
-
-```bash
-dart pub global activate flutterfire_cli
-flutterfire configure --project=<firebase-proje-id>
-```
-
-```bash
-flutter pub get
-flutter analyze
-flutter test           # unit + widget testleri
-flutter run            # bağlı Android cihaz / emülatör
-```
-
-Firestore Security Rules testleri (Firebase emülatörü, Node.js ve Firebase CLI gerekir):
-
-```bash
-npm install
-npm run test:rules
-```
-
-> Not: Uygulama Android için geliştirildi ve test edildi. iOS derlemesi çalışır, ancak push bildirimi ücretli Apple Developer hesabı gerektirdiği için kurulmadı.
-
-Demo verisi (ekipler, depolar, stok ve toplanma noktaları) debug derlemede yetkili Profil'indeki **Demo Verisini Sıfırla** ile yüklenir.
-
 ## Mimari
 
 Clean Architecture: ortak kodlar `core/` altında (tema, router, servisler, ortak widget'lar), her özellik `features/<özellik>/` altında `domain/` (model + repository arayüzü), `data/` (Firestore repository) ve `presentation/` (ekran + controller) katmanlarına ayrılır. State `Provider` + `ChangeNotifier`, navigasyon GoRouter (her rol için ayrı `StatefulShellRoute` ve rol bazlı yönlendirme). Ücretsiz Spark planda sunucu kodu çalışmadığı için iş mantığı istemcide, doğruluğu Security Rules ile denetlenir.
