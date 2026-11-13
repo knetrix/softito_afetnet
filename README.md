@@ -77,6 +77,13 @@ Ek görüntüler: [Tanıtım — Saha Yönetimi](docs/screenshots/02-onboarding-
 
 ## Kurulum ve çalıştırma
 
+Firebase yapılandırma dosyaları (`android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist`, `lib/firebase_options.dart`) repoda yoktur. Önce kendi Firebase projenle üret:
+
+```bash
+dart pub global activate flutterfire_cli
+flutterfire configure --project=<firebase-proje-id>
+```
+
 ```bash
 flutter pub get
 flutter analyze
