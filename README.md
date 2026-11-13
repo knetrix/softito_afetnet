@@ -79,13 +79,6 @@ Ek görüntüler: [Tanıtım — Saha Yönetimi](docs/screenshots/02-onboarding-
 
 Clean Architecture: ortak kodlar `core/` altında (tema, router, servisler, ortak widget'lar), her özellik `features/<özellik>/` altında `domain/` (model + repository arayüzü), `data/` (Firestore repository) ve `presentation/` (ekran + controller) katmanlarına ayrılır. State `Provider` + `ChangeNotifier`, navigasyon GoRouter (her rol için ayrı `StatefulShellRoute` ve rol bazlı yönlendirme). Ücretsiz Spark planda sunucu kodu çalışmadığı için iş mantığı istemcide, doğruluğu Security Rules ile denetlenir.
 
-## Notlar
-
-- Harita [OpenStreetMap](https://www.openstreetmap.org) verisiyle `flutter_map` üzerinden çizilir; API anahtarı gerekmez.
-- Uygulaması kapalı cihazlara bildirim Firebase Console → Messaging'den `all_users` topic'ine gönderilir (Spark planda sunucudan otomatik push yoktur).
-- SMS otomatik gönderilmez; Google Play, `SEND_SMS` iznini yalnızca varsayılan SMS uygulamalarına verir. Kullanıcı hazır mesajda Gönder'e basar.
-- Tasarımlardaki AFAD, AKUT ve Kızılay adları ve logoları kaldırıldı; mağazalar kurum taklidini reddeder.
-
 ## Ekip
 
 SoftITO 4. Dönem Mobil — 2. Grup: Hasibe Esra Ergün, Meryem Duymuş, Furkan Çalışkan, Somaya Arab, Tuba Aydın, Mustafa Ersoy
