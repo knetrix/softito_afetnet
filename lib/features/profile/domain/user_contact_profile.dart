@@ -1,3 +1,6 @@
+// "domain" katmanı: gizli profil modeli (users/{uid}/private/contact).
+// Telefon, adres, acil durum yakını ve tıbbi bilgi; yalnızca sahibi ve onaylı yetkili okuyabilir.
+
 import 'package:flutter/foundation.dart';
 
 /// Afetzede ve Yetkili Gizli İletişim & Sağlık Profili (PROJECT_NEW.md §5.3)
@@ -40,10 +43,13 @@ class UserContactProfile {
   // İkamet Adresi
   final String? addressText;
 
+  // Tıbbi bilgi için açık rıza verilmiş mi.
   bool get hasMedicalConsent => medicalConsentAt != null;
 
+  // Doğum yılından hesaplanan yaş.
   int? get age => birthYear == null ? null : DateTime.now().year - birthYear!;
 
+  // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.
   UserContactProfile copyWith({
     String? email,
     String? phone,

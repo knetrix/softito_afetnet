@@ -1,3 +1,6 @@
+// Tıbbi bilgi formu: kan grubu, ilaçlar, kronik hastalık/alerji.
+// Tıbbi bilgi KVKK'da özel nitelikli veri olduğu için ilk kayıtta ayrıca açık rıza istenir.
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_status_colors.dart';
@@ -6,6 +9,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/user_contact_profile.dart';
 
+// Tıbbi bilgi formunu alttan açar.
 Future<void> showMedicalEditSheet(
   BuildContext context, {
   required UserContactProfile? currentProfile,
@@ -27,6 +31,7 @@ Future<void> showMedicalEditSheet(
   );
 }
 
+// Tıbbi bilgi formu widget'ı.
 class _MedicalEditForm extends StatefulWidget {
   const _MedicalEditForm({
     required this.currentProfile,
@@ -41,10 +46,12 @@ class _MedicalEditForm extends StatefulWidget {
     required DateTime consentAt,
   }) onSave;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_MedicalEditForm> createState() => _MedicalEditFormState();
 }
 
+// Kan grubu, ilaç, hastalık alanlarını ve açık rızayı yönetir.
 class _MedicalEditFormState extends State<_MedicalEditForm> {
   final _formKey = GlobalKey<FormState>();
   late String _bloodType;
@@ -65,6 +72,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     '0 Rh-',
   ];
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -81,6 +89,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     _consent = widget.currentProfile?.hasMedicalConsent ?? false;
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _medications.dispose();
@@ -88,6 +97,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     super.dispose();
   }
 
+  // Açık rıza kutusu işaretli mi kontrol eder, sonra tıbbi bilgiyi kaydeder.
   Future<void> _submit() async {
     if (!_consent) {
       setState(() => _showConsentError = true);
@@ -118,6 +128,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     );
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

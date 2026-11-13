@@ -1,3 +1,6 @@
+// A4 Afetzede Profil ekranı: tıbbi kimlik, yaş/kilo, acil durum yakını (Ara butonu), adres,
+// dil seçimi, Çıkış Yap, Gizlilik Politikası ve Hesabı Sil.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,6 +30,7 @@ class CitizenProfileScreen extends StatelessWidget {
 
   final ProfileRepository? repository;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -46,9 +50,11 @@ class CitizenProfileScreen extends StatelessWidget {
   }
 }
 
+// Afetzede profilinin asıl gövdesi.
 class _CitizenProfileView extends StatelessWidget {
   const _CitizenProfileView();
 
+  // Addan baş harfleri çıkarır (avatar için).
   String _getInitials(String name) {
     final parts = name.trim().split(RegExp(r'\s+'));
     if (parts.isEmpty) return 'A';
@@ -56,6 +62,7 @@ class _CitizenProfileView extends StatelessWidget {
     return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
   }
 
+  // Onay sorup oturumu kapatır.
   Future<void> _signOut(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     final confirmed = await AppDialog.confirm(
@@ -72,6 +79,7 @@ class _CitizenProfileView extends StatelessWidget {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -380,6 +388,7 @@ class _CitizenProfileView extends StatelessWidget {
   }
 }
 
+// Başlıklı ve düzenle butonlu profil kartı.
 class _ProfileSectionCard extends StatelessWidget {
   const _ProfileSectionCard({
     required this.title,
@@ -395,6 +404,7 @@ class _ProfileSectionCard extends StatelessWidget {
   final Widget content;
   final VoidCallback onEdit;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -439,6 +449,7 @@ class _ProfileSectionCard extends StatelessWidget {
   }
 }
 
+// Etiket + değer satırı.
 class _InfoRow extends StatelessWidget {
   const _InfoRow({
     required this.label,
@@ -452,6 +463,7 @@ class _InfoRow extends StatelessWidget {
   final Color? valueColor;
   final bool isBold;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -484,12 +496,14 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
+// Küçük bilgi kutusu (yaş, kilo gibi).
 class _StatBox extends StatelessWidget {
   const _StatBox({required this.title, required this.value});
 
   final String title;
   final String value;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;

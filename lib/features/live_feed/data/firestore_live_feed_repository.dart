@@ -1,3 +1,6 @@
+// "data" katmanı: Canlı Akış'ın Firestore işlemleri.
+// Açık olayları ve panik sinyallerini canlı dinler; Detay bilgisini okur; olayı kapatır; sinyali "Ulaşıldı" yapar.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,9 +22,11 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
 
   final FirebaseFirestore _db;
 
+  // incidents koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _incidents =>
       _db.collection('incidents');
 
+  // help_requests koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _helpRequests =>
       _db.collection('help_requests');
 
@@ -55,6 +60,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
         );
   }
 
+  // Kart için olayın ilk çağrısından ad bilgisini okur.
   @override
   Future<IncidentSummary> fetchSummary(Incident incident) async {
     final requestRef = _helpRequests.doc(incident.primaryRequestId);
@@ -72,6 +78,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     );
   }
 
+  // Detay için telefon, tıbbi özet ve bağlı çağrıları okur.
   @override
   Future<IncidentDetail> fetchDetail(Incident incident) async {
     final requestRef = _helpRequests.doc(incident.primaryRequestId);
@@ -121,6 +128,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     );
   }
 
+  // Henüz ekip atanmamış olayı kapatır (Detay → Olayı Kapat). Olay ve bağlı çağrılar "resolved" olur.
   @override
   Future<bool> closeIncident(Incident incident) async {
     final incidentRef = _incidents.doc(incident.id);
@@ -161,6 +169,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     });
   }
 
+  // Panik sinyalini "Ulaşıldı" olarak işaretler (handledBy = yetkili, handledAt = şimdi).
   @override
   Future<bool> markSignalHandled({
     required String signalUid,
@@ -234,6 +243,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     );
   }
 
+  // Boş olmayan metni döndürür, yoksa null.
   static String? _nonEmpty(Object? v) {
     final s = (v as String?)?.trim();
     return (s == null || s.isEmpty) ? null : s;

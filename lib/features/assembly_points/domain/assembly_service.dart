@@ -1,3 +1,5 @@
+// Bir toplanma noktasında verilen hizmetler: su, sağlık, gıda, çadır.
+
 /// Toplanma Alanı Hizmetleri (PROJECT_NEW.md §5.3: water/health/food/tent).
 enum AssemblyService {
   /// Temiz içme / kullanma suyu

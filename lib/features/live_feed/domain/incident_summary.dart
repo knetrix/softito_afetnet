@@ -1,3 +1,6 @@
+// Canlı Akış kartında (ad) ve Detay panelinde (telefon, tıbbi özet, bağlı çağrılar) gösterilen olay bilgileri.
+// Bu bilgiler gizli belgelerden yalnızca onaylı yetkili tarafından okunabilir.
+
 import 'package:flutter/foundation.dart';
 
 /// Canlı Akış kartında gösterilen, olayın ilk çağrısından (`primaryRequestId`)
@@ -46,6 +49,7 @@ class IncidentDetail {
   /// birleşen tüm çağrıları sayar (Kural 2); Detay'da iptaller ayrıca yazılır.
   final int cancelledCalls;
 
+  // Gösterilecek tıbbi bilgi var mı.
   bool get hasMedical =>
       [
         bloodType,

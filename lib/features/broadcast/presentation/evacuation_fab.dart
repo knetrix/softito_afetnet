@@ -1,3 +1,5 @@
+// Canlı Akış ve Ekipler ekranlarının sağ altındaki kırmızı "Tahliye Anonsu" butonu (FloatingActionButton).
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +13,7 @@ import 'evacuation_broadcast_sheet.dart';
 class EvacuationFab extends StatelessWidget {
   const EvacuationFab({super.key});
 
+  // Anons formunu açar ve sonucu mesajla gösterir.
   Future<void> _open(BuildContext context) async {
     final uid = context.read<AuthController>().currentUser?.uid;
     if (uid == null) return;
@@ -34,6 +37,7 @@ class EvacuationFab extends StatelessWidget {
     );
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

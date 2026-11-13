@@ -1,3 +1,5 @@
+// Çağrıya atanan ekibin adı ve sorumlu lideri (afetzedenin kartında gösterilir).
+
 import 'package:flutter/foundation.dart';
 
 /// Çağrıya atanan ekip ve sorumlu lider özeti (PROJECT_NEW.md §4 Kural 6).
@@ -22,6 +24,7 @@ class AssignedTeamInfo {
           name == other.name &&
           leaderName == other.leaderName;
 
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(id, name, leaderName);
 }

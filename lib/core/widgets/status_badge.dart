@@ -1,8 +1,12 @@
+// Küçük renkli etiket (rozet): Kritik / Acil / Normal gibi öncelikler
+// ve "Sivil Kullanıcı", "Saha Koordinatörü" gibi rol etiketleri için.
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../theme/app_status_colors.dart';
 
+// Rozet türleri: özel metin, öncelik, afetzede rolü, yetkili rolü.
 enum _BadgeKind { custom, priority, citizen, official }
 
 /// AfetNet Durum ve Öncelik Rozeti (§3.4, §4 Kural 1, Y1, Y2, Y3)
@@ -37,6 +41,7 @@ class StatusBadge extends StatelessWidget {
   final _BadgeKind _kind;
   final int _priority;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

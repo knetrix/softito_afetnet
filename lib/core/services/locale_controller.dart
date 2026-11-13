@@ -1,3 +1,6 @@
+// Uygulamanın dilini yöneten sınıf.
+// Varsayılan Türkçe; Profil'den English seçilirse seçim SharedPreferences ile cihaza kaydedilir.
+
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +20,7 @@ class LocaleController extends ChangeNotifier {
 
   final Future<SharedPreferences> Function() _prefsLoader;
 
+  // Şu an seçili olan dil (tr veya en).
   Locale get locale => current;
 
   /// Saklanan seçimi yükler; ilk kare doğru dilde çizilsin diye
@@ -33,6 +37,7 @@ class LocaleController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Dili değiştirir: önce ekranlara haber verir (anında değişsin), sonra seçimi cihaza kaydeder.
   Future<void> setLocale(Locale locale) async {
     final next = locale.languageCode == english.languageCode
         ? english

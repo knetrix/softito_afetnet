@@ -1,3 +1,6 @@
+// Canlı Akış'taki olay kartı: ad, kişi sayısı, mesafe, adres tarifi, açıklama, süre, öncelik rozeti;
+// Detay ve Ekip Yönlendir butonları.
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -34,6 +37,7 @@ class IncidentCard extends StatelessWidget {
   /// Testlerde sabit zaman için.
   final DateTime? now;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -220,6 +224,7 @@ class _CardActions extends StatelessWidget {
   /// `AppButton`: 2×20 iç boşluk + 18 simge + 8 aralık, metin 15 / w600.
   static const _buttonChrome = 66.0 + 4; // + yuvarlama payı
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     if (dispatch == null) return detail;
@@ -264,12 +269,14 @@ class _CardActions extends StatelessWidget {
   }
 }
 
+// Kart üzerindeki küçük bilgi etiketi.
 class _Chip extends StatelessWidget {
   const _Chip({required this.text, required this.color});
 
   final String text;
   final Color color;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Container(

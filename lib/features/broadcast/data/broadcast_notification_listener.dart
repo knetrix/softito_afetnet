@@ -1,3 +1,6 @@
+// Afetzede tarafında çalışır: yeni tahliye/artçı anonslarını Firestore'dan dinler.
+// Kullanıcı anonsun yarıçapı içindeyse telefonda yerel bildirim gösterir (uygulama açıkken).
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -87,6 +90,7 @@ class BroadcastNotificationListener {
     }
   }
 
+  // Firestore'dan gelen anons listesinden yalnızca yeni olanları ayıklar ve tek tek işler.
   void _onSnapshot(QuerySnapshot<Map<String, dynamic>> snapshot) {
     if (_activeUid == null) {
       return;
@@ -112,6 +116,8 @@ class BroadcastNotificationListener {
     }
   }
 
+  // Kullanıcının konumu ile anonsun merkezi arasındaki mesafeyi ölçer;
+  // yarıçap içindeyse bildirim gösterir.
   Future<void> _handleBroadcast(
     DocumentSnapshot<Map<String, dynamic>> document,
   ) async {
@@ -218,6 +224,7 @@ class BroadcastNotificationListener {
     }
   }
 
+  // Anons türünün seçili dildeki başlığı.
   static String? _localizedTitle(Object? type) {
     final l10n = lookupAppLocalizations(LocaleController.current);
     return switch (type) {
@@ -227,6 +234,7 @@ class BroadcastNotificationListener {
     };
   }
 
+  // Gösterilen anonsların ID'lerini cihaza kaydeder; uygulama yeniden açılınca aynı bildirim tekrar çıkmasın.
   Future<void> _saveProcessedIds(String uid) async {
     final preferences = await SharedPreferences.getInstance();
 
@@ -261,6 +269,7 @@ class BroadcastNotificationListener {
     _processingIds.clear();
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   void dispose() {
     stop();
   }

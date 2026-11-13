@@ -1,3 +1,5 @@
+// "domain" katmanı: anons türleri (Acil Tahliye / Artçı Sarsıntı) ve anons gönderme sözleşmesi.
+
 import 'package:latlong2/latlong.dart';
 
 /// `broadcasts/{id}.type` değerleri (PROJECT_NEW.md §5.3).

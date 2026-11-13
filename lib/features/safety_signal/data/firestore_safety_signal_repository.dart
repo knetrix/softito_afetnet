@@ -1,3 +1,6 @@
+// "data" katmanı: panik sinyalini safety_signals/{uid} belgesine yazar.
+// Her kullanıcının tek belgesi vardır; PANİĞİM "danger", GÜVENDEYİM "safe" yazar.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +11,7 @@ import '../../../core/config/app_config.dart';
 import '../domain/safety_signal.dart';
 import '../domain/safety_signal_repository.dart';
 
+// Panik sinyalinin Firestore uygulaması.
 class FirestoreSafetySignalRepository implements SafetySignalRepository {
   FirestoreSafetySignalRepository({
     FirebaseFirestore? firestore,
@@ -18,9 +22,11 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
   final FirebaseFirestore _db;
   final Duration _offlineTimeout;
 
+  // safety_signals/{uid} belgesinin referansı.
   DocumentReference<Map<String, dynamic>> _doc(String uid) =>
       _db.collection('safety_signals').doc(uid);
 
+  // Kullanıcının sinyalini canlı izler.
   @override
   Stream<SafetySignal?> watchSignal(String uid) {
     return _doc(uid)
@@ -28,6 +34,8 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
         .map((snap) => _fromDoc(uid, snap));
   }
 
+  // TEHLİKEDEYİM sinyalini konum ve zamanla yazar. 10 sn içinde sunucu onayı gelmezse (hasPendingWrites)
+  // internet yok kabul edilir; sinyal yine de Firestore'un kuyruğunda bekler ve internet gelince gider.
   @override
   Future<SignalDelivery> sendDanger(
     String uid,
@@ -38,12 +46,14 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     final geo = GeoPoint(latitude, longitude);
     final hash = GeoFirePoint(geo).geohash.substring(0, 8);
 
+    // Completer: sonucu (iletildi / bekliyor) daha sonra, dinleyici içinden vermemizi sağlar.
     final completer = Completer<SignalDelivery>();
     // Dinleyici set()'ten önce açılır; böylece eski önbellek 'safe' kaydı
     // sunucu onayı sanılmaz ve hızlı sunucu cevabı kaçırılmaz.
     final sub = ref.snapshots(includeMetadataChanges: true).listen(
       (snap) {
         final data = snap.data();
+        // hasPendingWrites == false: yazım sunucuya ulaştı ve onaylandı demektir.
         if (snap.exists &&
             data?['state'] == SafetySignalState.danger.name &&
             !snap.metadata.hasPendingWrites &&
@@ -73,11 +83,13 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
               'handledBy': FieldValue.delete(),
               'handledAt': FieldValue.delete(),
             },
+            // merge: true → belgedeki diğer alanlar silinmez, yalnızca bu alanlar güncellenir.
             SetOptions(merge: true),
           )
           .catchError((Object _) {}),
     );
 
+    // En fazla 10 sn sunucu onayı beklenir; gelmezse "bekliyor" (internet yok) sayılır.
     try {
       return await completer.future.timeout(
         _offlineTimeout,
@@ -88,6 +100,7 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     }
   }
 
+  // GÜVENDEYİM yazar (sinyali kapatır).
   @override
   Future<void> sendSafe(String uid) async {
     final ref = _doc(uid);
@@ -106,6 +119,7 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     );
   }
 
+  // Firestore belgesini SafetySignal modeline çevirir.
   SafetySignal? _fromDoc(
     String uid,
     DocumentSnapshot<Map<String, dynamic>> snap,

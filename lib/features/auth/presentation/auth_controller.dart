@@ -1,3 +1,6 @@
+// Oturum durumunu tutan controller (ChangeNotifier): kim giriş yaptı, rolü ne, onboarding görüldü mü.
+// GoRouter bunu dinler; değişince kullanıcıyı doğru ekrana (Ana Sayfa / Canlı Akış / Giriş) yönlendirir.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -34,20 +37,26 @@ class AuthController extends ChangeNotifier {
 
   bool _authResolved = false;
   bool _prefsLoaded = false;
+  // Oturum ve tercihler henüz yükleniyor mu (splash için).
   bool get isInitializing => !_authResolved || !_prefsLoaded;
 
   bool _onboardingDone = false;
+  // Onboarding görüldü mü.
   bool get onboardingDone => _onboardingDone;
 
   AppUser? _user;
+  // Oturum açmış kullanıcı.
   AppUser? get currentUser => _user;
 
   bool _busy = false;
+  // Bir işlem sürüyor mu (buton kilidi için).
   bool get isBusy => _busy;
 
   AuthFailure? _failure;
+  // Son hata (ekranda gösterilir).
   AuthFailure? get failure => _failure;
 
+  // Başlangıçta: onboarding'in görülüp görülmediğini cihazdan okur ve oturum değişikliklerini dinlemeye başlar.
   void _init() {
     SharedPreferences.getInstance().then((prefs) {
       _onboardingDone = prefs.getBool(onboardingDoneKey) ?? false;
@@ -64,6 +73,8 @@ class AuthController extends ChangeNotifier {
     );
   }
 
+  // Biri giriş/çıkış yapınca çalışır: kullanıcı belgesini okur,
+  // seçilen giriş türü rolle uyuşmuyorsa veya yetkili onaylı değilse oturumu kapatır.
   Future<void> _onUidChanged(String? uid) async {
     final seq = ++_eventSeq;
     if (_actionInProgress) return;
@@ -105,7 +116,9 @@ class AuthController extends ChangeNotifier {
     required UserRole selectedRole,
   }) {
     return _run(() async {
+      // 1) Firebase Auth ile e-posta/şifre doğrulanır.
       final uid = await _repo.signIn(email: email, password: password);
+      // 2) Kullanıcının rolü ve onay durumu Firestore'daki users/{uid} belgesinden okunur.
       final AppUser? user;
       try {
         user = await _repo.fetchUser(uid);
@@ -113,6 +126,7 @@ class AuthController extends ChangeNotifier {
         await _repo.signOut();
         rethrow;
       }
+      // 3) Seçilen giriş türü rolle uyuşmuyorsa ya da yetkili onaysızsa oturum hemen kapatılır.
       final failure = _check(user, selectedRole: selectedRole);
       if (failure != null) {
         await _repo.signOut();
@@ -135,6 +149,7 @@ class AuthController extends ChangeNotifier {
     });
   }
 
+  // Şifre sıfırlama e-postası gönderir; başarılıysa true.
   Future<bool> sendPasswordReset(String email) async {
     try {
       await _repo.sendPasswordReset(email);
@@ -146,6 +161,7 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  // Oturumu kapatır.
   Future<void> signOut() {
     return _run(() async {
       await _repo.signOut();
@@ -153,6 +169,7 @@ class AuthController extends ChangeNotifier {
     });
   }
 
+  // Onboarding'in görüldüğünü kaydeder.
   Future<void> completeOnboarding() async {
     _onboardingDone = true;
     _notify();
@@ -160,12 +177,15 @@ class AuthController extends ChangeNotifier {
     await prefs.setBool(onboardingDoneKey, true);
   }
 
+  // Ekrandaki hatayı temizler.
   void clearFailure() {
     if (_failure == null) return;
     _failure = null;
     _notify();
   }
 
+  // Güvenlik kontrolü: Girişte seçilen tür ile veritabanındaki rol aynı mı? Yetkili ise onaylı mı?
+  // Sorun varsa hata türünü döndürür, yoksa null.
   AuthFailure? _check(AppUser? user, {UserRole? selectedRole}) {
     if (user == null) return AuthFailure.profileMissing;
     if (selectedRole != null && user.role != selectedRole) {
@@ -201,10 +221,12 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  // Dinleyicilere (router dahil) "durum değişti" haberini verir (notifyListeners).
   void _notify() {
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

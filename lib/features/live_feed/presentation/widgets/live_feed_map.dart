@@ -1,3 +1,5 @@
+// Canlı Akış haritası (flutter_map + OpenStreetMap). Olaylar öncelik rengiyle, panik sinyalleri mor pinle gösterilir.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -33,14 +35,17 @@ class LiveFeedMap extends StatefulWidget {
   /// Konum ve olay yokken açılış merkezi (Hatay; yalnızca harita kamerası).
   static const defaultCenter = LatLng(36.2025, 36.1610);
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<LiveFeedMap> createState() => _LiveFeedMapState();
 }
 
+// Harita denetleyicisini ve yakınlaştırmayı yönetir.
 class _LiveFeedMapState extends State<LiveFeedMap> {
   final MapController _map = MapController();
   bool _centeredOnData = false;
 
+  // Üst widget yeni parametrelerle yeniden çizildiğinde çalışır; değişen değere göre animasyonu günceller.
   @override
   void didUpdateWidget(covariant LiveFeedMap oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -57,16 +62,19 @@ class _LiveFeedMapState extends State<LiveFeedMap> {
     }
   }
 
+  // Haritanın ilk ortalanacağı nokta.
   LatLng? _firstTarget() =>
       widget.userLocation ??
       (widget.incidents.isNotEmpty ? widget.incidents.first.location : null) ??
       (widget.signals.isNotEmpty ? widget.signals.first.location : null);
 
+  // Haritayı yakınlaştırır / uzaklaştırır.
   void _zoom(double delta) {
     final c = _map.camera;
     _map.move(c.center, c.zoom + delta);
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -171,6 +179,7 @@ class _LiveFeedMapState extends State<LiveFeedMap> {
   }
 }
 
+// Haritadaki olay veya panik pini.
 class _Pin extends StatelessWidget {
   const _Pin({
     required this.color,
@@ -186,6 +195,7 @@ class _Pin extends StatelessWidget {
   final VoidCallback onTap;
   final bool dimmed;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Tooltip(
@@ -215,6 +225,7 @@ class _Pin extends StatelessWidget {
   }
 }
 
+// Harita üzerindeki yuvarlak buton.
 class _MapButton extends StatelessWidget {
   const _MapButton({
     required this.icon,
@@ -228,6 +239,7 @@ class _MapButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool accent;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
