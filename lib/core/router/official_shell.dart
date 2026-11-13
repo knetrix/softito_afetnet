@@ -1,3 +1,6 @@
+// Yetkilinin kalıcı alt menüsü: Canlı Akış / Ekipler / Lojistik / Profil.
+// "Shell" = sekmeler değişse de ekranda sabit kalan çerçeve.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +12,7 @@ class OfficialShell extends StatelessWidget {
 
   final StatefulNavigationShell shell;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

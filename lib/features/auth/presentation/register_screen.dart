@@ -1,3 +1,6 @@
+// O4 Kayıt ekranı: hesap türü, ad, e-posta, telefon (maskeli), şifre + güç göstergesi,
+// şifre tekrarı, bildirim onayı ve zorunlu KVKK/Gizlilik onayı.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -22,10 +25,12 @@ import 'auth_texts.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+// Kayıt formunun durumu.
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _fullName = TextEditingController();
@@ -40,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _legalAccepted = false;
   bool _showLegalError = false;
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _fullName.dispose();
@@ -51,6 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  // Formu doğrular, KVKK onayını kontrol eder ve hesabı açar.
   Future<void> _submit() async {
     final valid = _formKey.currentState!.validate();
     setState(() => _showLegalError = !_legalAccepted);
@@ -80,11 +87,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     context.canPop() ? context.pop() : context.go(AppRoutes.login);
   }
 
+  // Yasal metni (KVKK, Gizlilik) tarayıcıda açar.
   void _openLegal(String page) {
     final url = AppConfig.legalUrl(page, Localizations.localeOf(context));
     launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -338,11 +347,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
+// Şifrenin ne kadar güçlü olduğunu gösteren renkli çubuk (zayıf / orta / güçlü).
 class _PasswordStrengthBar extends StatelessWidget {
   const _PasswordStrengthBar({required this.strength});
 
   final int strength;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

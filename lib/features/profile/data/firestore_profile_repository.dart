@@ -1,3 +1,6 @@
+// "data" katmanı: profilin gizli bilgilerini (telefon, adres, acil durum yakını, tıbbi bilgi)
+// users/{uid}/private/contact belgesinde okur ve yazar; hesap silme de burada.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -6,6 +9,7 @@ import '../../auth/domain/auth_failure.dart';
 import '../domain/profile_repository.dart';
 import '../domain/user_contact_profile.dart';
 
+// Profil verilerinin Firestore uygulaması.
 class FirestoreProfileRepository implements ProfileRepository {
   FirestoreProfileRepository({FirebaseFirestore? firestore, FirebaseAuth? auth})
       : _db = firestore ?? FirebaseFirestore.instance,
@@ -14,9 +18,11 @@ class FirestoreProfileRepository implements ProfileRepository {
   final FirebaseFirestore _db;
   final FirebaseAuth _auth;
 
+  // users/{uid}/private/contact belgesinin referansı.
   DocumentReference<Map<String, dynamic>> _contactDoc(String uid) =>
       _db.collection('users').doc(uid).collection('private').doc('contact');
 
+  // Firestore verisini UserContactProfile modeline çevirir.
   UserContactProfile _fromMap(String uid, Map<String, dynamic> data) {
     final medical = data['medical'] as Map<String, dynamic>?;
     final emergency = data['emergencyContact'] as Map<String, dynamic>?;
@@ -41,6 +47,7 @@ class FirestoreProfileRepository implements ProfileRepository {
     );
   }
 
+  // Gizli profili canlı izler.
   @override
   Stream<UserContactProfile?> watchProfile(String uid) {
     return _contactDoc(uid).snapshots().map((snap) {
@@ -49,6 +56,7 @@ class FirestoreProfileRepository implements ProfileRepository {
     });
   }
 
+  // Gizli profili bir kez okur.
   @override
   Future<UserContactProfile?> getProfile(String uid) async {
     final snap = await _contactDoc(uid).get();
@@ -56,6 +64,7 @@ class FirestoreProfileRepository implements ProfileRepository {
     return data == null ? null : _fromMap(uid, data);
   }
 
+  // Tıbbi bilgiyi ve açık rıza zamanını kaydeder.
   @override
   Future<void> updateMedicalInfo(
     String uid, {
@@ -74,6 +83,7 @@ class FirestoreProfileRepository implements ProfileRepository {
     }, SetOptions(merge: true));
   }
 
+  // Doğum yılı ve kiloyu kaydeder.
   @override
   Future<void> updatePhysicalInfo(
     String uid, {
@@ -88,6 +98,7 @@ class FirestoreProfileRepository implements ProfileRepository {
     }, SetOptions(merge: true));
   }
 
+  // Acil durum yakınını kaydeder.
   @override
   Future<void> updateEmergencyContact(
     String uid, {
@@ -105,6 +116,7 @@ class FirestoreProfileRepository implements ProfileRepository {
     }, SetOptions(merge: true));
   }
 
+  // Adresi kaydeder.
   @override
   Future<void> updateAddress(
     String uid, {
@@ -117,12 +129,15 @@ class FirestoreProfileRepository implements ProfileRepository {
     }, SetOptions(merge: true));
   }
 
+  // Ekip kimliğinden ekip adını okur (yetkili profili).
   @override
   Future<String?> getTeamName(String teamId) async {
     final snap = await _db.collection('teams').doc(teamId).get();
     return snap.data()?['name'] as String?;
   }
 
+  // Hesabı siler: önce şifre tekrar doğrulanır (Firebase bunu ister),
+  // sonra çağrıların gizli belgeleri, panik sinyali, profil belgeleri ve en son Auth hesabı silinir.
   @override
   Future<void> deleteAccount(String uid, {required String password}) async {
     final user = _auth.currentUser;

@@ -1,3 +1,7 @@
+// Uygulamanın kök (en üst) widget'ı.
+// Servisler burada bir kez oluşturulur ve MultiProvider ile tüm ekranlara dağıtılır;
+// tema, dil ve GoRouter (sayfa geçişleri) de burada MaterialApp'e bağlanır.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -41,15 +45,20 @@ import 'features/teams/domain/teams_repository.dart';
 
 import 'l10n/app_localizations.dart';
 
+// Uygulamanın en dıştaki widget'ı. StatefulWidget'tır çünkü servisleri bir kez oluşturup saklaması gerekir.
+// Dil denetleyicisi main.dart'ta oluşturulup buraya parametre olarak verilir.
 class AfetNetApp extends StatefulWidget {
   const AfetNetApp({super.key, required this.localeController});
 
   final LocaleController localeController;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<AfetNetApp> createState() => _AfetNetAppState();
 }
 
+// AfetNetApp'in durumunu (State) tutan sınıf.
+// Servisler (konum, bildirim, kuyruk…) burada alan olarak bir kez oluşturulur; ekran yeniden çizilse de kaybolmaz.
 class _AfetNetAppState extends State<AfetNetApp> {
   final AuthRepository _authRepository = FirebaseAuthRepository();
 
@@ -87,6 +96,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
 
   String? _listeningCitizenUid;
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -101,6 +111,8 @@ class _AfetNetAppState extends State<AfetNetApp> {
     unawaited(_offlineQueueService.initialize());
   }
 
+  // Oturum açan kullanıcı veya rolü değişince çalışır.
+  // Örneğin bildirim onayına göre FCM topic aboneliğini açar/kapatır, yetkiliden bildirim izni ister.
   void _onAuthChanged() {
     if (_auth.isInitializing) {
       return;
@@ -144,6 +156,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
     unawaited(_broadcastListener.start(uid));
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _auth.removeListener(_onAuthChanged);
@@ -161,6 +174,7 @@ class _AfetNetAppState extends State<AfetNetApp> {
     super.dispose();
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

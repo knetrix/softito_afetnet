@@ -1,3 +1,6 @@
+// Tahliye Anonsu formu (alttan açılan panel): tür, yarıçap ve mesaj seçilir.
+// Anonsun merkezi yetkilinin o anki konumudur.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -17,6 +20,7 @@ enum BroadcastSendResult { sent, queued }
 /// Y1, Y2 "Tahliye Anonsu" (§3.2): tür, yarıçap, mesaj, Gönder.
 /// Merkez yetkilinin konumudur (Kural 10).
 abstract final class EvacuationBroadcastSheet {
+  // Anons formunu alttan açar, sonucu döndürür.
   static Future<BroadcastSendResult?> show(
     BuildContext context, {
     required BroadcastRepository repository,
@@ -43,6 +47,7 @@ abstract final class EvacuationBroadcastSheet {
       };
 }
 
+// Anons formu widget'ı.
 class _BroadcastForm extends StatefulWidget {
   const _BroadcastForm({
     required this.repository,
@@ -54,10 +59,12 @@ class _BroadcastForm extends StatefulWidget {
   final LocationService locationService;
   final String officialUid;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_BroadcastForm> createState() => _BroadcastFormState();
 }
 
+// Form alanlarını, seçili türü ve gönderimi yönetir.
 class _BroadcastFormState extends State<_BroadcastForm> {
   final _formKey = GlobalKey<FormState>();
   final _message = TextEditingController();
@@ -69,18 +76,21 @@ class _BroadcastFormState extends State<_BroadcastForm> {
   bool _sending = false;
   bool _failed = false;
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
     _locate();
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _message.dispose();
     super.dispose();
   }
 
+  // Yetkilinin konumunu alır (anonsun merkezi).
   Future<void> _locate() async {
     setState(() => _locating = true);
     LatLng? center;
@@ -96,6 +106,8 @@ class _BroadcastFormState extends State<_BroadcastForm> {
     });
   }
 
+  // Anonsu gönderir. 10 saniyede sunucuya ulaşmazsa "bağlantı gelince gönderilecek" der
+  // (Firestore yazmayı kendi kuyruğunda tutar ve internet gelince gönderir).
   Future<void> _send() async {
     final center = _center;
     if (_sending || center == null || !_formKey.currentState!.validate()) {
@@ -137,6 +149,7 @@ class _BroadcastFormState extends State<_BroadcastForm> {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

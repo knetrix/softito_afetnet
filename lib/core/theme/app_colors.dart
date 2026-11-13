@@ -1,3 +1,6 @@
+// Tasarım dosyalarından alınan renk kodları (token'lar).
+// Ekranlarda renk doğrudan yazılmaz, hep buradan kullanılır.
+
 import 'package:flutter/material.dart';
 
 /// AfetNet Tasarım Sistemi Renk Token'ları (§3.4)

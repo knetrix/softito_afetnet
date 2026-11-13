@@ -1,3 +1,5 @@
+// "domain" katmanı: ekip ve görev işlemlerinin sözleşmesi (arayüz) ve görev hataları.
+
 import '../../../core/constants/case_status.dart';
 import '../../live_feed/domain/incident.dart';
 import 'assignment.dart';
@@ -36,10 +38,12 @@ class AssignmentException implements Exception {
 
   final AssignmentFailure reason;
 
+  // Nesneyi hata ayıklarken (print/log) okunabilir bir metne çevirir.
   @override
   String toString() => 'AssignmentException($reason)';
 }
 
+// Görev atama/güncelleme hata nedenleri.
 enum AssignmentFailure {
   /// Olay kapanmış veya bulunamadı.
   incidentClosed,

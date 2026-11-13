@@ -1,3 +1,6 @@
+// "Yardım Çağrısı Ekle" formu (alttan açılan panel): ihtiyaç türü, kişi sayısı, adres tarifi, açıklama.
+// Öncelik türden otomatik hesaplanır; kullanıcı seçmez.
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/help_type.dart';
@@ -58,10 +61,12 @@ class HelpRequestForm extends StatefulWidget {
   final String? initialDescription;
   final HelpRequestSubmitCallback? onSubmit;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<HelpRequestForm> createState() => _HelpRequestFormState();
 }
 
+// Formdaki seçimleri (tür, kişi sayısı, metinler) ve gönderimi yönetir.
 class _HelpRequestFormState extends State<HelpRequestForm> {
   final _formKey = GlobalKey<FormState>();
   HelpType? _selectedType;
@@ -70,6 +75,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
   late final TextEditingController _descriptionController;
   bool _isSubmitting = false;
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -79,6 +85,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     _descriptionController = TextEditingController(text: widget.initialDescription ?? '');
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _addressController.dispose();
@@ -86,21 +93,26 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     super.dispose();
   }
 
+  // Seçili türe göre otomatik hesaplanan öncelik.
   int? get _calculatedPriority =>
       _selectedType == null ? null : PriorityPolicy.calculate(_selectedType!);
 
+  // Kişi sayısını bir artırır.
   void _incrementPeople() {
     if (_peopleCount < 999) {
       setState(() => _peopleCount++);
     }
   }
 
+  // Kişi sayısını bir azaltır (en az 1).
   void _decrementPeople() {
     if (_peopleCount > 1) {
       setState(() => _peopleCount--);
     }
   }
 
+  // Formu doğrular, konumu alır ve çağrıyı gönderir.
+  // İnternet yoksa çağrı Hive kuyruğuna yazılır ve kartta "Gönderilmeyi Bekliyor" görünür.
   Future<void> _submit() async {
     final type = _selectedType;
     if (type == null || !_formKey.currentState!.validate()) return;
@@ -165,6 +177,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     }
   }
 
+  // İhtiyaç türünün metni.
   String _helpTypeLabel(BuildContext context, HelpType type) {
     final l10n = AppLocalizations.of(context);
     switch (type) {
@@ -185,6 +198,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     }
   }
 
+  // İhtiyaç türünün simgesi.
   IconData _helpTypeIcon(HelpType type) {
     switch (type) {
       case HelpType.debris:
@@ -204,6 +218,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

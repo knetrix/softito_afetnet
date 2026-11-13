@@ -1,3 +1,6 @@
+// "domain" katmanı: panik sinyali modeli. Durum (TEHLİKEDEYİM / GÜVENDEYİM), konum, zaman,
+// "Ulaşıldı" bilgisi ve sinyalin sunucuya ulaşıp ulaşmadığı.
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -38,7 +41,9 @@ class SafetySignal {
   /// Firestore yerel kuyruğunda sunucu onayı bekliyorsa `true`.
   final bool hasPendingWrites;
 
+  // Sinyal TEHLİKEDEYİM mi.
   bool get isDanger => state == SafetySignalState.danger;
+  // Sinyal sunucuya ulaştı mı.
   bool get isConfirmed => !hasPendingWrites;
 
   /// Yetkili "Ulaşıldı" işaretlediyse `true`. Yeni panik bu alanları
@@ -57,6 +62,7 @@ class SafetySignal {
       other.handledAt == handledAt &&
       other.hasPendingWrites == hasPendingWrites;
 
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(
         uid,

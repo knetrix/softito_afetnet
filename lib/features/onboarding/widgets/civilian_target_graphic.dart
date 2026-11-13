@@ -1,3 +1,5 @@
+// Onboarding 1. sayfadaki grafik (Sivil Kullanıcı / "Tek Dokunuşla Güvendesiniz").
+
 import 'dart:math' as math; // Pi sayısı ve açısal hesaplamalar için matematik kütüphanesidir
 import 'package:flutter/material.dart'; // Flutter temel görsel ve çizim bileşenleridir
 import '../../../core/theme/app_colors.dart'; // Projenin renk paletidir
@@ -6,6 +8,7 @@ import '../../../core/theme/app_colors.dart'; // Projenin renk paletidir
 class CivilianTargetGraphic extends StatelessWidget {
   const CivilianTargetGraphic({super.key}); // Kurucu metottur
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     const double size = 260.0; // Hedef alanının sabit kare boyutudur (260x260 px)
@@ -65,6 +68,7 @@ class _CoordText extends StatelessWidget {
   final String text; // Ekrana yazılacak koordinat metnidir
   const _CoordText(this.text);
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Text( // Metni ekrana basar
@@ -76,6 +80,7 @@ class _CoordText extends StatelessWidget {
 
 // CustomPainter: Tuvale kalın çember ve yay çizen özel grafik ressamıdır
 class _TargetArcPainter extends CustomPainter {
+  // CustomPainter: şekli tuvale (canvas) çizgi ve renklerle elle çizer.
   @override
   void paint(Canvas canvas, Size size) { // Çizim işlemlerini yürüten ana metottur
     final center = Offset(size.width / 2, size.height / 2); // Tuvalin tam orta koordinatıdır
@@ -102,6 +107,7 @@ class _TargetArcPainter extends CustomPainter {
     );
   }
 
+  // Yeniden çizim gerekiyor mu? Değişiklik yoksa false döner ve gereksiz çizim yapılmaz (performans).
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false; // Çizim sabit olduğu için tekrar çizimi engeller
 }

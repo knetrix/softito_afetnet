@@ -1,3 +1,6 @@
+// Uygulamanın her yerinde kullanılan sabit ayarlar.
+// Örn. harita karolarının (tile) adresi ve yasal sayfaların (KVKK, Gizlilik) bağlantıları.
+
 import 'dart:ui' show Locale;
 
 /// Uygulama genelindeki sabit ayarlar (PROJECT_NEW.md §6.1, §7).

@@ -1,3 +1,6 @@
+// "domain" katmanı: ekip modeli: ad, tür (arama kurtarma, sağlık, itfaiye, lojistik), lider, kişi sayısı,
+// konum ve durum (Boşta / Görevde).
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -42,6 +45,7 @@ class Team {
   final String? currentTask;
   final DateTime? updatedAt;
 
+  // Ekip boşta mı.
   bool get isAvailable => status == TeamStatus.available;
 
   @override
@@ -58,6 +62,7 @@ class Team {
           other.locationText == locationText &&
           other.currentTask == currentTask;
 
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(
     id,

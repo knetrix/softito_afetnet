@@ -1,3 +1,6 @@
+// Gönderilmeden önceki çağrı taslağı. Formdan oluşturulur;
+// internet yoksa Hive kuyruğuna bu hâliyle kaydedilir (toMap / fromMap).
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';
@@ -55,6 +58,7 @@ class HelpRequestDraft {
   /// Kural 1'e göre hesaplanan öncelik seviyesi (1: Kritik, 2: Acil, 3: Normal).
   int get priority => PriorityPolicy.calculate(type);
 
+  // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.
   HelpRequestDraft copyWith({
     String? id,
     HelpType? type,
@@ -81,6 +85,7 @@ class HelpRequestDraft {
     );
   }
 
+  // Nesneyi Firestore'a yazılabilecek Map (anahtar-değer) yapısına çevirir.
   Map<String, dynamic> toJson() => {
         'id': id,
         'type': type.name,
@@ -128,6 +133,7 @@ class HelpRequestDraft {
           createdBy == other.createdBy &&
           createdOffline == other.createdOffline;
 
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(
         id,
@@ -140,6 +146,7 @@ class HelpRequestDraft {
         createdOffline,
       );
 
+  // Nesneyi hata ayıklarken (print/log) okunabilir bir metne çevirir.
   @override
   String toString() =>
       'HelpRequestDraft(id: $id, type: $type, peopleCount: $peopleCount, priority: $priority, offline: $createdOffline)';
