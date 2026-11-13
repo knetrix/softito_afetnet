@@ -1,3 +1,6 @@
+// Konumla ilgili her şey: GPS'ten koordinat alma, izin isteme,
+// "Antakya, Hatay" gibi okunur konum etiketi ve internetsizken gösterilecek son konumun önbelleği.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -85,15 +88,19 @@ class DeviceLocationService extends LocationService {
   bool _disposed = false;
   Future<LocationSnapshot?>? _inFlightRefresh;
 
+  // En son alınan konum (enlem/boylam). Henüz alınmadıysa null.
   @override
   LatLng? get currentPosition => _currentPosition;
 
+  // En son konum etiketi, ör. "Antakya, Hatay". Henüz bulunamadıysa null.
   @override
   String? get currentLabel => _currentLabel;
 
+  // Konum servisinin şu anki durumu (alınıyor, hazır, izin yok…).
   @override
   LocationStatus get status => _status;
 
+  // Konum şu an alınıyor mu? (Ekranda yükleniyor göstermek için.)
   @override
   bool get isFetching => _isFetching;
 
@@ -113,15 +120,19 @@ class DeviceLocationService extends LocationService {
     return district ?? city;
   }
 
+  // Adresin bir parçasını temizler (baş/son boşlukları siler); boşsa null döndürür.
   static String? _cleanPart(String? value) {
     final trimmed = value?.trim();
     if (trimmed == null || trimmed.isEmpty) return null;
     return trimmed;
   }
 
+  // Cihazdaki küçük kayıt deposunu (SharedPreferences) getirir; bir kez açar, sonra aynısını kullanır.
   Future<SharedPreferences> _getPrefs() async =>
       _prefs ??= await _prefsLoader();
 
+  // Daha önce cihaza kaydedilmiş son konumu ve etiketi yükler.
+  // İnternet yokken bile ekranda bir konum gösterebilmek için.
   @override
   Future<void> loadCached() async {
     try {
@@ -147,6 +158,7 @@ class DeviceLocationService extends LocationService {
     }
   }
 
+  // Konumu yeniler. Zaten süren bir yenileme varsa ikincisini başlatmaz, aynı sonucu bekler.
   @override
   Future<LocationSnapshot?> refresh() {
     return _inFlightRefresh ??= _performRefresh().whenComplete(() {
@@ -154,6 +166,8 @@ class DeviceLocationService extends LocationService {
     });
   }
 
+  // Asıl konum yenileme adımları: 1) izin kontrolü 2) koordinatı al
+  // 3) koordinattan etiketi bul 4) sonucu cihaza kaydet ve ekranlara haber ver.
   Future<LocationSnapshot?> _performRefresh() async {
     _isFetching = true;
     _status = LocationStatus.fetching;
@@ -203,6 +217,7 @@ class DeviceLocationService extends LocationService {
     }
   }
 
+  // Yalnızca koordinatı döndürür; etikete gerek olmayan yerlerde (ör. çağrı gönderirken) kullanılır.
   @override
   Future<LatLng?> resolveCoordinates() async {
     final at = _positionAt;
@@ -259,6 +274,7 @@ class DeviceLocationService extends LocationService {
     return coords;
   }
 
+  // Konumu ve etiketi cihaza kaydeder; uygulama tekrar açıldığında hemen gösterilebilsin.
   Future<void> _saveCache(LatLng coords, String? label) async {
     try {
       final prefs = await _getPrefs();
@@ -272,10 +288,12 @@ class DeviceLocationService extends LocationService {
     }
   }
 
+  // Dinleyen ekranlara "konum değişti" haberini verir (servis kapanmadıysa).
   void _notify() {
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;
@@ -285,28 +303,40 @@ class DeviceLocationService extends LocationService {
 
 /// Platform konum ve ters coğrafi kodlama geçidi (test edilebilirlik için).
 abstract interface class LocationGateway {
+  // Cihazın konum servisi (GPS) açık mı?
   Future<bool> isLocationServiceEnabled();
+  // Uygulamanın konum izni ne durumda? (verildi / reddedildi / hiç sorulmadı)
   Future<LocationPermission> checkPermission();
+  // Kullanıcıya konum izni penceresini gösterir.
   Future<LocationPermission> requestPermission();
+  // Cihazın şu anki konumunu alır.
   Future<LatLng> getCurrentPosition();
+  // Cihazın en son bildiği konumu alır (yeni ölçüm yapmadan, hızlıdır).
   Future<LatLng?> getLastKnownPosition();
+  // Koordinattan "İlçe, İl" gibi okunur bir etiket üretir.
   Future<String?> resolveAddressLabel(double latitude, double longitude);
 }
 
+// LocationGateway arayüzünün gerçek cihazda çalışan hâli.
+// geolocator paketiyle GPS'ten konum alır, geocoding paketiyle adresi bulur.
 class GeolocatorLocationGateway implements LocationGateway {
   const GeolocatorLocationGateway();
 
+  // Cihazın konum servisi (GPS) açık mı?
   @override
   Future<bool> isLocationServiceEnabled() =>
       Geolocator.isLocationServiceEnabled();
 
+  // Uygulamanın konum izni ne durumda?
   @override
   Future<LocationPermission> checkPermission() => Geolocator.checkPermission();
 
+  // Konum iznini ister. İzin kuyruğu kullanılır çünkü Android aynı anda iki izin penceresi göstermez.
   @override
   Future<LocationPermission> requestPermission() =>
       PermissionQueue.run(Geolocator.requestPermission);
 
+  // Yüksek doğrulukla (GPS) anlık konumu alır ve LatLng (enlem/boylam) olarak döndürür.
   @override
   Future<LatLng> getCurrentPosition() async {
     final pos = await Geolocator.getCurrentPosition(
@@ -315,6 +345,7 @@ class GeolocatorLocationGateway implements LocationGateway {
     return LatLng(pos.latitude, pos.longitude);
   }
 
+  // Cihazın en son bildiği konumu alır; hiç yoksa null.
   @override
   Future<LatLng?> getLastKnownPosition() async {
     final pos = await Geolocator.getLastKnownPosition();
@@ -322,6 +353,7 @@ class GeolocatorLocationGateway implements LocationGateway {
     return LatLng(pos.latitude, pos.longitude);
   }
 
+  // Koordinattan adres bulur (reverse geocoding) ve "İlçe, İl" etiketine çevirir.
   @override
   Future<String?> resolveAddressLabel(double latitude, double longitude) async {
     final placemarks = await Geocoding().placemarkFromCoordinates(

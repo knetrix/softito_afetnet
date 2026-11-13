@@ -1,3 +1,5 @@
+// Haritada toplanma noktasını gösteren pin (iğne) bileşeni; türüne göre simgesi ve rengi değişir.
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart' hide Path;
 
@@ -22,6 +24,7 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
   final LatLng? userLocation;
   final bool isNearest;
 
+  // Nokta türünün simgesi.
   IconData _iconForType(AssemblyPointType type) {
     switch (type) {
       case AssemblyPointType.assembly:
@@ -33,6 +36,7 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
     }
   }
 
+  // Pinin rengi.
   Color _pinColor(ThemeData theme) {
     final status = theme.extension<AppStatusColors>()!;
     switch (point.type) {
@@ -45,6 +49,7 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -138,11 +143,13 @@ class AssemblyPointMarkerWidget extends StatelessWidget {
   }
 }
 
+// CustomPainter: pinin altındaki küçük üçgen ucu elle çizer.
 class _TrianglePainter extends CustomPainter {
   _TrianglePainter({required this.color});
 
   final Color color;
 
+  // CustomPainter: şekli tuvale (canvas) çizgi ve renklerle elle çizer.
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -158,6 +165,7 @@ class _TrianglePainter extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  // Yeniden çizim gerekiyor mu? Değişiklik yoksa false döner ve gereksiz çizim yapılmaz (performans).
   @override
   bool shouldRepaint(_TrianglePainter oldDelegate) => oldDelegate.color != color;
 }

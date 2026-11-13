@@ -1,3 +1,6 @@
+// Bir ekranın 4 durumunu tek bileşende gösterir: Yükleniyor / Hata (Tekrar Dene) / Boş / Başarılı.
+// Her ekranda aynı görünüm olsun diye ortak yazıldı.
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -27,6 +30,7 @@ class StateView extends StatelessWidget {
   final Widget? loadingWidget;
   final IconData emptyIcon;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

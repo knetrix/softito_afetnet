@@ -1,3 +1,6 @@
+// Uygulamanın Material 3 teması: açık ve koyu tema.
+// Renkler, yazı tipleri ve buton/kart stilleri tek yerden ayarlanır.
+
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
@@ -227,5 +230,6 @@ abstract final class AppTheme {
 
   // Geriye dönük uyumluluk için getter'lar
   static ThemeData get darkTheme => dark();
+  // Açık temaya kısa yoldan erişim.
   static ThemeData get lightTheme => light();
 }

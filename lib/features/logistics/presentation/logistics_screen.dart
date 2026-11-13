@@ -1,3 +1,6 @@
+// Y3 Lojistik ekranı (yetkili): depo seçimi, kritik stok uyarı kartı, filtreler (Tümü / Kritik / Orta / Yeterli)
+// ve stok kartları. Karta dokununca giriş/çıkış formu açılır.
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,17 +15,21 @@ import '../domain/inventory_item.dart';
 import '../domain/logistics_repository.dart';
 import 'widgets/stock_movement_sheet.dart';
 
+// Stok filtresi: tümü, kritik, orta, yeterli.
 enum InventoryFilter { all, critical, medium, sufficient }
 
+// Y3 Lojistik ekranı.
 class LogisticsScreen extends StatefulWidget {
   const LogisticsScreen({super.key, this.repository});
 
   final LogisticsRepository? repository;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<LogisticsScreen> createState() => _LogisticsScreenState();
 }
 
+// Depoları dinler ve seçili depoyu tutar.
 class _LogisticsScreenState extends State<LogisticsScreen> {
   late final LogisticsRepository _repository;
   late Stream<List<Warehouse>> _warehouseStream;
@@ -30,6 +37,7 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
   String? _selectedWarehouseId;
   InventoryFilter _selectedFilter = InventoryFilter.all;
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -39,6 +47,7 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
     _warehouseStream = _repository.watchWarehouses();
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
@@ -112,6 +121,7 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
 // ENVANTER EKRANI
 // --------------------------------------------------
 
+// Seçili deponun stok listesi.
 class _InventoryContent extends StatefulWidget {
   const _InventoryContent({
     super.key,
@@ -130,10 +140,12 @@ class _InventoryContent extends StatefulWidget {
   final ValueChanged<InventoryFilter> onFilterChanged;
   final ValueChanged<String?> onWarehouseChanged;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_InventoryContent> createState() => _InventoryContentState();
 }
 
+// Seçili deponun stoklarını canlı dinler; bir kalem kritik seviyeye inerse yetkiliye bildirim gösterir.
 class _InventoryContentState extends State<_InventoryContent> {
   late Stream<List<InventoryItem>> _inventoryStream;
 
@@ -141,6 +153,7 @@ class _InventoryContentState extends State<_InventoryContent> {
   /// yalnızca bir kalem bu ekranda kritik düzeye inince gösterilir).
   Set<String>? _previousCriticalIds;
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -148,6 +161,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     _inventoryStream = widget.repository.watchInventory(widget.warehouse.id);
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
@@ -275,6 +289,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     }
   }
 
+  // Ekran başlığı.
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
     final strings = AppLocalizations.of(context)!;
@@ -296,6 +311,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     );
   }
 
+  // Depo bilgi kartı.
   Widget _buildWarehouseCard(BuildContext context) {
     final theme = Theme.of(context);
     final strings = AppLocalizations.of(context)!;
@@ -351,6 +367,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     );
   }
 
+  // Kritik stok uyarı kartı.
   Widget _buildCriticalWarning(
     BuildContext context,
     List<InventoryItem> criticalItems,
@@ -393,6 +410,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     );
   }
 
+  // Envanter başlığı ve kalem sayısı.
   Widget _buildInventoryHeader(BuildContext context, int count) {
     final theme = Theme.of(context);
     final strings = AppLocalizations.of(context)!;
@@ -421,6 +439,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     );
   }
 
+  // Stok düzeyi filtre chip'leri.
   Widget _buildFilters() {
     final strings = AppLocalizations.of(context)!;
 
@@ -450,6 +469,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     );
   }
 
+  // Stok kartı: miktar, düzey çubuğu, etiket.
   Widget _buildStockCard(BuildContext context, InventoryItem item) {
     final theme = Theme.of(context);
     final strings = AppLocalizations.of(context)!;
@@ -562,6 +582,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     );
   }
 
+  // Stok giriş/çıkış formunu açar.
   Future<void> _openStockMovement(InventoryItem item) async {
     final strings = AppLocalizations.of(context)!;
 
@@ -594,12 +615,14 @@ class _InventoryContentState extends State<_InventoryContent> {
 // ORTAK PANEL
 // --------------------------------------------------
 
+// Ortak kart çerçevesi.
 class _LogisticsPanel extends StatelessWidget {
   const _LogisticsPanel({required this.child, this.backgroundColor});
 
   final Widget child;
   final Color? backgroundColor;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;

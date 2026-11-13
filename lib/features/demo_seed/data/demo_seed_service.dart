@@ -1,3 +1,6 @@
+// "Demo Verisini Sıfırla" servisi (yalnızca debug derlemede, yetkili profilinde görünür).
+// 4 ekip, 2 depo, 8 stok kalemi ve 3 toplanma noktasını yükler veya başlangıç hâline döndürür.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 
@@ -17,6 +20,7 @@ class DemoSeedService {
 
   final FirebaseFirestore _db;
 
+  // Koordinatın 8 haneli geohash'ini hesaplar (geohash = konumu kısa bir metinle ifade etme yöntemi).
   static String _geohash(GeoPoint p) => GeoFirePoint(p).geohash.substring(0, 8);
 
   /// Ekipler (T1 örnek adları). `team_04` demo yetkilisinin ekibidir (§8).
@@ -55,6 +59,7 @@ class DemoSeedService {
     ),
   };
 
+  // Demo ekip belgesinin verisi.
   static Map<String, dynamic> _team(
     String name,
     String type,
@@ -153,6 +158,7 @@ class DemoSeedService {
     ),
   };
 
+  // Demo toplanma noktası belgesinin verisi.
   static Map<String, dynamic> _point(
     String name,
     String type,

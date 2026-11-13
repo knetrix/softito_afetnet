@@ -1,3 +1,6 @@
+// "domain" katmanı: kullanıcı modeli (users/{uid}). Ad, rol (afetzede/yetkili), onay durumu,
+// birim, bölge ve ekip bilgisi. Telefon gibi gizli bilgiler burada değil, private/contact'tadır.
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/user_role.dart';
@@ -28,6 +31,7 @@ class AppUser {
   final String? region;
   final String? teamId;
 
+  // Kullanıcı yetkili mi.
   bool get isOfficial => role == UserRole.official;
 
   /// Onaysız yetkili hiçbir yetkili verisine erişemez (§2, R4).

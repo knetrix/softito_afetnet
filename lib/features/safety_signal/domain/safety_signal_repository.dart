@@ -1,3 +1,5 @@
+// "domain" katmanı: panik sinyali işlemlerinin sözleşmesi (arayüz).
+
 import 'safety_signal.dart';
 
 /// Panik sinyali (`safety_signals/{uid}`) repository arayüzü.

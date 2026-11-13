@@ -1,3 +1,6 @@
+// Ana Sayfa'daki aktif çağrı kartı: durum, ihtiyaç türü, öncelik, yönlendirilen ekip ve "Çağrıyı İptal Et".
+// Çağrı kuyruktaysa "Gönderilmeyi Bekliyor" yazar.
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/case_status.dart';
@@ -31,15 +34,24 @@ class ActiveRequestCard extends StatelessWidget {
   final Future<bool> Function(String requestId) onCancel;
   final bool isCancelling;
 
+  // Çağrı henüz sunucuya gitmedi mi? (internet yokken kuyruğa yazılmış taslak)
   bool get isOffline => offlineDraft != null && request == null;
+  // Çağrının kimliği (gönderilmiş ya da kuyruktaki).
   String get requestId => request?.id ?? offlineDraft!.id;
+  // Çağrının ihtiyaç türü.
   HelpType get type => request?.type ?? offlineDraft!.type;
+  // Çağrının önceliği.
   int get priority => request?.priority ?? offlineDraft!.priority;
+  // Etkilenen kişi sayısı.
   int get peopleCount => request?.peopleCount ?? offlineDraft!.peopleCount;
+  // Adres tarifi.
   String? get addressText => request?.addressText ?? offlineDraft?.addressText;
+  // Açıklama.
   String? get description => request?.description ?? offlineDraft?.description;
+  // Çağrının durumu (kuyruktaysa beklemede).
   CaseStatus get status => request?.status ?? CaseStatus.pending;
 
+  // İhtiyaç türünün metni.
   String _typeLabel(BuildContext context, HelpType t) {
     final l10n = AppLocalizations.of(context);
     switch (t) {
@@ -60,6 +72,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
+  // İhtiyaç türünün simgesi.
   IconData _typeIcon(HelpType t) {
     switch (t) {
       case HelpType.debris:
@@ -79,6 +92,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
+  // "Emin misiniz?" diye sorar; onaylanırsa çağrıyı iptal eder.
   Future<void> _handleCancel(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     final statusColors = Theme.of(context).extension<AppStatusColors>()!;
@@ -107,6 +121,7 @@ class ActiveRequestCard extends StatelessWidget {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

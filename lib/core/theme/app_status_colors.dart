@@ -1,3 +1,6 @@
+// Öncelik ve durum renkleri (Kritik = kırmızı, Acil = turuncu, Normal = yeşil…).
+// ThemeExtension sayesinde temaya eklenir ve açık/koyu temada doğru renk seçilir.
+
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
@@ -60,6 +63,7 @@ class AppStatusColors extends ThemeExtension<AppStatusColors> {
     }
   }
 
+  // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.
   @override
   AppStatusColors copyWith({
     Color? critical,
@@ -77,6 +81,7 @@ class AppStatusColors extends ThemeExtension<AppStatusColors> {
     );
   }
 
+  // Açık/koyu tema geçişinde iki renk setini yumuşakça karıştırır (ThemeExtension bunu ister).
   @override
   AppStatusColors lerp(ThemeExtension<AppStatusColors>? other, double t) {
     if (other is! AppStatusColors) return this;

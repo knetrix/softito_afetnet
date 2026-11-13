@@ -1,3 +1,5 @@
+// Splash ekranındaki dönen radar animasyonu (AnimationController ile).
+
 import 'dart:math' as math; // Pi sayısı ve açısal radyan dönüşümleri kütüphanesidir
 import 'package:flutter/material.dart'; // Flutter temel çizim ve arayüz kütüphanesidir
 import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır
@@ -7,6 +9,7 @@ class RadarTargetWidget extends StatefulWidget {
   final double size; // Radarın piksel cinsinden kare boyutudur
   const RadarTargetWidget({super.key, this.size = 220}); // Kurucu metottur (varsayılan 220px)
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<RadarTargetWidget> createState() => _RadarTargetWidgetState(); // Durum yöneticisini başlatır
 }
@@ -17,6 +20,7 @@ class _RadarTargetWidgetState extends State<RadarTargetWidget> with SingleTicker
   late final Animation<double> _pulse; // Radarın büyüyüp küçülmesini sağlayan nabız animasyonudur
   late final Animation<double> _rotation; // Radarın kesikli halkasını döndüren açı animasyonudur
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState(); // Üst sınıfın başlangıç mantığını çalıştırır
@@ -29,12 +33,14 @@ class _RadarTargetWidgetState extends State<RadarTargetWidget> with SingleTicker
     );
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _controller.dispose(); // Bellek sızıntısını önlemek için animasyon kontrolcüsünü siler
     super.dispose(); // Üst sınıfın dispose işlemini tamamlar
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder( // Animasyon her kare ilerlediğinde altındaki ağacı yeniden çizer
@@ -86,6 +92,7 @@ class _RadarPainter extends CustomPainter {
   final double rotation; // Anlık dönme açısıdır
   _RadarPainter({required this.rotation}); // Kurucu metottur
 
+  // CustomPainter: şekli tuvale (canvas) çizgi ve renklerle elle çizer.
   @override
   void paint(Canvas canvas, Size size) { // Tuval çizim fonksiyonudur
     final center = Offset(size.width / 2, size.height / 2); // Tuval orta noktasıdır
@@ -116,6 +123,7 @@ class _RadarPainter extends CustomPainter {
     canvas.drawLine(Offset(center.dx + dist - 8, center.dy), Offset(center.dx + dist + 8, center.dy), tick); // Sağ çentik (Doğu)
   }
 
+  // Yeniden çizim gerekiyor mu? Değişiklik yoksa false döner ve gereksiz çizim yapılmaz (performans).
   @override
   bool shouldRepaint(covariant _RadarPainter oldDelegate) => oldDelegate.rotation != rotation; // Açı değiştikçe tuvali yeniden çizer
 }

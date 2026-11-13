@@ -1,3 +1,5 @@
+// Onboarding'in sayfa geçişlerini (PageView) ve Atla / İleri / Başla butonlarını yöneten ekran.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,15 +15,18 @@ class SplashOnboardingScreen extends StatefulWidget {
 
   const SplashOnboardingScreen({super.key, this.onCompleted});
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<SplashOnboardingScreen> createState() => _SplashOnboardingScreenState();
 }
 
+// Sayfa geçişini yönetir.
 class _SplashOnboardingScreenState extends State<SplashOnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   static const int _totalPages = 2; // T6: 2 sayfa, 2 nokta
 
+  // Sonraki sayfaya geçer; son sayfadaysa bitirir.
   void _onNext() {
     if (_currentPage < _totalPages - 1) {
       _pageController.nextPage(
@@ -33,6 +38,7 @@ class _SplashOnboardingScreenState extends State<SplashOnboardingScreen> {
     }
   }
 
+  // Önceki sayfaya döner.
   void _onPrevious() {
     if (_currentPage > 0) {
       _pageController.previousPage(
@@ -42,6 +48,7 @@ class _SplashOnboardingScreenState extends State<SplashOnboardingScreen> {
     }
   }
 
+  // Onboarding'i bitirir ve girişe geçer.
   void _finishOnboarding() {
     if (widget.onCompleted != null) {
       widget.onCompleted!();
@@ -50,12 +57,14 @@ class _SplashOnboardingScreenState extends State<SplashOnboardingScreen> {
     }
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +95,7 @@ class _SplashOnboardingScreenState extends State<SplashOnboardingScreen> {
     );
   }
 
+  // Üst satır: Atla butonu.
   Widget _buildTopBar() {
     final l10n = AppLocalizations.of(context);
     final skipLabel = l10n?.onboardingSkip ?? 'Atla';

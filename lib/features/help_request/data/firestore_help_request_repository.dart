@@ -1,3 +1,6 @@
+// "data" katmanı: yardım çağrılarının Firestore işlemleri.
+// En önemli kısım: 50 m içindeki çağrıları tek olayda birleştiren Transaction (Kural 2).
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,9 +35,11 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
   final FirebaseFirestore _db;
   final DistanceCalculator _distanceBetween;
 
+  // help_requests koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _helpRequests =>
       _db.collection('help_requests');
 
+  // incidents koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _incidents =>
       _db.collection('incidents');
 
@@ -59,12 +64,16 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
   /// önbelleğe düşüyor ve açık olay bulunamadığı için mükerrer olay açılıyordu.
   /// Sunucuya ulaşılamazsa `unavailable` hatası çağrıyı kuyrukta tutar.
   Future<String?> findMatchingIncidentId(GeoPoint p) async {
+    // Geohash: dünyayı kutulara bölüp her kutuya kısa bir metin kodu verir (ör. "sy7h2k3").
+    // Yakın noktaların kodları aynı harflerle başlar; bu yüzden "bu kodla başlayanlar" sorgusu
+    // o bölgedeki olayları getirir. 9 kutu (merkez + 8 komşu) 50 m'yi her yönde kapsar.
     final cells = searchCells(p);
     final queries = cells.map((cell) => _incidents
         .where('geohash', isGreaterThanOrEqualTo: cell)
         .where('geohash', isLessThan: '$cell~')
         .get(const GetOptions(source: Source.server)));
 
+    // 9 sorgu aynı anda çalıştırılır ve hepsinin bitmesi beklenir.
     final snapshots = await Future.wait(queries);
     return pickMatchingIncident(
       p,
@@ -81,6 +90,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     DistanceCalculator distanceBetween,
   ) {
     for (final (id, data) in candidates) {
+      // Kapanmış olaylar atlanır.
       if (data['isOpen'] != true) continue;
       final loc = data['location'] as GeoPoint?;
       if (loc == null) continue;
@@ -90,11 +100,14 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
         loc.latitude,
         loc.longitude,
       );
+      // Gerçek mesafe (metre) 50'den küçükse bu olay eşleşir.
       if (distance <= 50.0) return id;
     }
     return null;
   }
 
+  // Çağrıyı gönderir. Transaction içinde: çevredeki açık olaylar aranır;
+  // 50 m içinde olay varsa çağrı ona bağlanır (çağrı sayısı +1), yoksa yeni olay açılır.
   @override
   Future<String> submitHelpRequest(HelpRequestDraft draft) async {
     final location = draft.location;
@@ -102,6 +115,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
       throw ArgumentError('Yardım çağrısı için konum zorunludur.');
     }
 
+    // Firestore'un konum tipi GeoPoint'tir; geohash ise yakın olay aramak için kullanılır.
     final geo = GeoPoint(location.latitude, location.longitude);
     final hash8 = geohash8(geo);
 
@@ -109,8 +123,11 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     final candidateIncidentId = await findMatchingIncidentId(geo);
 
     // 2. Transaction içinde kontrol ve yazım (Kural 2 & Kural 4)
+    // Transaction: içindeki okuma ve yazmalar tek bir işlem gibi çalışır. Aynı anda iki kişi
+    // aynı olaya çağrı eklese bile Firestore işlemi tekrarlar, sayaç yanlış artmaz.
     return _db.runTransaction<String>((tx) async {
       final requestRef = _helpRequests.doc(draft.id);
+      // Transaction'da önce okumalar (tx.get), sonra yazmalar (tx.set / tx.update) yapılır.
       final requestSnap = await tx.get(requestRef);
 
       // Idempotency: Kuyruk tekrar denese de çift kayıt olmaz (Kural 4)
@@ -134,6 +151,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
               PriorityPolicy.highest(existingPriority, draft.priority);
 
           tx.update(incidentRef, {
+            // increment(1): değeri okumadan sunucuda 1 artırır.
             'requestCount': FieldValue.increment(1),
             'priority': mergedPriority,
             'updatedAt': FieldValue.serverTimestamp(),
@@ -174,6 +192,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
       }
 
       // 3. help_requests/{requestId} belgesini yaz
+      // serverTimestamp(): zamanı telefonun saatinden değil sunucunun saatinden alır.
       tx.set(requestRef, {
         'createdBy': draft.createdBy ?? '',
         'type': draft.type.name,
@@ -193,6 +212,8 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
       });
 
       // 4. help_requests/{requestId}/private/contact belgesini yaz (Kural 5)
+      // Ad ve telefon ayrı bir alt belgede durur; güvenlik kuralları onu yalnızca sahibine
+      // ve onaylı yetkiliye açar.
       final contactRef = requestRef.collection('private').doc('contact');
       tx.set(contactRef, {
         'fullName': draft.fullName ?? '',
@@ -224,6 +245,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     return latest;
   }
 
+  // Çağrının bağlı olduğu olayı canlı dinler; ekip yola çıkınca afetzedenin kartı anında değişir.
   @override
   Stream<IncidentProgress?> watchIncidentProgress(String incidentId) {
     return _db.collection('incidents').doc(incidentId).snapshots().map((snap) {
@@ -237,6 +259,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     });
   }
 
+  // Atanan ekibin adını ve liderini okur.
   @override
   Future<AssignedTeamInfo?> fetchTeamInfo(String teamId) async {
     try {
@@ -253,6 +276,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     }
   }
 
+  // Çağrıyı iptal eder. Güvenlik kuralı gereği afetzede yalnızca status alanını "cancelled" yapabilir.
   @override
   Future<void> cancelHelpRequest(String requestId) {
     // §5.5: sahibi yalnızca `status → cancelled` yazabilir.
@@ -261,6 +285,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     });
   }
 
+  // Firestore belgesini HelpRequest modeline çevirir.
   HelpRequest _fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
     final geo = data['location'] as GeoPoint;

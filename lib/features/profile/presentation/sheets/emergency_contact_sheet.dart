@@ -1,3 +1,6 @@
+// 1. derece acil durum yakınını (ad, yakınlık, telefon) düzenleme formu.
+// Bu numara internet yokken SMS köprüsünde kullanılır.
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_status_colors.dart';
@@ -7,6 +10,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/user_contact_profile.dart';
 
+// Acil durum yakını formunu alttan açar.
 Future<void> showEmergencyContactSheet(
   BuildContext context, {
   required UserContactProfile? currentProfile,
@@ -27,6 +31,7 @@ Future<void> showEmergencyContactSheet(
   );
 }
 
+// Acil durum yakını formu widget'ı.
 class _EmergencyContactForm extends StatefulWidget {
   const _EmergencyContactForm({
     required this.currentProfile,
@@ -40,10 +45,12 @@ class _EmergencyContactForm extends StatefulWidget {
     required String phone,
   }) onSave;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_EmergencyContactForm> createState() => _EmergencyContactFormState();
 }
 
+// Ad, yakınlık ve telefon alanlarını yönetir.
 class _EmergencyContactFormState extends State<_EmergencyContactForm> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _name;
@@ -52,6 +59,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
   final _phoneFormatter = Validators.phoneFormatter();
   bool _isSaving = false;
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -67,6 +75,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     );
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _name.dispose();
@@ -75,6 +84,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     super.dispose();
   }
 
+  // Formu doğrular ve kaydeder.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isSaving = true);
@@ -101,6 +111,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     );
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
