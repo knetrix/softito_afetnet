@@ -1,3 +1,5 @@
+// Profil verilerini (gizli iletişim ve sağlık) Firestore'da okur/yazar.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

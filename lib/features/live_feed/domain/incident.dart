@@ -1,3 +1,5 @@
+// Olay modeli: 50 m içindeki çağrıların birleştiği dosya.
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 

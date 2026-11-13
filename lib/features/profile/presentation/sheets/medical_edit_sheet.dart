@@ -1,3 +1,5 @@
+// Tıbbi bilgi düzenleme formu (KVKK açık rızası ile).
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_status_colors.dart';

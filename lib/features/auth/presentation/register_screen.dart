@@ -1,3 +1,5 @@
+// O4 Kayıt ekranı (KVKK onayı, telefon maskesi, şifre gücü).
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

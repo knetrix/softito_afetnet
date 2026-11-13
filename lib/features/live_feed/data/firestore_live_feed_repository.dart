@@ -1,3 +1,5 @@
+// Canlı Akış verileri: açık olaylar, panik sinyalleri, detay, olay kapatma.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

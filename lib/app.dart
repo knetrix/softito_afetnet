@@ -1,3 +1,5 @@
+// Kök widget: bağımlılıklar (MultiProvider), tema, dil ve GoRouter burada bağlanır.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';

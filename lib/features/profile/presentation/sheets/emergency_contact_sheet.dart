@@ -1,3 +1,5 @@
+// Acil durum yakını düzenleme formu.
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_status_colors.dart';

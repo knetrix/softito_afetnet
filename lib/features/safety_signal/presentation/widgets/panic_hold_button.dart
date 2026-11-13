@@ -1,3 +1,5 @@
+// 2 saniye basılı tutulan PANİĞİM / GÜVENDEYİM butonu.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

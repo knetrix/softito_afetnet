@@ -1,3 +1,5 @@
+// Afetzede alt menüsü: Ana Sayfa / Toplanma / Düdük / Profil.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

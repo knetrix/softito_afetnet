@@ -1,3 +1,5 @@
+// Yardım çağrısı ihtiyaç türleri (enkaz, tıbbi, barınma…).
+
 /// AfetNet İhtiyaç / Yardım Türleri (PROJECT_NEW.md §4 Kural 1, §5.2).
 ///
 /// Firestore `help_requests.type` ve `incidents.type` alanlarına `name` olarak yazılır.

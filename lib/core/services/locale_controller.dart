@@ -1,3 +1,5 @@
+// Uygulama dili (varsayılan Türkçe, Profil'den İngilizce) ve kaydı.
+
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

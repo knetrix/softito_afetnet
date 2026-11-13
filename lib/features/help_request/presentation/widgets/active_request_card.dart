@@ -1,3 +1,5 @@
+// Ana Sayfa'daki aktif çağrı kartı (durum, ekip, iptal).
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/case_status.dart';

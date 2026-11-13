@@ -1,3 +1,5 @@
+// Öncelik ve durum renkleri (ThemeExtension).
+
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';

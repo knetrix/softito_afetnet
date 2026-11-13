@@ -1,3 +1,5 @@
+// İnternet bağlantısını izleyen servis.
+
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';

@@ -1,3 +1,5 @@
+// Seçili toplanma noktasının bilgi kartı.
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 

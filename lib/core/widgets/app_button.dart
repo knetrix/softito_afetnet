@@ -1,3 +1,5 @@
+// Ortak buton bileşeni.
+
 import 'package:flutter/material.dart';
 
 import '../theme/app_status_colors.dart';

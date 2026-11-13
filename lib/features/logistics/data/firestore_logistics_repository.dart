@@ -1,3 +1,5 @@
+// Depo ve stok verileri; giriş/çıkış tek Transaction (eksi stok yok).
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 

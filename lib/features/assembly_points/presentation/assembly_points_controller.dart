@@ -1,3 +1,5 @@
+// Toplanma ekranının durumu: noktalar, seçili nokta, mesafeler.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

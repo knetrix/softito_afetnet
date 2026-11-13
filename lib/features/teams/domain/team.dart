@@ -1,3 +1,5 @@
+// Ekip modeli: tür, lider, konum, Boşta / Görevde.
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 

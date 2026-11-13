@@ -1,3 +1,5 @@
+// Panik akışı: sinyal gönderme, bağlantı kontrolü, SMS köprüsü.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

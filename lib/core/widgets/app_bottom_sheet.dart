@@ -1,3 +1,5 @@
+// Ortak bottom sheet (alttan açılan panel) bileşeni.
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';

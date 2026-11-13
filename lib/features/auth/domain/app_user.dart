@@ -1,3 +1,5 @@
+// Kullanıcı modeli (users/{uid}: ad, rol, onay durumu).
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/user_role.dart';

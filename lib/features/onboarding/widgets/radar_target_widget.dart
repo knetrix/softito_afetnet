@@ -1,3 +1,5 @@
+// Dönen radar animasyonu (splash).
+
 import 'dart:math' as math; // Pi sayısı ve açısal radyan dönüşümleri kütüphanesidir
 import 'package:flutter/material.dart'; // Flutter temel çizim ve arayüz kütüphanesidir
 import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır

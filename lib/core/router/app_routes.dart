@@ -1,3 +1,5 @@
+// Rota yolları (ekran adresleri) sabitleri.
+
 /// 12 ekranın rotaları (PROJECT_NEW.md §3.1). Ek işlemler için rota eklenmez;
 /// bottom sheet / diyalog açılır (§3.2).
 abstract final class AppRoutes {

@@ -1,3 +1,5 @@
+// Toplanma alanlarını Firestore'dan okur.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../domain/assembly_point.dart';

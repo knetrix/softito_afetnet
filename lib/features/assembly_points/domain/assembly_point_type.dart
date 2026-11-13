@@ -1,3 +1,5 @@
+// Nokta türleri: toplanma alanı, sahra hastanesi, barınma.
+
 /// Toplanma Noktası Türleri (PROJECT_NEW.md §3.1 A2, §5.3).
 enum AssemblyPointType {
   /// Genel Toplanma Alanı (park, meydan, okul bahçesi vb.)

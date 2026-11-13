@@ -1,3 +1,5 @@
+// Onboarding alt satırı: sayfa noktaları ve butonlar.
+
 import 'package:flutter/material.dart'; // Flutter temel görsel bileşenler kütüphanesidir
 
 import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır

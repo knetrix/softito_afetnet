@@ -1,3 +1,5 @@
+// Afetzedede yeni anonsu dinler, yarıçap içindeyse bildirim gösterir.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

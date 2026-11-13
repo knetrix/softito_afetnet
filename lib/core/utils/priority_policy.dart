@@ -1,3 +1,5 @@
+// İhtiyaç türünden öncelik hesaplar (triage: Kritik / Acil / Normal).
+
 import '../constants/help_type.dart';
 
 /// AfetNet Öncelik (Triage) Politikası (PROJECT_NEW.md §4 Kural 1).

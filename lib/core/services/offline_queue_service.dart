@@ -1,3 +1,5 @@
+// İnternetsiz açılan yardım çağrılarını Hive'da tutup internet gelince gönderir.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

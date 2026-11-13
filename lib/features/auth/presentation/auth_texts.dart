@@ -1,3 +1,5 @@
+// Giriş/kayıt ekranlarının rol ve hata metinleri.
+
 import '../../../core/constants/user_role.dart';
 import '../../../core/utils/validators.dart';
 import '../../../l10n/app_localizations.dart';

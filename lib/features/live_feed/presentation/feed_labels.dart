@@ -1,3 +1,5 @@
+// Canlı Akış ve Ekipler'in ortak etiket ve simgeleri.
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 

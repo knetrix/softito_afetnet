@@ -1,3 +1,5 @@
+// Lojistik repository arayüzü ve yetersiz stok hatası.
+
 import 'inventory_item.dart';
 
 abstract class LogisticsRepository {

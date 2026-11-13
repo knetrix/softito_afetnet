@@ -1,3 +1,5 @@
+// Yetkili alt menüsü: Canlı Akış / Ekipler / Lojistik / Profil.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

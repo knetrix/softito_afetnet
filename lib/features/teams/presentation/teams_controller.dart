@@ -1,3 +1,5 @@
+// Ekipler ekranının durumu: ekipler, filtre, aktif görevler.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

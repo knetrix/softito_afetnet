@@ -1,3 +1,5 @@
+// Y3 Lojistik ekranı: depo seçimi, kritik stok uyarısı, stok kartları.
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,3 +1,5 @@
+// Öncelik ve durum rozeti (Kritik, Acil, Normal…).
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';

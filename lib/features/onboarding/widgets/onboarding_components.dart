@@ -1,3 +1,5 @@
+// Onboarding'in küçük ortak parçaları (rozet, özellik etiketi).
+
 import 'package:flutter/material.dart'; // Flutter temel arayüz bileşenleri kütüphanesidir
 
 import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır

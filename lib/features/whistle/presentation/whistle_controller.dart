@@ -1,3 +1,5 @@
+// Düdük sesini çalar/durdurur (internetsiz).
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 

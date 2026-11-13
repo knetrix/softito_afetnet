@@ -1,3 +1,5 @@
+// Mor panik pini paneli: konum, zaman, Ulaşıldı.
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';

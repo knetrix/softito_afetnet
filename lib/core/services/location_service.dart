@@ -1,3 +1,5 @@
+// Konum alma, "Antakya, Hatay" gibi konum etiketi ve son konum önbelleği.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';

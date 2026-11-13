@@ -1,3 +1,5 @@
+// Firebase Auth ile giriş, kayıt, şifre sıfırlama ve hesap silme.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';

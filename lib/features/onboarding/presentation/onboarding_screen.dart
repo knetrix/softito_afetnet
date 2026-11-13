@@ -1,3 +1,5 @@
+// O2 Onboarding ekranı (2 tanıtım sayfası).
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

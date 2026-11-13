@@ -1,3 +1,5 @@
+// Panik sinyali repository arayüzü.
+
 import 'safety_signal.dart';
 
 /// Panik sinyali (`safety_signals/{uid}`) repository arayüzü.

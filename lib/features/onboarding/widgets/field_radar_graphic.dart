@@ -1,3 +1,5 @@
+// Onboarding 2. sayfa radar grafiği (Saha Yönetimi).
+
 import 'dart:math' as math; // Pi sayısı ve trigonometrik açı hesapları kütüphanesidir
 import 'package:flutter/material.dart'; // Flutter temel çizim ve arayüz kütüphanesidir
 import '../../../core/theme/app_colors.dart'; // Projenin renk paleti sabitleridir

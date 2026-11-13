@@ -1,3 +1,5 @@
+// O1 Splash: Firebase ve oturum kontrolü sırasında gösterilir.
+
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';

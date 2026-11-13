@@ -1,3 +1,5 @@
+// "Demo Verisini Sıfırla": ekip, depo, stok ve toplanma verisini yükler (yalnızca debug).
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 

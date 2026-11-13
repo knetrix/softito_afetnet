@@ -1,3 +1,5 @@
+// Yerel bildirimler ve FCM all_users topic aboneliği.
+
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';

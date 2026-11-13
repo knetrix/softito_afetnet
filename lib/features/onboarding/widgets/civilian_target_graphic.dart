@@ -1,3 +1,5 @@
+// Onboarding 1. sayfa grafiği (Sivil Kullanıcı).
+
 import 'dart:math' as math; // Pi sayısı ve açısal hesaplamalar için matematik kütüphanesidir
 import 'package:flutter/material.dart'; // Flutter temel görsel ve çizim bileşenleridir
 import '../../../core/theme/app_colors.dart'; // Projenin renk paletidir

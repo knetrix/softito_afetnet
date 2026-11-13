@@ -1,3 +1,5 @@
+// Uygulama geneli sabitler: harita tile adresi ve yasal sayfa bağlantıları.
+
 import 'dart:ui' show Locale;
 
 /// Uygulama genelindeki sabit ayarlar (PROJECT_NEW.md §6.1, §7).

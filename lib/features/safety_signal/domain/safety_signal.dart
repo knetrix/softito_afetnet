@@ -1,3 +1,5 @@
+// Panik sinyali modeli: TEHLİKEDEYİM / GÜVENDEYİM ve iletim durumu.
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 

@@ -1,3 +1,5 @@
+// Profil'deki Türkçe / English seçimi.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

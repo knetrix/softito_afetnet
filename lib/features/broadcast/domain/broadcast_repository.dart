@@ -1,3 +1,5 @@
+// Anons türleri (tahliye / artçı) ve repository arayüzü.
+
 import 'package:latlong2/latlong.dart';
 
 /// `broadcasts/{id}.type` değerleri (PROJECT_NEW.md §5.3).
