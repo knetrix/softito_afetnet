@@ -19,17 +19,19 @@ Future<void> main() async {
   // 2) Firebase'i başlatır. Ayarlar firebase_options.dart dosyasından gelir (Android/iOS/Web).
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Geliştirme sırasında çökme raporu gönderilmez.
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-    !kDebugMode,
-  );
-  // Flutter içinde oluşan hatalar Crashlytics'e kaydedilir.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  // Flutter dışında (ör. async kodda) yakalanmayan hatalar da kaydedilir.
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // Geliştirme sırasında çökme raporu gönderilmez. Crashlytics web'de yok.
+  if (!kIsWeb) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+      !kDebugMode,
+    );
+    // Flutter içinde oluşan hatalar Crashlytics'e kaydedilir.
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    // Flutter dışında (ör. async kodda) yakalanmayan hatalar da kaydedilir.
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
 
   // Gömülü yazı tiplerinin OFL lisansları (Lisanslar sayfasında görünür).
   LicenseRegistry.addLicense(() async* {

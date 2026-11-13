@@ -24,10 +24,7 @@ enum LocationStatus {
 /// Konum ve okunabilir etiket sonucu.
 @immutable
 class LocationSnapshot {
-  const LocationSnapshot({
-    required this.coordinates,
-    this.label,
-  });
+  const LocationSnapshot({required this.coordinates, this.label});
 
   final LatLng coordinates;
   final String? label;
@@ -63,9 +60,13 @@ class DeviceLocationService extends LocationService {
     this._positionTimeout = const Duration(seconds: 6),
     this._freshFor = const Duration(minutes: 2),
     DateTime Function()? clock,
-  })  : _prefsLoader = prefsLoader ?? SharedPreferences.getInstance,
-        _gateway = gateway ?? const GeolocatorLocationGateway(),
-        _clock = clock ?? DateTime.now;
+  }) : _prefsLoader = prefsLoader ?? SharedPreferences.getInstance,
+       _gateway =
+           gateway ??
+           (kIsWeb
+               ? const FixedLocationGateway()
+               : const GeolocatorLocationGateway()),
+       _clock = clock ?? DateTime.now;
 
   static const cacheLabelKey = 'lastKnownLocationLabel';
   static const cacheLatKey = 'lastKnownLat';
@@ -339,9 +340,7 @@ class GeolocatorLocationGateway implements LocationGateway {
   @override
   Future<LatLng> getCurrentPosition() async {
     final pos = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-      ),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
     return LatLng(pos.latitude, pos.longitude);
   }
@@ -357,8 +356,10 @@ class GeolocatorLocationGateway implements LocationGateway {
   // Koordinattan adres bulur (reverse geocoding) ve "İlçe, İl" etiketine çevirir.
   @override
   Future<String?> resolveAddressLabel(double latitude, double longitude) async {
-    final placemarks =
-        await Geocoding().placemarkFromCoordinates(latitude, longitude);
+    final placemarks = await Geocoding().placemarkFromCoordinates(
+      latitude,
+      longitude,
+    );
     if (placemarks.isEmpty) return null;
     final p = placemarks.first;
     return DeviceLocationService.formatPlacemarkLabel(
@@ -369,3 +370,32 @@ class GeolocatorLocationGateway implements LocationGateway {
   }
 }
 
+/// Yalnızca web yedeği: tarayıcıda sahte konum yok, yetkili Antakya'da sabit.
+class FixedLocationGateway implements LocationGateway {
+  const FixedLocationGateway();
+
+  static const _antakya = LatLng(36.2030, 36.1620);
+
+  @override
+  Future<bool> isLocationServiceEnabled() async => true;
+
+  @override
+  Future<LocationPermission> checkPermission() async =>
+      LocationPermission.whileInUse;
+
+  @override
+  Future<LocationPermission> requestPermission() async =>
+      LocationPermission.whileInUse;
+
+  @override
+  Future<LatLng> getCurrentPosition() async => _antakya;
+
+  @override
+  Future<LatLng?> getLastKnownPosition() async => _antakya;
+
+  @override
+  Future<String?> resolveAddressLabel(
+    double latitude,
+    double longitude,
+  ) async => 'Antakya, Hatay';
+}
