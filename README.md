@@ -91,7 +91,7 @@ npm install
 npm run test:rules
 ```
 
-> Not: Uygulama Android için geliştirildi ve test edildi. iOS derlemesi çalışır, ancak push bildirimi ücretli Apple Developer hesabı gerektirdiği için kurulmadı. Web sürümü (`flutter run -d chrome`) sunum içindir; konum Antakya'ya sabitlenir ve Crashlytics kapalıdır.
+> Not: Uygulama Android için geliştirildi ve test edildi. iOS derlemesi çalışır, ancak push bildirimi ücretli Apple Developer hesabı gerektirdiği için kurulmadı.
 
 Demo verisi (ekipler, depolar, stok ve toplanma noktaları) debug derlemede yetkili Profil'indeki **Demo Verisini Sıfırla** ile yüklenir.
 
