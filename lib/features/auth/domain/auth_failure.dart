@@ -1,4 +1,5 @@
-// Giriş ve kayıt hata türleri.
+// Giriş ve kayıtta oluşabilecek hata türleri (yanlış şifre, e-posta kullanımda, onay bekliyor…).
+// Metne çevirme ekranda yapılır; böylece Türkçe/İngilizce doğru gösterilir.
 
 /// Giriş/Kayıt hata türleri. Metne çeviri ekranda yapılır.
 enum AuthFailure {
@@ -21,7 +22,7 @@ class AuthException implements Exception {
 
   final AuthFailure failure;
 
-  // Hata ayıklama için okunur metin döndürür.
+  // Nesneyi hata ayıklarken (print/log) okunabilir bir metne çevirir.
   @override
   String toString() => 'AuthException(${failure.name})';
 }

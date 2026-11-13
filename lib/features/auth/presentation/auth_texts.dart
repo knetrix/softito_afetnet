@@ -1,4 +1,4 @@
-// Giriş/kayıt ekranlarının rol ve hata metinleri.
+// Giriş ve kayıt ekranlarında kullanılan rol adları ve hata mesajlarının dile göre metinleri.
 
 import '../../../core/constants/user_role.dart';
 import '../../../core/utils/validators.dart';

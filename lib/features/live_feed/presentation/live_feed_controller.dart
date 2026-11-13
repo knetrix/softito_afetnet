@@ -1,4 +1,5 @@
-// Canlı Akış durumu: olaylar, filtreler, mesafeler, yeni panik bildirimi.
+// Canlı Akış ekranının controller'ı (ChangeNotifier). Açık olayları, panik sinyallerini ve ekipleri canlı dinler;
+// filtreyi uygular, mesafeleri hesaplar ve yeni panik sinyali gelince yetkiliye bildirim gösterir.
 
 import 'dart:async';
 
@@ -40,7 +41,7 @@ class LiveFeedFilter {
       other.priority == priority &&
       other.type == type;
 
-  // Eşitlik karşılaştırması için hash değeri.
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(priority, type);
 }
@@ -149,7 +150,8 @@ class LiveFeedController extends ChangeNotifier {
     _subscribe();
   }
 
-  // Olayları, panik sinyallerini ve ekipleri canlı dinlemeye başlar.
+  // Firestore'daki üç akışı (olaylar, panik sinyalleri, ekipler) aynı anda dinlemeye başlar.
+  // Herhangi biri değişince liste ve harita kendiliğinden güncellenir.
   void _subscribe() {
     _incidentSub?.cancel();
     _signalSub?.cancel();
@@ -249,7 +251,7 @@ class LiveFeedController extends ChangeNotifier {
     if (!_disposed) notifyListeners();
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

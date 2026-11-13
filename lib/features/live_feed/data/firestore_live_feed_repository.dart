@@ -1,4 +1,5 @@
-// Canlı Akış verileri: açık olaylar, panik sinyalleri, detay, olay kapatma.
+// "data" katmanı: Canlı Akış'ın Firestore işlemleri.
+// Açık olayları ve panik sinyallerini canlı dinler; Detay bilgisini okur; olayı kapatır; sinyali "Ulaşıldı" yapar.
 
 import 'dart:async';
 
@@ -127,7 +128,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     );
   }
 
-  // Görev atanmamış olayı kapatır (Olayı Kapat).
+  // Henüz ekip atanmamış olayı kapatır (Detay → Olayı Kapat). Olay ve bağlı çağrılar "resolved" olur.
   @override
   Future<bool> closeIncident(Incident incident) async {
     final incidentRef = _incidents.doc(incident.id);
@@ -168,7 +169,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     });
   }
 
-  // Panik sinyalini "Ulaşıldı" olarak işaretler.
+  // Panik sinyalini "Ulaşıldı" olarak işaretler (handledBy = yetkili, handledAt = şimdi).
   @override
   Future<bool> markSignalHandled({
     required String signalUid,

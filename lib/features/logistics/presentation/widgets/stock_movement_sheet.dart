@@ -1,4 +1,4 @@
-// Stok giriş / çıkış formu.
+// Stok giriş/çıkış formu (alttan açılan panel): hareket türü ve miktar girilir, Kaydet'e basılır.
 
 import 'package:flutter/material.dart';
 
@@ -33,7 +33,7 @@ class StockMovementSheet extends StatefulWidget {
     );
   }
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<StockMovementSheet> createState() => _StockMovementSheetState();
 }
@@ -47,7 +47,7 @@ class _StockMovementSheetState extends State<StockMovementSheet> {
   bool _isSaving = false;
   String? _error;
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _quantityController.dispose();
@@ -89,7 +89,7 @@ class _StockMovementSheetState extends State<StockMovementSheet> {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

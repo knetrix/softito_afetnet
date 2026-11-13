@@ -1,4 +1,5 @@
-// Y1 Canlı Akış ekranı: harita, filtreler, olay kartları.
+// Y1 Canlı Akış ekranı (yetkili). Üstte harita (renkli olay pinleri + mor panik pinleri),
+// altta filtreler ve öncelik sırasına göre olay kartları (Detay, Ekip Yönlendir).
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,7 @@ class LiveFeedScreen extends StatelessWidget {
   /// Testlerde giriş yapmış yetkili; verilmezse `AuthController`'dan okunur.
   final String? officialUid;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final view = _LiveFeedView(tileLayer: tileLayer, officialUid: officialUid);
@@ -129,7 +130,7 @@ class _LiveFeedView extends StatelessWidget {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final ctrl = context.watch<LiveFeedController>();
@@ -211,7 +212,7 @@ class _FilterBar extends StatelessWidget {
 
   final LiveFeedController controller;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -279,7 +280,7 @@ class FeedChoiceChip extends StatelessWidget {
   final Color? dotColor;
   final IconData? icon;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -337,7 +338,7 @@ class _FeedHeader extends StatelessWidget {
 
   final LiveFeedController controller;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

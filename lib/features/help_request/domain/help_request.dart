@@ -1,4 +1,5 @@
-// Yardım çağrısı modeli (help_requests/{id}).
+// "domain" katmanı: yardım çağrısı modeli (help_requests/{id}):
+// tür, öncelik, durum, kişi sayısı, adres tarifi, konum, bağlı olay ve ekip.
 
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
@@ -54,7 +55,7 @@ class HelpRequest {
   // Çağrı iptal edildi mi.
   bool get isCancelled => status == CaseStatus.cancelled;
 
-  // Verilen alanları değiştirilmiş bir kopya döndürür.
+  // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.
   HelpRequest copyWith({
     String? id,
     String? createdBy,
@@ -106,7 +107,7 @@ class HelpRequest {
           incidentId == other.incidentId &&
           updatedAt == other.updatedAt;
 
-  // Eşitlik karşılaştırması için hash değeri.
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(id, createdBy, status, incidentId, updatedAt);
 }

@@ -1,4 +1,5 @@
-// İnternet bağlantısını izleyen servis.
+// Cihazın bir ağa (Wi-Fi / mobil veri) bağlı olup olmadığını izleyen servis.
+// Not: ağa bağlı olmak internetin çalıştığı anlamına gelmez; asıl kontrol sunucu onayıyla yapılır.
 
 import 'dart:async';
 
@@ -14,9 +15,9 @@ abstract class ConnectivityService extends ChangeNotifier {
   bool get hasNetworkInterface;
   Stream<bool> get onNetworkChanged;
 
-  // Bağlantı dinlemesini başlatır.
+  // Bağlantıyı dinlemeye başlar (uygulama açılışında bir kez çağrılır).
   Future<void> initialize();
-  // Cihazın şu an bir ağa bağlı olup olmadığını kontrol eder.
+  // Cihaz şu an bir ağa bağlı mı? Sonucu Future ile (biraz sonra) döndürür.
   Future<bool> checkNetworkInterface();
 }
 
@@ -33,15 +34,16 @@ class DeviceConnectivityService extends ConnectivityService {
   bool _initialized = false;
   bool _disposed = false;
 
-  // Son bilinen ağ bağlantısı durumu.
+  // En son öğrenilen bağlantı durumu (true = bir ağa bağlı).
   @override
   bool get hasNetworkInterface => _hasNetworkInterface;
 
-  // Ağ bağlantısı değiştiğinde haber veren akış.
+  // Bağlantı her değiştiğinde yeni değeri yayınlayan akış (Stream).
+  // Ekranlar bu akışı dinleyerek internet gelince/gidince tepki verir.
   @override
   Stream<bool> get onNetworkChanged => _changes.stream;
 
-  // İlk bağlantı durumunu okur ve değişiklikleri dinlemeye başlar.
+  // Önce mevcut durumu okur, sonra connectivity_plus paketinden gelen değişiklikleri dinlemeye başlar.
   @override
   Future<void> initialize() async {
     if (_initialized) return;
@@ -55,7 +57,7 @@ class DeviceConnectivityService extends ConnectivityService {
     }
   }
 
-  // Bağlantı durumunu anlık olarak sorgular.
+  // Bağlantı durumunu o anda bir kez sorar (dinleme yapmaz).
   @override
   Future<bool> checkNetworkInterface() async {
     try {
@@ -67,7 +69,7 @@ class DeviceConnectivityService extends ConnectivityService {
     return _hasNetworkInterface;
   }
 
-  // Gelen bağlantı sonucunu işleyip dinleyicilere bildirir.
+  // Paketten gelen sonucu "bağlı / bağlı değil" bilgisine çevirir ve değiştiyse dinleyicilere haber verir.
   void _handleResults(List<ConnectivityResult> results) {
     final next = results.any((r) => r != ConnectivityResult.none);
     if (next == _hasNetworkInterface) return;
@@ -76,7 +78,7 @@ class DeviceConnectivityService extends ConnectivityService {
     if (!_disposed) notifyListeners();
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

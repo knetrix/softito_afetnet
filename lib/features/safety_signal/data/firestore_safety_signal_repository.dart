@@ -1,4 +1,5 @@
-// Panik sinyalini (safety_signals/{uid}) Firestore'a yazar.
+// "data" katmanı: panik sinyalini safety_signals/{uid} belgesine yazar.
+// Her kullanıcının tek belgesi vardır; PANİĞİM "danger", GÜVENDEYİM "safe" yazar.
 
 import 'dart:async';
 
@@ -33,7 +34,8 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
         .map((snap) => _fromDoc(uid, snap));
   }
 
-  // TEHLİKEDEYİM yazar; 10 sn'de sunucu onayı gelmezse çevrimdışı sayar.
+  // TEHLİKEDEYİM sinyalini konum ve zamanla yazar. 10 sn içinde sunucu onayı gelmezse (hasPendingWrites)
+  // internet yok kabul edilir; sinyal yine de Firestore'un kuyruğunda bekler ve internet gelince gider.
   @override
   Future<SignalDelivery> sendDanger(
     String uid,
@@ -44,12 +46,14 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     final geo = GeoPoint(latitude, longitude);
     final hash = GeoFirePoint(geo).geohash.substring(0, 8);
 
+    // Completer: sonucu (iletildi / bekliyor) daha sonra, dinleyici içinden vermemizi sağlar.
     final completer = Completer<SignalDelivery>();
     // Dinleyici set()'ten önce açılır; böylece eski önbellek 'safe' kaydı
     // sunucu onayı sanılmaz ve hızlı sunucu cevabı kaçırılmaz.
     final sub = ref.snapshots(includeMetadataChanges: true).listen(
       (snap) {
         final data = snap.data();
+        // hasPendingWrites == false: yazım sunucuya ulaştı ve onaylandı demektir.
         if (snap.exists &&
             data?['state'] == SafetySignalState.danger.name &&
             !snap.metadata.hasPendingWrites &&
@@ -79,11 +83,13 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
               'handledBy': FieldValue.delete(),
               'handledAt': FieldValue.delete(),
             },
+            // merge: true → belgedeki diğer alanlar silinmez, yalnızca bu alanlar güncellenir.
             SetOptions(merge: true),
           )
           .catchError((Object _) {}),
     );
 
+    // En fazla 10 sn sunucu onayı beklenir; gelmezse "bekliyor" (internet yok) sayılır.
     try {
       return await completer.future.timeout(
         _offlineTimeout,

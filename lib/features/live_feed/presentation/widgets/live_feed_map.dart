@@ -1,4 +1,4 @@
-// Canlı Akış haritası: olay pinleri ve mor panik pinleri.
+// Canlı Akış haritası (flutter_map + OpenStreetMap). Olaylar öncelik rengiyle, panik sinyalleri mor pinle gösterilir.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -35,7 +35,7 @@ class LiveFeedMap extends StatefulWidget {
   /// Konum ve olay yokken açılış merkezi (Hatay; yalnızca harita kamerası).
   static const defaultCenter = LatLng(36.2025, 36.1610);
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<LiveFeedMap> createState() => _LiveFeedMapState();
 }
@@ -45,7 +45,7 @@ class _LiveFeedMapState extends State<LiveFeedMap> {
   final MapController _map = MapController();
   bool _centeredOnData = false;
 
-  // Widget parametreleri değiştiğinde çalışır.
+  // Üst widget yeni parametrelerle yeniden çizildiğinde çalışır; değişen değere göre animasyonu günceller.
   @override
   void didUpdateWidget(covariant LiveFeedMap oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -74,7 +74,7 @@ class _LiveFeedMapState extends State<LiveFeedMap> {
     _map.move(c.center, c.zoom + delta);
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -195,7 +195,7 @@ class _Pin extends StatelessWidget {
   final VoidCallback onTap;
   final bool dimmed;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Tooltip(
@@ -239,7 +239,7 @@ class _MapButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool accent;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;

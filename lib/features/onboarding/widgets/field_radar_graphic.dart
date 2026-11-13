@@ -1,4 +1,4 @@
-// Onboarding 2. sayfa radar grafiği (Saha Yönetimi).
+// Onboarding 2. sayfadaki radar grafiği (Saha Yönetimi / "Krizi Canlı Yönetin"); CustomPainter ile çizilir.
 
 import 'dart:math' as math; // Pi sayısı ve trigonometrik açı hesapları kütüphanesidir
 import 'package:flutter/material.dart'; // Flutter temel çizim ve arayüz kütüphanesidir
@@ -9,7 +9,7 @@ import '../../../l10n/app_localizations.dart';
 class FieldRadarGraphic extends StatelessWidget {
   const FieldRadarGraphic({super.key}); // Kurucu metottur
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -49,7 +49,7 @@ class FieldRadarGraphic extends StatelessWidget {
 
 // CustomPainter: Eş merkezli radar halkalarını ve dönen ışık sektörünü tuvale çizer
 class _RadarSectorPainter extends CustomPainter {
-  // Şekli tuvale çizer.
+  // CustomPainter: şekli tuvale (canvas) çizgi ve renklerle elle çizer.
   @override
   void paint(Canvas canvas, Size size) { // Tuval çizim mantığıdır
     final center = Offset(size.width / 2, size.height / 2); // Radar merkez noktasıdır
@@ -69,7 +69,7 @@ class _RadarSectorPainter extends CustomPainter {
     canvas.drawArc(Rect.fromCircle(center: center, radius: maxRadius * 0.9), math.pi * 1.05, math.pi * 0.45, true, sweep); // Tarama dilimini çizer
   }
 
-  // Değişiklik yoksa yeniden çizmez.
+  // Yeniden çizim gerekiyor mu? Değişiklik yoksa false döner ve gereksiz çizim yapılmaz (performans).
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false; // Sabit çizim olduğu için tekrar çizimi engeller
 }
@@ -80,7 +80,7 @@ class _RadarTag extends StatelessWidget {
   final String text; // Rozette yazan metindir (örn. TİM #04)
   const _RadarTag({required this.dotColor, required this.text});
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Container( // Rozet kutusudur
@@ -116,7 +116,7 @@ class _RadarDot extends StatelessWidget {
   final double size; // Noktanın piksel çapıdır
   const _RadarDot({required this.color, required this.size});
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Container( // Nokta kutusudur

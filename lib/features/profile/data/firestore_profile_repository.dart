@@ -1,4 +1,5 @@
-// Profil verilerini (gizli iletişim ve sağlık) Firestore'da okur/yazar.
+// "data" katmanı: profilin gizli bilgilerini (telefon, adres, acil durum yakını, tıbbi bilgi)
+// users/{uid}/private/contact belgesinde okur ve yazar; hesap silme de burada.
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -135,7 +136,8 @@ class FirestoreProfileRepository implements ProfileRepository {
     return snap.data()?['name'] as String?;
   }
 
-  // Hesabı siler: şifreyi doğrular, kişisel belgeleri ve Auth hesabını siler.
+  // Hesabı siler: önce şifre tekrar doğrulanır (Firebase bunu ister),
+  // sonra çağrıların gizli belgeleri, panik sinyali, profil belgeleri ve en son Auth hesabı silinir.
   @override
   Future<void> deleteAccount(String uid, {required String password}) async {
     final user = _auth.currentUser;

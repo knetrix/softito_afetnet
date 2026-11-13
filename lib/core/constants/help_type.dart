@@ -1,4 +1,5 @@
-// Yardım çağrısı ihtiyaç türleri (enkaz, tıbbi, barınma…).
+// Yardım çağrısındaki ihtiyaç türleri (enkaz, tıbbi, barınma, ısınma, bebek maması, su, diğer).
+// Öncelik bu türe göre otomatik hesaplanır (bkz. priority_policy.dart).
 
 /// AfetNet İhtiyaç / Yardım Türleri (PROJECT_NEW.md §4 Kural 1, §5.2).
 ///

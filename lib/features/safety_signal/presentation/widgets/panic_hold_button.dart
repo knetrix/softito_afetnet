@@ -1,4 +1,5 @@
-// 2 saniye basılı tutulan PANİĞİM / GÜVENDEYİM butonu.
+// PANİĞİM / GÜVENDEYİM butonu. Yanlışlıkla basılmasın diye 2 saniye basılı tutmak gerekir;
+// bu sürede etrafında dolan bir halka animasyonu görünür.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ class PanicHoldButton extends StatefulWidget {
   final double size;
   final Duration holdDuration;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<PanicHoldButton> createState() => _PanicHoldButtonState();
 }
@@ -40,7 +41,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
   late final AnimationController _holdController;
   bool _triggered = false;
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -50,7 +51,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     )..addStatusListener(_onHoldStatus);
   }
 
-  // Widget parametreleri değiştiğinde çalışır.
+  // Üst widget yeni parametrelerle yeniden çizildiğinde çalışır; değişen değere göre animasyonu günceller.
   @override
   void didUpdateWidget(covariant PanicHoldButton oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -86,7 +87,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     }
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _holdController.removeStatusListener(_onHoldStatus);
@@ -94,7 +95,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     super.dispose();
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

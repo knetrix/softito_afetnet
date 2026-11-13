@@ -1,4 +1,5 @@
-// Y2 Ekipler ekranı: özet, mini harita, ekip kartları.
+// Y2 Ekipler ekranı (yetkili): tim ve personel özeti, tür filtreleri, mini harita ve ekip kartları
+// (Görev Ata / Görev Güncelle).
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -38,7 +39,7 @@ class TeamsScreen extends StatelessWidget {
   /// Testlerde giriş yapmış yetkili; verilmezse `AuthController`'dan okunur.
   final String? officialUid;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final view = _TeamsView(tileLayer: tileLayer, officialUid: officialUid);
@@ -113,7 +114,7 @@ class _TeamsView extends StatelessWidget {
     );
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final ctrl = context.watch<TeamsController>();
@@ -198,7 +199,7 @@ class _Header extends StatelessWidget {
 
   final TeamsController controller;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -268,7 +269,7 @@ class _TypeFilterBar extends StatelessWidget {
 
   final TeamsController controller;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -318,7 +319,7 @@ class _MiniMap extends StatelessWidget {
   final TeamsController controller;
   final Widget? tileLayer;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final status = Theme.of(context).extension<AppStatusColors>()!;
@@ -423,7 +424,7 @@ class TeamCard extends StatelessWidget {
   final VoidCallback onAssign;
   final VoidCallback onUpdate;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

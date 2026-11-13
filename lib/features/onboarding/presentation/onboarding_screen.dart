@@ -1,4 +1,5 @@
-// O2 Onboarding ekranı (2 tanıtım sayfası).
+// O2 Onboarding ekranı: uygulamayı ilk açan kişiye 2 sayfalık tanıtım.
+// "Atla" ya da "Başla" denince bir daha gösterilmez (SharedPreferences'a kaydedilir).
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +16,7 @@ import '../screens/splash_onboarding_screen.dart';
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     // Splash ile aynı nedenle her zaman koyu temada gösterilir.

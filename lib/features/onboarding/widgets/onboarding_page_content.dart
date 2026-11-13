@@ -1,4 +1,4 @@
-// Tek bir onboarding sayfasının içeriği.
+// Tek bir onboarding sayfasının içeriği: grafik, rozet, başlık ve açıklama.
 
 import 'package:flutter/material.dart'; // Flutter temel arayüz kütüphanesidir
 

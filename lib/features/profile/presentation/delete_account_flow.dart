@@ -1,4 +1,5 @@
-// Hesabı Sil akışı: onay → şifre → silme.
+// Hesabı Sil akışı (mağaza zorunluluğu): 1) "Emin misiniz?" 2) şifre sorulur 3) veriler ve hesap silinir.
+// Afetzede ve yetkili profili aynı akışı kullanır.
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ Future<void> runDeleteAccountFlow(
 class _PasswordDialog extends StatefulWidget {
   const _PasswordDialog();
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_PasswordDialog> createState() => _PasswordDialogState();
 }
@@ -69,7 +70,7 @@ class _PasswordDialogState extends State<_PasswordDialog> {
   final _password = TextEditingController();
   final _obscure = ValueNotifier(true);
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _password.dispose();
@@ -77,7 +78,7 @@ class _PasswordDialogState extends State<_PasswordDialog> {
     super.dispose();
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

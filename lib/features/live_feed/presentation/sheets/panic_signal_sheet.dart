@@ -1,4 +1,4 @@
-// Mor panik pini paneli: konum, zaman, Ulaşıldı.
+// Haritadaki mor panik pinine dokununca açılan panel: konum, zaman ve "Ulaşıldı" butonu.
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -57,7 +57,7 @@ class _PanicBody extends StatefulWidget {
   final LatLng? userLocation;
   final Future<void> Function() onMarkReached;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_PanicBody> createState() => _PanicBodyState();
 }
@@ -86,7 +86,7 @@ class _PanicBodyState extends State<_PanicBody> {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

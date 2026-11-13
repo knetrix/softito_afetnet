@@ -1,4 +1,4 @@
-// A3 Düdük ekranı.
+// A3 Düdük ekranı: dokununca düdük çalar (kırmızı, "ÇALIYOR"), tekrar dokununca durur (turuncu, "DÜDÜK").
 
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class WhistleScreen extends StatefulWidget {
 
   final WhistleController? controller;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<WhistleScreen> createState() => _WhistleScreenState();
 }
@@ -27,7 +27,7 @@ class _WhistleScreenState extends State<WhistleScreen> {
       widget.controller ?? WhistleController();
   late final bool _ownsController = widget.controller == null;
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     if (_ownsController) {
@@ -36,7 +36,7 @@ class _WhistleScreenState extends State<WhistleScreen> {
     super.dispose();
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -171,7 +171,7 @@ class _PulseRing extends StatelessWidget {
   final Color color;
   final double alpha;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(

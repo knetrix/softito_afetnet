@@ -1,4 +1,5 @@
-// İnternetsiz panikte açılacak hazır SMS bağlantısını üretir.
+// İnternet yokken panik butonuna basılınca açılacak SMS bağlantısını hazırlar.
+// İçinde acil durum yakınının numarası ve Google Haritalar konum linki olur; SMS'i kullanıcı kendisi gönderir.
 
 /// Acil durum SMS köprüsü için RFC uyumlu URI üretir (PROJECT_NEW.md §4 Kural 8).
 ///

@@ -1,4 +1,4 @@
-// Çağrının bağlı olduğu olayın görev durumu.
+// Çağrının bağlı olduğu olayın son durumu ve atanan ekip (afetzedenin kartı bunu gösterir).
 
 import 'package:flutter/foundation.dart';
 
@@ -23,7 +23,7 @@ class IncidentProgress {
       other.status == status &&
       other.assignedTeamId == assignedTeamId;
 
-  // Eşitlik karşılaştırması için hash değeri.
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(status, assignedTeamId);
 }

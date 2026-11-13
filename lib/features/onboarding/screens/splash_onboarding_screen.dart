@@ -1,4 +1,4 @@
-// Onboarding sayfa geçişleri ve Atla / İleri / Başla butonları.
+// Onboarding'in sayfa geçişlerini (PageView) ve Atla / İleri / Başla butonlarını yöneten ekran.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +15,7 @@ class SplashOnboardingScreen extends StatefulWidget {
 
   const SplashOnboardingScreen({super.key, this.onCompleted});
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<SplashOnboardingScreen> createState() => _SplashOnboardingScreenState();
 }
@@ -57,14 +57,14 @@ class _SplashOnboardingScreenState extends State<SplashOnboardingScreen> {
     }
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

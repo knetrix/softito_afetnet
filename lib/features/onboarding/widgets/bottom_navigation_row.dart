@@ -1,4 +1,4 @@
-// Onboarding alt satırı: sayfa noktaları ve butonlar.
+// Onboarding'in alt satırı: hangi sayfada olunduğunu gösteren noktalar ve İleri/Başla butonu.
 
 import 'package:flutter/material.dart'; // Flutter temel görsel bileşenler kütüphanesidir
 
@@ -18,7 +18,7 @@ class BottomNavigationRow extends StatelessWidget {
     required this.onActionPressed,
   });
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

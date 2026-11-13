@@ -1,4 +1,4 @@
-// Splash ekranının görsel kısmı (logo ve radar animasyonu).
+// Açılış (splash) ekranının görsel kısmı: logo, "Canlı Kriz Yönetimi Ağı" yazısı ve radar animasyonu.
 
 import 'dart:async'; // Zamanlayıcı (Timer) işlemleri için kütüphanedir
 import 'package:flutter/material.dart'; // Flutter temel UI ve widget kütüphanesidir
@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 
   const SplashScreen({super.key, this.onInitializationComplete}); // Kurucu metottur
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<SplashScreen> createState() => _SplashScreenState(); // Ekran durum yöneticisini oluşturur
 }
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   late final Animation<double> _progressAnimation; // 0.15 ile 1.0 arasında değer üreten animasyondur
   String _statusText = 'AfetNet protokolü hazır.'; // Ekranda görünen dinamik durum metnidir
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState(); // Üst sınıfın başlangıç metodunu çalıştırır
@@ -50,14 +50,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     });
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _progressController.dispose(); // RAM sızıntısını önlemek için animasyon kontrolcüsünü kapatır
     super.dispose(); // Üst sınıfın dispose işlemini tamamlar
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Scaffold( // Ekranın temel arka plan ve gövde iskeletini oluşturur

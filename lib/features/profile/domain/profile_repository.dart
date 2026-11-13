@@ -1,4 +1,4 @@
-// Profil repository arayüzü.
+// "domain" katmanı: profil işlemlerinin sözleşmesi (arayüz).
 
 import 'user_contact_profile.dart';
 

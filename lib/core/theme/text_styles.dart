@@ -1,4 +1,5 @@
-// Yazı tipleri ve metin stilleri.
+// Yazı tipleri (Space Grotesk, Inter, JetBrains Mono) ve hazır metin stilleri.
+// Yazı tipleri uygulamanın içine gömülüdür, internetsiz de çalışır.
 
 import 'package:flutter/material.dart';
 

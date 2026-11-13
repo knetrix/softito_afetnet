@@ -1,4 +1,5 @@
-// Kartta ve Detay'da gösterilen olay özeti (ad, telefon, tıbbi bilgi).
+// Canlı Akış kartında (ad) ve Detay panelinde (telefon, tıbbi özet, bağlı çağrılar) gösterilen olay bilgileri.
+// Bu bilgiler gizli belgelerden yalnızca onaylı yetkili tarafından okunabilir.
 
 import 'package:flutter/foundation.dart';
 

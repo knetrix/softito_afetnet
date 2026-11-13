@@ -1,4 +1,5 @@
-// Gizli profil modeli (users/{uid}/private/contact): telefon, adres, tıbbi bilgi.
+// "domain" katmanı: gizli profil modeli (users/{uid}/private/contact).
+// Telefon, adres, acil durum yakını ve tıbbi bilgi; yalnızca sahibi ve onaylı yetkili okuyabilir.
 
 import 'package:flutter/foundation.dart';
 
@@ -48,7 +49,7 @@ class UserContactProfile {
   // Doğum yılından hesaplanan yaş.
   int? get age => birthYear == null ? null : DateTime.now().year - birthYear!;
 
-  // Verilen alanları değiştirilmiş bir kopya döndürür.
+  // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.
   UserContactProfile copyWith({
     String? email,
     String? phone,

@@ -1,4 +1,5 @@
-// O1 Splash: Firebase ve oturum kontrolü sırasında gösterilir.
+// O1 Splash (açılış) ekranı. Firebase başlarken ve oturum kontrol edilirken gösterilir;
+// ardından router kullanıcıyı Onboarding, Giriş veya rolüne göre ana ekrana gönderir.
 
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ import '../../onboarding/screens/splash_screen.dart' as onboarding_splash;
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     // Radar çizimleri koyu zemin için tasarlandı; sistem teması açık olsa da

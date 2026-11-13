@@ -1,4 +1,5 @@
-// A2 Toplanma ekranı: harita ve seçili nokta kartı.
+// A2 Toplanma ekranı (afetzede).
+// Üstte harita (konumum + toplanma noktası pinleri), altta seçili noktanın kartı ve tür filtreleri.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -34,7 +35,7 @@ class AssemblyPointsScreen extends StatelessWidget {
   final ExternalUrlLauncher? urlLauncher;
   final Widget? tileLayer;
 
-  // Provider'dan güvenli okur; yoksa null döner.
+  // Provider'dan nesneyi okur; ağaçta yoksa (ör. testte) hata vermek yerine null döndürür.
   T? _safeRead<T>(BuildContext context) {
     try {
       return context.read<T>();
@@ -43,7 +44,7 @@ class AssemblyPointsScreen extends StatelessWidget {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     if (controller != null) {
@@ -91,7 +92,7 @@ class _AssemblyPointsView extends StatefulWidget {
   final ExternalUrlLauncher urlLauncher;
   final Widget? tileLayer;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_AssemblyPointsView> createState() => _AssemblyPointsViewState();
 }
@@ -125,14 +126,14 @@ class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
     }
   }
 
-  // Seçili noktaya yol tarifi için harita uygulamasını açar.
+  // Seçili noktaya yol tarifi için telefondaki harita uygulamasını (url_launcher ile) açar.
   Future<void> _handleDirections(AssemblyPoint point) async {
     final urlStr = AssemblyPointsController.buildNavigationUrl(point);
     final uri = Uri.parse(urlStr);
     await widget.urlLauncher(uri);
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -452,7 +453,7 @@ class _NearestPointsPeekBar extends StatelessWidget {
   final LatLng? userLocation;
   final ValueChanged<AssemblyPoint> onSelect;
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -570,7 +571,7 @@ class _NearestPointsPeekBar extends StatelessWidget {
 class _EmptyPointsBanner extends StatelessWidget {
   const _EmptyPointsBanner();
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

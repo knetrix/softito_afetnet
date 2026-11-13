@@ -1,4 +1,4 @@
-// Parlayan yuvarlak buton (panik ve düdük).
+// Etrafı parlayan büyük yuvarlak buton. Ana Sayfa'daki PANİĞİM ve Düdük ekranında kullanılır.
 
 import 'package:flutter/material.dart';
 
@@ -26,18 +26,18 @@ class GlowCircleButton extends StatefulWidget {
   final double size;
   final bool isPulsing;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<GlowCircleButton> createState() => _GlowCircleButtonState();
 }
 
-// Parlama animasyonunu yönetir.
+// Parlama animasyonunu (AnimationController) yönetir.
 class _GlowCircleButtonState extends State<GlowCircleButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _glowAnimation;
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -55,7 +55,7 @@ class _GlowCircleButtonState extends State<GlowCircleButton>
     }
   }
 
-  // Widget parametreleri değiştiğinde çalışır.
+  // Üst widget yeni parametrelerle yeniden çizildiğinde çalışır; değişen değere göre animasyonu günceller.
   @override
   void didUpdateWidget(covariant GlowCircleButton oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -69,14 +69,14 @@ class _GlowCircleButtonState extends State<GlowCircleButton>
     }
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final color =

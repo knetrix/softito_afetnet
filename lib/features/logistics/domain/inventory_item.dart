@@ -1,4 +1,5 @@
-// Stok kalemi modeli ve Kritik / Orta / Yeterli hesabı.
+// "domain" katmanı: stok kalemi ve depo modelleri.
+// Stok düzeyi (Kritik / Orta / Yeterli) miktardan otomatik hesaplanır (Kural 3).
 
 
 import 'package:flutter/foundation.dart';
@@ -31,7 +32,7 @@ class InventoryItem {
   final int targetLevel;
   final int criticalLevel;
 
-  // Miktara göre stok düzeyi (Kural 3).
+  // Stok düzeyini hesaplar: miktar ≤ kritik seviye → Kritik; hedefin yarısından az → Orta; değilse Yeterli.
   StockLevel get level {
     if (quantity <= criticalLevel) {
       return StockLevel.critical;

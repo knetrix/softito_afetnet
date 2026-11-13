@@ -1,4 +1,5 @@
-// Afetzedenin aktif çağrısını ve ekip durumunu canlı izler.
+// Afetzedenin Ana Sayfa'daki aktif çağrı kartını besleyen controller.
+// Çağrıyı, bağlı olayı ve çevrimdışı kuyruğu canlı dinler; ekip atanınca kart kendiliğinden değişir.
 
 import 'dart:async';
 
@@ -67,7 +68,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
           !_activeRequest!.isResolved) ||
       hasPendingOffline;
 
-  // Aktif çağrıyı ve çevrimdışı kuyruğu dinlemeye başlar.
+  // Kullanıcının aktif çağrısını ve çevrimdışı kuyruğu dinlemeye başlar.
   void _init() {
     _offlineQueue.addListener(_onOfflineQueueChanged);
     _requestSub = _repo.watchActiveHelpRequest(_uid).listen(
@@ -104,7 +105,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     }, onError: (Object e) => debugPrint('Incident progress error: $e'));
   }
 
-  // Gelen çağrıya göre olay durumunu ve ekip bilgisini günceller.
+  // Yeni çağrı verisi gelince bağlı olayı ve atanan ekibin bilgisini getirir, sonra ekranı yeniler.
   Future<void> _apply() async {
     final req = withIncidentProgress(_rawRequest, _incidentProgress);
     _activeRequest = req;
@@ -176,7 +177,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     }
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

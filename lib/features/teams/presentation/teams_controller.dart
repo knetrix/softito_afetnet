@@ -1,4 +1,4 @@
-// Ekipler ekranının durumu: ekipler, filtre, aktif görevler.
+// Ekipler ekranının controller'ı: ekipleri ve açık olayları canlı dinler, tür filtresini uygular.
 
 import 'dart:async';
 
@@ -136,7 +136,7 @@ class TeamsController extends ChangeNotifier {
     if (!_disposed) notifyListeners();
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

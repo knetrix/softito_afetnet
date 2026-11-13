@@ -1,4 +1,5 @@
-// Yardım Çağrısı Ekle formu.
+// "Yardım Çağrısı Ekle" formu (alttan açılan panel): ihtiyaç türü, kişi sayısı, adres tarifi, açıklama.
+// Öncelik türden otomatik hesaplanır; kullanıcı seçmez.
 
 import 'package:flutter/material.dart';
 
@@ -60,7 +61,7 @@ class HelpRequestForm extends StatefulWidget {
   final String? initialDescription;
   final HelpRequestSubmitCallback? onSubmit;
 
-  // Widget'ın durum (State) nesnesini oluşturur.
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<HelpRequestForm> createState() => _HelpRequestFormState();
 }
@@ -74,7 +75,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
   late final TextEditingController _descriptionController;
   bool _isSubmitting = false;
 
-  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -84,7 +85,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     _descriptionController = TextEditingController(text: widget.initialDescription ?? '');
   }
 
-  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _addressController.dispose();
@@ -110,7 +111,8 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     }
   }
 
-  // Formu doğrular, konumu alır ve çağrıyı gönderir (internet yoksa kuyruğa).
+  // Formu doğrular, konumu alır ve çağrıyı gönderir.
+  // İnternet yoksa çağrı Hive kuyruğuna yazılır ve kartta "Gönderilmeyi Bekliyor" görünür.
   Future<void> _submit() async {
     final type = _selectedType;
     if (type == null || !_formKey.currentState!.validate()) return;
@@ -216,7 +218,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
     }
   }
 
-  // Arayüzü çizer.
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

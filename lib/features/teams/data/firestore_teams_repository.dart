@@ -1,4 +1,5 @@
-// Ekipler ve görev akışı; her durum geçişi tek batch.
+// "data" katmanı: ekipler ve görev akışı.
+// Ekip atama ve her durum geçişi tek bir Transaction'dır: görev, olay, bağlı çağrılar ve ekip birlikte güncellenir.
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
@@ -67,7 +68,8 @@ class FirestoreTeamsRepository implements TeamsRepository {
         );
   }
 
-  // Ekibi olaya atar: görev, olay, çağrılar ve ekip tek batch'te.
+  // Ekibi olaya atar. Tek bir Transaction içinde: görev oluşturulur, olay ve çağrılar "assigned" olur,
+  // ekip "Görevde" olur. Bir kontrol başarısız olursa hiçbiri yazılmaz (ya hepsi ya hiçbiri).
   @override
   Future<void> assignTeam({
     required Incident incident,
@@ -76,14 +78,17 @@ class FirestoreTeamsRepository implements TeamsRepository {
   }) async {
     final incidentRef = _incidents.doc(incident.id);
     final teamRef = _teams.doc(team.id);
+    // Olaya bağlı çağrılar önceden bulunur (Transaction içinde sorgu yapılamaz).
     final linked = await _linkedRequests(incident.id);
 
     await _db.runTransaction<void>((tx) async {
+      // 1) Olayın, ekibin ve bağlı çağrıların güncel hâli okunur.
       final incidentSnap = await tx.get(incidentRef);
       final teamSnap = await tx.get(teamRef);
       final requestSnaps = [for (final ref in linked) await tx.get(ref)];
 
       final incidentData = incidentSnap.data();
+      // 2) Kontroller: olay hâlâ açık mı, zaten ekip atanmış mı, ekip boşta mı?
       if (incidentData == null || incidentData['isOpen'] != true) {
         throw const AssignmentException(AssignmentFailure.incidentClosed);
       }
@@ -100,6 +105,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
         throw const AssignmentException(AssignmentFailure.teamBusy);
       }
 
+      // 3) Yazmalar: yeni görev belgesi, olay "atandı", bağlı çağrılar "atandı", ekip "Görevde".
       const status = CaseStatus.assigned;
       tx.set(_assignments.doc(), {
         'incidentId': incident.id,
@@ -124,12 +130,14 @@ class FirestoreTeamsRepository implements TeamsRepository {
     });
   }
 
-  // Görevi bir sonraki duruma geçirir (geri adım yok); yeni durumu döndürür.
+  // Görevi bir sonraki adıma geçirir: Atandı → Yola Çıktı → Olay Yerinde → Kurtarıldı.
+  // Geri adım yoktur. "Kurtarıldı"da olay kapanır ve ekip yeniden "Boşta" olur.
   @override
   Future<CaseStatus> advanceAssignment({
     required Assignment assignment,
     required String officialUid,
   }) async {
+    // Sıradaki durumu bul (ör. Atandı → Yola Çıktı). Son adımdaysa (Kurtarıldı) null döner.
     final next = AssignmentFlow.next(assignment.status);
     if (next == null) {
       throw const AssignmentException(AssignmentFailure.invalidTransition);
@@ -151,6 +159,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
         throw const AssignmentException(AssignmentFailure.invalidTransition);
       }
 
+      // Görev, olay ve bağlı çağrılar yeni duruma geçer. Kurtarıldı ise olay kapanır (isOpen: false).
       tx.update(assignmentRef, {
         'status': next.name,
         'updatedBy': officialUid,
@@ -163,6 +172,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
         if (isResolved) 'resolvedAt': FieldValue.serverTimestamp(),
       });
       _updateOpenRequests(tx, requestSnaps, next, assignment.teamId);
+      // Ekip: Kurtarıldı'da yeniden Boşta olur ve mevcut görevi silinir; diğer adımlarda Görevde kalır.
       tx.update(teamRef, {
         'status': isResolved
             ? TeamStatus.available.name
