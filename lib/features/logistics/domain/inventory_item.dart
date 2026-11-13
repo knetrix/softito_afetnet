@@ -3,12 +3,14 @@
 
 import 'package:flutter/foundation.dart';
 
+// Stok düzeyi: Kritik / Orta / Yeterli.
 enum StockLevel {
   critical,
   medium,
   sufficient,
 }
 
+// Stok kalemi modeli.
 @immutable
 class InventoryItem {
   const InventoryItem({
@@ -29,6 +31,7 @@ class InventoryItem {
   final int targetLevel;
   final int criticalLevel;
 
+  // Miktara göre stok düzeyi (Kural 3).
   StockLevel get level {
     if (quantity <= criticalLevel) {
       return StockLevel.critical;
@@ -39,6 +42,7 @@ class InventoryItem {
     return StockLevel.sufficient;
   }
 
+  // Hedef seviyeye göre doluluk oranı (en fazla 1).
   double get ratio {
     if (targetLevel <= 0) return 0;
 
@@ -48,6 +52,7 @@ class InventoryItem {
   }
 }
 
+// Depo modeli.
 @immutable
 class Warehouse {
   const Warehouse({

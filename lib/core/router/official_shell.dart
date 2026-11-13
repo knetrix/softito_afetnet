@@ -11,6 +11,7 @@ class OfficialShell extends StatelessWidget {
 
   final StatefulNavigationShell shell;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

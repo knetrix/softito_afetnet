@@ -12,6 +12,7 @@ import '../../teams/domain/team.dart';
 /// Canlı Akış (Y1) ve Ekipler (Y2) ekranlarının ortak metin ve simge eşlemeleri.
 /// Ekranlarda sabit metin yazılmaz (§3.4); tümü ARB'den gelir.
 abstract final class FeedLabels {
+  // İhtiyaç türünün metni.
   static String helpType(AppLocalizations l10n, HelpType t) => switch (t) {
     HelpType.debris => l10n.helpTypeDebris,
     HelpType.medical => l10n.helpTypeMedical,
@@ -22,6 +23,7 @@ abstract final class FeedLabels {
     HelpType.other => l10n.helpTypeOther,
   };
 
+  // İhtiyaç türünün simgesi.
   static IconData helpTypeIcon(HelpType t) => switch (t) {
     HelpType.debris => Icons.domain_disabled_rounded,
     HelpType.medical => Icons.medical_services_outlined,
@@ -32,6 +34,7 @@ abstract final class FeedLabels {
     HelpType.other => Icons.more_horiz_rounded,
   };
 
+  // Olay / görev durumunun metni.
   static String caseStatus(AppLocalizations l10n, CaseStatus s) => switch (s) {
     CaseStatus.pending => l10n.caseStatusPending,
     CaseStatus.assigned => l10n.caseStatusAssigned,
@@ -55,6 +58,7 @@ abstract final class FeedLabels {
     };
   }
 
+  // Ekip türünün metni.
   static String teamType(AppLocalizations l10n, TeamType t) => switch (t) {
     TeamType.searchRescue => l10n.teamTypeSearchRescue,
     TeamType.medical => l10n.teamTypeMedical,
@@ -62,6 +66,7 @@ abstract final class FeedLabels {
     TeamType.logistics => l10n.teamTypeLogistics,
   };
 
+  // Ekip türünün simgesi.
   static IconData teamTypeIcon(TeamType t) => switch (t) {
     TeamType.searchRescue => Icons.manage_search_rounded,
     TeamType.medical => Icons.medical_services_rounded,

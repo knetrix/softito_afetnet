@@ -26,15 +26,18 @@ class GlowCircleButton extends StatefulWidget {
   final double size;
   final bool isPulsing;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<GlowCircleButton> createState() => _GlowCircleButtonState();
 }
 
+// Parlama animasyonunu yönetir.
 class _GlowCircleButtonState extends State<GlowCircleButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _glowAnimation;
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -52,6 +55,7 @@ class _GlowCircleButtonState extends State<GlowCircleButton>
     }
   }
 
+  // Widget parametreleri değiştiğinde çalışır.
   @override
   void didUpdateWidget(covariant GlowCircleButton oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -65,12 +69,14 @@ class _GlowCircleButtonState extends State<GlowCircleButton>
     }
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final color =

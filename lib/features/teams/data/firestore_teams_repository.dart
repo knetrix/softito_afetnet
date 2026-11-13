@@ -23,15 +23,20 @@ class FirestoreTeamsRepository implements TeamsRepository {
 
   final FirebaseFirestore _db;
 
+  // teams koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _teams =>
       _db.collection('teams');
+  // assignments koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _assignments =>
       _db.collection('assignments');
+  // incidents koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _incidents =>
       _db.collection('incidents');
+  // help_requests koleksiyonu.
   CollectionReference<Map<String, dynamic>> get _helpRequests =>
       _db.collection('help_requests');
 
+  // Ekipleri canlı izler.
   @override
   Stream<List<Team>> watchTeams() {
     return _teams.snapshots().map((snap) {
@@ -62,6 +67,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
         );
   }
 
+  // Ekibi olaya atar: görev, olay, çağrılar ve ekip tek batch'te.
   @override
   Future<void> assignTeam({
     required Incident incident,
@@ -118,6 +124,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
     });
   }
 
+  // Görevi bir sonraki duruma geçirir (geri adım yok); yeni durumu döndürür.
   @override
   Future<CaseStatus> advanceAssignment({
     required Assignment assignment,
@@ -199,6 +206,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
     }
   }
 
+  // Firestore verisini Team modeline çevirir.
   static Team teamFromMap(String id, Map<String, dynamic> d) {
     final geo = d['location'] as GeoPoint?;
     return Team(
@@ -219,6 +227,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
     );
   }
 
+  // Firestore verisini Assignment modeline çevirir.
   static Assignment? assignmentFromMap(String id, Map<String, dynamic> d) {
     final status = CaseStatus.values.asNameMap()[d['status']];
     final incidentId = d['incidentId'] as String?;

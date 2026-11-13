@@ -11,6 +11,7 @@ import '../../onboarding/screens/splash_screen.dart' as onboarding_splash;
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     // Radar çizimleri koyu zemin için tasarlandı; sistem teması açık olsa da

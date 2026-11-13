@@ -10,6 +10,7 @@ class PlaceholderView extends StatelessWidget {
   final String title;
   final Widget? child;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -22,9 +22,11 @@ abstract final class Validators {
   static final _uppercasePattern = RegExp(r'[A-ZÇĞİÖŞÜ]');
   static final _digitPattern = RegExp(r'\d');
 
+  // Alan boş mu kontrol eder.
   static ValidationError? required(String? value) =>
       (value == null || value.trim().isEmpty) ? ValidationError.required : null;
 
+  // E-posta biçimini kontrol eder.
   static ValidationError? email(String? value) {
     final v = value?.trim() ?? '';
     if (v.isEmpty) return ValidationError.required;
@@ -48,6 +50,7 @@ abstract final class Validators {
     return null;
   }
 
+  // Şifre tekrarı ilk şifreyle aynı mı kontrol eder.
   static ValidationError? confirmPassword(String? value, String password) {
     if (value == null || value.isEmpty) return ValidationError.required;
     return value == password ? null : ValidationError.passwordMismatch;
@@ -98,8 +101,10 @@ class _PhoneInputFormatter extends TextInputFormatter {
     filter: {'#': RegExp(r'\d')},
   );
 
+  // Metindeki rakamlar dışındaki karakterleri siler.
   static String _digits(String text) => text.replaceAll(RegExp(r'\D'), '');
 
+  // Yazılan telefonu "+90 5XX XXX XX XX" biçimine sokar.
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,

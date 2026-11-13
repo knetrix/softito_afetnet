@@ -18,6 +18,7 @@ class BottomNavigationRow extends StatelessWidget {
     required this.onActionPressed,
   });
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

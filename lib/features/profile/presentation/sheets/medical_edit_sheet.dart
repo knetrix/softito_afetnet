@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/user_contact_profile.dart';
 
+// Tıbbi bilgi formunu alttan açar.
 Future<void> showMedicalEditSheet(
   BuildContext context, {
   required UserContactProfile? currentProfile,
@@ -29,6 +30,7 @@ Future<void> showMedicalEditSheet(
   );
 }
 
+// Tıbbi bilgi formu widget'ı.
 class _MedicalEditForm extends StatefulWidget {
   const _MedicalEditForm({
     required this.currentProfile,
@@ -43,10 +45,12 @@ class _MedicalEditForm extends StatefulWidget {
     required DateTime consentAt,
   }) onSave;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<_MedicalEditForm> createState() => _MedicalEditFormState();
 }
 
+// Kan grubu, ilaç, hastalık alanlarını ve açık rızayı yönetir.
 class _MedicalEditFormState extends State<_MedicalEditForm> {
   final _formKey = GlobalKey<FormState>();
   late String _bloodType;
@@ -67,6 +71,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     '0 Rh-',
   ];
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -83,6 +88,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     _consent = widget.currentProfile?.hasMedicalConsent ?? false;
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _medications.dispose();
@@ -90,6 +96,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     super.dispose();
   }
 
+  // Açık rızayı kontrol eder ve tıbbi bilgiyi kaydeder.
   Future<void> _submit() async {
     if (!_consent) {
       setState(() => _showConsentError = true);
@@ -120,6 +127,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

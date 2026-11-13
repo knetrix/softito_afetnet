@@ -13,6 +13,7 @@ class SplashScreen extends StatefulWidget {
 
   const SplashScreen({super.key, this.onInitializationComplete}); // Kurucu metottur
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<SplashScreen> createState() => _SplashScreenState(); // Ekran durum yöneticisini oluşturur
 }
@@ -23,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   late final Animation<double> _progressAnimation; // 0.15 ile 1.0 arasında değer üreten animasyondur
   String _statusText = 'AfetNet protokolü hazır.'; // Ekranda görünen dinamik durum metnidir
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState(); // Üst sınıfın başlangıç metodunu çalıştırır
@@ -48,12 +50,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     });
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _progressController.dispose(); // RAM sızıntısını önlemek için animasyon kontrolcüsünü kapatır
     super.dispose(); // Üst sınıfın dispose işlemini tamamlar
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return Scaffold( // Ekranın temel arka plan ve gövde iskeletini oluşturur

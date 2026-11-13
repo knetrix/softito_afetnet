@@ -44,6 +44,7 @@ class Incident {
   /// Kural 7: Görev atanmamış olay doğrudan kapatılabilir.
   bool get canBeClosedDirectly => assignedTeamId == null;
 
+  // Verilen alanları değiştirilmiş bir kopya döndürür.
   Incident copyWith({
     String? id,
     LatLng? location,
@@ -87,6 +88,7 @@ class Incident {
           requestCount == other.requestCount &&
           priority == other.priority;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(id, isOpen, status, requestCount, priority);
 }

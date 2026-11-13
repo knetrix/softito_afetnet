@@ -9,6 +9,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/user_contact_profile.dart';
 
+// Acil durum yakını formunu alttan açar.
 Future<void> showEmergencyContactSheet(
   BuildContext context, {
   required UserContactProfile? currentProfile,
@@ -29,6 +30,7 @@ Future<void> showEmergencyContactSheet(
   );
 }
 
+// Acil durum yakını formu widget'ı.
 class _EmergencyContactForm extends StatefulWidget {
   const _EmergencyContactForm({
     required this.currentProfile,
@@ -42,10 +44,12 @@ class _EmergencyContactForm extends StatefulWidget {
     required String phone,
   }) onSave;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<_EmergencyContactForm> createState() => _EmergencyContactFormState();
 }
 
+// Ad, yakınlık ve telefon alanlarını yönetir.
 class _EmergencyContactFormState extends State<_EmergencyContactForm> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _name;
@@ -54,6 +58,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
   final _phoneFormatter = Validators.phoneFormatter();
   bool _isSaving = false;
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -69,6 +74,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     );
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _name.dispose();
@@ -77,6 +83,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     super.dispose();
   }
 
+  // Formu doğrular ve kaydeder.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isSaving = true);
@@ -103,6 +110,7 @@ class _EmergencyContactFormState extends State<_EmergencyContactForm> {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

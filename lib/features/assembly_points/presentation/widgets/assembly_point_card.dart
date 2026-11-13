@@ -28,6 +28,7 @@ class AssemblyPointCard extends StatelessWidget {
   final void Function(AssemblyPoint point) onGetDirections;
   final bool isNearest;
 
+  // Nokta türünün metni.
   String _typeLabel(BuildContext context, AssemblyPointType type) {
     final l10n = AppLocalizations.of(context);
     switch (type) {
@@ -40,6 +41,7 @@ class AssemblyPointCard extends StatelessWidget {
     }
   }
 
+  // Nokta türünün simgesi.
   IconData _iconForType(AssemblyPointType type) {
     switch (type) {
       case AssemblyPointType.assembly:
@@ -51,6 +53,7 @@ class AssemblyPointCard extends StatelessWidget {
     }
   }
 
+  // Hizmetin metni.
   String _serviceLabel(BuildContext context, AssemblyService service) {
     final l10n = AppLocalizations.of(context);
     switch (service) {
@@ -65,6 +68,7 @@ class AssemblyPointCard extends StatelessWidget {
     }
   }
 
+  // Hizmetin simgesi.
   IconData _serviceIcon(AssemblyService service) {
     switch (service) {
       case AssemblyService.water:
@@ -78,6 +82,7 @@ class AssemblyPointCard extends StatelessWidget {
     }
   }
 
+  // Doluluk oranına göre renk (yeşil / turuncu / kırmızı).
   Color _occupancyColor(BuildContext context, double rate) {
     final status = Theme.of(context).extension<AppStatusColors>()!;
     if (rate >= 0.90) return status.critical;
@@ -85,6 +90,7 @@ class AssemblyPointCard extends StatelessWidget {
     return status.normal;
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

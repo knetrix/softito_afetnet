@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/app_status_colors.dart';
 
+// Rozet türleri: özel, öncelik, afetzede, yetkili.
 enum _BadgeKind { custom, priority, citizen, official }
 
 /// AfetNet Durum ve Öncelik Rozeti (§3.4, §4 Kural 1, Y1, Y2, Y3)
@@ -39,6 +40,7 @@ class StatusBadge extends StatelessWidget {
   final _BadgeKind _kind;
   final int _priority;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

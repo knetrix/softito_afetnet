@@ -44,23 +44,32 @@ class TeamsController extends ChangeNotifier {
   List<Incident> _openIncidents = const [];
   TeamType? _filter;
 
+  // Ekran durumu.
   ViewStatus get status => _status;
+  // Tüm ekipler.
   List<Team> get teams => _teams;
+  // Açık olaylar (Görev Ata için).
   List<Incident> get openIncidents => _openIncidents;
+  // Seçili ekip türü filtresi.
   TeamType? get filter => _filter;
+  // Yetkilinin konumu.
   LatLng? get userLocation => _location?.currentPosition;
 
+  // Filtreye uyan ekipler.
   List<Team> get filteredTeams => _filter == null
       ? _teams
       : _teams.where((t) => t.type == _filter).toList(growable: false);
 
+  // Filtrelenmiş listenin durumu (boş olabilir).
   ViewStatus get listStatus {
     if (_status != ViewStatus.ready) return _status;
     return filteredTeams.isEmpty ? ViewStatus.empty : ViewStatus.ready;
   }
 
+  // Tüm ekiplerdeki toplam personel.
   int get totalMembers => _teams.fold(0, (sum, t) => sum + t.memberCount);
 
+  // Verilen türdeki ekip sayısı.
   int countOf(TeamType type) => _teams.where((t) => t.type == type).length;
 
   /// Ekibin bitmemiş görevi (Kural 6: ekipte en fazla bir aktif görev).
@@ -71,6 +80,7 @@ class TeamsController extends ChangeNotifier {
     return null;
   }
 
+  // Kimliği verilen olayı bulur.
   Incident? incidentById(String? id) {
     if (id == null) return null;
     for (final i in _openIncidents) {
@@ -79,18 +89,21 @@ class TeamsController extends ChangeNotifier {
     return null;
   }
 
+  // Ekip türü filtresini değiştirir.
   void setFilter(TeamType? type) {
     if (_filter == type) return;
     _filter = type;
     _notify();
   }
 
+  // Hata sonrası veriyi yeniden yükler.
   void retry() {
     _status = ViewStatus.loading;
     _notify();
     _subscribe();
   }
 
+  // Ekipleri ve açık olayları canlı dinlemeye başlar.
   void _subscribe() {
     _teamSub?.cancel();
     _assignmentSub?.cancel();
@@ -118,10 +131,12 @@ class TeamsController extends ChangeNotifier {
     }, onError: (Object e) => debugPrint('Teams incidents error: $e'));
   }
 
+  // Kapanmadıysa dinleyicilere haber verir.
   void _notify() {
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

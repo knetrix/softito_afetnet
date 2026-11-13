@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/user_contact_profile.dart';
 
+// Yaş/kilo formunu alttan açar.
 Future<void> showPhysicalEditSheet(
   BuildContext context, {
   required UserContactProfile? currentProfile,
@@ -26,6 +27,7 @@ Future<void> showPhysicalEditSheet(
   );
 }
 
+// Yaş/kilo formu widget'ı.
 class _PhysicalEditForm extends StatefulWidget {
   const _PhysicalEditForm({required this.currentProfile, required this.onSave});
 
@@ -33,16 +35,19 @@ class _PhysicalEditForm extends StatefulWidget {
   final Future<bool> Function({required int? birthYear, required int? weightKg})
   onSave;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<_PhysicalEditForm> createState() => _PhysicalEditFormState();
 }
 
+// Doğum yılı ve kilo alanlarını yönetir.
 class _PhysicalEditFormState extends State<_PhysicalEditForm> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _birthYear;
   late final TextEditingController _weight;
   bool _isSaving = false;
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -54,6 +59,7 @@ class _PhysicalEditFormState extends State<_PhysicalEditForm> {
     );
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _birthYear.dispose();
@@ -71,6 +77,7 @@ class _PhysicalEditFormState extends State<_PhysicalEditForm> {
         'Geçerli bir değer girin';
   }
 
+  // Formu doğrular ve kaydeder.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isSaving = true);
@@ -97,6 +104,7 @@ class _PhysicalEditFormState extends State<_PhysicalEditForm> {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

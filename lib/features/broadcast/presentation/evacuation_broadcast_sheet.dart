@@ -19,6 +19,7 @@ enum BroadcastSendResult { sent, queued }
 /// Y1, Y2 "Tahliye Anonsu" (§3.2): tür, yarıçap, mesaj, Gönder.
 /// Merkez yetkilinin konumudur (Kural 10).
 abstract final class EvacuationBroadcastSheet {
+  // Anons formunu alttan açar, sonucu döndürür.
   static Future<BroadcastSendResult?> show(
     BuildContext context, {
     required BroadcastRepository repository,
@@ -45,6 +46,7 @@ abstract final class EvacuationBroadcastSheet {
       };
 }
 
+// Anons formu widget'ı.
 class _BroadcastForm extends StatefulWidget {
   const _BroadcastForm({
     required this.repository,
@@ -56,10 +58,12 @@ class _BroadcastForm extends StatefulWidget {
   final LocationService locationService;
   final String officialUid;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<_BroadcastForm> createState() => _BroadcastFormState();
 }
 
+// Form alanlarını, seçili türü ve gönderimi yönetir.
 class _BroadcastFormState extends State<_BroadcastForm> {
   final _formKey = GlobalKey<FormState>();
   final _message = TextEditingController();
@@ -71,18 +75,21 @@ class _BroadcastFormState extends State<_BroadcastForm> {
   bool _sending = false;
   bool _failed = false;
 
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
     _locate();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _message.dispose();
     super.dispose();
   }
 
+  // Yetkilinin konumunu alır (anonsun merkezi).
   Future<void> _locate() async {
     setState(() => _locating = true);
     LatLng? center;
@@ -98,6 +105,7 @@ class _BroadcastFormState extends State<_BroadcastForm> {
     });
   }
 
+  // Anonsu gönderir; 10 sn'de sunucuya ulaşmazsa beklemeye alır.
   Future<void> _send() async {
     final center = _center;
     if (_sending || center == null || !_formKey.currentState!.validate()) {
@@ -139,6 +147,7 @@ class _BroadcastFormState extends State<_BroadcastForm> {
     }
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

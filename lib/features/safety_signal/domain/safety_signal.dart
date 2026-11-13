@@ -40,7 +40,9 @@ class SafetySignal {
   /// Firestore yerel kuyruğunda sunucu onayı bekliyorsa `true`.
   final bool hasPendingWrites;
 
+  // Sinyal TEHLİKEDEYİM mi.
   bool get isDanger => state == SafetySignalState.danger;
+  // Sinyal sunucuya ulaştı mı.
   bool get isConfirmed => !hasPendingWrites;
 
   /// Yetkili "Ulaşıldı" işaretlediyse `true`. Yeni panik bu alanları
@@ -59,6 +61,7 @@ class SafetySignal {
       other.handledAt == handledAt &&
       other.hasPendingWrites == hasPendingWrites;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(
         uid,

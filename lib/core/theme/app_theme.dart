@@ -229,5 +229,6 @@ abstract final class AppTheme {
 
   // Geriye dönük uyumluluk için getter'lar
   static ThemeData get darkTheme => dark();
+  // Açık tema (kısayol).
   static ThemeData get lightTheme => light();
 }

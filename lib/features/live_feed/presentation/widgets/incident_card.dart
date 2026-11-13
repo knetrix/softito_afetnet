@@ -36,6 +36,7 @@ class IncidentCard extends StatelessWidget {
   /// Testlerde sabit zaman için.
   final DateTime? now;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -222,6 +223,7 @@ class _CardActions extends StatelessWidget {
   /// `AppButton`: 2×20 iç boşluk + 18 simge + 8 aralık, metin 15 / w600.
   static const _buttonChrome = 66.0 + 4; // + yuvarlama payı
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     if (dispatch == null) return detail;
@@ -266,12 +268,14 @@ class _CardActions extends StatelessWidget {
   }
 }
 
+// Kart üzerindeki küçük bilgi etiketi.
 class _Chip extends StatelessWidget {
   const _Chip({required this.text, required this.color});
 
   final String text;
   final Color color;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return Container(

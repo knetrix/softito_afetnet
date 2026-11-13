@@ -36,20 +36,26 @@ class AuthController extends ChangeNotifier {
 
   bool _authResolved = false;
   bool _prefsLoaded = false;
+  // Oturum ve tercihler henüz yükleniyor mu (splash için).
   bool get isInitializing => !_authResolved || !_prefsLoaded;
 
   bool _onboardingDone = false;
+  // Onboarding görüldü mü.
   bool get onboardingDone => _onboardingDone;
 
   AppUser? _user;
+  // Oturum açmış kullanıcı.
   AppUser? get currentUser => _user;
 
   bool _busy = false;
+  // Bir işlem sürüyor mu (buton kilidi için).
   bool get isBusy => _busy;
 
   AuthFailure? _failure;
+  // Son hata (ekranda gösterilir).
   AuthFailure? get failure => _failure;
 
+  // Onboarding tercihini yükler ve oturum değişikliklerini dinler.
   void _init() {
     SharedPreferences.getInstance().then((prefs) {
       _onboardingDone = prefs.getBool(onboardingDoneKey) ?? false;
@@ -66,6 +72,7 @@ class AuthController extends ChangeNotifier {
     );
   }
 
+  // Oturum değişince kullanıcıyı okur ve rol/onay kontrolü yapar.
   Future<void> _onUidChanged(String? uid) async {
     final seq = ++_eventSeq;
     if (_actionInProgress) return;
@@ -137,6 +144,7 @@ class AuthController extends ChangeNotifier {
     });
   }
 
+  // Şifre sıfırlama e-postası gönderir; başarılıysa true.
   Future<bool> sendPasswordReset(String email) async {
     try {
       await _repo.sendPasswordReset(email);
@@ -148,6 +156,7 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  // Oturumu kapatır.
   Future<void> signOut() {
     return _run(() async {
       await _repo.signOut();
@@ -155,6 +164,7 @@ class AuthController extends ChangeNotifier {
     });
   }
 
+  // Onboarding'in görüldüğünü kaydeder.
   Future<void> completeOnboarding() async {
     _onboardingDone = true;
     _notify();
@@ -162,12 +172,14 @@ class AuthController extends ChangeNotifier {
     await prefs.setBool(onboardingDoneKey, true);
   }
 
+  // Ekrandaki hatayı temizler.
   void clearFailure() {
     if (_failure == null) return;
     _failure = null;
     _notify();
   }
 
+  // Rol uyuşmazlığı ve onaysız yetkili kontrolü.
   AuthFailure? _check(AppUser? user, {UserRole? selectedRole}) {
     if (user == null) return AuthFailure.profileMissing;
     if (selectedRole != null && user.role != selectedRole) {
@@ -203,10 +215,12 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  // Dinleyicilere (router dahil) değişikliği haber verir.
   void _notify() {
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

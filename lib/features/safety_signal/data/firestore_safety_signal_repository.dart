@@ -10,6 +10,7 @@ import '../../../core/config/app_config.dart';
 import '../domain/safety_signal.dart';
 import '../domain/safety_signal_repository.dart';
 
+// Panik sinyalinin Firestore uygulaması.
 class FirestoreSafetySignalRepository implements SafetySignalRepository {
   FirestoreSafetySignalRepository({
     FirebaseFirestore? firestore,
@@ -20,9 +21,11 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
   final FirebaseFirestore _db;
   final Duration _offlineTimeout;
 
+  // safety_signals/{uid} belgesinin referansı.
   DocumentReference<Map<String, dynamic>> _doc(String uid) =>
       _db.collection('safety_signals').doc(uid);
 
+  // Kullanıcının sinyalini canlı izler.
   @override
   Stream<SafetySignal?> watchSignal(String uid) {
     return _doc(uid)
@@ -30,6 +33,7 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
         .map((snap) => _fromDoc(uid, snap));
   }
 
+  // TEHLİKEDEYİM yazar; 10 sn'de sunucu onayı gelmezse çevrimdışı sayar.
   @override
   Future<SignalDelivery> sendDanger(
     String uid,
@@ -90,6 +94,7 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     }
   }
 
+  // GÜVENDEYİM yazar (sinyali kapatır).
   @override
   Future<void> sendSafe(String uid) async {
     final ref = _doc(uid);
@@ -108,6 +113,7 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
     );
   }
 
+  // Firestore belgesini SafetySignal modeline çevirir.
   SafetySignal? _fromDoc(
     String uid,
     DocumentSnapshot<Map<String, dynamic>> snap,

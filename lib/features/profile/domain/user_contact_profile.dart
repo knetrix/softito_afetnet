@@ -42,10 +42,13 @@ class UserContactProfile {
   // İkamet Adresi
   final String? addressText;
 
+  // Tıbbi bilgi için açık rıza verilmiş mi.
   bool get hasMedicalConsent => medicalConsentAt != null;
 
+  // Doğum yılından hesaplanan yaş.
   int? get age => birthYear == null ? null : DateTime.now().year - birthYear!;
 
+  // Verilen alanları değiştirilmiş bir kopya döndürür.
   UserContactProfile copyWith({
     String? email,
     String? phone,

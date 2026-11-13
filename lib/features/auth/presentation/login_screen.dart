@@ -19,10 +19,12 @@ import 'auth_texts.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+// Giriş formunun durumu.
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
@@ -30,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _obscure = ValueNotifier(true);
   UserRole _role = UserRole.citizen;
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _email.dispose();
@@ -38,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // Formu doğrular ve giriş yapar.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
@@ -48,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
   }
 
+  // Şifre sıfırlama e-postası gönderir.
   Future<void> _forgotPassword() async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
@@ -79,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();

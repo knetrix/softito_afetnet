@@ -29,6 +29,7 @@ class LiveFeedFilter {
   final int? priority;
   final HelpType? type;
 
+  // Olay bu filtreye uyuyor mu.
   bool matches(Incident i) =>
       (priority == null || i.priority == priority) &&
       (type == null || i.type == type);
@@ -39,6 +40,7 @@ class LiveFeedFilter {
       other.priority == priority &&
       other.type == type;
 
+  // Eşitlik karşılaştırması için hash değeri.
   @override
   int get hashCode => Object.hash(priority, type);
 }
@@ -83,11 +85,17 @@ class LiveFeedController extends ChangeNotifier {
   final Set<String> _summaryRequested = {};
   Map<String, DateTime>? _seenSignals;
 
+  // Ekran durumu (yükleniyor / hata / boş / hazır).
   ViewStatus get status => _status;
+  // Filtrelenmiş açık olaylar.
   List<Incident> get incidents => _incidents;
+  // Aktif panik sinyalleri.
   List<SafetySignal> get signals => _signals;
+  // Ekipler.
   List<Team> get teams => _teams;
+  // Seçili filtre.
   LiveFeedFilter get filter => _filter;
+  // Yetkilinin konumu (mesafe hesabı için).
   LatLng? get userLocation => _location?.currentPosition;
 
   /// Seçili filtreye uyan olaylar; sıra Firestore'dan gelir (öncelik, zaman).
@@ -100,8 +108,10 @@ class LiveFeedController extends ChangeNotifier {
     return filteredIncidents.isEmpty ? ViewStatus.empty : ViewStatus.ready;
   }
 
+  // Olayın kart özeti (önbellekten).
   IncidentSummary? summaryOf(String incidentId) => _summaries[incidentId];
 
+  // Kimliği verilen ekibi bulur.
   Team? teamById(String? id) {
     if (id == null) return null;
     for (final t in _teams) {
@@ -117,6 +127,7 @@ class LiveFeedController extends ChangeNotifier {
     incident.location,
   );
 
+  // Ekipleri hedefe olan mesafeye göre sıralar.
   static List<Team> sortTeamsByDistance(Iterable<Team> teams, LatLng target) {
     double d(Team t) => t.location == null
         ? double.infinity
@@ -124,18 +135,21 @@ class LiveFeedController extends ChangeNotifier {
     return teams.toList()..sort((a, b) => d(a).compareTo(d(b)));
   }
 
+  // Filtreyi değiştirir.
   void setFilter(LiveFeedFilter filter) {
     if (_filter == filter) return;
     _filter = filter;
     _notify();
   }
 
+  // Hata sonrası veriyi yeniden yükler.
   void retry() {
     _status = ViewStatus.loading;
     _notify();
     _subscribe();
   }
 
+  // Olayları, panik sinyallerini ve ekipleri canlı dinlemeye başlar.
   void _subscribe() {
     _incidentSub?.cancel();
     _signalSub?.cancel();
@@ -188,6 +202,7 @@ class LiveFeedController extends ChangeNotifier {
     ];
   }
 
+  // Özeti eksik olan olayların ad bilgisini yükler.
   void _loadMissingSummaries(List<Incident> list) {
     for (final incident in list) {
       if (incident.primaryRequestId.isEmpty) continue;
@@ -206,6 +221,7 @@ class LiveFeedController extends ChangeNotifier {
     }
   }
 
+  // Olayı kapatır.
   Future<bool> closeIncident(Incident incident) =>
       _repo.closeIncident(incident);
 
@@ -213,6 +229,7 @@ class LiveFeedController extends ChangeNotifier {
   Future<bool> markSignalHandled(SafetySignal signal, String officialUid) =>
       _repo.markSignalHandled(signalUid: signal.uid, officialUid: officialUid);
 
+  // Olayın detayını getirir.
   Future<IncidentDetail> fetchDetail(Incident incident) =>
       _repo.fetchDetail(incident);
 
@@ -224,12 +241,15 @@ class LiveFeedController extends ChangeNotifier {
     return null;
   }
 
+  // Konum değişince mesafeleri yeniler.
   void _onLocationChanged() => _notify();
 
+  // Dinleyicilere değişikliği haber verir (kapanmadıysa).
   void _notify() {
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

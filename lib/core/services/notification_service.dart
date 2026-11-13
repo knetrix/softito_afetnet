@@ -16,6 +16,7 @@ abstract interface class NotificationService {
   static const criticalChannelId = 'afetnet_critical_alerts';
   static const allUsersTopic = 'all_users';
 
+  // Bildirim altyapısını hazırlar.
   Future<void> initialize();
 
   /// Kullanıcı tercihine göre `all_users` topic aboneliğini günceller.
@@ -35,9 +36,11 @@ abstract interface class NotificationService {
     String? payload,
   });
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   void dispose();
 }
 
+// Bildirim servisinin gerçek uygulaması (flutter_local_notifications + FCM).
 class DeviceNotificationService implements NotificationService {
   DeviceNotificationService({
     FlutterLocalNotificationsPlugin? localNotifications,
@@ -51,11 +54,13 @@ class DeviceNotificationService implements NotificationService {
   bool _permissionRequested = false;
   bool? _lastOptIn;
 
+  // Kullanılacak FirebaseMessaging örneği (testte sahtesi verilebilir).
   FirebaseMessaging get _fcm => _messaging ?? FirebaseMessaging.instance;
 
   /// Kanal adı sistem ayarlarında görünür; uygulamanın seçili dilindedir.
   AppLocalizations get _l10n => lookupAppLocalizations(LocaleController.current);
 
+  // Bildirim kanalını oluşturur ve ön plandaki FCM mesajlarını dinler.
   @override
   Future<void> initialize() async {
     if (_initialized) return;
@@ -98,9 +103,11 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
+  // Bildirim iznini ister.
   @override
   Future<void> requestPermission() => _requestPermissionOnce();
 
+  // Bildirim iznini yalnızca bir kez ister.
   Future<void> _requestPermissionOnce() async {
     if (_permissionRequested) return;
     _permissionRequested = true;
@@ -117,6 +124,7 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
+  // Uygulama açıkken gelen FCM mesajını yerel bildirim olarak gösterir.
   Future<void> _onForegroundMessage(RemoteMessage message) async {
     final title = message.notification?.title ?? message.data['title'] as String?;
     final body = message.notification?.body ?? message.data['body'] as String?;
@@ -131,6 +139,7 @@ class DeviceNotificationService implements NotificationService {
     );
   }
 
+  // Kullanıcının onayına göre all_users topic'ine abone olur ya da çıkar.
   @override
   Future<void> syncTopicSubscription({required bool optIn}) async {
     if (_lastOptIn == optIn) return;
@@ -147,6 +156,7 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
+  // Ekranda yerel bildirim gösterir.
   @override
   Future<void> showLocalNotification({
     required int id,
@@ -180,6 +190,7 @@ class DeviceNotificationService implements NotificationService {
     }
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _foregroundSub?.cancel();

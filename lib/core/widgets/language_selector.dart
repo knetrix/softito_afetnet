@@ -10,6 +10,7 @@ import '../services/locale_controller.dart';
 class LanguageSelector extends StatelessWidget {
   const LanguageSelector({super.key});
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

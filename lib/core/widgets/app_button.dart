@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_status_colors.dart';
 
+// Buton görünüm türleri.
 enum _AppButtonVariant { primary, secondary, danger, text }
 
 /// AfetNet Genel Buton Bileşeni (§3.4, §6.1)
@@ -51,6 +52,7 @@ class AppButton extends StatelessWidget {
   final bool isFullWidth;
   final _AppButtonVariant _variant;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -11,6 +11,7 @@ import 'app.dart';
 import 'core/services/locale_controller.dart';
 import 'firebase_options.dart';
 
+// Uygulamayı başlatır: Firebase, hata kaydı, Hive ve dil hazırlanır.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

@@ -48,6 +48,7 @@ class IncidentDetail {
   /// birleşen tüm çağrıları sayar (Kural 2); Detay'da iptaller ayrıca yazılır.
   final int cancelledCalls;
 
+  // Gösterilecek tıbbi bilgi var mı.
   bool get hasMedical =>
       [
         bloodType,

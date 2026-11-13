@@ -62,6 +62,7 @@ class AppStatusColors extends ThemeExtension<AppStatusColors> {
     }
   }
 
+  // Verilen alanları değiştirilmiş bir kopya döndürür.
   @override
   AppStatusColors copyWith({
     Color? critical,
@@ -79,6 +80,7 @@ class AppStatusColors extends ThemeExtension<AppStatusColors> {
     );
   }
 
+  // Tema geçişinde iki renk seti arasında ara değer üretir.
   @override
   AppStatusColors lerp(ThemeExtension<AppStatusColors>? other, double t) {
     if (other is! AppStatusColors) return this;

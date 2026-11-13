@@ -53,6 +53,7 @@ class HomeScreen extends StatelessWidget {
   final ExternalUrlLauncher? urlLauncher;
   final Duration panicHoldDuration;
 
+  // Provider'dan güvenli okur; yoksa null döner.
   T? _safeRead<T>(BuildContext context) {
     try {
       return context.read<T>();
@@ -61,6 +62,7 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthController>().currentUser;
@@ -114,6 +116,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+// Ana Sayfa'nın asıl gövdesi.
 class _HomeView extends StatefulWidget {
   const _HomeView({
     required this.fullName,
@@ -131,11 +134,14 @@ class _HomeView extends StatefulWidget {
   final ExternalUrlLauncher urlLauncher;
   final Duration panicHoldDuration;
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<_HomeView> createState() => _HomeViewState();
 }
 
+// Panik, SMS köprüsü ve yardım çağrısı akışlarını yönetir.
 class _HomeViewState extends State<_HomeView> {
+  // Widget ilk açıldığında bir kez çalışır; başlangıç işlerini yapar.
   @override
   void initState() {
     super.initState();
@@ -145,6 +151,7 @@ class _HomeViewState extends State<_HomeView> {
     });
   }
 
+  // Alt menüde ilgili sekmeye geçer.
   void _goToBranch(int index, String fallbackRoute) {
     final shell = StatefulNavigationShell.maybeOf(context);
     if (shell != null) {
@@ -154,6 +161,7 @@ class _HomeViewState extends State<_HomeView> {
     }
   }
 
+  // Profil sekmesini açar.
   void _openProfile() {
     if (widget.onOpenProfile != null) {
       widget.onOpenProfile!();
@@ -162,6 +170,7 @@ class _HomeViewState extends State<_HomeView> {
     _goToBranch(3, AppRoutes.citizenProfile);
   }
 
+  // Düdük sekmesini açar.
   void _openWhistle() {
     if (widget.onOpenWhistle != null) {
       widget.onOpenWhistle!();
@@ -170,6 +179,7 @@ class _HomeViewState extends State<_HomeView> {
     _goToBranch(2, AppRoutes.whistle);
   }
 
+  // PANİĞİM: panik sinyalini gönderir; internet yoksa SMS köprüsünü önerir.
   Future<void> _handleTriggerDanger() async {
     final controller = context.read<SafetySignalController>();
     final outcome = await controller.triggerDanger();
@@ -192,6 +202,7 @@ class _HomeViewState extends State<_HomeView> {
     }
   }
 
+  // GÜVENDEYİM: panik sinyalini kapatır.
   Future<void> _handleMarkSafe() async {
     final ok = await context.read<SafetySignalController>().markSafe();
     if (!mounted) return;
@@ -203,6 +214,7 @@ class _HomeViewState extends State<_HomeView> {
     );
   }
 
+  // "SMS ile ailene haber ver" diyaloğunu gösterir.
   Future<void> _promptOfflineSms() async {
     final l10n = AppLocalizations.of(context)!;
     final confirmed = await AppDialog.confirm(
@@ -216,6 +228,7 @@ class _HomeViewState extends State<_HomeView> {
     await _launchEmergencySms();
   }
 
+  // SMS uygulamasını acil durum yakını ve konum linkiyle açar.
   Future<void> _launchEmergencySms() async {
     final controller = context.read<SafetySignalController>();
     final target = await controller.loadEmergencySmsTarget();
@@ -249,6 +262,7 @@ class _HomeViewState extends State<_HomeView> {
     }
   }
 
+  // Konum alınamadığında uyarı diyaloğu gösterir.
   Future<void> _showLocationUnavailableDialog() async {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
@@ -320,6 +334,7 @@ class _HomeViewState extends State<_HomeView> {
     );
   }
 
+  // Yardım Çağrısı Ekle formunu açar.
   Future<void> _openHelpRequestSheet() async {
     OfflineQueueService? offlineQueue;
     try {
@@ -370,6 +385,7 @@ class _HomeViewState extends State<_HomeView> {
     );
   }
 
+  // Provider'ı güvenli dinler; yoksa null döner.
   T? _safeWatch<T>(BuildContext context) {
     try {
       return context.watch<T>();
@@ -378,6 +394,7 @@ class _HomeViewState extends State<_HomeView> {
     }
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -528,6 +545,7 @@ class _HomeViewState extends State<_HomeView> {
   }
 }
 
+// Üst kısım: kullanıcı adı ve konum etiketi.
 class _HomeHeader extends StatelessWidget {
   const _HomeHeader({
     required this.fullName,
@@ -543,6 +561,7 @@ class _HomeHeader extends StatelessWidget {
   final VoidCallback onRefreshLocation;
   final VoidCallback onOpenProfile;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -626,9 +645,11 @@ class _HomeHeader extends StatelessWidget {
   }
 }
 
+// Aktif çağrı yokken gösterilen boş kart.
 class _ActiveRequestEmptySlot extends StatelessWidget {
   const _ActiveRequestEmptySlot();
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

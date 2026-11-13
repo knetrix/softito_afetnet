@@ -55,17 +55,21 @@ Future<void> runDeleteAccountFlow(
   );
 }
 
+// Hesap silmeden önce şifre soran diyalog.
 class _PasswordDialog extends StatefulWidget {
   const _PasswordDialog();
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<_PasswordDialog> createState() => _PasswordDialogState();
 }
 
+// Şifre alanını ve doğrulamayı yönetir.
 class _PasswordDialogState extends State<_PasswordDialog> {
   final _password = TextEditingController();
   final _obscure = ValueNotifier(true);
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _password.dispose();
@@ -73,6 +77,7 @@ class _PasswordDialogState extends State<_PasswordDialog> {
     super.dispose();
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

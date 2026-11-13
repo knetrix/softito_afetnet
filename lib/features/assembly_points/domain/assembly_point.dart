@@ -59,6 +59,7 @@ class AssemblyPoint {
     return '$km km';
   }
 
+  // Firestore'a yazılacak Map'e çevirir.
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -138,6 +139,7 @@ class AssemblyPoint {
     );
   }
 
+  // Verilen alanları değiştirilmiş bir kopya döndürür.
   AssemblyPoint copyWith({
     String? id,
     String? name,

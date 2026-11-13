@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../domain/inventory_item.dart';
 import '../domain/logistics_repository.dart';
 
+// Lojistik verilerinin Firestore uygulaması.
 class FirestoreLogisticsRepository
     implements LogisticsRepository {
   FirestoreLogisticsRepository({
@@ -14,6 +15,7 @@ class FirestoreLogisticsRepository
 
   final FirebaseFirestore _db;
 
+  // Depoları canlı izler.
   @override
   Stream<List<Warehouse>> watchWarehouses() {
     return _db.collection('warehouses').snapshots().map(
@@ -32,6 +34,7 @@ class FirestoreLogisticsRepository
     );
   }
 
+  // Deponun stok kalemlerini canlı izler.
   @override
   Stream<List<InventoryItem>> watchInventory(
     String warehouseId,
@@ -62,6 +65,7 @@ class FirestoreLogisticsRepository
         });
   }
 
+  // Stok giriş/çıkışı: tek Transaction'da miktarı günceller ve hareket kaydı yazar.
   @override
   Future<void> moveStock({
     required String warehouseId,

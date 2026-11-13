@@ -38,10 +38,12 @@ class AssignmentException implements Exception {
 
   final AssignmentFailure reason;
 
+  // Hata ayıklama için okunur metin döndürür.
   @override
   String toString() => 'AssignmentException($reason)';
 }
 
+// Görev atama/güncelleme hata nedenleri.
 enum AssignmentFailure {
   /// Olay kapanmış veya bulunamadı.
   incidentClosed,

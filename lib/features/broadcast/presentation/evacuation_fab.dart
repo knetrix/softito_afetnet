@@ -13,6 +13,7 @@ import 'evacuation_broadcast_sheet.dart';
 class EvacuationFab extends StatelessWidget {
   const EvacuationFab({super.key});
 
+  // Anons formunu açar ve sonucu mesajla gösterir.
   Future<void> _open(BuildContext context) async {
     final uid = context.read<AuthController>().currentUser?.uid;
     if (uid == null) return;
@@ -36,6 +37,7 @@ class EvacuationFab extends StatelessWidget {
     );
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

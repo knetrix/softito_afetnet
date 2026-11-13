@@ -48,8 +48,11 @@ class OfflineQueueService extends ChangeNotifier {
   bool _isFlushing = false;
   bool _disposed = false;
 
+  // Çevrimdışı kuyruğun Hive kutusu.
   Box<Map>? get box => _box;
+  // Kuyrukta bekleyen çağrı sayısı.
   int get queueLength => _box?.length ?? 0;
+  // Gönderilmeyi bekleyen çağrı var mı.
   bool get hasPendingItems => queueLength > 0;
 
   /// Kutudaki tüm bekleyen çağrıları döndürür.
@@ -169,12 +172,14 @@ class OfflineQueueService extends ChangeNotifier {
     }
   }
 
+  // Çağrıyı Hive kuyruğuna ekler.
   Future<void> _enqueue(HelpRequestDraft draft) async {
     _box ??= await Hive.openBox<Map>(boxName);
     await _box!.put(draft.id, draft.toJson());
     if (!_disposed) notifyListeners();
   }
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

@@ -7,6 +7,7 @@ import '../../auth/domain/auth_failure.dart';
 import '../domain/profile_repository.dart';
 import '../domain/user_contact_profile.dart';
 
+// Profil verisini dinler ve düzenleme işlemlerini yürütür.
 class ProfileController extends ChangeNotifier {
   ProfileController({
     required this.repository,
@@ -31,20 +32,25 @@ class ProfileController extends ChangeNotifier {
   StreamSubscription<UserContactProfile?>? _subscription;
 
   UserContactProfile? _profile;
+  // Gizli profil verisi.
   UserContactProfile? get profile => _profile;
 
   bool _isLoading = true;
+  // Veriler yükleniyor mu.
   bool get isLoading => _isLoading;
 
   String? _error;
+  // Son hata mesajı.
   String? get error => _error;
 
   bool _disposed = false;
 
+  // Kapanmadıysa dinleyicilere haber verir.
   void _safeNotify() {
     if (!_disposed) notifyListeners();
   }
 
+  // Tıbbi bilgiyi kaydeder; başarılıysa true.
   Future<bool> updateMedicalInfo({
     required String bloodType,
     required String medications,
@@ -72,6 +78,7 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
+  // Doğum yılı ve kiloyu kaydeder; başarılıysa true.
   Future<bool> updatePhysicalInfo({
     required int? birthYear,
     required int? weightKg,
@@ -95,6 +102,7 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
+  // Acil durum yakınını kaydeder; başarılıysa true.
   Future<bool> updateEmergencyContact({
     required String name,
     required String relation,
@@ -120,6 +128,7 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
+  // Adresi kaydeder; başarılıysa true.
   Future<bool> updateAddress({
     required String addressText,
   }) async {
@@ -172,6 +181,7 @@ class ProfileController extends ChangeNotifier {
         () => repository.getTeamName(teamId).catchError((Object _) => null),
       );
 
+  // Kapanırken dinleyicileri ve kaynakları serbest bırakır.
   @override
   void dispose() {
     _disposed = true;

@@ -35,14 +35,17 @@ class LiveFeedMap extends StatefulWidget {
   /// Konum ve olay yokken açılış merkezi (Hatay; yalnızca harita kamerası).
   static const defaultCenter = LatLng(36.2025, 36.1610);
 
+  // Widget'ın durum (State) nesnesini oluşturur.
   @override
   State<LiveFeedMap> createState() => _LiveFeedMapState();
 }
 
+// Harita denetleyicisini ve yakınlaştırmayı yönetir.
 class _LiveFeedMapState extends State<LiveFeedMap> {
   final MapController _map = MapController();
   bool _centeredOnData = false;
 
+  // Widget parametreleri değiştiğinde çalışır.
   @override
   void didUpdateWidget(covariant LiveFeedMap oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -59,16 +62,19 @@ class _LiveFeedMapState extends State<LiveFeedMap> {
     }
   }
 
+  // Haritanın ilk ortalanacağı nokta.
   LatLng? _firstTarget() =>
       widget.userLocation ??
       (widget.incidents.isNotEmpty ? widget.incidents.first.location : null) ??
       (widget.signals.isNotEmpty ? widget.signals.first.location : null);
 
+  // Haritayı yakınlaştırır / uzaklaştırır.
   void _zoom(double delta) {
     final c = _map.camera;
     _map.move(c.center, c.zoom + delta);
   }
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -173,6 +179,7 @@ class _LiveFeedMapState extends State<LiveFeedMap> {
   }
 }
 
+// Haritadaki olay veya panik pini.
 class _Pin extends StatelessWidget {
   const _Pin({
     required this.color,
@@ -188,6 +195,7 @@ class _Pin extends StatelessWidget {
   final VoidCallback onTap;
   final bool dimmed;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     return Tooltip(
@@ -217,6 +225,7 @@ class _Pin extends StatelessWidget {
   }
 }
 
+// Harita üzerindeki yuvarlak buton.
 class _MapButton extends StatelessWidget {
   const _MapButton({
     required this.icon,
@@ -230,6 +239,7 @@ class _MapButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool accent;
 
+  // Arayüzü çizer.
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
