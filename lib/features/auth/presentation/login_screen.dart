@@ -15,7 +15,7 @@ import '../../../l10n/app_localizations.dart';
 import 'auth_controller.dart';
 import 'auth_texts.dart';
 
-/// O3 — Giriş Ekranı (§3.1, 09.32.09).
+/// O3 — Giriş Ekranı.
 /// Başarılı girişte router kullanıcıyı rolüne göre ilgili ekrana yönlendirir.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16),
                   ],
 
-                  // Giriş Yap Butonu (T5)
+                  // Giriş Yap Butonu
                   AppButton.primary(
                     label: l10n?.loginSubmit ?? 'Giriş Yap',
                     isLoading: auth.isBusy,

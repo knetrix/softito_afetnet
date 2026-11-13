@@ -72,7 +72,7 @@ class FirebaseAuthRepository implements AuthRepository {
     final fullName = input.fullName.trim();
     final now = FieldValue.serverTimestamp();
     final batch = _db.batch()
-      // unitName, region, teamId yazılmaz; isVerified yalnızca Console'dan true olur (§2).
+      // unitName, region, teamId yazılmaz; isVerified yalnızca Console'dan true olur.
       ..set(_userDoc(uid), {
         'fullName': fullName,
         'role': input.role.name,

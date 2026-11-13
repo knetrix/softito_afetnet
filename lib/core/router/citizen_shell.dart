@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 
-/// Afetzede alt menüsü: Ana Sayfa / Toplanma / Düdük / Profil (§3.1).
+/// Afetzede alt menüsü: Ana Sayfa / Toplanma / Düdük / Profil.
 class CitizenShell extends StatelessWidget {
   const CitizenShell({super.key, required this.shell});
 

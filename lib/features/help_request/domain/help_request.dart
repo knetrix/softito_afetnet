@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../core/constants/case_status.dart';
 import '../../../core/constants/help_type.dart';
 
-/// AfetNet Yardım Çağrısı Varlığı (PROJECT_NEW.md §5.2).
+/// AfetNet Yardım Çağrısı Varlığı.
 @immutable
 class HelpRequest {
   const HelpRequest({

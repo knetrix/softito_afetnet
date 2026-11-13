@@ -180,7 +180,7 @@ void main() {
     expect(controller.hasActiveOrQueuedCall, isTrue);
   });
 
-  test('başka aktif çağrı varken de kuyruktaki taslak gösterilir (Kural 4)', () async {
+  test('başka aktif çağrı varken de kuyruktaki taslak gösterilir', () async {
     final draft = HelpRequestDraft(
       id: 'draft_offline_3',
       createdBy: 'user_1',

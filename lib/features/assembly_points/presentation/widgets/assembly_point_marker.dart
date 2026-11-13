@@ -7,7 +7,7 @@ import '../../../../core/theme/app_status_colors.dart';
 import '../../domain/assembly_point.dart';
 import '../../domain/assembly_point_type.dart';
 
-/// Toplanma Alanı Harita Pini (PROJECT_NEW.md §3.1 A2).
+/// Toplanma Alanı Harita Pini.
 class AssemblyPointMarkerWidget extends StatelessWidget {
   const AssemblyPointMarkerWidget({
     super.key,

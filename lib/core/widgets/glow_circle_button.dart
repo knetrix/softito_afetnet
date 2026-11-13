@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_status_colors.dart';
 
-/// Parlayan dairesel buton (§3.4, A1 Panik, A3 Düdük)
+/// Parlayan dairesel buton (Panik ve Düdük butonları)
 class GlowCircleButton extends StatefulWidget {
   const GlowCircleButton({
     super.key,

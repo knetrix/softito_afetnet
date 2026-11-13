@@ -11,7 +11,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../safety_signal/domain/safety_signal.dart';
 import '../feed_labels.dart';
 
-/// Y1 mor panik pini (§3.2): konum, zaman, Ulaşıldı (Kural 8).
+/// Y1 mor panik pini: konum, zaman, Ulaşıldı.
 abstract final class PanicSignalSheet {
   // Panik sinyali panelini alttan açar.
   static Future<void> show(

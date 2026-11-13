@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/app_status_colors.dart';
 
-/// Ekran veya liste durumları (§6.1, screens-with-provider-integration)
+/// Ekran veya liste durumları
 enum ViewStatus { loading, ready, empty, failure }
 
 /// Ekranların ortak yüklenme, hata, boş ve hazır durum görünümü.

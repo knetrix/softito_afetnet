@@ -19,9 +19,9 @@ import '../domain/auth_repository.dart';
 import 'auth_controller.dart';
 import 'auth_texts.dart';
 
-/// O4 — Kayıt Ekranı (§3.1, §3.3).
+/// O4 — Kayıt Ekranı.
 /// Afetzede kaydı tamamlanınca Ana Sayfa'ya geçer.
-/// Yetkili hesabı onaysız açılır, kullanıcı bilgilendirilir (§2).
+/// Yetkili hesabı onaysız açılır, kullanıcı bilgilendirilir.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -251,7 +251,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
 
-                // KVKK & Gizlilik Onayı (T4, §7)
+                // KVKK & Gizlilik Onayı
                 CheckboxListTile(
                   value: _legalAccepted,
                   onChanged: busy

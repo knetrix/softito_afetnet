@@ -5,7 +5,7 @@ import '../../live_feed/domain/incident.dart';
 import 'assignment.dart';
 import 'team.dart';
 
-/// Ekipler (Y2) ve görev akışı repository arayüzü (PROJECT_NEW.md §4 Kural 6).
+/// Ekipler (Y2) ve görev akışı repository arayüzü.
 abstract interface class TeamsRepository {
   /// Tüm ekipler (`teams`), canlı.
   Stream<List<Team>> watchTeams();
@@ -48,7 +48,7 @@ enum AssignmentFailure {
   /// Olay kapanmış veya bulunamadı.
   incidentClosed,
 
-  /// Olayda zaten aktif bir görev var (Kural 6: tek aktif görev).
+  /// Olayda zaten aktif bir görev var (tek aktif görev).
   incidentAlreadyAssigned,
 
   /// Ekip boşta değil veya bulunamadı.

@@ -10,7 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../teams/domain/team.dart';
 
 /// Canlı Akış (Y1) ve Ekipler (Y2) ekranlarının ortak metin ve simge eşlemeleri.
-/// Ekranlarda sabit metin yazılmaz (§3.4); tümü ARB'den gelir.
+/// Ekranlarda sabit metin yazılmaz; tümü ARB'den gelir.
 abstract final class FeedLabels {
   // İhtiyaç türünün metni.
   static String helpType(AppLocalizations l10n, HelpType t) => switch (t) {

@@ -1,5 +1,5 @@
 // "data" katmanı: yardım çağrılarının Firestore işlemleri.
-// En önemli kısım: 50 m içindeki çağrıları tek olayda birleştiren Transaction (Kural 2).
+// En önemli kısım: 50 m içindeki çağrıları tek olayda birleştiren Transaction.
 
 import 'dart:async';
 
@@ -24,7 +24,7 @@ typedef DistanceCalculator = double Function(
   double endLongitude,
 );
 
-/// AfetNet Cloud Firestore Yardım Çağrısı Repository Uygulaması (PROJECT_NEW.md §4 Kural 2, §5.2).
+/// AfetNet Cloud Firestore Yardım Çağrısı Repository Uygulaması.
 class FirestoreHelpRequestRepository implements HelpRequestRepository {
   FirestoreHelpRequestRepository({
     FirebaseFirestore? firestore,
@@ -43,11 +43,11 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
   CollectionReference<Map<String, dynamic>> get _incidents =>
       _db.collection('incidents');
 
-  /// Kural 2: 8 haneli geohash hesabı.
+  /// 8 haneli geohash hesabı.
   static String geohash8(GeoPoint p) =>
       GeoFirePoint(p).geohash.substring(0, 8);
 
-  /// Kural 2: 7 haneli merkez hücre ve 8 komşu hücre (toplam 9 hücre).
+  /// 7 haneli merkez hücre ve 8 komşu hücre (toplam 9 hücre).
   /// 7 haneli hücre ~153 m olduğu için 9 hücre 50 m yarıçapı her yönde kapsar.
   static List<String> searchCells(GeoPoint p) {
     final cell7 = GeoFirePoint(p).geohash.substring(0, 7);
@@ -55,7 +55,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
   }
 
   /// 9 hücre üzerinde önek (prefix) sorgusu ile olayları tarar ve 50 m
-  /// içindeki ilk açık olayın id'sini döndürür (Kural 2).
+  /// içindeki ilk açık olayın id'sini döndürür.
   ///
   /// Sorgu yalnızca `geohash` aralığıdır (tek alan index'i, otomatik).
   /// `isOpen` filtresi bileşik index istediği için istemcide uygulanır.
@@ -83,7 +83,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
   }
 
   /// [candidates] içinden açık (`isOpen == true`) ve [p]'ye 50 m içindeki
-  /// ilk olayın id'sini seçer (Kural 2).
+  /// ilk olayın id'sini seçer.
   static String? pickMatchingIncident(
     GeoPoint p,
     Iterable<(String, Map<String, dynamic>)> candidates,
@@ -119,10 +119,10 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
     final geo = GeoPoint(location.latitude, location.longitude);
     final hash8 = geohash8(geo);
 
-    // 1. 50 m içindeki açık olay adayını ara (Kural 2)
+    // 1. 50 m içindeki açık olay adayını ara
     final candidateIncidentId = await findMatchingIncidentId(geo);
 
-    // 2. Transaction içinde kontrol ve yazım (Kural 2 & Kural 4)
+    // 2. Transaction içinde kontrol ve yazım
     // Transaction: içindeki okuma ve yazmalar tek bir işlem gibi çalışır. Aynı anda iki kişi
     // aynı olaya çağrı eklese bile Firestore işlemi tekrarlar, sayaç yanlış artmaz.
     return _db.runTransaction<String>((tx) async {
@@ -130,7 +130,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
       // Transaction'da önce okumalar (tx.get), sonra yazmalar (tx.set / tx.update) yapılır.
       final requestSnap = await tx.get(requestRef);
 
-      // Idempotency: Kuyruk tekrar denese de çift kayıt olmaz (Kural 4)
+      // Idempotency: Kuyruk tekrar denese de çift kayıt olmaz
       if (requestSnap.exists) {
         return draft.id;
       }
@@ -211,7 +211,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      // 4. help_requests/{requestId}/private/contact belgesini yaz (Kural 5)
+      // 4. help_requests/{requestId}/private/contact belgesini yaz
       // Ad ve telefon ayrı bir alt belgede durur; güvenlik kuralları onu yalnızca sahibine
       // ve onaylı yetkiliye açar.
       final contactRef = requestRef.collection('private').doc('contact');
@@ -279,7 +279,7 @@ class FirestoreHelpRequestRepository implements HelpRequestRepository {
   // Çağrıyı iptal eder. Güvenlik kuralı gereği afetzede yalnızca status alanını "cancelled" yapabilir.
   @override
   Future<void> cancelHelpRequest(String requestId) {
-    // §5.5: sahibi yalnızca `status → cancelled` yazabilir.
+    // Kurallar gereği sahibi yalnızca `status → cancelled` yazabilir.
     return _helpRequests.doc(requestId).update({
       'status': CaseStatus.cancelled.name,
     });

@@ -8,7 +8,7 @@ import '../../../../core/theme/app_status_colors.dart';
 import '../../../../core/widgets/glow_circle_button.dart';
 import '../../../../l10n/app_localizations.dart';
 
-/// A1 Panik / Güvendeyim butonu (PROJECT_NEW.md §3.1, §3.3 T8).
+/// A1 Panik / Güvendeyim butonu.
 ///
 /// Tehlike kapalıyken 2 sn basılı tutma ile [onTriggerDanger] tetiklenir;
 /// tehlike aktifken tek dokunuşla [onMarkSafe] çağrılır.

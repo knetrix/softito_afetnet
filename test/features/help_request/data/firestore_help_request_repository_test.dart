@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group('FirestoreHelpRequestRepository — Kural 2 (Mükerrer Birleştirme)', () {
+  group('FirestoreHelpRequestRepository — Mükerrer Birleştirme', () {
     const antakyaPoint = GeoPoint(36.2023, 36.1604);
 
     test('geohash8 8 haneli geohash üretir', () {

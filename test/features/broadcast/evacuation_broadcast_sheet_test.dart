@@ -99,7 +99,7 @@ void main() {
   }
 
   testWidgets(
-    'tür, mesaj ve yarıçapla gönderir; merkez yetkilinin konumudur (Kural 10)',
+    'tür, mesaj ve yarıçapla gönderir; merkez yetkilinin konumudur',
     (tester) async {
       await open(tester, _FakeLocation(const LatLng(36.2025, 36.161)));
 
@@ -159,7 +159,7 @@ void main() {
     },
   );
 
-  test('yasal sayfa adresi uygulama diline göre (§7)', () {
+  test('yasal sayfa adresi uygulama diline göre', () {
     expect(
       AppConfig.legalUrl(AppConfig.kvkkPage, const Locale('tr')),
       'https://afetnet-softito.web.app/legal/kvkk-tr.html',

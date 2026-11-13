@@ -1,5 +1,5 @@
 // "domain" katmanı: stok kalemi ve depo modelleri.
-// Stok düzeyi (Kritik / Orta / Yeterli) miktardan otomatik hesaplanır (Kural 3).
+// Stok düzeyi (Kritik / Orta / Yeterli) miktardan otomatik hesaplanır.
 
 
 import 'package:flutter/foundation.dart';

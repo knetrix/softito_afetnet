@@ -29,7 +29,7 @@ import '../../safety_signal/presentation/widgets/panic_hold_button.dart';
 
 typedef ExternalUrlLauncher = Future<bool> Function(Uri uri);
 
-/// A1 — Afetzede Ana Sayfası (PROJECT_NEW.md §3.1, 19.20.02, T1, T8).
+/// A1 — Afetzede Ana Sayfası.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
@@ -490,7 +490,7 @@ class _HomeViewState extends State<_HomeView> {
               const SizedBox(height: 28),
               if (activeHelpCtrl != null && activeHelpCtrl.hasActiveOrQueuedCall)
                 ActiveRequestCard(
-                  // Kuyrukta bekleyen çağrı varsa önce o gösterilir (Kural 4).
+                  // Kuyrukta bekleyen çağrı varsa önce o gösterilir.
                   request: activeHelpCtrl.topOfflineDraft == null
                       ? activeHelpCtrl.activeRequest
                       : null,

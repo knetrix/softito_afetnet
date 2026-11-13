@@ -110,7 +110,7 @@ class FirestoreProfileRepository implements ProfileRepository {
       'emergencyContact': {
         'name': name.trim(),
         'relation': relation.trim(),
-        // Kullanıcının kendi telefonu gibi `+905XXXXXXXXX` biçiminde saklanır (SMS köprüsü, Kural 8).
+        // Kullanıcının kendi telefonu gibi `+905XXXXXXXXX` biçiminde saklanır (SMS köprüsü).
         'phone': Validators.normalizePhone(phone) ?? phone.trim(),
       },
     }, SetOptions(merge: true));
@@ -146,7 +146,7 @@ class FirestoreProfileRepository implements ProfileRepository {
       throw const AuthException(AuthFailure.unknown);
     }
     try {
-      // Şifre yanlışsa hiçbir veri silinmez (§7: onay → yeniden şifre).
+      // Şifre yanlışsa hiçbir veri silinmez (onay → yeniden şifre).
       await user.reauthenticateWithCredential(
         EmailAuthProvider.credential(email: email, password: password),
       );

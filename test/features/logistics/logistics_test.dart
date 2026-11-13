@@ -26,7 +26,7 @@ Widget _wrap(Widget child, {Locale locale = const Locale('tr')}) => MaterialApp(
 );
 
 void main() {
-  group('Kural 3 stok etiketi', () {
+  group('stok etiketi', () {
     test('quantity <= criticalLevel → Kritik', () {
       expect(item(quantity: 25).level, StockLevel.critical);
       expect(item(quantity: 20).level, StockLevel.critical);

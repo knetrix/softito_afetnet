@@ -8,8 +8,8 @@ import 'package:flutter/foundation.dart';
 
 /// Ağ arayüzü durumunu izleyen servis arayüzü.
 ///
-/// Not (PROJECT_NEW.md §9 R8): Bu servis yalnızca cihazdaki ağ arayüzü
-/// değişimini bildirir. "Çevrimiçi" kesin kararı Kural 8'deki Firestore
+/// Not: Bu servis yalnızca cihazdaki ağ arayüzü
+/// değişimini bildirir. "Çevrimiçi" kesin kararı Firestore
 /// sunucu onayıyla (`hasPendingWrites == false`) verilir.
 abstract class ConnectivityService extends ChangeNotifier {
   bool get hasNetworkInterface;

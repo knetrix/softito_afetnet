@@ -3,7 +3,7 @@ import 'package:afetnet/core/utils/priority_policy.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('PriorityPolicy (PROJECT_NEW.md §4 Kural 1)', () {
+  group('PriorityPolicy', () {
     test('debris ve medical -> 1 (Kritik)', () {
       expect(PriorityPolicy.calculate(HelpType.debris), PriorityPolicy.critical);
       expect(PriorityPolicy.calculate(HelpType.medical), PriorityPolicy.critical);

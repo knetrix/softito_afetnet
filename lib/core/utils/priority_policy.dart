@@ -3,7 +3,7 @@
 
 import '../constants/help_type.dart';
 
-/// AfetNet Öncelik (Triage) Politikası (PROJECT_NEW.md §4 Kural 1).
+/// AfetNet Öncelik (Triage) Politikası.
 ///
 /// Öncelik değeri (1: Kritik, 2: Acil, 3: Normal) yalnızca bu sınıf üzerinden
 /// hesaplanır ve başka hiçbir yerde doğrudan türetilmez.
@@ -17,7 +17,7 @@ abstract final class PriorityPolicy {
   /// Normal öncelik seviyesi (Su, Diğer).
   static const int normal = 3;
 
-  /// İhtiyaç türüne göre Kural 1 öncelik seviyesini (1, 2 veya 3) döndürür.
+  /// İhtiyaç türüne göre öncelik seviyesini (1, 2 veya 3) döndürür.
   static int calculate(HelpType type) {
     switch (type) {
       case HelpType.debris:
@@ -34,7 +34,7 @@ abstract final class PriorityPolicy {
   }
 
   /// İki öncelik seviyesinin en yükseğini (sayısal olarak küçük olanı: 1 > 2 > 3)
-  /// döndürür (PROJECT_NEW.md §4 Kural 2 - Mükerrer birleştirme).
+  /// döndürür.
   static int highest(int a, int b) {
     return a <= b ? a : b;
   }

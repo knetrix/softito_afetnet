@@ -6,11 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../domain/assembly_point.dart';
 import '../domain/assembly_points_repository.dart';
 
-/// Firestore Toplanma Alanları Deposu (PROJECT_NEW.md §5.3: assembly_points/{pointId}).
+/// Firestore Toplanma Alanları Deposu (`assembly_points/{pointId}`).
 ///
 /// Koleksiyon boşsa boş liste döner; uygulama içinde uydurma nokta gösterilmez
 /// (var olmayan bir alan insanları yanlış yere gönderebilir). Demo verisini
-/// G6 Firestore'a yazar (§8). Konumu geçersiz belgeler atlanır.
+/// G6 Firestore'a yazar. Konumu geçersiz belgeler atlanır.
 class FirestoreAssemblyPointsRepository implements AssemblyPointsRepository {
   FirestoreAssemblyPointsRepository({FirebaseFirestore? firestore})
       : _db = firestore ?? FirebaseFirestore.instance;

@@ -4,10 +4,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
-/// `safety_signals/{uid}.state` değerleri (PROJECT_NEW.md §5.3).
+/// `safety_signals/{uid}.state` değerleri.
 enum SafetySignalState { danger, safe }
 
-/// Sunucu onayı sonucu (PROJECT_NEW.md §4 Kural 8).
+/// Sunucu onayı sonucu.
 enum SignalDelivery {
   /// Sunucu yazımı onayladı (`hasPendingWrites == false`).
   confirmed,
@@ -16,7 +16,7 @@ enum SignalDelivery {
   pending,
 }
 
-/// `safety_signals/{uid}` belgesinin domain modeli (PROJECT_NEW.md §5.3).
+/// `safety_signals/{uid}` belgesinin domain modeli.
 @immutable
 class SafetySignal {
   const SafetySignal({

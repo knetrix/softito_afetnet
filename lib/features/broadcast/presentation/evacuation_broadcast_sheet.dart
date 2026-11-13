@@ -17,8 +17,8 @@ import '../domain/broadcast_repository.dart';
 /// Gönderim sonucu: sunucuya ulaştı ya da bağlantı gelince gidecek.
 enum BroadcastSendResult { sent, queued }
 
-/// Y1, Y2 "Tahliye Anonsu" (§3.2): tür, yarıçap, mesaj, Gönder.
-/// Merkez yetkilinin konumudur (Kural 10).
+/// Y1, Y2 "Tahliye Anonsu": tür, yarıçap, mesaj, Gönder.
+/// Merkez yetkilinin konumudur.
 abstract final class EvacuationBroadcastSheet {
   // Anons formunu alttan açar, sonucu döndürür.
   static Future<BroadcastSendResult?> show(
@@ -128,7 +128,7 @@ class _BroadcastFormState extends State<_BroadcastForm> {
       createdBy: widget.officialUid,
     );
     try {
-      // İnternet yokken yazım sunucu onayına kadar tamamlanmaz; Kural 8'deki
+      // İnternet yokken yazım sunucu onayına kadar tamamlanmaz; paniktekiyle
       // gibi 10 sn beklenir, anons Firestore kuyruğunda kalır.
       await write.timeout(AppConfig.offlineTimeout);
       if (mounted) Navigator.of(context).pop(BroadcastSendResult.sent);

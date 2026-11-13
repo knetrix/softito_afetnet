@@ -13,7 +13,7 @@ import '../../domain/incident.dart';
 import '../../domain/incident_summary.dart';
 import '../feed_labels.dart';
 
-/// Y1 olay kartı (§3.1 Y1, T9): ad, kişi sayısı, mesafe, adres tarifi,
+/// Y1 olay kartı: ad, kişi sayısı, mesafe, adres tarifi,
 /// açıklama, süre, öncelik rozeti. Butonlar yalnızca Detay ve Ekip Yönlendir.
 class IncidentCard extends StatelessWidget {
   const IncidentCard({

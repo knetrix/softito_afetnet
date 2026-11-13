@@ -7,7 +7,7 @@ import '../../../core/widgets/glow_circle_button.dart';
 import '../../../l10n/app_localizations.dart';
 import 'whistle_controller.dart';
 
-/// A3 — Çevrimdışı Düdük Ekranı (§3.1, 19.49.53 / 19.50.06).
+/// A3 — Çevrimdışı Düdük Ekranı.
 ///
 /// Tamamen internetsiz çalışır. `CitizenShell` içindeki `indexedStack` sekmeyi
 /// canlı tuttuğu için kullanıcı başka sekmeye geçse de düdük çalmaya devam eder.

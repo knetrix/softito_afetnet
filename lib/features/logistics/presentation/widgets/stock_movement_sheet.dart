@@ -75,7 +75,7 @@ class _StockMovementSheetState extends State<StockMovementSheet> {
       if (!mounted) return;
 
       final l10n = AppLocalizations.of(context)!;
-      // Transaction eksi stoğu reddeder (Kural 3): bu arada başka biri stok
+      // Transaction eksi stoğu reddeder: bu arada başka biri stok
       // düşmüş olabilir.
       setState(() {
         _error = error is InsufficientStockException

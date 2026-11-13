@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-/// AfetNet Durum Renkleri ThemeExtension (§3.4, T14)
+/// AfetNet Durum Renkleri ThemeExtension
 /// Öncelik, düdük, panik pini ve stok durum renklerini tek yerde tutar.
 @immutable
 class AppStatusColors extends ThemeExtension<AppStatusColors> {
@@ -50,7 +50,7 @@ class AppStatusColors extends ThemeExtension<AppStatusColors> {
     panic: Color(0xFF9333EA),
   );
 
-  /// Öncelik seviyesine (1, 2, 3) göre renk döndüren yardımcı metot (§4 Kural 1).
+  /// Öncelik seviyesine (1, 2, 3) göre renk döndüren yardımcı metot.
   Color forPriority(int priority) {
     switch (priority) {
       case 1:

@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 
 import '../domain/broadcast_repository.dart';
 
-/// Tahliye Anonsu Cloud Firestore uygulaması (Kural 10, §5.3).
+/// Tahliye Anonsu Cloud Firestore uygulaması.
 class FirestoreBroadcastRepository implements BroadcastRepository {
   FirestoreBroadcastRepository({FirebaseFirestore? firestore})
     : _db = firestore ?? FirebaseFirestore.instance;

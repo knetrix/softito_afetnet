@@ -1,8 +1,8 @@
 // Ekranların adreslerini (rota yollarını) tek yerde tutan sabitler.
 // Böylece "/feed" gibi metinleri kodun her yerine tek tek yazmayız.
 
-/// 12 ekranın rotaları (PROJECT_NEW.md §3.1). Ek işlemler için rota eklenmez;
-/// bottom sheet / diyalog açılır (§3.2).
+/// 12 ekranın rotaları. Ek işlemler için rota eklenmez;
+/// bottom sheet / diyalog açılır.
 abstract final class AppRoutes {
   static const splash = '/splash';
   static const onboarding = '/onboarding';

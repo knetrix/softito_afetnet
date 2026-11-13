@@ -12,7 +12,7 @@ import '../utils/permission_queue.dart';
 import 'locale_controller.dart';
 
 /// Yerel bildirimler ve FCM `all_users` topic aboneliği servisi
-/// (PROJECT_NEW.md §6, Kural 10, R2).
+///.
 abstract interface class NotificationService {
   static const criticalChannelId = 'afetnet_critical_alerts';
   static const allUsersTopic = 'all_users';
@@ -26,7 +26,7 @@ abstract interface class NotificationService {
   Future<void> syncTopicSubscription({required bool optIn});
 
   /// Bildirim iznini (bir kez) ister. Onaylı yetkili, duyuru tercihinden
-  /// bağımsız olarak panik ve kritik stok bildirimlerini almalıdır (Kural 3, 8).
+  /// bağımsız olarak panik ve kritik stok bildirimlerini almalıdır.
   Future<void> requestPermission();
 
   /// Uygulama açıkken yerel bildirim gösterir (G3 FCM, G5 panik, G6 anons/stok).

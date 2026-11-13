@@ -20,7 +20,7 @@ import 'widgets/assembly_point_marker.dart';
 
 typedef ExternalUrlLauncher = Future<bool> Function(Uri uri);
 
-/// A2 — Toplanma Alanları Ekranı (PROJECT_NEW.md §3.1 A2, §3.4).
+/// A2 — Toplanma Alanları Ekranı.
 class AssemblyPointsScreen extends StatelessWidget {
   const AssemblyPointsScreen({
     super.key,

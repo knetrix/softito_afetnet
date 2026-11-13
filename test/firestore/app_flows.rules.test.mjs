@@ -50,7 +50,7 @@ it('3 Çağrı gönderimi tam Transaction (yeni olay + çağrı + private/contac
   }));
 });
 
-it('4 Yeni panik eski "Ulaşıldı" kaydını siler (sahibi handledBy/handledAt silebilir, §5.5)', async () => {
+it('4 Yeni panik eski "Ulaşıldı" kaydını siler (sahibi handledBy/handledAt silebilir)', async () => {
   await env.withSecurityRulesDisabled(async (c) => setDoc(doc(c.firestore(), 'safety_signals', CIT), { state: 'danger', location: g, geohash: 'sy3tyy6u', updatedAt: Timestamp.now(), handledBy: OFF, handledAt: Timestamp.now() }));
   await assertSucceeds(setDoc(doc(as(CIT), 'safety_signals', CIT), { state: 'danger', location: g, geohash: 'sy3tyy6u', updatedAt: serverTimestamp(), handledBy: deleteField(), handledAt: deleteField() }, { merge: true }));
 });

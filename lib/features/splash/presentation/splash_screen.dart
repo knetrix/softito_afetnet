@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../onboarding/screens/splash_screen.dart' as onboarding_splash;
 
-/// O1 — Splash Ekranı (§3.1).
+/// O1 — Splash Ekranı.
 /// Logo ve radar animasyonu, "AfetNet — Canlı Kriz Yönetimi Ağı", yüklenme göstergesi.
 /// Router `AuthController.isInitializing` bitince otomatik olarak sonraki ekrana (Onboarding, Login veya Ana Sayfa) yönlendirir.
 class SplashScreen extends StatelessWidget {

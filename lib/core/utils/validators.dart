@@ -15,7 +15,7 @@ enum ValidationError {
   passwordMismatch,
 }
 
-/// Giriş ve Kayıt formu kuralları (PROJECT_NEW.md §7, T3, T4).
+/// Giriş ve Kayıt formu kuralları.
 abstract final class Validators {
   static const passwordMinLength = 8;
 

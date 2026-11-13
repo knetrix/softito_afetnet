@@ -31,8 +31,8 @@ String assignmentErrorText(AppLocalizations l10n, Object error) {
   return l10n.genericError;
 }
 
-/// Y1 "Ekip Yönlendir" (§3.2): boştaki ekipler, olaya uzaklığa göre sıralı.
-/// Seçilen ekip olaya atanır (Kural 6).
+/// Y1 "Ekip Yönlendir": boştaki ekipler, olaya uzaklığa göre sıralı.
+/// Seçilen ekip olaya atanır.
 abstract final class DispatchTeamSheet {
   // Ekip Yönlendir: boştaki ekipleri mesafeye göre listeler.
   static Future<void> show(
@@ -70,7 +70,7 @@ abstract final class DispatchTeamSheet {
   }
 }
 
-/// Y2 "Görev Ata" (§3.2): ekip bekleyen açık olaylar, önceliğe göre.
+/// Y2 "Görev Ata": ekip bekleyen açık olaylar, önceliğe göre.
 abstract final class AssignTaskSheet {
   // Görev Ata: açık olayları önceliğe göre listeler.
   static Future<void> show(
@@ -82,7 +82,7 @@ abstract final class AssignTaskSheet {
   }) {
     final l10n = AppLocalizations.of(context)!;
     final messenger = ScaffoldMessenger.of(context);
-    // Liste Firestore'dan öncelik + zaman sırasıyla gelir (Kural 1).
+    // Liste Firestore'dan öncelik + zaman sırasıyla gelir.
     final waiting = openIncidents
         .where((i) => i.assignedTeamId == null)
         .toList();
@@ -122,7 +122,7 @@ abstract final class AssignTaskSheet {
   }
 }
 
-/// Y2 "Görev Güncelle" (§3.2): yalnızca bir sonraki adım butonu (Kural 6).
+/// Y2 "Görev Güncelle": yalnızca bir sonraki adım butonu.
 abstract final class UpdateTaskSheet {
   // Görev Güncelle panelini açar.
   static Future<void> show(

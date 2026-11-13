@@ -77,7 +77,7 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
 
         final warehouses = snapshot.data!;
 
-        // Depo ve stok seed verisidir (§5.3); debug derlemede Profil'deki
+        // Depo ve stok seed verisidir; debug derlemede Profil'deki
         // "Demo Verisini Sıfırla" ile yüklenir.
         if (warehouses.isEmpty) {
           return StateView(
@@ -264,7 +264,7 @@ class _InventoryContentState extends State<_InventoryContent> {
     );
   }
 
-  /// Kural 3: kalem kritik düzeye inince yetkiliye yerel bildirim. İlk
+  /// Kalem kritik düzeye inince yetkiliye yerel bildirim. İlk
   /// yüklemede zaten kritik olan kalemler yalnızca uyarı kartında görünür.
   void _checkCriticalStock(List<InventoryItem> criticalItems) {
     final currentIds = criticalItems.map((item) => item.id).toSet();

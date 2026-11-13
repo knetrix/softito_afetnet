@@ -72,7 +72,7 @@ GoRouter createAppRouter(AuthController auth) {
   );
 }
 
-/// Rol bazlı yönlendirme (§2). Test edilebilmesi için ayrı fonksiyondur.
+/// Rol bazlı yönlendirme. Test edilebilmesi için ayrı fonksiyondur.
 String? appRedirect(AuthController auth, String location) {
   // Oturum bilgisi henüz yükleniyorsa Splash ekranında beklenir.
   if (auth.isInitializing) {
@@ -86,7 +86,7 @@ String? appRedirect(AuthController auth, String location) {
     return auth.onboardingDone ? AppRoutes.login : AppRoutes.onboarding;
   }
 
-  // Onaysız yetkili hiçbir ekrana giremez; signOut tamamlanana kadar da (R4).
+  // Onaysız yetkili hiçbir ekrana giremez; signOut tamamlanana kadar da.
   if (user.isPendingApproval) {
     return location == AppRoutes.login ? null : AppRoutes.login;
   }

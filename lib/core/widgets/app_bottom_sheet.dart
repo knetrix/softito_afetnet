@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
 
-/// AfetNet Standart Bottom Sheet (§3.2, screens-with-provider-integration §3)
+/// AfetNet Standart Bottom Sheet
 abstract final class AppBottomSheet {
   /// Ekran üstü işlem panelini (bottom sheet) açar.
   static Future<T?> show<T>(

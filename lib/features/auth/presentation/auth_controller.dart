@@ -13,7 +13,7 @@ import '../domain/auth_repository.dart';
 
 /// Oturum, rol ve onboarding durumu. Router `refreshListenable` olarak dinler.
 ///
-/// Rol kontrolü iki yerde yapılır (§2): [signIn] içinde ve uygulama açılırken
+/// Rol kontrolü iki yerde yapılır: [signIn] içinde ve uygulama açılırken
 /// geri yüklenen oturumda ([_onUidChanged]). Onaysız yetkili ve profili
 /// olmayan hesap her iki durumda da oturumdan çıkarılır.
 class AuthController extends ChangeNotifier {

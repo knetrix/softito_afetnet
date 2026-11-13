@@ -4,16 +4,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
-/// `teams/{teamId}.type` değerleri (PROJECT_NEW.md §5.3).
+/// `teams/{teamId}.type` değerleri.
 enum TeamType { searchRescue, medical, fire, logistics }
 
-/// `teams/{teamId}.status` değerleri (PROJECT_NEW.md §5.3).
+/// `teams/{teamId}.status` değerleri.
 enum TeamStatus { available, onDuty }
 
-/// `teams/{teamId}` belgesinin domain modeli (PROJECT_NEW.md §5.3).
+/// `teams/{teamId}` belgesinin domain modeli.
 ///
 /// Ekip kayıtları seed verisi ve Console'dan girilir; uygulama yalnızca
-/// `status` ve `currentTask` alanlarını görev akışında günceller (Kural 6).
+/// `status` ve `currentTask` alanlarını görev akışında günceller.
 @immutable
 class Team {
   const Team({

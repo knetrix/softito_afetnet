@@ -7,7 +7,7 @@ import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 /// "Demo Verisini Sıfırla" sonucu: yazılan kayıt sayıları.
 typedef DemoSeedResult = ({int teams, int warehouses, int items, int points});
 
-/// Demo verisi (PROJECT_NEW.md §8): yalnızca ekip, depo, stok ve toplanma
+/// Demo verisi: yalnızca ekip, depo, stok ve toplanma
 /// noktası. Yalnızca debug derlemede, onaylı yetkili profilinden çalıştırılır.
 ///
 /// Kayıtlar sabit id'lerle yazılır ve `isDemo: true` taşır. Aynı id'de
@@ -23,7 +23,7 @@ class DemoSeedService {
   // Koordinatın 8 haneli geohash'ini hesaplar (geohash = konumu kısa bir metinle ifade etme yöntemi).
   static String _geohash(GeoPoint p) => GeoFirePoint(p).geohash.substring(0, 8);
 
-  /// Ekipler (T1 örnek adları). `team_04` demo yetkilisinin ekibidir (§8).
+  /// Ekipler (T1 örnek adları). `team_04` demo yetkilisinin ekibidir.
   static final teams = <String, Map<String, dynamic>>{
     'team_04': _team(
       'Arama Kurtarma Tim 4',

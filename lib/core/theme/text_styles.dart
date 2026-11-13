@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-/// Gömülü yazı tipi aileleri (§3.4, `assets/fonts/`, pubspec `fonts:`).
+/// Gömülü yazı tipi aileleri (`assets/fonts/`, pubspec `fonts:`).
 abstract final class AppFonts {
   static const heading = 'SpaceGrotesk';
   static const body = 'Inter';
   static const mono = 'JetBrainsMono';
 }
 
-/// AfetNet Tipografi Stilleri (§3.4)
+/// AfetNet Tipografi Stilleri
 /// Space Grotesk (başlık), Inter (gövde), JetBrains Mono (etiket)
 abstract final class AppTextStyles {
   // Başlıklar

@@ -15,7 +15,7 @@ InventoryItem _item(String id, Map<String, dynamic> d, {int? quantity}) =>
 
 void main() {
   test(
-    'demo başında kritik stok yok; 50 koli su çıkışı kritik yapar (§8 adım 6)',
+    'demo başında kritik stok yok; 50 koli su çıkışı kritik yapar',
     () {
       for (final e in DemoSeedService.inventory.entries) {
         expect(
@@ -34,7 +34,7 @@ void main() {
     },
   );
 
-  test('demo yetkilisinin ekibi team_04 = Arama Kurtarma Tim 4 (§8, T1)', () {
+  test('demo yetkilisinin ekibi team_04 = Arama Kurtarma Tim 4', () {
     expect(DemoSeedService.teams['team_04']!['name'], 'Arama Kurtarma Tim 4');
     for (final t in DemoSeedService.teams.values) {
       expect(t['status'], 'available');

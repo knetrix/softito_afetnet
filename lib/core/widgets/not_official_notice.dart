@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_localizations.dart';
 import '../config/app_config.dart';
 
-/// "Resmi kurum uygulaması değildir · Acil durumda 112" (T15).
+/// "Resmi kurum uygulaması değildir · Acil durumda 112".
 /// O2'nin 1. sayfasında ve O3'ün altında gösterilir; 112'ye dokununca arama açılır.
 class NotOfficialNotice extends StatefulWidget {
   const NotOfficialNotice({super.key});

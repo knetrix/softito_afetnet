@@ -15,7 +15,7 @@ import '../domain/incident.dart';
 import '../domain/incident_summary.dart';
 import '../domain/live_feed_repository.dart';
 
-/// Canlı Akış (Y1) Cloud Firestore uygulaması (PROJECT_NEW.md §4, §5.3, §5.4).
+/// Canlı Akış (Y1) Cloud Firestore uygulaması.
 class FirestoreLiveFeedRepository implements LiveFeedRepository {
   FirestoreLiveFeedRepository({FirebaseFirestore? firestore})
     : _db = firestore ?? FirebaseFirestore.instance;
@@ -30,7 +30,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
   CollectionReference<Map<String, dynamic>> get _helpRequests =>
       _db.collection('help_requests');
 
-  /// Index: `incidents` — `isOpen ASC, priority ASC, createdAt ASC` (§5.4).
+  /// Index: `incidents` — `isOpen ASC, priority ASC, createdAt ASC`.
   @override
   Stream<List<Incident>> watchOpenIncidents() {
     return _incidents
@@ -45,7 +45,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
         );
   }
 
-  /// Index: `safety_signals` — `state ASC, updatedAt DESC` (§5.4).
+  /// Index: `safety_signals` — `state ASC, updatedAt DESC`.
   @override
   Stream<List<SafetySignal>> watchDangerSignals() {
     return _db
@@ -133,7 +133,7 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
   Future<bool> closeIncident(Incident incident) async {
     final incidentRef = _incidents.doc(incident.id);
     // Sorgu Transaction içinde yapılamaz; bağlı çağrılar önce bulunur, durumları
-    // Transaction içinde yeniden okunur (iptal edilen çağrıya dokunulmaz, Kural 7).
+    // Transaction içinde yeniden okunur (iptal edilen çağrıya dokunulmaz).
     final linked = await _helpRequests
         .where('incidentId', isEqualTo: incident.id)
         .get();
@@ -176,9 +176,9 @@ class FirestoreLiveFeedRepository implements LiveFeedRepository {
     required String officialUid,
     Duration timeout = AppConfig.offlineTimeout,
   }) async {
-    // §5.5: Yetkili yalnızca `handledBy == auth.uid` ve `handledAt` yazar.
+    // Kurallar gereği yetkili yalnızca `handledBy == auth.uid` ve `handledAt` yazar.
     // İnternet yokken `update` sunucu onayına kadar tamamlanmaz; buton sonsuza
-    // dek dönmesin diye Kural 8'deki gibi 10 sn beklenir.
+    // dek dönmesin diye panikteki gibi 10 sn beklenir.
     final write = _db.collection('safety_signals').doc(signalUid).update({
       'handledBy': officialUid,
       'handledAt': FieldValue.serverTimestamp(),

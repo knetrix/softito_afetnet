@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 import 'assembly_point_type.dart';
 import 'assembly_service.dart';
 
-/// Toplanma Alanı Domain Modeli (PROJECT_NEW.md §3.1 A2, §5.3).
+/// Toplanma Alanı Domain Modeli.
 class AssemblyPoint {
   const AssemblyPoint({
     required this.id,

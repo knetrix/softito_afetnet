@@ -8,7 +8,7 @@ import '../theme/app_status_colors.dart';
 // Butonun görünüm türleri: ana (dolu), ikincil (çerçeveli), tehlike (kırmızı), metin (sade).
 enum _AppButtonVariant { primary, secondary, danger, text }
 
-/// AfetNet Genel Buton Bileşeni (§3.4, §6.1)
+/// AfetNet Genel Buton Bileşeni
 class AppButton extends StatelessWidget {
   const AppButton.primary({
     super.key,

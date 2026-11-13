@@ -39,7 +39,7 @@ abstract interface class AuthRepository {
   Future<String> signIn({required String email, required String password});
 
   /// Auth hesabını açar; `users/{uid}` ve `users/{uid}/private/contact`
-  /// belgelerini tek batch'te oluşturur (§7).
+  /// belgelerini tek batch'te oluşturur.
   Future<AppUser> register(RegisterInput input);
 
   // Şifre sıfırlama e-postası gönderir.

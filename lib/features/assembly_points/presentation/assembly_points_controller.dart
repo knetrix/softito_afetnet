@@ -11,7 +11,7 @@ import '../domain/assembly_point.dart';
 import '../domain/assembly_point_type.dart';
 import '../domain/assembly_points_repository.dart';
 
-/// Toplanma Alanları Ekran Kontrolcüsü (PROJECT_NEW.md §3.1 A2).
+/// Toplanma Alanları Ekran Kontrolcüsü.
 class AssemblyPointsController extends ChangeNotifier {
   AssemblyPointsController({
     required AssemblyPointsRepository repository,
@@ -60,7 +60,7 @@ class AssemblyPointsController extends ChangeNotifier {
     return result;
   }
 
-  /// Kullanıcı konumuna en yakın ilk 3 alan (PROJECT_NEW.md 5. Madde)
+  /// Kullanıcı konumuna en yakın ilk 3 alan
   List<AssemblyPoint> get nearestThreePoints {
     final list = filteredPoints;
     return list.take(3).toList();

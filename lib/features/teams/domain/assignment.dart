@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/case_status.dart';
 
-/// `assignments/{assignmentId}` belgesinin domain modeli (PROJECT_NEW.md §5.3).
+/// `assignments/{assignmentId}` belgesinin domain modeli.
 ///
 /// `status` yalnızca `assigned`, `enRoute`, `onSite`, `resolved` değerlerini
-/// alır (Kural 6).
+/// alır.
 @immutable
 class Assignment {
   const Assignment({
@@ -51,7 +51,7 @@ class Assignment {
   int get hashCode => Object.hash(id, incidentId, teamId, status);
 }
 
-/// Görev durumu akışı (PROJECT_NEW.md §4 Kural 6).
+/// Görev durumu akışı.
 ///
 /// `assigned → enRoute → onSite → resolved`; geri adım ve atlama yoktur.
 abstract final class AssignmentFlow {

@@ -24,7 +24,7 @@ import 'sheets/emergency_contact_sheet.dart';
 import 'sheets/medical_edit_sheet.dart';
 import 'sheets/physical_edit_sheet.dart';
 
-/// A4 — Profil (Afetzede) (§3.1, 19.52.36)
+/// A4 — Profil (Afetzede)
 class CitizenProfileScreen extends StatelessWidget {
   const CitizenProfileScreen({super.key, this.repository});
 

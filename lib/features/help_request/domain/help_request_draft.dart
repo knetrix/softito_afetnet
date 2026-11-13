@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../../../core/constants/help_type.dart';
 import '../../../core/utils/priority_policy.dart';
 
-/// Yardım çağrısı oluşturma ve kuyruk taslağı (§3.2, §4 Kural 1, Kural 4, §5.2).
+/// Yardım çağrısı oluşturma ve kuyruk taslağı.
 @immutable
 class HelpRequestDraft {
   HelpRequestDraft({
@@ -25,10 +25,10 @@ class HelpRequestDraft {
   })  : id = id ?? const Uuid().v4(),
         assert(peopleCount >= 1, 'Kişi sayısı en az 1 olmalıdır.');
 
-  /// İstemcide üretilen benzersiz çağrı kimliği (Kural 4, idempotency).
+  /// İstemcide üretilen benzersiz çağrı kimliği (çift kayıt olmaz).
   final String id;
 
-  /// Çağrı türü (§4 Kural 1).
+  /// Çağrı türü.
   final HelpType type;
 
   /// Etkilenen kişi sayısı (varsayılan 1).
@@ -46,16 +46,16 @@ class HelpRequestDraft {
   /// Çağrıyı oluşturan kullanıcının uid'si.
   final String? createdBy;
 
-  /// `private/contact` için çağrı anında kopyalanan ad soyad (§5.2).
+  /// `private/contact` için çağrı anında kopyalanan ad soyad.
   final String? fullName;
 
-  /// `private/contact` için çağrı anında kopyalanan telefon numarası (§5.2).
+  /// `private/contact` için çağrı anında kopyalanan telefon numarası.
   final String? phone;
 
-  /// Hive çevrimdışı kuyruğundan geldiyse true (Kural 4).
+  /// Hive çevrimdışı kuyruğundan geldiyse true.
   final bool createdOffline;
 
-  /// Kural 1'e göre hesaplanan öncelik seviyesi (1: Kritik, 2: Acil, 3: Normal).
+  /// Türünden hesaplanan öncelik seviyesi (1: Kritik, 2: Acil, 3: Normal).
   int get priority => PriorityPolicy.calculate(type);
 
   // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.

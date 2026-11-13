@@ -134,7 +134,7 @@ class SafetySignalController extends ChangeNotifier {
     }
   }
 
-  /// Sinyal açıkken `GÜVENDEYİM` ile kapatır (T8).
+  /// Sinyal açıkken `GÜVENDEYİM` ile kapatır.
   Future<bool> markSafe() async {
     if (_busy) return false;
     _busy = true;

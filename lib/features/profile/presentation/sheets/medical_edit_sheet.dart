@@ -171,7 +171,7 @@ class _MedicalEditFormState extends State<_MedicalEditForm> {
             ),
           ),
           const SizedBox(height: 16),
-          // KVKK Açık Rıza Onayı (§5 Kural 5, R5)
+          // KVKK Açık Rıza Onayı
           CheckboxListTile(
             value: _consent,
             onChanged: (v) => setState(() {

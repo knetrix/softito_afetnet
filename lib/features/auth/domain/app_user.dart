@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/user_role.dart';
 
-/// `users/{uid}` herkese açık profil (PROJECT_NEW.md §5.3).
+/// `users/{uid}` herkese açık profil.
 /// Gizli bilgiler (e-posta, telefon …) `private/contact`'tadır, burada tutulmaz.
 @immutable
 class AppUser {
@@ -26,7 +26,7 @@ class AppUser {
   final bool isVerified;
   final bool notificationsOptIn;
 
-  // Yalnızca yetkili; Console'dan yazılır (§2).
+  // Yalnızca yetkili; Console'dan yazılır.
   final String? unitName;
   final String? region;
   final String? teamId;
@@ -34,6 +34,6 @@ class AppUser {
   // Kullanıcı yetkili mi.
   bool get isOfficial => role == UserRole.official;
 
-  /// Onaysız yetkili hiçbir yetkili verisine erişemez (§2, R4).
+  /// Onaysız yetkili hiçbir yetkili verisine erişemez.
   bool get isPendingApproval => isOfficial && !isVerified;
 }

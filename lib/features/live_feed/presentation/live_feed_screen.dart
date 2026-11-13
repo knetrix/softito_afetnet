@@ -25,7 +25,7 @@ import 'sheets/panic_signal_sheet.dart';
 import 'widgets/incident_card.dart';
 import 'widgets/live_feed_map.dart';
 
-/// Y1 — Canlı Akış (PROJECT_NEW.md §3.1 Y1, §3.2, §4 Kural 1, 5, 6, 7, 8).
+/// Y1 — Canlı Akış.
 class LiveFeedScreen extends StatelessWidget {
   const LiveFeedScreen({
     super.key,
@@ -58,7 +58,7 @@ class LiveFeedScreen extends StatelessWidget {
           repository: ctx.read<LiveFeedRepository>(),
           teamsRepository: ctx.read<TeamsRepository>(),
           locationService: ctx.read<LocationService>(),
-          // Kural 8: yeni panik sinyalinde yetkiliye yerel bildirim.
+          // Yeni panik sinyalinde yetkiliye yerel bildirim.
           onNewPanicSignal: (signal) {
             final l10n = lookupAppLocalizations(
               Localizations.maybeLocaleOf(ctx) ?? const Locale('tr'),
@@ -139,7 +139,7 @@ class _LiveFeedView extends StatelessWidget {
     final now = DateTime.now();
 
     return Scaffold(
-      // Ekranın kendi Scaffold'unda: açılan sheet'ler butonu örter (§3.1).
+      // Ekranın kendi Scaffold'unda: açılan sheet'ler butonu örter.
       floatingActionButton: const EvacuationFab(),
       body: SafeArea(
         bottom: false,

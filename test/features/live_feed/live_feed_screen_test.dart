@@ -39,7 +39,7 @@ void main() {
 
   group('Y1 Canlı Akış', () {
     testWidgets(
-      'kartta ad, öncelik, yalnızca Detay ve Ekip Yönlendir görünür (T9)',
+      'kartta ad, öncelik, yalnızca Detay ve Ekip Yönlendir görünür',
       (tester) async {
         await tester.binding.setSurfaceSize(const Size(400, 1400));
         addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -436,7 +436,7 @@ void main() {
 
       await tester.tap(find.widgetWithText(ElevatedButton, 'Görev Ata'));
       await tester.pumpAndSettle();
-      // Ekibi olan olay listede yok (Kural 6: tek aktif görev)
+      // Ekibi olan olay listede yok (tek aktif görev)
       expect(find.text('Tıbbi Müdahale'), findsNothing);
       await tester.tap(find.text('Enkaz Altında'));
       await tester.pumpAndSettle();

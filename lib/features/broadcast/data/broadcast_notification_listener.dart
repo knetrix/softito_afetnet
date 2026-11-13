@@ -17,7 +17,6 @@ import '../domain/broadcast_repository.dart';
 /// Afetzede uygulaması açıkken yeni tahliye ve
 /// artçı sarsıntı anonslarını takip eder.
 ///
-/// PROJECT_NEW.md - Kural 10
 class BroadcastNotificationListener {
   BroadcastNotificationListener({
     required this._locationService,

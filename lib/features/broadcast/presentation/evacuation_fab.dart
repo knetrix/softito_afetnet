@@ -9,7 +9,7 @@ import '../../auth/presentation/auth_controller.dart';
 import '../domain/broadcast_repository.dart';
 import 'evacuation_broadcast_sheet.dart';
 
-/// Y1 ve Y2'deki "Tahliye Anonsu" butonu (§3.1).
+/// Y1 ve Y2'deki "Tahliye Anonsu" butonu.
 class EvacuationFab extends StatelessWidget {
   const EvacuationFab({super.key});
 

@@ -39,7 +39,7 @@ Future<void> main() async {
     }
   });
 
-  // Çevrimdışı çağrı kuyruğu kutusu G4'te burada açılır (Kural 4).
+  // Çevrimdışı çağrı kuyruğu kutusu burada açılır.
   // Hive (cihazdaki yerel veritabanı) hazırlanır; internetsiz çağrı kuyruğu burada saklanır.
   await Hive.initFlutter();
 

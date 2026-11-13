@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../core/constants/case_status.dart';
 import '../../../core/constants/help_type.dart';
 
-/// AfetNet Olay Varlığı (PROJECT_NEW.md §5.3, §4 Kural 2).
+/// AfetNet Olay Varlığı.
 ///
 /// 50 m içindeki mükerrer yardım çağrıları aynı olay altında birleşir.
 @immutable
@@ -42,7 +42,7 @@ class Incident {
   final DateTime? updatedAt;
   final DateTime? resolvedAt;
 
-  /// Kural 7: Görev atanmamış olay doğrudan kapatılabilir.
+  /// Görev atanmamış olay doğrudan kapatılabilir.
   bool get canBeClosedDirectly => assignedTeamId == null;
 
   // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.

@@ -13,7 +13,7 @@ import '../domain/assignment.dart';
 import '../domain/team.dart';
 import '../domain/teams_repository.dart';
 
-/// Y2 — Ekipler durumu (PROJECT_NEW.md §3.1 Y2, §4 Kural 6).
+/// Y2 — Ekipler durumu.
 class TeamsController extends ChangeNotifier {
   TeamsController({
     required TeamsRepository repository,
@@ -72,7 +72,7 @@ class TeamsController extends ChangeNotifier {
   // Verilen türdeki ekip sayısı.
   int countOf(TeamType type) => _teams.where((t) => t.type == type).length;
 
-  /// Ekibin bitmemiş görevi (Kural 6: ekipte en fazla bir aktif görev).
+  /// Ekibin bitmemiş görevi (ekipte en fazla bir aktif görev).
   Assignment? activeAssignmentOf(String teamId) {
     for (final a in _assignments) {
       if (a.teamId == teamId && a.isActive) return a;

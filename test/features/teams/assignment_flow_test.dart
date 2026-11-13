@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('AssignmentFlow — Kural 6 (görev durumu)', () {
+  group('AssignmentFlow — görev durumu', () {
     test(
       'adımlar Atandı → Yola Çıktı → Olay Yerinde → Kurtarıldı sırasındadır',
       () {

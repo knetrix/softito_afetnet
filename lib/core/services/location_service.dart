@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/permission_queue.dart';
 
-/// Konum servisinin mevcut durumu (PROJECT_NEW.md §4 Kural 9).
+/// Konum servisinin mevcut durumu.
 enum LocationStatus {
   initial,
   fetching,
@@ -192,7 +192,7 @@ class DeviceLocationService extends LocationService {
             .resolveAddressLabel(coords.latitude, coords.longitude)
             .timeout(const Duration(seconds: 4));
       } catch (_) {
-        // İnternet yoksa veya geocoding başarısızsa son bilinen etiket korunur (Kural 9).
+        // İnternet yoksa veya geocoding başarısızsa son bilinen etiket korunur.
       }
 
       if (label != null && label.isNotEmpty) {
@@ -222,7 +222,7 @@ class DeviceLocationService extends LocationService {
         _clock().difference(at) < _freshFor) {
       return _currentPosition;
     }
-    // Panikte adres beklenmez; Kural 8'in 10 sn'si konum alındıktan sonra başlar.
+    // Panikte adres beklenmez; panikteki 10 sn'lik süre konum alındıktan sonra başlar.
     try {
       final coords = await _fetchCoordinates();
       if (coords != null) {

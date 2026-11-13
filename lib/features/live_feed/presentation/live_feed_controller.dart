@@ -18,7 +18,7 @@ import '../domain/live_feed_repository.dart';
 import 'feed_labels.dart';
 
 /// Canlı Akış filtresi: tümü, bir öncelik veya bir ihtiyaç türü.
-/// Filtre yüklenen liste üzerinde istemcide uygulanır (Kural 1; ek index yok).
+/// Filtre yüklenen liste üzerinde istemcide uygulanır (ek index yok).
 @immutable
 class LiveFeedFilter {
   const LiveFeedFilter._({this.priority, this.type});
@@ -46,7 +46,7 @@ class LiveFeedFilter {
   int get hashCode => Object.hash(priority, type);
 }
 
-/// Y1 — Canlı Akış durumu (PROJECT_NEW.md §3.1 Y1, §4 Kural 1, 5, 8).
+/// Y1 — Canlı Akış durumu.
 class LiveFeedController extends ChangeNotifier {
   LiveFeedController({
     required LiveFeedRepository repository,
@@ -69,7 +69,7 @@ class LiveFeedController extends ChangeNotifier {
   final LocationService? _location;
 
   /// Ekran açıkken yeni (ulaşılmamış) panik sinyali gelince çağrılır;
-  /// yetkiliye yerel bildirim gösterilir (Kural 8). İlk yüklemede çağrılmaz.
+  /// yetkiliye yerel bildirim gösterilir. İlk yüklemede çağrılmaz.
   final void Function(SafetySignal signal)? onNewPanicSignal;
 
   StreamSubscription<List<Incident>>? _incidentSub;

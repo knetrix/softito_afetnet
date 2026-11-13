@@ -20,7 +20,7 @@ abstract class LogisticsRepository {
   });
 }
 
-/// Çıkış miktarı güncel stoktan fazla (Kural 3: eksi stok yok).
+/// Çıkış miktarı güncel stoktan fazla (eksi stok yok).
 class InsufficientStockException implements Exception {
   const InsufficientStockException();
 }

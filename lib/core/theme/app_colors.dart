@@ -3,15 +3,15 @@
 
 import 'package:flutter/material.dart';
 
-/// AfetNet Tasarım Sistemi Renk Token'ları (§3.4)
-/// Değerler doğrudan `PROJECT_NEW.md` §3.4 tablosundan alınmıştır.
+/// AfetNet Tasarım Sistemi Renk Token'ları
+/// Değerler tasarım ekran görüntülerinden alınmıştır.
 abstract final class AppColors {
   // Arka plan ve yüzey renkleri
   static const Color background = Color(0xFF0D0F12);
   static const Color surface = Color(0xFF16191E);
   static const Color surfaceHigh = Color(0xFF1E2228);
 
-  // Açık tema için türetilen yüzeyler (T14)
+  // Açık tema için türetilen yüzeyler
   static const Color lightBackground = Color(0xFFF6F8FA);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightSurfaceHigh = Color(0xFFEDF2F7);

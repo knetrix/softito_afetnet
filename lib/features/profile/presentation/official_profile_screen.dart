@@ -19,7 +19,7 @@ import '../domain/profile_repository.dart';
 import 'delete_account_flow.dart';
 import 'profile_controller.dart';
 
-/// Y4 — Profil (Yetkili / Saha Koordinatörü) (§3.1, 20.28.08, T2, T11, T12, T13)
+/// Y4 — Profil (Yetkili / Saha Koordinatörü)
 class OfficialProfileScreen extends StatelessWidget {
   const OfficialProfileScreen({super.key, this.repository});
 
@@ -74,7 +74,7 @@ class _OfficialProfileView extends StatelessWidget {
     }
   }
 
-  /// §8: Demo verisini (ekip, depo, stok, toplanma noktası) başlangıç
+  /// Demo verisini (ekip, depo, stok, toplanma noktası) başlangıç
   /// hâline getirir. Yalnızca debug derlemede görünür.
   Future<void> _resetDemoData(BuildContext context) async {
     if (!kDebugMode) return;
@@ -224,7 +224,7 @@ class _OfficialProfileView extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Debug Modu "Demo Verisini Sıfırla" butonu (§8, §3.3)
+            // Debug Modu "Demo Verisini Sıfırla" butonu
             if (kDebugMode) ...[
               Container(
                 padding: const EdgeInsets.all(14),

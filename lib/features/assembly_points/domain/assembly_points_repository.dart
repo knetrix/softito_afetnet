@@ -3,7 +3,7 @@
 
 import 'assembly_point.dart';
 
-/// Toplanma Alanları Depo Arayüzü (PROJECT_NEW.md §3.1 A2, §5.3).
+/// Toplanma Alanları Depo Arayüzü.
 abstract class AssemblyPointsRepository {
   /// Tüm toplanma alanlarını canlı akış olarak dinler.
   Stream<List<AssemblyPoint>> watchAssemblyPoints();

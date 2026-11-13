@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FirestoreLiveFeedRepository dönüşümleri', () {
-    test('incidentFromMap §5.3 alanlarını okur', () {
+    test('incidentFromMap olay alanlarını okur', () {
       final created = DateTime(2026, 11, 12, 9, 30);
       final i = FirestoreLiveFeedRepository.incidentFromMap('inc1', {
         'location': const GeoPoint(36.2, 36.1),
@@ -49,7 +49,7 @@ void main() {
       expect(s.isHandled, isTrue);
     });
 
-    test('isOpenRequest: iptal ve çözülmüş çağrıya dokunulmaz (Kural 7)', () {
+    test('isOpenRequest: iptal ve çözülmüş çağrıya dokunulmaz', () {
       expect(
         FirestoreLiveFeedRepository.isOpenRequest({'status': 'pending'}),
         isTrue,

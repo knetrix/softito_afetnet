@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/app_status_colors.dart';
 
-/// AfetNet Standart Onay ve Bilgi Diyaloğu (§3.2, screens-with-provider-integration §4)
+/// AfetNet Standart Onay ve Bilgi Diyaloğu
 abstract final class AppDialog {
   /// Onay diyaloğu (Çağrı İptal, Çıkış Yap, Hesabı Sil vb.)
   static Future<bool?> confirm(

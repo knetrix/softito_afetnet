@@ -15,7 +15,7 @@ import '../../domain/help_request_draft.dart';
 
 typedef HelpRequestSubmitCallback = Future<dynamic> Function(HelpRequestDraft draft);
 
-/// Afetzede Yardım Çağrısı Formu Sheet'i (PROJECT_NEW.md §3.2, A1, Kural 1).
+/// Afetzede Yardım Çağrısı Formu Sheet'i.
 ///
 /// Çağrı türü seçimine göre öncelik seviyesi [PriorityPolicy] üzerinden
 /// anlık hesaplanır ve [StatusBadge.priority] ile gösterilir.
@@ -230,7 +230,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Öncelik Bilgilendirme Rozeti (Kural 1 Triage canlı gösterimi)
+          // Öncelik Bilgilendirme Rozeti (triage canlı gösterimi)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
@@ -371,7 +371,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
           ),
           const SizedBox(height: 18),
 
-          // Adres Tarifi Girişi (§5.2 maxLength 300)
+          // Adres Tarifi Girişi (en fazla 300 karakter)
           TextFormField(
             controller: _addressController,
             maxLines: 2,
@@ -393,7 +393,7 @@ class _HelpRequestFormState extends State<HelpRequestForm> {
           ),
           const SizedBox(height: 14),
 
-          // Açıklama Girişi (§5.2 maxLength 500)
+          // Açıklama Girişi (en fazla 500 karakter)
           TextFormField(
             controller: _descriptionController,
             maxLines: 3,

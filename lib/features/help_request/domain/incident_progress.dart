@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/case_status.dart';
 
-/// Çağrının bağlı olduğu olayın görev durumu (PROJECT_NEW.md §4 Kural 6).
+/// Çağrının bağlı olduğu olayın görev durumu.
 ///
 /// Ekip atandıktan sonra aynı olaya birleşen çağrı, kurallar gereği
-/// `pending` olarak açılır (§5.5) ve yetkili görevi bir sonraki adıma
+/// `pending` olarak açılır ve yetkili görevi bir sonraki adıma
 /// taşıyana kadar öyle kalır. Bu süre boyunca afetzedenin kartı durumu ve
 /// ekibi olaydan okur; olay belgesi kişisel veri içermez ve herkes okuyabilir.
 @immutable

@@ -11,7 +11,7 @@ import '../../domain/assembly_point.dart';
 import '../../domain/assembly_point_type.dart';
 import '../../domain/assembly_service.dart';
 
-/// Toplanma Alanı Detay Kartı (PROJECT_NEW.md §3.1 A2, §3.4).
+/// Toplanma Alanı Detay Kartı.
 class AssemblyPointCard extends StatelessWidget {
   const AssemblyPointCard({
     super.key,

@@ -12,7 +12,7 @@ import 'connectivity_service.dart';
 import '../../features/help_request/domain/help_request_draft.dart';
 import '../../features/help_request/domain/help_request_repository.dart';
 
-/// Çağrı gönderim sonucu (PROJECT_NEW.md §4 Kural 4).
+/// Çağrı gönderim sonucu.
 enum SubmitResult {
   /// Çağrı doğrudan Firestore'a yazıldı.
   sent,
@@ -21,7 +21,7 @@ enum SubmitResult {
   queued,
 }
 
-/// Çevrimdışı Yardım Çağrısı Kuyruk Servisi (PROJECT_NEW.md §4 Kural 4, §6.1).
+/// Çevrimdışı Yardım Çağrısı Kuyruk Servisi.
 class OfflineQueueService extends ChangeNotifier {
   OfflineQueueService({
     required HelpRequestRepository repository,
@@ -88,7 +88,7 @@ class OfflineQueueService extends ChangeNotifier {
     });
 
     // "Wi-Fi bağlı ama internet yok" durumunda internet geri gelince ağ arayüzü
-    // değişmez ve yukarıdaki dinleyici tetiklenmez (R8). Kuyrukta çağrı varken
+    // değişmez ve yukarıdaki dinleyici tetiklenmez. Kuyrukta çağrı varken
     // belirli aralıklarla yeniden denenir.
     _retryTimer?.cancel();
     _retryTimer = Timer.periodic(_retryInterval, (_) {
@@ -102,7 +102,7 @@ class OfflineQueueService extends ChangeNotifier {
     }
   }
 
-  /// Hatayı çevrimdışı durumu olarak değerlendirir (Kural 4, §5.3).
+  /// Hatayı çevrimdışı durumu olarak değerlendirir.
   bool isOfflineException(Object e) {
     if (e is TimeoutException) return true;
     if (e is FirebaseException &&

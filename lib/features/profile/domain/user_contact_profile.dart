@@ -3,7 +3,7 @@
 
 import 'package:flutter/foundation.dart';
 
-/// Afetzede ve Yetkili Gizli İletişim & Sağlık Profili (PROJECT_NEW.md §5.3)
+/// Afetzede ve Yetkili Gizli İletişim & Sağlık Profili
 /// `users/{uid}/private/contact` belgesinden okunur.
 @immutable
 class UserContactProfile {
@@ -27,7 +27,7 @@ class UserContactProfile {
   final String? email;
   final String? phone;
 
-  // Tıbbi & Fiziksel Bilgiler (§5.3)
+  // Tıbbi & Fiziksel Bilgiler
   final String? bloodType;
   final String? medications;
   final String? conditions;

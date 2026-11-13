@@ -28,7 +28,7 @@ Widget _buildTestApp({
 }
 
 void main() {
-  group('HelpRequestSheet (PROJECT_NEW.md §3.2, Kural 1)', () {
+  group('HelpRequestSheet', () {
     testWidgets('form tür seçilmeden açılır, Gönder kapalıdır', (tester) async {
       await tester.pumpWidget(
         _buildTestApp(
@@ -60,7 +60,7 @@ void main() {
       expect(find.text('Gönder'), findsOneWidget);
     });
 
-    testWidgets('tür seçimi değiştikçe Kural 1 öncelik rozeti anlık güncellenir', (tester) async {
+    testWidgets('tür seçimi değiştikçe öncelik rozeti anlık güncellenir', (tester) async {
       await tester.pumpWidget(
         _buildTestApp(
           child: Builder(

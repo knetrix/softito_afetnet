@@ -11,7 +11,7 @@ import '../../../safety_signal/domain/safety_signal.dart';
 import '../../domain/incident.dart';
 import '../feed_labels.dart';
 
-/// Y1 haritası: öncelik renkli olay pinleri ve mor panik pinleri (§3.1 Y1).
+/// Y1 haritası: öncelik renkli olay pinleri ve mor panik pinleri.
 class LiveFeedMap extends StatefulWidget {
   const LiveFeedMap({
     super.key,

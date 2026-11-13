@@ -10,7 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../auth/domain/auth_failure.dart';
 import 'profile_controller.dart';
 
-/// Hesabı Sil (§7, T13): onay → şifre → silme. A4 ve Y4 aynı akışı kullanır.
+/// Hesabı Sil: onay → şifre → silme. A4 ve Y4 aynı akışı kullanır.
 /// Başarılı olunca Auth hesabı silinir ve router kullanıcıyı Giriş'e götürür.
 Future<void> runDeleteAccountFlow(
   BuildContext context, {

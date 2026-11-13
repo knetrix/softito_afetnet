@@ -16,8 +16,8 @@ import '../../domain/incident_summary.dart';
 import '../feed_labels.dart';
 import '../live_feed_controller.dart';
 
-/// Y1 "Detay" (§3.2): çağrı sahibinin telefonu (arama butonu) ve tıbbi özeti,
-/// bağlı çağrı sayısı, görev durumu, Olayı Kapat (Kural 5, 7).
+/// Y1 "Detay": çağrı sahibinin telefonu (arama butonu) ve tıbbi özeti,
+/// bağlı çağrı sayısı, görev durumu, Olayı Kapat.
 abstract final class IncidentDetailSheet {
   // Detay panelini alttan açar.
   static Future<void> show(

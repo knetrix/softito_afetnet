@@ -23,7 +23,7 @@ import '../domain/teams_repository.dart';
 import 'sheets/assignment_sheets.dart';
 import 'teams_controller.dart';
 
-/// Y2 — Ekipler (PROJECT_NEW.md §3.1 Y2, §3.2, §4 Kural 6; T1, T2).
+/// Y2 — Ekipler.
 class TeamsScreen extends StatelessWidget {
   const TeamsScreen({
     super.key,
@@ -122,7 +122,7 @@ class _TeamsView extends StatelessWidget {
     final teams = ctrl.filteredTeams;
 
     return Scaffold(
-      // Ekranın kendi Scaffold'unda: açılan sheet'ler butonu örter (§3.1).
+      // Ekranın kendi Scaffold'unda: açılan sheet'ler butonu örter.
       floatingActionButton: const EvacuationFab(),
       body: SafeArea(
         bottom: false,
@@ -407,7 +407,7 @@ class _MiniMap extends StatelessWidget {
 }
 
 /// Y2 ekip kartı: ad, lider, mesafe, konum, mevcut görev, durum,
-/// Görev Ata / Görev Güncelle. "Telsiz #" butonu yoktur (T2).
+/// Görev Ata / Görev Güncelle. "Telsiz #" butonu yoktur.
 class TeamCard extends StatelessWidget {
   const TeamCard({
     super.key,

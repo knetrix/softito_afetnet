@@ -117,7 +117,7 @@ void main() {
       expect(sorted.last.id, 'p4');
     });
 
-    test('nearestThreePoints ilk 3 en yakın alanı döndürür (PROJECT_NEW.md 5. Madde)', () async {
+    test('nearestThreePoints ilk 3 en yakın alanı döndürür', () async {
       final ctrl = AssemblyPointsController(
         repository: repo,
         initialUserLocation: const LatLng(36.2000, 36.1600),

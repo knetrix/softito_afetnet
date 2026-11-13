@@ -128,7 +128,7 @@ void main() {
         phone: '+905551234567',
       );
 
-  group('OfflineQueueService — Kural 4 (Çevrimdışı Çağrı Kuyruğu)', () {
+  group('OfflineQueueService — Çevrimdışı Çağrı Kuyruğu', () {
     test('çevrimiçiyken çağrı doğrudan gönderilir ve Hive kutusu boş kalır',
         () async {
       final draft = makeDraft();
@@ -227,7 +227,7 @@ void main() {
       expect(repo.submitted.first.id, 'auto_flush');
     });
 
-    test('ağ arayüzü değişmeden internet geri gelince periyodik deneme kuyruğu gönderir (R8)',
+    test('ağ arayüzü değişmeden internet geri gelince periyodik deneme kuyruğu gönderir',
         () async {
       final retrying = OfflineQueueService(
         repository: repo,

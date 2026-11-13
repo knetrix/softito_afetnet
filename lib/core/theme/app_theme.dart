@@ -7,10 +7,10 @@ import 'app_colors.dart';
 import 'app_status_colors.dart';
 import 'text_styles.dart';
 
-/// AfetNet Uygulama Teması (§3.4, T14)
+/// AfetNet Uygulama Teması
 /// Koyu ve açık tema; sistem temasını izler (ThemeMode.system).
 abstract final class AppTheme {
-  /// Koyu tema (§3.4)
+  /// Koyu tema
   static ThemeData dark() {
     const colorScheme = ColorScheme(
       brightness: Brightness.dark,

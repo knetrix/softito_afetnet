@@ -2,7 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 
-/// Çağrıya atanan ekip ve sorumlu lider özeti (PROJECT_NEW.md §4 Kural 6).
+/// Çağrıya atanan ekip ve sorumlu lider özeti.
 @immutable
 class AssignedTeamInfo {
   const AssignedTeamInfo({

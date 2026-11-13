@@ -14,7 +14,7 @@ import '../../domain/assigned_team_info.dart';
 import '../../domain/help_request.dart';
 import '../../domain/help_request_draft.dart';
 
-/// Afetzede Aktif Yardım Çağrısı Kartı (PROJECT_NEW.md §3.1 A1, §4 Kural 4, Kural 6, Kural 7).
+/// Afetzede Aktif Yardım Çağrısı Kartı.
 class ActiveRequestCard extends StatelessWidget {
   const ActiveRequestCard({
     super.key,
@@ -221,7 +221,7 @@ class ActiveRequestCard extends StatelessWidget {
             ],
           ),
 
-          // Ekip Bilgisi (Kural 6)
+          // Ekip Bilgisi
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(12),
@@ -340,7 +340,7 @@ class ActiveRequestCard extends StatelessWidget {
             ),
           ],
 
-          // İptal Et Butonu (Kural 7: resolved/cancelled değilse)
+          // İptal Et Butonu (resolved/cancelled değilse)
           if (status != CaseStatus.resolved && status != CaseStatus.cancelled) ...[
             const SizedBox(height: 16),
             AppButton.danger(

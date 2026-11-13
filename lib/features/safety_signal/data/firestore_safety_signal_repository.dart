@@ -68,10 +68,10 @@ class FirestoreSafetySignalRepository implements SafetySignalRepository {
       },
     );
 
-    // Çevrimdışıyken set() tamamlanmaz; await edilmez (Kural 8).
+    // Çevrimdışıyken set() tamamlanmaz; await edilmez.
     // Yeni panik önceki "Ulaşıldı" kaydını siler; böylece handledBy yalnızca
     // bu sinyale aittir (dolu = ulaşıldı, boş = açık). Sahibi bu alanları
-    // yazamaz, yalnızca silebilir (§5.5).
+    // yazamaz, yalnızca silebilir.
     unawaited(
       ref
           .set(

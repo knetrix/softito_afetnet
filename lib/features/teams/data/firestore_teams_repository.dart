@@ -12,7 +12,7 @@ import '../domain/team.dart';
 import '../domain/teams_repository.dart';
 
 /// Ekipler (Y2) ve görev akışı Cloud Firestore uygulaması
-/// (PROJECT_NEW.md §4 Kural 6, §5.3).
+///.
 ///
 /// Bir görev adımındaki tüm yazımlar (`assignments`, `incidents`, bağlı açık
 /// `help_requests`, `teams`) tek bir atomik commit'tir. Transaction kullanılır:
@@ -92,7 +92,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
       if (incidentData == null || incidentData['isOpen'] != true) {
         throw const AssignmentException(AssignmentFailure.incidentClosed);
       }
-      // Kural 6: bir olayda aynı anda tek aktif görev.
+      // Bir olayda aynı anda tek aktif görev.
       if (incidentData['assignedTeamId'] != null) {
         throw const AssignmentException(
           AssignmentFailure.incidentAlreadyAssigned,
@@ -154,7 +154,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
       final requestSnaps = [for (final ref in linked) await tx.get(ref)];
 
       // Başka bir yetkili görevi bu arada ilerlettiyse yazım reddedilir;
-      // böylece adım atlanmaz ve geri gidilmez (Kural 6).
+      // böylece adım atlanmaz ve geri gidilmez.
       if (current.data()?['status'] != assignment.status.name) {
         throw const AssignmentException(AssignmentFailure.invalidTransition);
       }
@@ -195,7 +195,7 @@ class FirestoreTeamsRepository implements TeamsRepository {
     return [for (final doc in snap.docs) doc.reference];
   }
 
-  /// İptal edilmiş ve çözülmüş çağrılara dokunulmaz (Kural 7). `assignedTeamId`
+  /// İptal edilmiş ve çözülmüş çağrılara dokunulmaz. `assignedTeamId`
   /// her adımda yazılır: atamadan sonra olaya bağlanan çağrının kartında da
   /// ekip görünür.
   static void _updateOpenRequests(

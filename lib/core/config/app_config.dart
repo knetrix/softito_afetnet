@@ -3,12 +3,12 @@
 
 import 'dart:ui' show Locale;
 
-/// Uygulama genelindeki sabit ayarlar (PROJECT_NEW.md §6.1, §7).
+/// Uygulama genelindeki sabit ayarlar.
 abstract final class AppConfig {
   static const appName = 'AfetNet';
   static const packageName = 'com.softito.afetnet';
 
-  /// Hayati tehlikede aranacak numara (T15).
+  /// Hayati tehlikede aranacak numara.
   static const emergencyNumber = '112';
 
   // Harita (OpenStreetMap, API anahtarı gerekmez).
@@ -16,7 +16,7 @@ abstract final class AppConfig {
   static const osmUserAgentPackageName = packageName;
   static const osmAttribution = '© OpenStreetMap contributors';
 
-  // Yasal metinler (Firebase Hosting, `hosting/legal/<sayfa>-<tr|en>.html`, §7).
+  // Yasal metinler (Firebase Hosting, `hosting/legal/<sayfa>-<tr|en>.html`).
   static const _legalBaseUrl = 'https://afetnet-softito.web.app/legal';
   static const privacyPage = 'privacy';
   static const kvkkPage = 'kvkk';
@@ -32,9 +32,9 @@ abstract final class AppConfig {
   static const privacyVersion = '1.0';
   static const kvkkVersion = '1.0';
 
-  /// Bu sürede tamamlanmayan yazma çevrimdışı kabul edilir (Kural 4, 8).
+  /// Bu sürede tamamlanmayan yazma çevrimdışı kabul edilir.
   static const offlineTimeout = Duration(seconds: 10);
 
-  /// Kuyrukta çağrı varken gönderimin yeniden denenme aralığı (Kural 4, R8).
+  /// Kuyrukta çağrı varken gönderimin yeniden denenme aralığı.
   static const offlineQueueRetryInterval = Duration(seconds: 30);
 }

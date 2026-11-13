@@ -1,7 +1,7 @@
 // Çağrı, olay ve görevlerin alabileceği durumlar.
 // Akış: pending (beklemede) → assigned (atandı) → enRoute (yola çıktı) → onSite (olay yerinde) → resolved (çözüldü).
 
-/// AfetNet Çağrı, Görev ve Olay Durumları (PROJECT_NEW.md §5.2, §5.3, §4 Kural 6).
+/// AfetNet Çağrı, Görev ve Olay Durumları.
 ///
 /// Firestore `help_requests.status`, `incidents.status` ve `assignments.status`
 /// alanlarına `name` değeri olarak yazılır.

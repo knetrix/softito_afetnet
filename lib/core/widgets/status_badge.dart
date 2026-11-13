@@ -9,7 +9,7 @@ import '../theme/app_status_colors.dart';
 // Rozet türleri: özel metin, öncelik, afetzede rolü, yetkili rolü.
 enum _BadgeKind { custom, priority, citizen, official }
 
-/// AfetNet Durum ve Öncelik Rozeti (§3.4, §4 Kural 1, Y1, Y2, Y3)
+/// AfetNet Durum ve Öncelik Rozeti
 ///
 /// Öncelik ve rol rozetlerinin metni ARB'den, rengi temadan (`AppStatusColors`)
 /// `build` sırasında okunur; böylece dil ve tema değişince rozet de güncellenir.

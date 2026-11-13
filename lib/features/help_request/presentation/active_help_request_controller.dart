@@ -13,7 +13,7 @@ import '../domain/help_request_draft.dart';
 import '../domain/help_request_repository.dart';
 import '../domain/incident_progress.dart';
 
-/// Afetzede Aktif Yardım Çağrısı Kontrolcüsü (PROJECT_NEW.md §4 Kural 4, Kural 6, Kural 7, A1).
+/// Afetzede Aktif Yardım Çağrısı Kontrolcüsü.
 class ActiveHelpRequestController extends ChangeNotifier {
   ActiveHelpRequestController({
     required HelpRequestRepository repository,
@@ -49,7 +49,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
   // İptal işlemi sürüyor mu.
   bool get isCancelling => _isCancelling;
 
-  /// Kural 4: Henüz Firestore'a iletilmemiş, yerel Hive kuyruğunda bekleyen çağrı var mı?
+  /// Henüz Firestore'a iletilmemiş, yerel Hive kuyruğunda bekleyen çağrı var mı?
   /// Başka aktif çağrı olsa da bekleyen çağrı kartta öncelikli gösterilir;
   /// yoksa afetzede yeni çağrısının gönderilmediğini göremez.
   bool get hasPendingOffline => _offlineQueue.hasPendingItems;
@@ -88,7 +88,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
   }
 
   /// Bekleyen çağrının olayını dinler: ekip atandıktan sonra birleşen çağrı
-  /// yetkili görevi ilerletene kadar `pending` kalır (§5.5); bu arada kart
+  /// yetkili görevi ilerletene kadar `pending` kalır; bu arada kart
   /// olaydaki ekibi ve görev durumunu gösterir.
   void _watchIncident(HelpRequest? req) {
     final incidentId = req != null && req.isPending ? req.incidentId : null;
@@ -148,7 +148,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     if (!_disposed) notifyListeners();
   }
 
-  /// Kural 7: Afetzede çağrısını iptal edebilir (`status: cancelled`).
+  /// Afetzede çağrısını iptal edebilir (`status: cancelled`).
   Future<bool> cancel(String requestId) async {
     if (_isCancelling) return false;
     _isCancelling = true;

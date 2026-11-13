@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 
-/// Yetkili alt menüsü: Canlı Akış / Ekipler / Lojistik / Profil (§3.1, T10).
+/// Yetkili alt menüsü: Canlı Akış / Ekipler / Lojistik / Profil.
 class OfficialShell extends StatelessWidget {
   const OfficialShell({super.key, required this.shell});
 

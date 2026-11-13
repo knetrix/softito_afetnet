@@ -10,7 +10,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../screens/splash_onboarding_screen.dart';
 
-/// O2 — Onboarding (§3.1, §3.3).
+/// O2 — Onboarding.
 /// 2 sayfa (Sivil Kullanıcı ve Saha Yönetimi), 112 resmi kurum uyarısı.
 /// Atla veya Başla tetiklendiğinde `completeOnboarding()` çalışır ve kullanıcı doğrudan Giriş ekranına geçer.
 class OnboardingScreen extends StatelessWidget {
