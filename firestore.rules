@@ -1,0 +1,462 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -----------------------------
+    // Ortak yetki kontrolleri
+    // -----------------------------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function userPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    function isOfficial() {
+      return signedIn()
+        && exists(userPath(request.auth.uid))
+        && get(userPath(request.auth.uid)).data.role == 'official'
+        && get(userPath(request.auth.uid)).data.isVerified == true;
+    }
+
+    function changedOnly(fields) {
+      return request.resource.data
+        .diff(resource.data)
+        .affectedKeys()
+        .hasOnly(fields);
+    }
+
+    function validPriority(priority, type) {
+      return (
+        (type in ['debris', 'medical'] && priority == 1)
+        || (type in ['shelter', 'heating', 'babyFood']
+            && priority == 2)
+        || (type in ['water', 'other'] && priority == 3)
+      );
+    }
+
+    function validCaseStatus(status) {
+      return status in [
+        'pending',
+        'assigned',
+        'enRoute',
+        'onSite',
+        'resolved',
+        'cancelled'
+      ];
+    }
+
+    function nextAssignmentStatus(oldStatus, newStatus) {
+      return (
+        (oldStatus == 'assigned' && newStatus == 'enRoute')
+        || (oldStatus == 'enRoute' && newStatus == 'onSite')
+        || (oldStatus == 'onSite' && newStatus == 'resolved')
+      );
+    }
+
+    function validOfficialCaseTransition(oldStatus, newStatus) {
+      return (
+        (oldStatus == 'pending' &&
+          newStatus in ['assigned', 'resolved'])
+        || (oldStatus == 'assigned' && newStatus == 'enRoute')
+        || (oldStatus == 'enRoute' && newStatus == 'onSite')
+        || (oldStatus == 'onSite' && newStatus == 'resolved')
+      );
+    }
+
+    // Ekip atandıktan sonra olaya birleşen çağrı `pending` açılır ve görevin
+    // bir sonraki adımında olayın durumuna taşınır (Kural 6). Yalnızca
+    // çağrılar için; olayın kendi durumu adım adım ilerler.
+    function validOfficialRequestTransition(oldStatus, newStatus) {
+      return validOfficialCaseTransition(oldStatus, newStatus)
+        || (oldStatus == 'pending' && newStatus in ['enRoute', 'onSite']);
+    }
+
+    // -----------------------------
+    // 1. Kullanıcılar
+    // -----------------------------
+match /users/{uid} {
+  // Kullanıcı kendi belgesini okuyabilir.
+  // Onaylı koordinatörler görev gereği kullanıcı bilgilerine erişebilir.
+  allow get: if isOwner(uid) || isOfficial();
+
+  // Toplu kullanıcı listeleme yalnızca onaylı koordinatörlere açık.
+  allow list: if isOfficial();
+
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasAll([
+          'fullName', 'role', 'isVerified',
+          'notificationsOptIn', 'consents', 'createdAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'fullName', 'role', 'isVerified',
+          'notificationsOptIn', 'consents', 'createdAt'
+        ])
+        && request.resource.data.fullName is string
+        && request.resource.data.role in ['citizen', 'official']
+        && request.resource.data.isVerified == false
+        && request.resource.data.notificationsOptIn is bool;
+
+      // Rol ve yetkili onayı istemciden değiştirilemez.
+      allow update: if isOwner(uid)
+        && changedOnly([
+          'fullName',
+          'notificationsOptIn'
+        ])
+        && request.resource.data.fullName is string
+        && request.resource.data.notificationsOptIn is bool;
+
+      allow delete: if isOwner(uid);
+
+      match /private/{privateId} {
+        allow read: if privateId == 'contact'
+          && (isOwner(uid) || isOfficial());
+
+        allow create, update, delete: if privateId == 'contact'
+          && isOwner(uid);
+      }
+    }
+
+    // -----------------------------
+    // 2. Panik sinyalleri
+    // -----------------------------
+
+    match /safety_signals/{uid} {
+      allow read: if isOwner(uid) || isOfficial();
+
+      allow create: if isOwner(uid)
+        && request.resource.data.state in ['danger', 'safe']
+        && request.resource.data.keys().hasAll([
+          'state', 'location', 'geohash', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'state', 'location', 'geohash', 'updatedAt'
+        ])
+        && request.resource.data.location is latlng
+        && request.resource.data.geohash is string;
+
+      // Sahibi `handledBy`/`handledAt` yazamaz, yalnızca silebilir: yeni
+      // panik önceki "Ulaşıldı" kaydını temizler (Kural 8, §5.5).
+      allow update: if (
+        isOwner(uid)
+        && changedOnly([
+          'state', 'location', 'geohash', 'updatedAt',
+          'handledBy', 'handledAt'
+        ])
+        && !request.resource.data.diff(resource.data).addedKeys()
+          .hasAny(['handledBy', 'handledAt'])
+        && !request.resource.data.diff(resource.data).changedKeys()
+          .hasAny(['handledBy', 'handledAt'])
+        && request.resource.data.state in ['danger', 'safe']
+        && request.resource.data.location is latlng
+      ) || (
+        isOfficial()
+        && changedOnly(['handledBy', 'handledAt'])
+        && request.resource.data.handledBy == request.auth.uid
+        && request.resource.data.handledAt is timestamp
+      );
+
+      allow delete: if isOwner(uid);
+    }
+
+    // -----------------------------
+    // 3. Yardım çağrıları
+    // -----------------------------
+
+    match /help_requests/{requestId} {
+      // Gönderim Transaction'ı çift kaydı önlemek için henüz var olmayan
+      // çağrı belgesini okur (Kural 4); belge yokken okuma serbesttir.
+      allow read: if signedIn()
+        && (
+          resource == null
+          || resource.data.createdBy == request.auth.uid
+          || isOfficial()
+        );
+
+      allow create: if signedIn()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && validPriority(
+          request.resource.data.priority,
+          request.resource.data.type
+        )
+        && request.resource.data.location is latlng
+        && request.resource.data.geohash is string
+        && request.resource.data.geohash.size() == 8
+        && request.resource.data.keys().hasAll([
+          'createdBy', 'type', 'priority',
+          'status', 'location', 'geohash', 'createdAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'createdBy', 'type', 'priority',
+          'status', 'peopleCount', 'addressText',
+          'description', 'location', 'geohash',
+          'photoUrls', 'incidentId', 'assignedTeamId',
+          'createdOffline', 'createdAt',
+          'updatedAt', 'resolvedAt'
+        ])
+        && request.resource.data.get('photoUrls', []).size() == 0
+        && request.resource.data.get('addressText', '').size() <= 300
+        && request.resource.data.get('description', '').size() <= 500;
+
+      allow update: if (
+        signedIn()
+        && resource.data.createdBy == request.auth.uid
+        && resource.data.status in [
+          'pending', 'assigned', 'enRoute', 'onSite'
+        ]
+        && changedOnly(['status', 'updatedAt'])
+        && request.resource.data.status == 'cancelled'
+      ) || (
+        isOfficial()
+        && resource.data.status != 'cancelled'
+        && validOfficialRequestTransition(
+          resource.data.status,
+          request.resource.data.status
+        )
+        && changedOnly([
+          'status', 'assignedTeamId',
+          'updatedAt', 'resolvedAt'
+        ])
+      );
+
+      // Operasyonel kayıtlar silinmez.
+      allow delete: if false;
+
+      match /private/{privateId} {
+        function requestOwner() {
+          return signedIn()
+            && get(
+              /databases/$(database)/documents/help_requests/$(requestId)
+            ).data.createdBy == request.auth.uid;
+        }
+
+        allow read: if privateId == 'contact'
+          && (requestOwner() || isOfficial());
+
+        allow create: if privateId == 'contact'
+          && signedIn()
+          && getAfter(
+            /databases/$(database)/documents/help_requests/$(requestId)
+          ).data.createdBy == request.auth.uid;
+
+        allow delete: if privateId == 'contact'
+          && requestOwner();
+
+        allow update: if false;
+      }
+    }
+
+    // -----------------------------
+    // 4. Birleştirilmiş olaylar
+    // -----------------------------
+
+    match /incidents/{incidentId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && request.resource.data.requestCount == 1
+        && request.resource.data.status == 'pending'
+        && request.resource.data.isOpen == true
+        && request.resource.data.location is latlng
+        && request.resource.data.geohash is string
+        && request.resource.data.geohash.size() == 8
+        && validPriority(
+          request.resource.data.priority,
+          request.resource.data.type
+        )
+        && request.resource.data.keys().hasOnly([
+          'location', 'geohash', 'type', 'priority',
+          'requestCount', 'primaryRequestId',
+          'status', 'isOpen', 'assignedTeamId',
+          'createdAt', 'updatedAt', 'resolvedAt'
+        ]);
+
+      allow update: if (
+        signedIn()
+        && resource.data.isOpen == true
+        && changedOnly([
+          'requestCount', 'priority', 'updatedAt'
+        ])
+        && request.resource.data.requestCount ==
+          resource.data.requestCount + 1
+        && request.resource.data.priority is int
+        && request.resource.data.priority >= 1
+        && request.resource.data.priority <= resource.data.priority
+      ) || (
+        isOfficial()
+        && resource.data.status != 'resolved'
+        && validOfficialCaseTransition(
+          resource.data.status,
+          request.resource.data.status
+        )
+        && changedOnly([
+          'status', 'isOpen', 'assignedTeamId',
+          'updatedAt', 'resolvedAt'
+        ])
+        && (
+          request.resource.data.status != 'resolved'
+          || request.resource.data.isOpen == false
+        )
+      );
+
+      allow delete: if false;
+    }
+
+    // -----------------------------
+    // 5. Ekipler
+    // -----------------------------
+
+    match /teams/{teamId} {
+      allow read: if signedIn();
+
+      allow create: if isOfficial()
+        && request.resource.data.status in [
+          'available', 'onDuty'
+        ];
+
+      allow update: if isOfficial()
+        && request.resource.data.status in [
+          'available', 'onDuty'
+        ];
+
+      allow delete: if isOfficial();
+    }
+
+    // -----------------------------
+    // 6. Ekip görevleri
+    // -----------------------------
+
+    match /assignments/{assignmentId} {
+      allow read: if isOfficial();
+
+      allow create: if isOfficial()
+        && request.resource.data.assignedBy == request.auth.uid
+        && request.resource.data.status == 'assigned';
+
+      allow update: if isOfficial()
+        && changedOnly(['status', 'updatedAt', 'updatedBy'])
+        && request.resource.data.updatedBy == request.auth.uid
+        && nextAssignmentStatus(
+          resource.data.status,
+          request.resource.data.status
+        );
+
+      allow delete: if false;
+    }
+
+    // -----------------------------
+    // 7. Depolar ve stok yönetimi
+    // -----------------------------
+
+    match /warehouses/{warehouseId} {
+      allow read: if isOfficial();
+      allow create, update, delete: if isOfficial();
+
+      match /inventory/{itemId} {
+        allow read: if isOfficial();
+
+        allow create: if isOfficial()
+          && request.resource.data.quantity is int
+          && request.resource.data.quantity >= 0
+          && request.resource.data.targetLevel is int
+          && request.resource.data.targetLevel > 0
+          && request.resource.data.criticalLevel is int
+          && request.resource.data.criticalLevel >= 0;
+
+        allow update: if isOfficial()
+          && request.resource.data.quantity is int
+          && request.resource.data.quantity >= 0
+          && request.resource.data.targetLevel is int
+          && request.resource.data.targetLevel > 0
+          && request.resource.data.criticalLevel is int
+          && request.resource.data.criticalLevel >= 0;
+
+        allow delete: if isOfficial();
+      }
+
+      match /movements/{movementId} {
+        allow read: if isOfficial();
+
+        allow create: if isOfficial()
+          && request.resource.data.createdBy == request.auth.uid
+          && request.resource.data.type in ['in', 'out']
+          && request.resource.data.itemId is string
+          && request.resource.data.quantity is int
+          && request.resource.data.quantity > 0
+          && request.resource.data.createdAt is timestamp;
+
+        allow update, delete: if false;
+      }
+    }
+
+    // -----------------------------
+    // 8. Toplanma noktaları
+    // -----------------------------
+
+    match /assembly_points/{pointId} {
+      allow read: if signedIn();
+
+      allow create, update: if isOfficial()
+        && request.resource.data.capacity is int
+        && request.resource.data.capacity >= 0
+        && request.resource.data.currentCount is int
+        && request.resource.data.currentCount >= 0
+        && request.resource.data.currentCount <=
+          request.resource.data.capacity;
+
+      allow delete: if isOfficial();
+    }
+
+    // -----------------------------
+    // 9. Tahliye anonsları
+    // -----------------------------
+
+    match /broadcasts/{broadcastId} {
+      allow read: if signedIn();
+
+      allow create: if isOfficial()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.type in [
+          'evacuation', 'aftershock'
+        ]
+        && request.resource.data.center is latlng
+        && request.resource.data.radiusMeters is number
+        && request.resource.data.radiusMeters >= 100
+        && request.resource.data.radiusMeters <= 20000
+        && request.resource.data.title is string
+        && request.resource.data.body is string;
+
+      allow update, delete: if false;
+    }
+
+    // -----------------------------
+    // 10. MVP dışındaki koleksiyonlar
+    // -----------------------------
+
+    match /volunteers/{uid} {
+      allow read, write: if false;
+    }
+
+    match /shifts/{shiftId} {
+      allow read, write: if false;
+    }
+
+    match /missing_persons/{personId} {
+      allow read, write: if false;
+    }
+
+    // Tanımlanmamış bütün yollar kapalı.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

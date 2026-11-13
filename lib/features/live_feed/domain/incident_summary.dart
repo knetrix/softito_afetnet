@@ -1,0 +1,61 @@
+// Canlı Akış kartında (ad) ve Detay panelinde (telefon, tıbbi özet, bağlı çağrılar) gösterilen olay bilgileri.
+// Bu bilgiler gizli belgelerden yalnızca onaylı yetkili tarafından okunabilir.
+
+import 'package:flutter/foundation.dart';
+
+/// Canlı Akış kartında gösterilen, olayın ilk çağrısından (`primaryRequestId`)
+/// okunan bilgiler.
+///
+/// Kartta kişisel veri olarak yalnızca ad bulunur; telefon ve tıbbi özet
+/// yalnızca Detay sheet'inde okunur ([IncidentDetail]).
+@immutable
+class IncidentSummary {
+  const IncidentSummary({
+    this.fullName,
+    this.peopleCount,
+    this.addressText,
+    this.description,
+  });
+
+  final String? fullName;
+  final int? peopleCount;
+  final String? addressText;
+  final String? description;
+}
+
+/// Y1 Detay sheet'i: çağrı sahibinin telefonu ve tıbbi özeti.
+@immutable
+class IncidentDetail {
+  const IncidentDetail({
+    this.fullName,
+    this.phone,
+    this.bloodType,
+    this.medications,
+    this.conditions,
+    this.birthYear,
+    this.weightKg,
+    this.cancelledCalls = 0,
+  });
+
+  final String? fullName;
+  final String? phone;
+  final String? bloodType;
+  final String? medications;
+  final String? conditions;
+  final int? birthYear;
+  final int? weightKg;
+
+  /// Olaya bağlı çağrılardan afetzedenin iptal ettikleri. `requestCount`
+  /// birleşen tüm çağrıları sayar; Detay'da iptaller ayrıca yazılır.
+  final int cancelledCalls;
+
+  // Gösterilecek tıbbi bilgi var mı.
+  bool get hasMedical =>
+      [
+        bloodType,
+        medications,
+        conditions,
+      ].any((v) => v != null && v.isNotEmpty) ||
+      birthYear != null ||
+      weightKg != null;
+}

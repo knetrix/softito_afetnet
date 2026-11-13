@@ -1,0 +1,2306 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_en.dart';
+import 'app_localizations_tr.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'l10n/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('tr'),
+  ];
+
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AfetNet'**
+  String get appTitle;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @genericError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred, please try again.'**
+  String get genericError;
+
+  /// No description provided for @emptyList.
+  ///
+  /// In en, this message translates to:
+  /// **'No records found.'**
+  String get emptyList;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Detail'**
+  String get detail;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// No description provided for @officialSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out of System'**
+  String get officialSignOut;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageLabel;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// No description provided for @kvkkConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Clarification Text'**
+  String get kvkkConsent;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navAssembly.
+  ///
+  /// In en, this message translates to:
+  /// **'Assembly'**
+  String get navAssembly;
+
+  /// No description provided for @navWhistle.
+  ///
+  /// In en, this message translates to:
+  /// **'Whistle'**
+  String get navWhistle;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @navLiveFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Feed'**
+  String get navLiveFeed;
+
+  /// No description provided for @navTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get navTeams;
+
+  /// No description provided for @navLogistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics'**
+  String get navLogistics;
+
+  /// No description provided for @notOfficialDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Not an official agency app · In emergency call '**
+  String get notOfficialDisclaimer;
+
+  /// No description provided for @emergencyCall.
+  ///
+  /// In en, this message translates to:
+  /// **'112'**
+  String get emergencyCall;
+
+  /// No description provided for @roleCitizen.
+  ///
+  /// In en, this message translates to:
+  /// **'Civilian User (Survivor)'**
+  String get roleCitizen;
+
+  /// No description provided for @roleOfficial.
+  ///
+  /// In en, this message translates to:
+  /// **'Field Coordinator (Official)'**
+  String get roleOfficial;
+
+  /// No description provided for @validationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get validationRequired;
+
+  /// No description provided for @validationInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get validationInvalidEmail;
+
+  /// No description provided for @validationInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter phone as +90 5XX XXX XX XX'**
+  String get validationInvalidPhone;
+
+  /// No description provided for @validationPasswordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get validationPasswordTooShort;
+
+  /// No description provided for @validationPasswordNoUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least 1 uppercase letter'**
+  String get validationPasswordNoUppercase;
+
+  /// No description provided for @validationPasswordNoDigit.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least 1 digit'**
+  String get validationPasswordNoDigit;
+
+  /// No description provided for @validationPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get validationPasswordMismatch;
+
+  /// No description provided for @authFailureInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password'**
+  String get authFailureInvalidCredentials;
+
+  /// No description provided for @authFailureEmailAlreadyInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email'**
+  String get authFailureEmailAlreadyInUse;
+
+  /// No description provided for @authFailureWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak'**
+  String get authFailureWeakPassword;
+
+  /// No description provided for @authFailureRoleMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected login type does not match this account'**
+  String get authFailureRoleMismatch;
+
+  /// No description provided for @authFailurePendingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is pending administrator approval'**
+  String get authFailurePendingApproval;
+
+  /// No description provided for @authFailureProfileMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Account profile not found'**
+  String get authFailureProfileMissing;
+
+  /// No description provided for @authFailureNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection, please try again'**
+  String get authFailureNetwork;
+
+  /// No description provided for @authFailureTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts, please try again later'**
+  String get authFailureTooManyRequests;
+
+  /// No description provided for @authFailureProviderDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Email sign-in is currently disabled'**
+  String get authFailureProviderDisabled;
+
+  /// No description provided for @authFailureUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred, please try again'**
+  String get authFailureUnknown;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get loginTitle;
+
+  /// No description provided for @loginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmail;
+
+  /// No description provided for @loginPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPassword;
+
+  /// No description provided for @loginType.
+  ///
+  /// In en, this message translates to:
+  /// **'Login Type'**
+  String get loginType;
+
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @loginForgotPasswordPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address for password reset'**
+  String get loginForgotPasswordPrompt;
+
+  /// No description provided for @loginForgotPasswordSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset link sent to your email'**
+  String get loginForgotPasswordSent;
+
+  /// No description provided for @loginSignUpPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Sign Up'**
+  String get loginSignUpPrompt;
+
+  /// No description provided for @loginSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get loginSubmit;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get registerTitle;
+
+  /// No description provided for @registerAccountType.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Type'**
+  String get registerAccountType;
+
+  /// No description provided for @registerFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get registerFullName;
+
+  /// No description provided for @registerEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get registerEmail;
+
+  /// No description provided for @registerPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get registerPhone;
+
+  /// No description provided for @registerPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get registerPassword;
+
+  /// No description provided for @registerPasswordAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get registerPasswordAgain;
+
+  /// No description provided for @registerNotificationsOptIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive Critical Disaster Alert Notifications'**
+  String get registerNotificationsOptIn;
+
+  /// No description provided for @registerLegalCheckbox.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and accept the Privacy Policy and Clarification Text.'**
+  String get registerLegalCheckbox;
+
+  /// No description provided for @registerLegalError.
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept the legal terms to proceed'**
+  String get registerLegalError;
+
+  /// No description provided for @registerSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get registerSubmit;
+
+  /// No description provided for @registerOfficialPendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Received'**
+  String get registerOfficialPendingTitle;
+
+  /// No description provided for @registerOfficialPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is pending administrator approval. You can log in once approved.'**
+  String get registerOfficialPendingMessage;
+
+  /// No description provided for @passwordStrengthWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get passwordStrengthWeak;
+
+  /// No description provided for @passwordStrengthMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get passwordStrengthMedium;
+
+  /// No description provided for @passwordStrengthStrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong'**
+  String get passwordStrengthStrong;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingStart;
+
+  /// No description provided for @onboardingCivilianBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'CIVILIAN USER'**
+  String get onboardingCivilianBadge;
+
+  /// No description provided for @onboardingCivilianTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe with a Single Touch'**
+  String get onboardingCivilianTitle;
+
+  /// No description provided for @onboardingCivilianDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Send emergency calls even without internet, use the offline whistle, and reach the nearest safe assembly area.'**
+  String get onboardingCivilianDesc;
+
+  /// No description provided for @onboardingOfficialBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'FIELD MANAGEMENT'**
+  String get onboardingOfficialBadge;
+
+  /// No description provided for @onboardingOfficialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Crisis Live'**
+  String get onboardingOfficialTitle;
+
+  /// No description provided for @onboardingOfficialDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Track calls live on the map, dispatch search and rescue teams, and manage field depot stocks in real-time.'**
+  String get onboardingOfficialDesc;
+
+  /// No description provided for @onboardingStockPill.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Field Inventory'**
+  String get onboardingStockPill;
+
+  /// No description provided for @onboardingTeamPill.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Tracking'**
+  String get onboardingTeamPill;
+
+  /// No description provided for @onboardingAutoPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic Prioritization'**
+  String get onboardingAutoPriority;
+
+  /// No description provided for @onboardingAutoPriorityDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Rule-based instant triage & emergency dispatch'**
+  String get onboardingAutoPriorityDesc;
+
+  /// No description provided for @splashSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Crisis Management Network'**
+  String get splashSubtitle;
+
+  /// No description provided for @splashReady.
+  ///
+  /// In en, this message translates to:
+  /// **'AfetNet protocol ready.'**
+  String get splashReady;
+
+  /// No description provided for @profileCivilianTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Survivor Profile'**
+  String get profileCivilianTitle;
+
+  /// No description provided for @profileOfficialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinator Profile'**
+  String get profileOfficialTitle;
+
+  /// No description provided for @profileMedicalCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical & Health Identity'**
+  String get profileMedicalCardTitle;
+
+  /// No description provided for @profileBloodType.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood Type'**
+  String get profileBloodType;
+
+  /// No description provided for @profileMedications.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Medications'**
+  String get profileMedications;
+
+  /// No description provided for @profileConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronic Conditions / Allergies'**
+  String get profileConditions;
+
+  /// No description provided for @profilePhysicalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Information'**
+  String get profilePhysicalInfo;
+
+  /// No description provided for @profileAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get profileAge;
+
+  /// No description provided for @profileWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get profileWeight;
+
+  /// No description provided for @profileEmergencyContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Emergency Contact'**
+  String get profileEmergencyContact;
+
+  /// No description provided for @profileRelation.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get profileRelation;
+
+  /// No description provided for @profileAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered Residence Address'**
+  String get profileAddress;
+
+  /// No description provided for @profileUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit Name'**
+  String get profileUnit;
+
+  /// No description provided for @profileRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned Region'**
+  String get profileRegion;
+
+  /// No description provided for @profileTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned Team'**
+  String get profileTeam;
+
+  /// No description provided for @profileMedicalConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'I give explicit consent for my medical data to be viewed by rescue teams during emergencies.'**
+  String get profileMedicalConsent;
+
+  /// No description provided for @profileMedicalConsentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Explicit consent is required to save medical data.'**
+  String get profileMedicalConsentRequired;
+
+  /// No description provided for @profileUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully.'**
+  String get profileUpdated;
+
+  /// No description provided for @deleteAccountConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account?'**
+  String get deleteAccountConfirmTitle;
+
+  /// No description provided for @deleteAccountConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone. Your personal and medical data will be permanently deleted.'**
+  String get deleteAccountConfirmMessage;
+
+  /// No description provided for @signOutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOutConfirmTitle;
+
+  /// No description provided for @signOutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to sign out?'**
+  String get signOutConfirmMessage;
+
+  /// No description provided for @registerPasswordHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters, 1 uppercase letter, 1 digit'**
+  String get registerPasswordHelper;
+
+  /// No description provided for @registerNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I want to receive evacuation and aftershock alerts'**
+  String get registerNotificationsSubtitle;
+
+  /// No description provided for @roleBadgeCitizen.
+  ///
+  /// In en, this message translates to:
+  /// **'CIVILIAN USER'**
+  String get roleBadgeCitizen;
+
+  /// No description provided for @roleBadgeOfficial.
+  ///
+  /// In en, this message translates to:
+  /// **'FIELD COORDINATOR'**
+  String get roleBadgeOfficial;
+
+  /// No description provided for @priorityCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'CRITICAL'**
+  String get priorityCritical;
+
+  /// No description provided for @priorityUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'URGENT'**
+  String get priorityUrgent;
+
+  /// No description provided for @priorityNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'NORMAL'**
+  String get priorityNormal;
+
+  /// No description provided for @profileNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get profileNotSpecified;
+
+  /// No description provided for @profileNotAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get profileNotAssigned;
+
+  /// No description provided for @profileEmergencyContactEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No emergency contact added yet.'**
+  String get profileEmergencyContactEmpty;
+
+  /// No description provided for @profileAddressEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No registered residence address.'**
+  String get profileAddressEmpty;
+
+  /// No description provided for @profileContactName.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact\'s Full Name'**
+  String get profileContactName;
+
+  /// No description provided for @profileRelationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mother, Spouse, Sibling'**
+  String get profileRelationHint;
+
+  /// No description provided for @profileMedicationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Insulin, blood pressure medication'**
+  String get profileMedicationsHint;
+
+  /// No description provided for @profileConditionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Asthma, penicillin allergy'**
+  String get profileConditionsHint;
+
+  /// No description provided for @profileBirthYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Year'**
+  String get profileBirthYear;
+
+  /// No description provided for @profileBirthYearHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 1995'**
+  String get profileBirthYearHint;
+
+  /// No description provided for @profileWeightHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 72'**
+  String get profileWeightHint;
+
+  /// No description provided for @profileAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Province, district, neighbourhood, street, building and floor...'**
+  String get profileAddressHint;
+
+  /// No description provided for @profileCoordinationInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordination Details'**
+  String get profileCoordinationInfo;
+
+  /// No description provided for @deleteAccountConfirmMessageOfficial.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone. The coordinator account will be permanently deleted.'**
+  String get deleteAccountConfirmMessageOfficial;
+
+  /// No description provided for @deleteAccountPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Your Password'**
+  String get deleteAccountPasswordTitle;
+
+  /// No description provided for @deleteAccountPasswordMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'For your security, enter your password before deleting the account.'**
+  String get deleteAccountPasswordMessage;
+
+  /// No description provided for @deleteAccountFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The account could not be deleted, please try again.'**
+  String get deleteAccountFailed;
+
+  /// No description provided for @debugToolsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo & Test Tools (Debug)'**
+  String get debugToolsTitle;
+
+  /// No description provided for @demoReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Demo Data'**
+  String get demoReset;
+
+  /// No description provided for @demoResetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Data'**
+  String get demoResetTitle;
+
+  /// No description provided for @onboardingActive.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE'**
+  String get onboardingActive;
+
+  /// No description provided for @onboardingRadarTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'TEAM #04 1.2km'**
+  String get onboardingRadarTeam;
+
+  /// No description provided for @onboardingRadarDepot.
+  ///
+  /// In en, this message translates to:
+  /// **'DEPOT 94% L-4'**
+  String get onboardingRadarDepot;
+
+  /// No description provided for @validationInvalidValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid value'**
+  String get validationInvalidValue;
+
+  /// No description provided for @locationFetching.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting location...'**
+  String get locationFetching;
+
+  /// No description provided for @locationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable — Tap to refresh'**
+  String get locationUnavailable;
+
+  /// No description provided for @panicButtonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PANIC'**
+  String get panicButtonTitle;
+
+  /// No description provided for @panicButtonSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'IN DANGER'**
+  String get panicButtonSubtitle;
+
+  /// No description provided for @panicSafeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'I AM SAFE'**
+  String get panicSafeButton;
+
+  /// No description provided for @panicSafeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off signal'**
+  String get panicSafeSubtitle;
+
+  /// No description provided for @homePanicHoldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for 2 seconds to send panic signal'**
+  String get homePanicHoldHint;
+
+  /// No description provided for @homePanicActiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your panic signal is active. Tap above if you are safe.'**
+  String get homePanicActiveHint;
+
+  /// No description provided for @panicStatusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered to center'**
+  String get panicStatusDelivered;
+
+  /// No description provided for @panicStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to send'**
+  String get panicStatusPending;
+
+  /// No description provided for @panicOfflineSmsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Signal'**
+  String get panicOfflineSmsTitle;
+
+  /// No description provided for @panicOfflineSmsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection could not be verified within 10 seconds. Your signal is queued and will send when online. Would you like to notify your emergency contact via SMS?'**
+  String get panicOfflineSmsMessage;
+
+  /// No description provided for @panicOfflineSmsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify via SMS'**
+  String get panicOfflineSmsAction;
+
+  /// No description provided for @panicSmsBodyWithLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'EMERGENCY (AfetNet): I am in danger and need help. My location: {locationUrl}'**
+  String panicSmsBodyWithLocation(String locationUrl);
+
+  /// No description provided for @panicSmsBodyNoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'EMERGENCY (AfetNet): I am in danger and need help. Location could not be determined.'**
+  String get panicSmsBodyNoLocation;
+
+  /// No description provided for @panicNoEmergencyContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Emergency Contact'**
+  String get panicNoEmergencyContactTitle;
+
+  /// No description provided for @panicNoEmergencyContactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No registered emergency contact number found. You can add one from the Profile tab.'**
+  String get panicNoEmergencyContactMessage;
+
+  /// No description provided for @panicSmsOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the SMS app.'**
+  String get panicSmsOpenFailed;
+
+  /// No description provided for @panicLocationFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Unavailable'**
+  String get panicLocationFailedTitle;
+
+  /// No description provided for @panicLocationFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send panic signal because location is unavailable. You can check location permission, sound the offline whistle, or send an SMS.'**
+  String get panicLocationFailedMessage;
+
+  /// No description provided for @panicOpenWhistle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Whistle'**
+  String get panicOpenWhistle;
+
+  /// No description provided for @panicSafeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your status has been updated to safe.'**
+  String get panicSafeSuccess;
+
+  /// No description provided for @homeAddHelpRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'ADD HELP REQUEST'**
+  String get homeAddHelpRequest;
+
+  /// No description provided for @homeHelpRequestPendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Request'**
+  String get homeHelpRequestPendingTitle;
+
+  /// No description provided for @homeHelpRequestPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The detailed help request form will be added in step G4.'**
+  String get homeHelpRequestPendingMessage;
+
+  /// No description provided for @homeActiveRequestEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No active help request'**
+  String get homeActiveRequestEmptyTitle;
+
+  /// No description provided for @homeActiveRequestEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can create a help request using the button below when needed.'**
+  String get homeActiveRequestEmptySubtitle;
+
+  /// No description provided for @whistleIdleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'WHISTLE'**
+  String get whistleIdleLabel;
+
+  /// No description provided for @whistleIdleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'High-Volume Siren'**
+  String get whistleIdleSubtitle;
+
+  /// No description provided for @whistlePlayingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'PLAYING'**
+  String get whistlePlayingLabel;
+
+  /// No description provided for @whistlePlayingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Siren active'**
+  String get whistlePlayingSubtitle;
+
+  /// No description provided for @whistleTapToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'TAP TO START'**
+  String get whistleTapToStart;
+
+  /// No description provided for @whistleTapToStop.
+  ///
+  /// In en, this message translates to:
+  /// **'TAP AGAIN TO STOP'**
+  String get whistleTapToStop;
+
+  /// No description provided for @whistleOfflineNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Works completely offline.'**
+  String get whistleOfflineNote;
+
+  /// Android notification channel name shown in system settings
+  ///
+  /// In en, this message translates to:
+  /// **'Critical alerts'**
+  String get notificationChannelName;
+
+  /// No description provided for @notificationChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency, evacuation and critical stock notifications'**
+  String get notificationChannelDescription;
+
+  /// No description provided for @helpTypeDebris.
+  ///
+  /// In en, this message translates to:
+  /// **'Trapped'**
+  String get helpTypeDebris;
+
+  /// No description provided for @helpTypeMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get helpTypeMedical;
+
+  /// No description provided for @helpTypeShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter'**
+  String get helpTypeShelter;
+
+  /// No description provided for @helpTypeHeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Heating'**
+  String get helpTypeHeating;
+
+  /// No description provided for @helpTypeBabyFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Baby Food'**
+  String get helpTypeBabyFood;
+
+  /// No description provided for @helpTypeWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get helpTypeWater;
+
+  /// No description provided for @helpTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get helpTypeOther;
+
+  /// No description provided for @helpRequestSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Help Request'**
+  String get helpRequestSheetTitle;
+
+  /// No description provided for @helpRequestTypeSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Need Type'**
+  String get helpRequestTypeSection;
+
+  /// No description provided for @helpRequestPriorityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority Level'**
+  String get helpRequestPriorityLabel;
+
+  /// No description provided for @helpRequestPeopleCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of People Affected'**
+  String get helpRequestPeopleCount;
+
+  /// No description provided for @helpRequestAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address / Description'**
+  String get helpRequestAddress;
+
+  /// No description provided for @helpRequestAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Building no, floor, apt, or landmark description...'**
+  String get helpRequestAddressHint;
+
+  /// No description provided for @helpRequestDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Situation Description'**
+  String get helpRequestDescription;
+
+  /// No description provided for @helpRequestDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Briefly describe your situation and urgency...'**
+  String get helpRequestDescriptionHint;
+
+  /// No description provided for @helpRequestSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Help Request'**
+  String get helpRequestSubmit;
+
+  /// No description provided for @helpRequestSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Help request received.'**
+  String get helpRequestSubmitted;
+
+  /// No description provided for @helpRequestMinPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of people must be at least 1.'**
+  String get helpRequestMinPeople;
+
+  /// No description provided for @helpRequestQueuedOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection could not be verified. Your request has been queued and will be sent automatically when you are back online.'**
+  String get helpRequestQueuedOffline;
+
+  /// No description provided for @helpRequestStatusPendingOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to Send'**
+  String get helpRequestStatusPendingOffline;
+
+  /// No description provided for @cancelRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Help Request'**
+  String get cancelRequestTitle;
+
+  /// No description provided for @cancelRequestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel your help request? This action cannot be undone.'**
+  String get cancelRequestMessage;
+
+  /// No description provided for @cancelRequestConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Cancel'**
+  String get cancelRequestConfirm;
+
+  /// No description provided for @cancelRequestAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Help Request'**
+  String get cancelRequestAction;
+
+  /// No description provided for @cancelRequestSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your help request has been cancelled.'**
+  String get cancelRequestSuccess;
+
+  /// No description provided for @activeRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Help Request'**
+  String get activeRequestTitle;
+
+  /// No description provided for @assignedTeamLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatched Team'**
+  String get assignedTeamLabel;
+
+  /// No description provided for @teamLeaderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Leader'**
+  String get teamLeaderLabel;
+
+  /// No description provided for @teamWaitingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for team assignment...'**
+  String get teamWaitingLabel;
+
+  /// No description provided for @caseStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get caseStatusPending;
+
+  /// No description provided for @caseStatusAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Dispatched'**
+  String get caseStatusAssigned;
+
+  /// No description provided for @caseStatusEnRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'En Route'**
+  String get caseStatusEnRoute;
+
+  /// No description provided for @caseStatusOnSite.
+  ///
+  /// In en, this message translates to:
+  /// **'On Site'**
+  String get caseStatusOnSite;
+
+  /// No description provided for @caseStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get caseStatusResolved;
+
+  /// No description provided for @caseStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get caseStatusCancelled;
+
+  /// No description provided for @peopleCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 Person} other{{count} People}}'**
+  String peopleCountLabel(int count);
+
+  /// No description provided for @assemblyScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assembly Areas'**
+  String get assemblyScreenTitle;
+
+  /// No description provided for @assemblyFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get assemblyFilterAll;
+
+  /// No description provided for @assemblyFilterAssembly.
+  ///
+  /// In en, this message translates to:
+  /// **'Assembly Area'**
+  String get assemblyFilterAssembly;
+
+  /// No description provided for @assemblyFilterFieldHospital.
+  ///
+  /// In en, this message translates to:
+  /// **'Field Hospital'**
+  String get assemblyFilterFieldHospital;
+
+  /// No description provided for @assemblyFilterShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter / Tent'**
+  String get assemblyFilterShelter;
+
+  /// No description provided for @assemblyServiceWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean Water'**
+  String get assemblyServiceWater;
+
+  /// No description provided for @assemblyServiceHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'First Aid'**
+  String get assemblyServiceHealth;
+
+  /// No description provided for @assemblyServiceFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot Food'**
+  String get assemblyServiceFood;
+
+  /// No description provided for @assemblyServiceTent.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter'**
+  String get assemblyServiceTent;
+
+  /// No description provided for @assemblyOccupancyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupancy: {percent}%'**
+  String assemblyOccupancyLabel(int percent);
+
+  /// No description provided for @assemblyCapacityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {capacity} People'**
+  String assemblyCapacityLabel(String current, String capacity);
+
+  /// No description provided for @assemblyGetDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Directions'**
+  String get assemblyGetDirections;
+
+  /// No description provided for @assemblyOpenLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get assemblyOpenLabel;
+
+  /// No description provided for @assemblyClosedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get assemblyClosedLabel;
+
+  /// No description provided for @assemblyNearestBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest'**
+  String get assemblyNearestBadge;
+
+  /// No description provided for @assemblyMyLocationTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to My Location'**
+  String get assemblyMyLocationTooltip;
+
+  /// No description provided for @assemblyZoomInTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom In'**
+  String get assemblyZoomInTooltip;
+
+  /// No description provided for @assemblyZoomOutTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom Out'**
+  String get assemblyZoomOutTooltip;
+
+  /// No description provided for @assemblyEmptyList.
+  ///
+  /// In en, this message translates to:
+  /// **'No assembly areas found'**
+  String get assemblyEmptyList;
+
+  /// No description provided for @assemblyNearestTop3.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest 3 Areas'**
+  String get assemblyNearestTop3;
+
+  /// No description provided for @assemblyServicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provided Services'**
+  String get assemblyServicesTitle;
+
+  /// No description provided for @helpRequestSelectType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a need type'**
+  String get helpRequestSelectType;
+
+  /// No description provided for @helpRequestPeopleDecrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get helpRequestPeopleDecrease;
+
+  /// No description provided for @helpRequestPeopleIncrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get helpRequestPeopleIncrease;
+
+  /// No description provided for @cancelRequestKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Request'**
+  String get cancelRequestKeep;
+
+  /// No description provided for @assemblyOccupancyShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String assemblyOccupancyShort(int percent);
+
+  /// No description provided for @liveFeedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE CALL FEED'**
+  String get liveFeedTitle;
+
+  /// No description provided for @liveFeedWaitingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} OPEN'**
+  String liveFeedWaitingCount(int count);
+
+  /// No description provided for @liveFeedFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All ({count})'**
+  String liveFeedFilterAll(int count);
+
+  /// No description provided for @liveFeedFilterCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get liveFeedFilterCritical;
+
+  /// No description provided for @liveFeedFilterUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get liveFeedFilterUrgent;
+
+  /// No description provided for @liveFeedFilterNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get liveFeedFilterNormal;
+
+  /// No description provided for @liveFeedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No open calls right now.'**
+  String get liveFeedEmpty;
+
+  /// No description provided for @liveFeedEmptyFiltered.
+  ///
+  /// In en, this message translates to:
+  /// **'No calls match this filter.'**
+  String get liveFeedEmptyFiltered;
+
+  /// No description provided for @liveFeedUnknownName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name not provided'**
+  String get liveFeedUnknownName;
+
+  /// No description provided for @liveFeedMergedCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} merged calls'**
+  String liveFeedMergedCalls(int count);
+
+  /// No description provided for @liveFeedDispatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatch Team'**
+  String get liveFeedDispatch;
+
+  /// No description provided for @liveFeedAssignedTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team: {team}'**
+  String liveFeedAssignedTeam(String team);
+
+  /// No description provided for @liveFeedPanicCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 panic signal} other{{count} panic signals}}'**
+  String liveFeedPanicCount(int count);
+
+  /// No description provided for @distanceMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'{meters} m away'**
+  String distanceMeters(int meters);
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km away'**
+  String distanceKm(String km);
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min ago'**
+  String timeMinutesAgo(int count);
+
+  /// No description provided for @timeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h ago'**
+  String timeHoursAgo(int count);
+
+  /// No description provided for @timeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} d ago'**
+  String timeDaysAgo(int count);
+
+  /// No description provided for @incidentDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Detail'**
+  String get incidentDetailTitle;
+
+  /// No description provided for @incidentDetailCaller.
+  ///
+  /// In en, this message translates to:
+  /// **'Caller'**
+  String get incidentDetailCaller;
+
+  /// No description provided for @incidentDetailPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get incidentDetailPhone;
+
+  /// No description provided for @incidentDetailCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get incidentDetailCall;
+
+  /// No description provided for @incidentDetailNoPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone number'**
+  String get incidentDetailNoPhone;
+
+  /// No description provided for @incidentDetailMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Summary'**
+  String get incidentDetailMedical;
+
+  /// No description provided for @incidentDetailNoMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'No medical information shared.'**
+  String get incidentDetailNoMedical;
+
+  /// No description provided for @incidentDetailLinkedCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked calls'**
+  String get incidentDetailLinkedCalls;
+
+  /// No description provided for @incidentDetailLinkedCallsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} ({cancelled} cancelled)'**
+  String incidentDetailLinkedCallsValue(int count, int cancelled);
+
+  /// No description provided for @incidentDetailTaskStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Task status'**
+  String get incidentDetailTaskStatus;
+
+  /// No description provided for @incidentDetailNeedType.
+  ///
+  /// In en, this message translates to:
+  /// **'Need type'**
+  String get incidentDetailNeedType;
+
+  /// No description provided for @incidentDetailLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Caller information could not be loaded.'**
+  String get incidentDetailLoadFailed;
+
+  /// No description provided for @incidentCloseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Close Incident'**
+  String get incidentCloseAction;
+
+  /// No description provided for @incidentCloseConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Close Incident?'**
+  String get incidentCloseConfirmTitle;
+
+  /// No description provided for @incidentCloseConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The incident and its linked calls will be marked as resolved. This cannot be undone.'**
+  String get incidentCloseConfirmMessage;
+
+  /// No description provided for @incidentClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Incident closed.'**
+  String get incidentClosed;
+
+  /// No description provided for @incidentCloseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The incident could not be closed. A team may have been assigned or it may already be closed.'**
+  String get incidentCloseFailed;
+
+  /// No description provided for @incidentCloseHasTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'A team is working on this incident. It closes when the task is marked Resolved.'**
+  String get incidentCloseHasTeam;
+
+  /// No description provided for @dispatchNoAvailableTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'No team is available right now.'**
+  String get dispatchNoAvailableTeams;
+
+  /// No description provided for @dispatchSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'{team} dispatched.'**
+  String dispatchSuccess(String team);
+
+  /// No description provided for @assignErrorIncidentClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'This incident is already closed.'**
+  String get assignErrorIncidentClosed;
+
+  /// No description provided for @assignErrorAlreadyAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'A team is already assigned to this incident.'**
+  String get assignErrorAlreadyAssigned;
+
+  /// No description provided for @assignErrorTeamBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'This team is no longer available.'**
+  String get assignErrorTeamBusy;
+
+  /// No description provided for @assignErrorInvalidTransition.
+  ///
+  /// In en, this message translates to:
+  /// **'The task was updated by someone else. Please check again.'**
+  String get assignErrorInvalidTransition;
+
+  /// No description provided for @teamMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person} other{{count} people}}'**
+  String teamMembers(int count);
+
+  /// No description provided for @panicPinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Panic Signal'**
+  String get panicPinTitle;
+
+  /// No description provided for @panicPinLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get panicPinLocation;
+
+  /// No description provided for @panicPinTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal time'**
+  String get panicPinTime;
+
+  /// No description provided for @panicPinReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Reached'**
+  String get panicPinReached;
+
+  /// No description provided for @panicPinHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as reached'**
+  String get panicPinHandled;
+
+  /// No description provided for @panicPinReachedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal marked as reached.'**
+  String get panicPinReachedSuccess;
+
+  /// No description provided for @panicPinReachedQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection; it will be sent when you are back online.'**
+  String get panicPinReachedQueued;
+
+  /// No description provided for @panicNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New panic signal'**
+  String get panicNotificationTitle;
+
+  /// No description provided for @panicNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A survivor reported being in danger. Check the purple pin on the Live Feed map.'**
+  String get panicNotificationBody;
+
+  /// No description provided for @teamsSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Field Teams'**
+  String get teamsSummaryTitle;
+
+  /// No description provided for @teamsSummarySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operational tracking and coordination'**
+  String get teamsSummarySubtitle;
+
+  /// No description provided for @teamsSummaryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{teams} Teams · {members} Personnel'**
+  String teamsSummaryCount(int teams, int members);
+
+  /// No description provided for @teamTypeSearchRescue.
+  ///
+  /// In en, this message translates to:
+  /// **'Search & Rescue'**
+  String get teamTypeSearchRescue;
+
+  /// No description provided for @teamTypeMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get teamTypeMedical;
+
+  /// No description provided for @teamTypeFire.
+  ///
+  /// In en, this message translates to:
+  /// **'Fire'**
+  String get teamTypeFire;
+
+  /// No description provided for @teamTypeLogistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics'**
+  String get teamTypeLogistics;
+
+  /// No description provided for @teamStatusOnDuty.
+  ///
+  /// In en, this message translates to:
+  /// **'ON DUTY'**
+  String get teamStatusOnDuty;
+
+  /// No description provided for @teamStatusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'AVAILABLE'**
+  String get teamStatusAvailable;
+
+  /// No description provided for @teamLeaderWithName.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (Team Leader)'**
+  String teamLeaderWithName(String name);
+
+  /// No description provided for @teamCurrentTask.
+  ///
+  /// In en, this message translates to:
+  /// **'CURRENT TASK'**
+  String get teamCurrentTask;
+
+  /// No description provided for @teamOperationStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'OPERATION STATUS'**
+  String get teamOperationStatus;
+
+  /// No description provided for @teamIdleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing by, ready for a new task.'**
+  String get teamIdleDescription;
+
+  /// No description provided for @teamTaskNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Task record not found.'**
+  String get teamTaskNotFound;
+
+  /// No description provided for @teamsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No team records yet.'**
+  String get teamsEmpty;
+
+  /// No description provided for @assignTaskAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Task'**
+  String get assignTaskAction;
+
+  /// No description provided for @updateTaskAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Task'**
+  String get updateTaskAction;
+
+  /// No description provided for @assignSheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an open incident for {team}.'**
+  String assignSheetSubtitle(String team);
+
+  /// No description provided for @assignNoOpenIncidents.
+  ///
+  /// In en, this message translates to:
+  /// **'No open incident is waiting for a team.'**
+  String get assignNoOpenIncidents;
+
+  /// No description provided for @updateSheetCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current status'**
+  String get updateSheetCurrent;
+
+  /// No description provided for @updateSheetNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as {status}'**
+  String updateSheetNext(String status);
+
+  /// No description provided for @updateSheetResolvedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'When marked Resolved, the incident closes and the team becomes available.'**
+  String get updateSheetResolvedNote;
+
+  /// No description provided for @updateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Task updated: {status}'**
+  String updateSuccess(String status);
+
+  /// No description provided for @updateNoActiveTask.
+  ///
+  /// In en, this message translates to:
+  /// **'No active task found for this team.'**
+  String get updateNoActiveTask;
+
+  /// No description provided for @logisticsWarehouseLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load warehouses.'**
+  String get logisticsWarehouseLoadFailed;
+
+  /// No description provided for @logisticsNoWarehouses.
+  ///
+  /// In en, this message translates to:
+  /// **'No warehouses found.'**
+  String get logisticsNoWarehouses;
+
+  /// No description provided for @logisticsInventoryLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load inventory.'**
+  String get logisticsInventoryLoadFailed;
+
+  /// No description provided for @logisticsNoFilteredItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No stock items match this filter.'**
+  String get logisticsNoFilteredItems;
+
+  /// No description provided for @logisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'LOGISTICS'**
+  String get logisticsTitle;
+
+  /// No description provided for @logisticsMissingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Warehouse location unavailable'**
+  String get logisticsMissingLocation;
+
+  /// No description provided for @logisticsCriticalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'CRITICAL STOCK WARNING'**
+  String get logisticsCriticalTitle;
+
+  /// No description provided for @logisticsInventoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'WAREHOUSE INVENTORY'**
+  String get logisticsInventoryTitle;
+
+  /// No description provided for @logisticsItemCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String logisticsItemCount(int count);
+
+  /// No description provided for @logisticsAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get logisticsAll;
+
+  /// No description provided for @logisticsCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get logisticsCritical;
+
+  /// No description provided for @logisticsMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get logisticsMedium;
+
+  /// No description provided for @logisticsSufficient.
+  ///
+  /// In en, this message translates to:
+  /// **'Sufficient'**
+  String get logisticsSufficient;
+
+  /// No description provided for @logisticsStockLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock Level'**
+  String get logisticsStockLevel;
+
+  /// No description provided for @logisticsLoginRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in to manage stock.'**
+  String get logisticsLoginRequired;
+
+  /// No description provided for @logisticsCriticalNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'{itemName} has reached a critical stock level.'**
+  String logisticsCriticalNotification(String itemName);
+
+  /// No description provided for @broadcastButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation Alert'**
+  String get broadcastButton;
+
+  /// No description provided for @broadcastTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation Alert'**
+  String get broadcastTitle;
+
+  /// No description provided for @broadcastMessageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get broadcastMessageLabel;
+
+  /// No description provided for @broadcastRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Target radius: {km} km'**
+  String broadcastRadius(String km);
+
+  /// No description provided for @broadcastInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Survivors with the app open inside the radius get a notification. For devices with the app closed, send an all_users message from Console → Messaging.'**
+  String get broadcastInfo;
+
+  /// No description provided for @broadcastRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get broadcastRequired;
+
+  /// No description provided for @broadcastSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get broadcastSave;
+
+  /// No description provided for @broadcastSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation alert sent.'**
+  String get broadcastSaved;
+
+  /// No description provided for @broadcastSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The alert could not be sent.'**
+  String get broadcastSaveFailed;
+
+  /// No description provided for @demoResetConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo teams, warehouses, stock and assembly areas will be restored to their initial state; missing ones will be created. Real records are not touched.'**
+  String get demoResetConfirmMessage;
+
+  /// No description provided for @demoResetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo data is ready.\n\nTeams: {teams}\nWarehouses: {warehouses}\nStock items: {items}\nAssembly areas: {points}'**
+  String demoResetDone(int teams, int warehouses, int items, int points);
+
+  /// No description provided for @demoResetFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo data could not be reset. Make sure you are signed in as a verified official and online.'**
+  String get demoResetFailed;
+
+  /// No description provided for @stockMovementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock Movement'**
+  String get stockMovementTitle;
+
+  /// No description provided for @stockIn.
+  ///
+  /// In en, this message translates to:
+  /// **'In'**
+  String get stockIn;
+
+  /// No description provided for @stockOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get stockOut;
+
+  /// No description provided for @stockCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Stock'**
+  String get stockCurrent;
+
+  /// No description provided for @stockQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get stockQuantity;
+
+  /// No description provided for @stockQuantityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the quantity'**
+  String get stockQuantityHint;
+
+  /// No description provided for @stockInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid quantity.'**
+  String get stockInvalidQuantity;
+
+  /// No description provided for @stockInsufficient.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient stock.'**
+  String get stockInsufficient;
+
+  /// No description provided for @stockSaveIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Record Stock In'**
+  String get stockSaveIn;
+
+  /// No description provided for @stockSaveOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Record Stock Out'**
+  String get stockSaveOut;
+
+  /// No description provided for @stockSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The stock movement could not be saved.'**
+  String get stockSaveFailed;
+
+  /// No description provided for @broadcastTypeEvacuation.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Evacuation'**
+  String get broadcastTypeEvacuation;
+
+  /// No description provided for @broadcastTypeAftershock.
+  ///
+  /// In en, this message translates to:
+  /// **'Aftershock'**
+  String get broadcastTypeAftershock;
+
+  /// No description provided for @broadcastCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Center (your location)'**
+  String get broadcastCenter;
+
+  /// No description provided for @broadcastLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting location…'**
+  String get broadcastLocating;
+
+  /// No description provided for @broadcastLocationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable. Check location permission and GPS.'**
+  String get broadcastLocationUnavailable;
+
+  /// No description provided for @broadcastRetryLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Get location again'**
+  String get broadcastRetryLocation;
+
+  /// No description provided for @broadcastRadiusShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String broadcastRadiusShort(String km);
+
+  /// No description provided for @broadcastQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection; the alert will be sent when you are back online.'**
+  String get broadcastQueued;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['en', 'tr'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
+    case 'tr':
+      return AppLocalizationsTr();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}
