@@ -1,3 +1,6 @@
+// "domain" katmanı: olay (incident) modeli. 50 m içinden gelen çağrılar tek bir olay dosyasında birleşir;
+// requestCount kaç çağrı bağlandığını, priority en yüksek önceliği tutar.
+
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -42,6 +45,7 @@ class Incident {
   /// Kural 7: Görev atanmamış olay doğrudan kapatılabilir.
   bool get canBeClosedDirectly => assignedTeamId == null;
 
+  // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.
   Incident copyWith({
     String? id,
     LatLng? location,
@@ -85,6 +89,7 @@ class Incident {
           requestCount == other.requestCount &&
           priority == other.priority;
 
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(id, isOpen, status, requestCount, priority);
 }

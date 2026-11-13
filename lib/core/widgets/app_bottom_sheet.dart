@@ -1,3 +1,6 @@
+// Ekranın altından açılan ortak panel (bottom sheet).
+// Çağrı formu, Detay, Ekip Yönlendir gibi küçük işlemler ayrı sayfa yerine bu panelde açılır.
+
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';

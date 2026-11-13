@@ -1,3 +1,5 @@
+// "domain" katmanı: kimlik işlemlerinin sözleşmesi (arayüz) ve kayıt formundan gelen veriler (RegisterInput).
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/user_role.dart';
@@ -40,7 +42,9 @@ abstract interface class AuthRepository {
   /// belgelerini tek batch'te oluşturur (§7).
   Future<AppUser> register(RegisterInput input);
 
+  // Şifre sıfırlama e-postası gönderir.
   Future<void> sendPasswordReset(String email);
 
+  // Oturumu kapatır.
   Future<void> signOut();
 }

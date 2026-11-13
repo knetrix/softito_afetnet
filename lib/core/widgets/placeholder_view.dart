@@ -1,3 +1,6 @@
+// Geliştirme sırasında henüz yazılmamış sekmeler için geçici ekran.
+// Tüm ekranlar tamamlandığı için artık hiçbir yerde kullanılmıyor.
+
 import 'package:flutter/material.dart';
 
 /// Henüz yazılmamış sekmeler için geçici gövde (G1). Ekranın sahibi kendi
@@ -8,6 +11,7 @@ class PlaceholderView extends StatelessWidget {
   final String title;
   final Widget? child;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

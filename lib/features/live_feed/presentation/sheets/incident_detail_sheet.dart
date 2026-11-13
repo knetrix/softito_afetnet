@@ -1,3 +1,6 @@
+// Olay Detay paneli: çağrı sahibinin telefonu (Ara butonu), tıbbi özeti, bağlı çağrı sayısı, görev durumu
+// ve ekip atanmamışsa "Olayı Kapat" butonu.
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,6 +19,7 @@ import '../live_feed_controller.dart';
 /// Y1 "Detay" (§3.2): çağrı sahibinin telefonu (arama butonu) ve tıbbi özeti,
 /// bağlı çağrı sayısı, görev durumu, Olayı Kapat (Kural 5, 7).
 abstract final class IncidentDetailSheet {
+  // Detay panelini alttan açar.
   static Future<void> show(
     BuildContext context, {
     required LiveFeedController controller,
@@ -36,6 +40,7 @@ abstract final class IncidentDetailSheet {
   }
 }
 
+// Detay paneli içeriği.
 class _DetailBody extends StatefulWidget {
   const _DetailBody({
     required this.controller,
@@ -47,16 +52,19 @@ class _DetailBody extends StatefulWidget {
   final Incident incident;
   final ScaffoldMessengerState messenger;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_DetailBody> createState() => _DetailBodyState();
 }
 
+// Detayı yükler ve Olayı Kapat işlemini yönetir.
 class _DetailBodyState extends State<_DetailBody> {
   late final Future<IncidentDetail> _detail = widget.controller.fetchDetail(
     widget.incident,
   );
   bool _closing = false;
 
+  // Onay sorup olayı kapatır.
   Future<void> _close() async {
     final l10n = AppLocalizations.of(context)!;
     final confirmed = await AppDialog.confirm(
@@ -85,6 +93,7 @@ class _DetailBodyState extends State<_DetailBody> {
     );
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -193,11 +202,13 @@ class _DetailBodyState extends State<_DetailBody> {
   }
 }
 
+// Çağrı sahibi bölümü: ad, telefon (Ara), tıbbi özet.
 class _CallerSection extends StatelessWidget {
   const _CallerSection({required this.detail});
 
   final IncidentDetail detail;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -324,6 +335,7 @@ class _CallerSection extends StatelessWidget {
   }
 }
 
+// Etiket + değer satırı.
 class _InfoRow extends StatelessWidget {
   const _InfoRow({required this.label, required this.value, this.valueColor});
 
@@ -331,6 +343,7 @@ class _InfoRow extends StatelessWidget {
   final String value;
   final Color? valueColor;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

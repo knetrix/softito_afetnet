@@ -1,3 +1,6 @@
+// "domain" katmanı: toplanma alanı modeli (konum, kapasite, doluluk, hizmetler, açık/kapalı).
+// fromJson ile Firestore verisinden oluşturulur, toJson ile geri Map'e çevrilir.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -57,6 +60,7 @@ class AssemblyPoint {
     return '$km km';
   }
 
+  // Nesneyi Firestore'a yazılabilecek Map (anahtar-değer) yapısına çevirir.
   Map<String, dynamic> toJson() {
     return {
       'name': name,
@@ -136,6 +140,7 @@ class AssemblyPoint {
     );
   }
 
+  // Nesnenin bir kopyasını oluşturur; yalnızca verilen alanlar değişir, orijinal nesne olduğu gibi kalır.
   AssemblyPoint copyWith({
     String? id,
     String? name,

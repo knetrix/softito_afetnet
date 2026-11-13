@@ -1,3 +1,6 @@
+// "domain" katmanı: toplanma alanlarını getirme sözleşmesi (arayüz).
+// Ekranlar Firestore'u değil bu arayüzü bilir; böylece testte sahte veri verilebilir.
+
 import 'assembly_point.dart';
 
 /// Toplanma Alanları Depo Arayüzü (PROJECT_NEW.md §3.1 A2, §5.3).

@@ -1,3 +1,6 @@
+// Afetzedenin Ana Sayfa'daki aktif çağrı kartını besleyen controller.
+// Çağrıyı, bağlı olayı ve çevrimdışı kuyruğu canlı dinler; ekip atanınca kart kendiliğinden değişir.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -37,9 +40,13 @@ class ActiveHelpRequestController extends ChangeNotifier {
   bool _isCancelling = false;
   bool _disposed = false;
 
+  // Afetzedenin aktif çağrısı (yoksa null).
   HelpRequest? get activeRequest => _activeRequest;
+  // Çağrıya atanan ekip bilgisi.
   AssignedTeamInfo? get assignedTeam => _assignedTeam;
+  // Veriler yükleniyor mu.
   bool get isLoading => _isLoading;
+  // İptal işlemi sürüyor mu.
   bool get isCancelling => _isCancelling;
 
   /// Kural 4: Henüz Firestore'a iletilmemiş, yerel Hive kuyruğunda bekleyen çağrı var mı?
@@ -61,6 +68,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
           !_activeRequest!.isResolved) ||
       hasPendingOffline;
 
+  // Kullanıcının aktif çağrısını ve çevrimdışı kuyruğu dinlemeye başlar.
   void _init() {
     _offlineQueue.addListener(_onOfflineQueueChanged);
     _requestSub = _repo.watchActiveHelpRequest(_uid).listen(
@@ -97,6 +105,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     }, onError: (Object e) => debugPrint('Incident progress error: $e'));
   }
 
+  // Yeni çağrı verisi gelince bağlı olayı ve atanan ekibin bilgisini getirir, sonra ekranı yeniler.
   Future<void> _apply() async {
     final req = withIncidentProgress(_rawRequest, _incidentProgress);
     _activeRequest = req;
@@ -134,6 +143,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     return req.copyWith(status: progress.status, assignedTeamId: teamId);
   }
 
+  // Çevrimdışı kuyruk değişince kartı yeniler.
   void _onOfflineQueueChanged() {
     if (!_disposed) notifyListeners();
   }
@@ -167,6 +177,7 @@ class ActiveHelpRequestController extends ChangeNotifier {
     }
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _disposed = true;

@@ -1,3 +1,6 @@
+// A2 Toplanma ekranı (afetzede).
+// Üstte harita (konumum + toplanma noktası pinleri), altta seçili noktanın kartı ve tür filtreleri.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -32,6 +35,7 @@ class AssemblyPointsScreen extends StatelessWidget {
   final ExternalUrlLauncher? urlLauncher;
   final Widget? tileLayer;
 
+  // Provider'dan nesneyi okur; ağaçta yoksa (ör. testte) hata vermek yerine null döndürür.
   T? _safeRead<T>(BuildContext context) {
     try {
       return context.read<T>();
@@ -40,6 +44,7 @@ class AssemblyPointsScreen extends StatelessWidget {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     if (controller != null) {
@@ -77,6 +82,7 @@ class AssemblyPointsScreen extends StatelessWidget {
   }
 }
 
+// Harita ve kartı içeren asıl ekran gövdesi.
 class _AssemblyPointsView extends StatefulWidget {
   const _AssemblyPointsView({
     required this.urlLauncher,
@@ -86,24 +92,29 @@ class _AssemblyPointsView extends StatefulWidget {
   final ExternalUrlLauncher urlLauncher;
   final Widget? tileLayer;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_AssemblyPointsView> createState() => _AssemblyPointsViewState();
 }
 
+// Harita denetleyicisini ve yakınlaştırmayı yönetir.
 class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
   final MapController _mapController = MapController();
   static const LatLng _defaultCenter = LatLng(36.2025, 36.1610);
 
+  // Haritayı yakınlaştırır.
   void _zoomIn() {
     final camera = _mapController.camera;
     _mapController.move(camera.center, camera.zoom + 1);
   }
 
+  // Haritayı uzaklaştırır.
   void _zoomOut() {
     final camera = _mapController.camera;
     _mapController.move(camera.center, camera.zoom - 1);
   }
 
+  // Haritayı kullanıcının konumuna götürür.
   void _goToMyLocation(LatLng? userLocation) {
     if (userLocation != null) {
       _mapController.move(userLocation, 15.0);
@@ -115,12 +126,14 @@ class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
     }
   }
 
+  // Seçili noktaya yol tarifi için telefondaki harita uygulamasını (url_launcher ile) açar.
   Future<void> _handleDirections(AssemblyPoint point) async {
     final urlStr = AssemblyPointsController.buildNavigationUrl(point);
     final uri = Uri.parse(urlStr);
     await widget.urlLauncher(uri);
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -337,6 +350,7 @@ class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
     );
   }
 
+  // Tür filtresi chip'ini çizer.
   Widget _buildFilterChip(
     BuildContext context, {
     required String label,
@@ -398,6 +412,7 @@ class _AssemblyPointsViewState extends State<_AssemblyPointsView> {
     );
   }
 
+  // Harita üzerindeki yuvarlak buton (yakınlaştır, konum).
   Widget _buildMapIconButton({
     required IconData icon,
     required String tooltip,
@@ -438,6 +453,7 @@ class _NearestPointsPeekBar extends StatelessWidget {
   final LatLng? userLocation;
   final ValueChanged<AssemblyPoint> onSelect;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -555,6 +571,7 @@ class _NearestPointsPeekBar extends StatelessWidget {
 class _EmptyPointsBanner extends StatelessWidget {
   const _EmptyPointsBanner();
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

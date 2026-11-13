@@ -1,10 +1,16 @@
+// Düdük sesini çalan/durduran controller. Ses dosyası uygulamanın içindedir, internet gerekmez;
+// en yüksek seste döngüde çalar.
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 
 /// Düdük ses oynatıcı soyutlaması (unit testlerde sahte oynatıcı ile değiştirilebilir).
 abstract interface class WhistleAudioBackend {
+  // Sesi döngüde çalar.
   Future<void> configureAndPlayLoop(String assetPath);
+  // Sesi durdurur.
   Future<void> stop();
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   Future<void> dispose();
 }
 
@@ -19,6 +25,7 @@ class AudioPlayersWhistleBackend implements WhistleAudioBackend {
   final AudioPlayer _player;
   bool _configured = false;
 
+  // Ses dosyasını hazırlar ve döngüde çalar.
   @override
   Future<void> configureAndPlayLoop(String assetPath) async {
     if (!_configured) {
@@ -43,9 +50,11 @@ class AudioPlayersWhistleBackend implements WhistleAudioBackend {
     await _player.play(AssetSource(assetPath));
   }
 
+  // Sesi durdurur.
   @override
   Future<void> stop() => _player.stop();
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   Future<void> dispose() => _player.dispose();
 }
@@ -62,6 +71,7 @@ class WhistleController {
   bool _disposed = false;
   bool _busy = false;
 
+  // Düdüğü başlatır ya da durdurur.
   Future<void> toggle() async {
     if (_disposed || _busy) return;
     _busy = true;
@@ -81,12 +91,14 @@ class WhistleController {
     }
   }
 
+  // Düdüğü durdurur.
   Future<void> stop() async {
     if (_disposed || !isPlaying.value) return;
     await _backend.stop();
     if (!_disposed) isPlaying.value = false;
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   void dispose() {
     if (_disposed) return;
     _disposed = true;

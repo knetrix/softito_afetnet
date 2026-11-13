@@ -1,3 +1,5 @@
+// Onboarding'in alt satırı: hangi sayfada olunduğunu gösteren noktalar ve İleri/Başla butonu.
+
 import 'package:flutter/material.dart'; // Flutter temel görsel bileşenler kütüphanesidir
 
 import '../../../core/theme/app_colors.dart'; // Uygulamanın renk paleti sınıfıdır
@@ -16,6 +18,7 @@ class BottomNavigationRow extends StatelessWidget {
     required this.onActionPressed,
   });
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

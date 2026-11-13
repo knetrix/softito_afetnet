@@ -1,3 +1,6 @@
+// PANİĞİM / GÜVENDEYİM butonu. Yanlışlıkla basılmasın diye 2 saniye basılı tutmak gerekir;
+// bu sürede etrafında dolan bir halka animasyonu görünür.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,15 +30,18 @@ class PanicHoldButton extends StatefulWidget {
   final double size;
   final Duration holdDuration;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<PanicHoldButton> createState() => _PanicHoldButtonState();
 }
 
+// 2 sn basılı tutma animasyonunu yönetir.
 class _PanicHoldButtonState extends State<PanicHoldButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _holdController;
   bool _triggered = false;
 
+  // Widget ekrana ilk geldiğinde yalnızca bir kez çalışır; dinleyiciler ve başlangıç verileri burada hazırlanır.
   @override
   void initState() {
     super.initState();
@@ -45,6 +51,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     )..addStatusListener(_onHoldStatus);
   }
 
+  // Üst widget yeni parametrelerle yeniden çizildiğinde çalışır; değişen değere göre animasyonu günceller.
   @override
   void didUpdateWidget(covariant PanicHoldButton oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -56,6 +63,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     }
   }
 
+  // Animasyon tamamlanınca butonun işlemini çalıştırır.
   void _onHoldStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed && !_triggered) {
       _triggered = true;
@@ -64,6 +72,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     }
   }
 
+  // Basılı tutma başladı: animasyonu başlatır.
   void _startHold() {
     if (widget.isBusy || widget.isDangerActive) return;
     _triggered = false;
@@ -71,12 +80,14 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     _holdController.forward(from: 0);
   }
 
+  // Parmak erken kalktı: animasyonu geri sarar.
   void _cancelHold() {
     if (_holdController.isAnimating || _holdController.value > 0) {
       _holdController.reset();
     }
   }
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _holdController.removeStatusListener(_onHoldStatus);
@@ -84,6 +95,7 @@ class _PanicHoldButtonState extends State<PanicHoldButton>
     super.dispose();
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

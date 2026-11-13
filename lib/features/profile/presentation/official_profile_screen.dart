@@ -1,3 +1,6 @@
+// Y4 Yetkili Profil ekranı: ad, "Saha Koordinatörü" rozeti, birim, bölge, bağlı ekip, dil seçimi,
+// Çıkış Yap ve (yalnızca debug derlemede) "Demo Verisini Sıfırla".
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +25,7 @@ class OfficialProfileScreen extends StatelessWidget {
 
   final ProfileRepository? repository;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -41,9 +45,11 @@ class OfficialProfileScreen extends StatelessWidget {
   }
 }
 
+// Yetkili profilinin asıl gövdesi.
 class _OfficialProfileView extends StatelessWidget {
   const _OfficialProfileView();
 
+  // Addan baş harfleri çıkarır (avatar için).
   String _getInitials(String name) {
     final parts = name.trim().split(RegExp(r'\s+'));
     if (parts.isEmpty) return 'Y';
@@ -51,6 +57,7 @@ class _OfficialProfileView extends StatelessWidget {
     return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
   }
 
+  // Onay sorup oturumu kapatır.
   Future<void> _signOut(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     final confirmed = await AppDialog.confirm(
@@ -99,6 +106,7 @@ class _OfficialProfileView extends StatelessWidget {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
@@ -312,6 +320,7 @@ class _OfficialProfileView extends StatelessWidget {
   }
 }
 
+// Birim / bölge / ekip bilgi satırı.
 class _OfficialInfoTile extends StatelessWidget {
   const _OfficialInfoTile({
     required this.label,
@@ -323,6 +332,7 @@ class _OfficialInfoTile extends StatelessWidget {
   final String value;
   final IconData icon;
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final muted = Theme.of(context).colorScheme.onSurfaceVariant;

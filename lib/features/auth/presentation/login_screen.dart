@@ -1,3 +1,6 @@
+// O3 Giriş ekranı: giriş türü (afetzede/yetkili), e-posta, şifre, Şifremi Unuttum, Üye Olun.
+// Altta "Resmi kurum değildir · 112" uyarısı vardır.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +20,12 @@ import 'auth_texts.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+// Giriş formunun durumu.
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
@@ -28,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _obscure = ValueNotifier(true);
   UserRole _role = UserRole.citizen;
 
+  // Kapanırken çalışır: dinleyicileri, akışları ve denetleyicileri kapatır (bellek sızıntısı olmasın diye).
   @override
   void dispose() {
     _email.dispose();
@@ -36,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // Önce Form'u doğrular (alanlar doğru mu), sonra AuthController ile giriş yapar.
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
@@ -46,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
   }
 
+  // Şifre sıfırlama e-postası gönderir.
   Future<void> _forgotPassword() async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
@@ -77,6 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();

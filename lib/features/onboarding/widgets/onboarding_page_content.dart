@@ -1,3 +1,5 @@
+// Tek bir onboarding sayfasının içeriği: grafik, rozet, başlık ve açıklama.
+
 import 'package:flutter/material.dart'; // Flutter temel arayüz kütüphanesidir
 
 import '../../../core/theme/app_colors.dart'; // Uygulamanın özel tema renkleridir

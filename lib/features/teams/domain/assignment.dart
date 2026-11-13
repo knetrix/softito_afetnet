@@ -1,3 +1,6 @@
+// "domain" katmanı: görev ataması modeli ve durum akışı.
+// AssignmentFlow, bir durumdan sonra hangi durumun geleceğini söyler (yalnızca ileri).
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/case_status.dart';
@@ -28,6 +31,7 @@ class Assignment {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
+  // Görev hâlâ sürüyor mu.
   bool get isActive => AssignmentFlow.isActive(status);
 
   /// Bir sonraki adım; görev bittiyse `null`.
@@ -42,6 +46,7 @@ class Assignment {
           other.teamId == teamId &&
           other.status == status;
 
+  // == ile birlikte kullanılır: içerikleri aynı olan iki nesne aynı hash değerini üretir.
   @override
   int get hashCode => Object.hash(id, incidentId, teamId, status);
 }

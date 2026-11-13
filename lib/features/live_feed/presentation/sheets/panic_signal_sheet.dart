@@ -1,3 +1,5 @@
+// Haritadaki mor panik pinine dokununca açılan panel: konum, zaman ve "Ulaşıldı" butonu.
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
@@ -11,6 +13,7 @@ import '../feed_labels.dart';
 
 /// Y1 mor panik pini (§3.2): konum, zaman, Ulaşıldı (Kural 8).
 abstract final class PanicSignalSheet {
+  // Panik sinyali panelini alttan açar.
   static Future<void> show(
     BuildContext context, {
     required SafetySignal signal,
@@ -42,6 +45,7 @@ abstract final class PanicSignalSheet {
   }
 }
 
+// Panik paneli içeriği.
 class _PanicBody extends StatefulWidget {
   const _PanicBody({
     required this.signal,
@@ -53,14 +57,17 @@ class _PanicBody extends StatefulWidget {
   final LatLng? userLocation;
   final Future<void> Function() onMarkReached;
 
+  // Bu StatefulWidget'ın değişen verilerini tutacak State nesnesini oluşturur.
   @override
   State<_PanicBody> createState() => _PanicBodyState();
 }
 
+// Ulaşıldı işlemini yönetir.
 class _PanicBodyState extends State<_PanicBody> {
   bool _busy = false;
   bool _failed = false;
 
+  // Sinyali "Ulaşıldı" olarak işaretler.
   Future<void> _mark() async {
     setState(() {
       _busy = true;
@@ -79,6 +86,7 @@ class _PanicBodyState extends State<_PanicBody> {
     }
   }
 
+  // Ekranda görünecek arayüzü (widget ağacını) oluşturur. Veri değişince Flutter bu metodu yeniden çağırır.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
